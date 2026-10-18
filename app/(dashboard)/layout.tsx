@@ -10,7 +10,8 @@ export default function DashboardLayout({
     <div className="flex min-h-screen bg-[#0A0A0A]">
       <DashboardSidebar />
 
-      <main className="min-w-0 flex-1">
+      {/* On phones: room for the top bar (h-14) and bottom bar (h-16). */}
+      <main className="min-w-0 flex-1 pb-16 pt-14 lg:pb-0 lg:pt-0">
         {children}
       </main>
 

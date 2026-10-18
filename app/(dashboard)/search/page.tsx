@@ -2091,50 +2091,7 @@ export default function NewSearchPage() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white">
-      <header className="flex items-center border-b border-white/10 bg-[#070707] px-5 py-4 lg:hidden">
-        <button
-          type="button"
-          onClick={() =>
-            setMobileMenu((current) => !current)
-          }
-          className="rounded-lg p-2 hover:bg-white/5"
-        >
-          {mobileMenu ? <X size={24} /> : <Menu size={24} />}
-        </button>
 
-        <div className="ml-3 text-lg font-semibold">
-          BaseLead
-        </div>
-      </header>
-
-      {mobileMenu && (
-        <div className="fixed inset-x-0 top-[73px] z-50 border-b border-white/10 bg-[#070707] px-4 py-4 shadow-2xl lg:hidden">
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab("builder");
-              setMobileMenu(false);
-            }}
-            className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFD000] py-3 font-semibold text-black"
-          >
-            <Plus size={18} />
-            New Search
-          </button>
-
-          <nav className="space-y-1">
-            {navigationItems.map((item) => (
-              <button
-                type="button"
-                key={item}
-                onClick={() => setMobileMenu(false)}
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-gray-400 hover:bg-white/5"
-              >
-                {item}
-              </button>
-            ))}
-          </nav>
-        </div>
-      )}
 
       <section className="min-w-0">
         <div className="relative overflow-hidden border-b border-white/10 bg-[#070707] px-5 pb-0 pt-6 lg:px-9 lg:pt-8">
@@ -2950,35 +2907,6 @@ export default function NewSearchPage() {
         )}
       </section>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-[70px] items-center justify-around border-t border-white/10 bg-[#050505]/95 px-2 backdrop-blur lg:hidden">
-        {[
-          "Dashboard",
-          "Lead Discovery",
-          "Leads",
-          "Pipeline",
-          "More",
-        ].map((item, index) => (
-          <button
-            type="button"
-            key={item}
-            className={`flex flex-col items-center gap-1 text-[10px] ${
-              index === 1
-                ? "text-[#FFD000]"
-                : "text-gray-500"
-            }`}
-          >
-            <div className="text-lg">
-              {index === 0 && "⌂"}
-              {index === 1 && "⌕"}
-              {index === 2 && "♙"}
-              {index === 3 && "⌁"}
-              {index === 4 && "•••"}
-            </div>
-
-            {item}
-          </button>
-        ))}
-      </nav>
     </main>
   );
 }

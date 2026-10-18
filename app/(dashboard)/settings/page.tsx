@@ -7129,47 +7129,6 @@ phone:
         </div>
       )}
 
-      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-[68px] items-center justify-around border-t border-white/10 bg-[#050505]/95 px-1 backdrop-blur-xl xl:hidden">
-        <a
-          href="/dashboard"
-          className="flex flex-col items-center gap-1 text-[8px] text-gray-500"
-        >
-          <SettingsIcon size={17} />
-          {t("Dashboard")}
-        </a>
-
-        <a
-          href="/leads"
-          className="flex flex-col items-center gap-1 text-[8px] text-gray-500"
-        >
-          <Users size={17} />
-          {t("Leads")}
-        </a>
-
-        <a
-          href="/outreach"
-          className="flex flex-col items-center gap-1 text-[8px] text-gray-500"
-        >
-          <Mail size={17} />
-          {t("Outreach")}
-        </a>
-
-        <a
-          href="/reports"
-          className="flex flex-col items-center gap-1 text-[8px] text-gray-500"
-        >
-          <FileText size={17} />
-          {t("Reports")}
-        </a>
-
-        <a
-          href="/settings"
-          className="flex flex-col items-center gap-1 text-[8px] text-[#F5C518]"
-        >
-          <SettingsIcon size={17} />
-          {t("Settings")}
-        </a>
-      </nav>
     </main>
   );
 }

@@ -3363,47 +3363,6 @@ export default function PipelinePage() {
         saving={savingForm}
       />
 
-      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-[68px] items-center justify-around border-t border-[#202020] bg-[#050505]/95 px-2 shadow-[0_-10px_30px_rgba(0,0,0,0.28)] backdrop-blur xl:hidden">
-        <a
-          href="/dashboard"
-          className="flex flex-col items-center gap-1 text-[10px] text-gray-500 transition-all hover:text-[#60A5FA]"
-        >
-          <LayoutDashboard size={19} />
-          Dashboard
-        </a>
-
-        <a
-          href="/search"
-          className="flex flex-col items-center gap-1 text-[10px] text-gray-500 transition-all hover:text-[#A78BFA]"
-        >
-          <Search size={19} />
-          Lead Discovery
-        </a>
-
-        <a
-          href="/leads"
-          className="flex flex-col items-center gap-1 text-[10px] text-gray-500 transition-all hover:text-[#84CC16]"
-        >
-          <Users size={19} />
-          Leads
-        </a>
-
-        <a
-          href="/pipeline"
-          className="flex flex-col items-center gap-1 text-[10px] text-[#F5C518] transition-all hover:text-[#F5C518]"
-        >
-          <SlidersHorizontal size={19} />
-          Pipeline
-        </a>
-
-        <button
-          type="button"
-          className="flex flex-col items-center gap-1 text-[10px] text-gray-500 transition-all hover:text-[#F0475C]"
-        >
-          <MoreHorizontal size={19} />
-          More
-        </button>
-      </nav>
     </main>
   );
 }

@@ -22,13 +22,26 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [inviteToken, setInviteToken] = useState("");
+  const [nextPath, setNextPath] = useState("/dashboard");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const invite = params.get("invite")?.trim() || "";
+    const next = params.get("next")?.trim() || "";
 
     if (invite) {
       setInviteToken(invite);
+    }
+
+    // Only accept internal paths to avoid open redirects.
+    if (next.startsWith("/") && !next.startsWith("//")) {
+      setNextPath(next);
+    }
+
+    const authError = params.get("error");
+
+    if (authError === "auth") {
+      setError("We couldn't complete the sign-in. Please try again.");
     }
   }, []);
 
@@ -71,7 +84,7 @@ export default function LoginPage() {
             inviteToken
           )}`;
       } else {
-        window.location.href = "/dashboard";
+        window.location.href = nextPath;
       }
     } catch (err) {
       console.error(err);
@@ -90,7 +103,7 @@ export default function LoginPage() {
         ? `/accept-invitation?token=${encodeURIComponent(
             inviteToken
           )}`
-        : "/dashboard";
+        : nextPath;
 
       const { error: googleError } =
         await supabase.auth.signInWithOAuth({
@@ -131,7 +144,7 @@ export default function LoginPage() {
         await supabase.auth.resetPasswordForEmail(
           email.trim(),
           {
-            redirectTo: `${window.location.origin}/reset-password`,
+            redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
           }
         );
 

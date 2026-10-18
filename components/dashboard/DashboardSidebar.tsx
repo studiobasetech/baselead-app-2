@@ -17,74 +17,43 @@ import {
   Mail,
   Clock3,
   CheckCircle2,
+  Menu,
+  MoreHorizontal,
 } from "lucide-react";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 
 import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const GOLD = "#F5C518";
 const GREEN = "#84CC16";
-const PURPLE = "#A78BFA";
 const BORDER = "#262626";
 const MUTED = "#8C8C8C";
 
 const NAV = [
-  {
-    icon: LayoutDashboard,
-    label: "Dashboard",
-    href: "/dashboard",
-  },
-  {
-    icon: Search,
-    label: "Lead Discovery",
-    href: "/lead-discovery",
-  },
-  {
-    icon: Users,
-    label: "Leads",
-    href: "/leads",
-  },
-  {
-    icon: GitBranch,
-    label: "Pipeline",
-    href: "/pipeline",
-  },
-  {
-    icon: Send,
-    label: "Outreach",
-    href: "/outreach",
-  },
-  {
-    icon: CalendarIcon,
-    label: "Calendar",
-    href: "/calendar",
-  },
-  {
-    icon: BarChart3,
-    label: "Reports",
-    href: "/reports",
-  },
-  {
-    icon: Plug,
-    label: "Integrations",
-    href: "/integrations",
-  },
-  {
-    icon: Settings,
-    label: "Settings",
-    href: "/settings",
-  },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+  { icon: Search, label: "Lead Discovery", href: "/lead-discovery" },
+  { icon: Users, label: "Leads", href: "/leads" },
+  { icon: GitBranch, label: "Pipeline", href: "/pipeline" },
+  { icon: Send, label: "Outreach", href: "/outreach" },
+  { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
+  { icon: BarChart3, label: "Reports", href: "/reports" },
+  { icon: Plug, label: "Integrations", href: "/integrations" },
+  { icon: Settings, label: "Settings", href: "/settings" },
 ];
+
+// The four most-used pages shown in the mobile bottom bar.
+const MOBILE_NAV = NAV.slice(0, 4);
 
 type WorkspaceData = {
   companyName: string;
   companyLogo: string;
   userName: string;
   userEmail: string;
+  userId: string;
 };
 
 type Notification = {
@@ -92,8 +61,8 @@ type Notification = {
   type: "lead" | "outreach" | "meeting" | "system";
   title: string;
   message: string;
-  time: string;
-  read: boolean;
+  createdAt: string;
+  href: string;
 };
 
 const EMPTY_WORKSPACE: WorkspaceData = {
@@ -101,361 +70,294 @@ const EMPTY_WORKSPACE: WorkspaceData = {
   companyLogo: "",
   userName: "",
   userEmail: "",
+  userId: "",
 };
 
-const INITIAL_NOTIFICATIONS: Notification[] = [
-  {
-    id: "1",
-    type: "lead",
-    title: "New high-opportunity lead",
-    message:
-      "A new lead matching your target customer profile was discovered.",
-    time: "10 min ago",
-    read: false,
-  },
-  {
-    id: "2",
-    type: "outreach",
-    title: "Outreach reply received",
-    message:
-      "A lead replied to one of your recent outreach messages.",
-    time: "1 hour ago",
-    read: false,
-  },
-  {
-    id: "3",
-    type: "meeting",
-    title: "Upcoming meeting",
-    message:
-      "You have a meeting scheduled with a lead today.",
-    time: "3 hours ago",
-    read: false,
-  },
-];
+const READ_KEY = "baselead_read_notifications";
+
+function loadReadIds(userId: string): string[] {
+  try {
+    const raw = window.localStorage.getItem(`${READ_KEY}:${userId}`);
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveReadIds(userId: string, ids: string[]) {
+  try {
+    window.localStorage.setItem(
+      `${READ_KEY}:${userId}`,
+      JSON.stringify(ids.slice(-200))
+    );
+  } catch {
+    // Storage can be unavailable (private mode); ignore.
+  }
+}
+
+/* =========================================================
+   REAL NOTIFICATIONS
+   Built from the user's latest leads and outreach activity.
+========================================================= */
+
+async function fetchNotifications(userId: string): Promise<Notification[]> {
+  const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+  const now = new Date().toISOString();
+  const inTwoDays = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+
+  const [leadsResult, repliesResult, upcomingResult] = await Promise.all([
+    supabase
+      .from("leads")
+      .select("id, name, company, ai_score, intent_score, created_at")
+      .eq("user_id", userId)
+      .gte("created_at", since)
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("outreach")
+      .select("id, lead_id, subject, campaign, replied_at")
+      .eq("user_id", userId)
+      .not("replied_at", "is", null)
+      .gte("replied_at", since)
+      .order("replied_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("outreach")
+      .select("id, subject, campaign, next_step, next_step_at")
+      .eq("user_id", userId)
+      .gte("next_step_at", now)
+      .lte("next_step_at", inTwoDays)
+      .order("next_step_at", { ascending: true })
+      .limit(5),
+  ]);
+
+  const items: Notification[] = [];
+
+  for (const lead of leadsResult.data ?? []) {
+    const score = Number(lead.ai_score ?? lead.intent_score ?? 0);
+    const who = lead.company || lead.name || "A new lead";
+
+    items.push({
+      id: `lead-${lead.id}`,
+      type: "lead",
+      title: score >= 70 ? "New high-opportunity lead" : "New lead added",
+      message: score >= 70 ? `${who} · ${score}/100` : who,
+      createdAt: lead.created_at,
+      href: "/leads",
+    });
+  }
+
+  for (const reply of repliesResult.data ?? []) {
+    items.push({
+      id: `reply-${reply.id}`,
+      type: "outreach",
+      title: "Outreach reply received",
+      message: reply.subject || reply.campaign || "",
+      createdAt: reply.replied_at,
+      href: "/outreach",
+    });
+  }
+
+  for (const step of upcomingResult.data ?? []) {
+    items.push({
+      id: `step-${step.id}-${step.next_step_at}`,
+      type: "meeting",
+      title: "Upcoming follow-up",
+      message: step.next_step || step.subject || step.campaign || "",
+      createdAt: step.next_step_at,
+      href: "/outreach",
+    });
+  }
+
+  return items
+    .filter((item) => item.createdAt)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 12);
+}
+
+function timeAgo(value: string, language: string) {
+  const diff = new Date(value).getTime() - Date.now();
+  const minutes = Math.round(diff / 60000);
+  const rtf = new Intl.RelativeTimeFormat(language, { numeric: "auto" });
+
+  if (Math.abs(minutes) < 60) return rtf.format(minutes, "minute");
+
+  const hours = Math.round(minutes / 60);
+  if (Math.abs(hours) < 24) return rtf.format(hours, "hour");
+
+  return rtf.format(Math.round(hours / 24), "day");
+}
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t, language } = useLanguage();
 
-  const { t } = useLanguage();
-
-  const [loggingOut, setLoggingOut] =
-    useState(false);
-
-  const [workspace, setWorkspace] =
-    useState<WorkspaceData>(
-      EMPTY_WORKSPACE
-    );
-
-  const [loadingWorkspace, setLoadingWorkspace] =
-    useState(true);
-
-  const [notificationsOpen, setNotificationsOpen] =
-    useState(false);
-
-  const [notifications, setNotifications] =
-    useState<Notification[]>(
-      INITIAL_NOTIFICATIONS
-    );
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [workspace, setWorkspace] = useState<WorkspaceData>(EMPTY_WORKSPACE);
+  const [loadingWorkspace, setLoadingWorkspace] = useState(true);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [readIds, setReadIds] = useState<string[]>([]);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   /* =====================================================
-     LOAD WORKSPACE
+     LOAD WORKSPACE + NOTIFICATIONS
   ===================================================== */
 
-  async function loadWorkspace() {
+  const loadWorkspace = useCallback(async () => {
     try {
       const {
         data: { user },
-        error: userError,
-      } =
-        await supabase.auth.getUser();
-
-      if (userError) {
-        console.error(
-          "Sidebar auth error:",
-          userError
-        );
-
-        return;
-      }
+      } = await supabase.auth.getUser();
 
       if (!user) {
-        setWorkspace(
-          EMPTY_WORKSPACE
-        );
-
+        setWorkspace(EMPTY_WORKSPACE);
+        setNotifications([]);
         return;
       }
 
-      const metadata =
-        user.user_metadata || {};
+      const metadata = user.user_metadata || {};
 
-      const {
-        data: company,
-        error: companyError,
-      } =
-        await supabase
-          .from("company_profiles")
-          .select(
-            "company_name, logo_url"
-          )
-          .eq(
-            "user_id",
-            user.id
-          )
-          .maybeSingle();
+      const { data: company, error: companyError } = await supabase
+        .from("company_profiles")
+        .select("company_name, logo_url")
+        .eq("user_id", user.id)
+        .maybeSingle();
 
       if (companyError) {
-        console.error(
-          "Sidebar company load error:",
-          companyError
-        );
+        console.error("Sidebar company load error:", companyError);
       }
 
       setWorkspace({
-        companyName:
-          company?.company_name?.trim() ||
-          "",
-
-        companyLogo:
-          company?.logo_url || "",
-
-        userName:
-          metadata.full_name?.trim() ||
-          metadata.name?.trim() ||
-          "",
-
-        userEmail:
-          user.email || "",
+        companyName: company?.company_name?.trim() || "",
+        companyLogo: company?.logo_url || "",
+        userName: metadata.full_name?.trim() || metadata.name?.trim() || "",
+        userEmail: user.email || "",
+        userId: user.id,
       });
+
+      setReadIds(loadReadIds(user.id));
+
+      try {
+        setNotifications(await fetchNotifications(user.id));
+      } catch (error) {
+        console.error("Notifications load error:", error);
+      }
     } catch (error) {
-      console.error(
-        "Unexpected sidebar load error:",
-        error
-      );
+      console.error("Unexpected sidebar load error:", error);
     } finally {
       setLoadingWorkspace(false);
     }
-  }
-
-  /* =====================================================
-     INITIAL LOAD
-  ===================================================== */
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadWorkspace();
-  }, []);
 
-  /* =====================================================
-     COMPANY PROFILE UPDATE EVENT
+    // Settings dispatches this event after saving the company.
+    window.addEventListener("baselead-company-updated", loadWorkspace);
 
-     Settings dispatches this event after saving.
-  ===================================================== */
-
-  useEffect(() => {
-    function handleCompanyUpdate() {
-      loadWorkspace();
-    }
-
-    window.addEventListener(
-      "baselead-company-updated",
-      handleCompanyUpdate
-    );
-
-    return () => {
-      window.removeEventListener(
-        "baselead-company-updated",
-        handleCompanyUpdate
-      );
-    };
-  }, []);
-
-  /* =====================================================
-     AUTH STATE CHANGES
-  ===================================================== */
-
-  useEffect(() => {
     const {
       data: { subscription },
-    } =
-      supabase.auth.onAuthStateChange(
-        (_event, session) => {
-          if (!session?.user) {
-            setWorkspace(
-              EMPTY_WORKSPACE
-            );
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session?.user) {
+        setWorkspace(EMPTY_WORKSPACE);
+        setNotifications([]);
+        return;
+      }
 
-            return;
-          }
+      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+        loadWorkspace();
+      }
+    });
 
-          loadWorkspace();
-        }
-      );
+    // Refresh notifications every 2 minutes.
+    const interval = window.setInterval(loadWorkspace, 120000);
 
     return () => {
+      window.removeEventListener("baselead-company-updated", loadWorkspace);
       subscription.unsubscribe();
+      window.clearInterval(interval);
     };
-  }, []);
+  }, [loadWorkspace]);
 
-  /* =====================================================
-     ACTIVE NAVIGATION
-  ===================================================== */
+  // Close the mobile drawer with Escape.
+  useEffect(() => {
+    if (!mobileOpen) return;
 
-  function isActive(
-    href: string
-  ) {
-    if (href === "/dashboard") {
-      return (
-        pathname === "/dashboard" ||
-        pathname === "/"
-      );
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setMobileOpen(false);
     }
 
-    return (
-      pathname === href ||
-      pathname.startsWith(
-        `${href}/`
-      )
-    );
-  }
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
 
   /* =====================================================
-     USER INITIALS
+     HELPERS
   ===================================================== */
 
-  function getInitials() {
-    const source =
-      workspace.companyName ||
-      workspace.userName ||
-      "BL";
+  function isActive(href: string) {
+    if (href === "/dashboard") {
+      return pathname === "/dashboard" || pathname === "/";
+    }
 
-    const initials =
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
+  function getInitials() {
+    const source = workspace.companyName || workspace.userName || "BL";
+
+    return (
       source
         .trim()
         .split(/\s+/)
-        .map(
-          (part) =>
-            part.charAt(0)
-        )
+        .map((part) => part.charAt(0))
         .join("")
         .slice(0, 2)
-        .toUpperCase();
-
-    return initials || "BL";
+        .toUpperCase() || "BL"
+    );
   }
-
-  /* =====================================================
-     DISPLAY VALUES
-  ===================================================== */
 
   const displayCompanyName =
     workspace.companyName ||
-    (loadingWorkspace
-      ? t("Loading...")
-      : t("Your Company"));
+    (loadingWorkspace ? t("Loading...") : t("Set up your company"));
 
   const displayUserName =
-    workspace.userName ||
-    t("Account Owner");
+    workspace.userName || workspace.userEmail || t("Account Owner");
 
-  /* =====================================================
-     NOTIFICATIONS
-  ===================================================== */
+  const unread = notifications.filter((item) => !readIds.includes(item.id));
+  const notificationCount = unread.length;
 
-  const notificationCount =
-    notifications.filter(
-      (notification) =>
-        !notification.read
-    ).length;
+  function markAsRead(ids: string[]) {
+    const next = Array.from(new Set([...readIds, ...ids]));
+    setReadIds(next);
 
-  function openNotifications() {
-    setNotificationsOpen(true);
+    if (workspace.userId) saveReadIds(workspace.userId, next);
   }
 
-  function closeNotifications() {
+  function openNotification(item: Notification) {
+    markAsRead([item.id]);
     setNotificationsOpen(false);
+    setMobileOpen(false);
+    router.push(item.href);
   }
 
-  function markNotificationAsRead(
-    id: string
-  ) {
-    setNotifications(
-      (current) =>
-        current.map(
-          (notification) =>
-            notification.id === id
-              ? {
-                  ...notification,
-                  read: true,
-                }
-              : notification
-        )
-    );
-  }
-
-  function markAllAsRead() {
-    setNotifications(
-      (current) =>
-        current.map(
-          (notification) => ({
-            ...notification,
-            read: true,
-          })
-        )
-    );
-  }
-
-  function getNotificationIcon(
-    type: Notification["type"]
-  ) {
-    if (type === "lead") {
-      return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F5C518]/10">
-          <Target
-            size={17}
-            style={{
-              color: GOLD,
-            }}
-          />
-        </div>
-      );
+  // Close the drawer whenever a link inside it is clicked.
+  function closeOnLinkClick(event: MouseEvent<HTMLElement>) {
+    if ((event.target as HTMLElement).closest("a")) {
+      setMobileOpen(false);
     }
-
-    if (type === "outreach") {
-      return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
-          <Mail
-            size={17}
-            className="text-blue-400"
-          />
-        </div>
-      );
-    }
-
-    if (type === "meeting") {
-      return (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-purple-500/10">
-          <CalendarIcon
-            size={17}
-            className="text-purple-400"
-          />
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-500/10">
-        <CheckCircle2
-          size={17}
-          className="text-green-400"
-        />
-      </div>
-    );
   }
-
-  /* =====================================================
-     LOGOUT
-  ===================================================== */
 
   async function handleLogout() {
     if (loggingOut) return;
@@ -463,571 +365,384 @@ export default function DashboardSidebar() {
     setLoggingOut(true);
 
     try {
-      const { error } =
-        await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
 
       if (error) {
-        console.error(
-          "Logout error:",
-          error
-        );
-
+        console.error("Logout error:", error);
         setLoggingOut(false);
         return;
       }
 
-      router.replace("/login");
-      router.refresh();
+      window.location.href = "/login";
     } catch (error) {
-      console.error(
-        "Unexpected logout error:",
-        error
-      );
-
+      console.error("Unexpected logout error:", error);
       setLoggingOut(false);
     }
   }
 
-  return (
-    <aside
-      className="flex h-screen w-60 shrink-0 flex-col border-r"
-      style={{
-        borderColor: BORDER,
-        backgroundColor: "#0A0A0A",
-      }}
-    >
-      {/* =================================================
-          BASELEAD LOGO
-      ================================================= */}
+  function getNotificationIcon(type: Notification["type"]) {
+    const map = {
+      lead: { bg: "bg-[#F5C518]/10", icon: <Target size={17} style={{ color: GOLD }} /> },
+      outreach: { bg: "bg-blue-500/10", icon: <Mail size={17} className="text-blue-400" /> },
+      meeting: { bg: "bg-purple-500/10", icon: <CalendarIcon size={17} className="text-purple-400" /> },
+      system: { bg: "bg-green-500/10", icon: <CheckCircle2 size={17} className="text-green-400" /> },
+    }[type];
 
-      <div className="px-6 pb-5 pt-7">
-        <Link
-          href="/dashboard"
-          className="block"
-        >
+    return (
+      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${map.bg}`}>
+        {map.icon}
+      </div>
+    );
+  }
+
+  const badge = notificationCount > 0 && (
+    <span
+      className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold"
+      style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
+    >
+      {notificationCount > 9 ? "9+" : notificationCount}
+    </span>
+  );
+
+  /* =====================================================
+     PANEL (shared by desktop sidebar and mobile drawer)
+  ===================================================== */
+
+  const panel = (
+    <>
+      <div className="flex items-center justify-between px-6 pb-5 pt-7">
+        <Link href="/dashboard" className="block">
           <img
             src="/logo.png"
             alt="BaseLead"
             className="h-auto w-[175px] rounded-xl shadow-sm"
           />
         </Link>
-      </div>
 
-      {/* =================================================
-          NEW SEARCH
-      ================================================= */}
+        <button
+          type="button"
+          onClick={() => setMobileOpen(false)}
+          className="ml-2 flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 hover:bg-white/5 hover:text-white lg:hidden"
+          aria-label={t("Close menu")}
+        >
+          <X size={20} />
+        </button>
+      </div>
 
       {!notificationsOpen && (
         <div className="mb-5 px-5">
           <Link
             href="/search"
             className="flex w-full items-center justify-center rounded-xl py-3 text-base font-bold transition-opacity hover:opacity-90"
-            style={{
-              backgroundColor: GOLD,
-              color: "#0A0A0A",
-            }}
+            style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
           >
             + {t("New Search")}
           </Link>
         </div>
       )}
 
-      {/* =================================================
-          NAVIGATION / NOTIFICATIONS PANEL
-      ================================================= */}
-
       <div className="flex min-h-0 flex-1 flex-col">
         {!notificationsOpen ? (
           <nav className="flex-1 space-y-1 overflow-y-auto px-3">
-            {NAV.map(
-              ({
-                icon: Icon,
-                label,
-                href,
-              }) => {
-                const active =
-                  isActive(href);
+            {NAV.map(({ icon: Icon, label, href }) => {
+              const active = isActive(href);
 
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    data-active={
-                      active
-                        ? "true"
-                        : "false"
-                    }
-                    className={`baselead-sidebar-nav-item flex items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.04] ${
-                      active
-                        ? "baselead-sidebar-nav-active"
-                        : ""
-                    }`}
-                    style={
-                      active
-                        ? {
-                            backgroundColor:
-                              "#1F1F1F",
-                            color:
-                              "white",
-                          }
-                        : {
-                            color: MUTED,
-                          }
-                    }
-                  >
-                    <Icon
-                      size={22}
-                      strokeWidth={1.8}
-                      style={
-                        active
-                          ? {
-                              color:
-                                GOLD,
-                            }
-                          : undefined
-                      }
-                    />
-
-                    <span>
-                      {t(label)}
-                    </span>
-                  </Link>
-                );
-              }
-            )}
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  data-active={active ? "true" : "false"}
+                  className={`baselead-sidebar-nav-item flex items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.04] hover:text-white ${
+                    active ? "baselead-sidebar-nav-active" : ""
+                  }`}
+                  style={
+                    active
+                      ? { backgroundColor: "#1F1F1F", color: "white" }
+                      : { color: MUTED }
+                  }
+                >
+                  <Icon
+                    size={22}
+                    strokeWidth={1.8}
+                    style={active ? { color: GOLD } : undefined}
+                  />
+                  <span>{t(label)}</span>
+                </Link>
+              );
+            })}
           </nav>
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
-            {/* =================================================
-                NOTIFICATIONS HEADER
-            ================================================= */}
-
-            <div
-              className="border-b px-5 py-4"
-              style={{
-                borderColor:
-                  BORDER,
-              }}
-            >
+            <div className="border-b px-5 py-4" style={{ borderColor: BORDER }}>
               <div className="flex items-center justify-between">
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="relative">
-                    <Bell
-                      size={20}
-                      strokeWidth={1.8}
-                      style={{
-                        color: GOLD,
-                      }}
-                    />
-
-                    {notificationCount >
-                      0 && (
-                      <span
-                        className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[7px] font-bold"
-                        style={{
-                          backgroundColor:
-                            GOLD,
-                          color:
-                            "#0A0A0A",
-                        }}
-                      >
-                        {
-                          notificationCount
-                        }
-                      </span>
-                    )}
+                    <Bell size={20} strokeWidth={1.8} style={{ color: GOLD }} />
+                    {badge}
                   </div>
 
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold tracking-[-0.01em] text-white">
-                      {t(
-                        "Notifications"
-                      )}
+                    <div className="text-sm font-semibold text-white">
+                      {t("Notifications")}
                     </div>
-
-                    <div
-                      className="mt-0.5 text-[9px]"
-                      style={{
-                        color:
-                          MUTED,
-                      }}
-                    >
-                      {
-                        notificationCount
-                      }{" "}
-                      {t("unread")}
+                    <div className="mt-0.5 text-xs" style={{ color: MUTED }}>
+                      {notificationCount} {t("unread")}
                     </div>
                   </div>
                 </div>
 
                 <button
                   type="button"
-                  onClick={
-                    closeNotifications
-                  }
-                  className="ml-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 hover:bg-white/[0.07] hover:text-white"
-                  style={{
-                    color: MUTED,
-                  }}
-                  aria-label={t(
-                    "Close notifications"
-                  )}
+                  onClick={() => setNotificationsOpen(false)}
+                  className="ml-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition hover:bg-white/[0.05]"
+                  style={{ color: MUTED }}
+                  aria-label={t("Close notifications")}
                 >
-                  <X
-                    size={17}
-                    strokeWidth={1.8}
-                  />
+                  <X size={17} strokeWidth={1.8} />
                 </button>
               </div>
             </div>
 
-            {/* =================================================
-                NOTIFICATION ACTIONS
-            ================================================= */}
-
-            <div
-              className="flex items-center justify-between border-b px-5 py-3"
-              style={{
-                borderColor:
-                  BORDER,
-              }}
-            >
-              <span
-                className="text-[9px]"
-                style={{
-                  color: MUTED,
-                }}
+            {notificationCount > 0 && (
+              <div
+                className="flex items-center justify-end border-b px-5 py-2.5"
+                style={{ borderColor: BORDER }}
               >
-                {notifications.length}{" "}
-                {t("notifications")}
-              </span>
-
-              {notificationCount >
-                0 && (
                 <button
                   type="button"
-                  onClick={
-                    markAllAsRead
-                  }
-                  className="group inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[9px] font-medium tracking-[-0.01em] transition-all duration-200 hover:bg-[#84CC16]/10 active:scale-[0.98]"
-                  style={{
-                    color: GREEN,
-                  }}
+                  onClick={() => markAsRead(notifications.map((item) => item.id))}
+                  className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition hover:bg-white/[0.04]"
+                  style={{ color: GREEN }}
                 >
-                  <CheckCircle2
-                    size={11}
-                    strokeWidth={2}
-                    className="transition-transform duration-200 group-hover:scale-105"
-                  />
-
-                  <span>
-                    {t(
-                      "Mark all as read"
-                    )}
-                  </span>
+                  <CheckCircle2 size={13} strokeWidth={2} />
+                  {t("Mark all as read")}
                 </button>
-              )}
-            </div>
-
-            {/* =================================================
-                NOTIFICATION LIST
-            ================================================= */}
+              </div>
+            )}
 
             <div className="min-h-0 flex-1 overflow-y-auto">
-              {notifications.length ===
-              0 ? (
-                <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+              {notifications.length === 0 ? (
+                <div className="flex h-full flex-col items-center justify-center px-6 py-10 text-center">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.04]">
-                    <Bell
-                      size={21}
-                      style={{
-                        color:
-                          "#555555",
-                      }}
-                    />
+                    <Bell size={21} style={{ color: "#555555" }} />
                   </div>
-
                   <p className="mt-4 text-sm font-medium text-gray-400">
-                    {t(
-                      "No notifications"
-                    )}
+                    {t("No notifications")}
                   </p>
-
-                  <p className="mt-1 text-[9px] leading-4 text-gray-700">
-                    {t(
-                      "You're all caught up."
-                    )}
+                  <p className="mt-1 text-xs leading-5 text-gray-600">
+                    {t("New leads, replies and follow-ups will appear here.")}
                   </p>
                 </div>
               ) : (
-                notifications.map(
-                  (notification) => (
+                notifications.map((item) => {
+                  const read = readIds.includes(item.id);
+
+                  return (
                     <button
-                      key={
-                        notification.id
-                      }
+                      key={item.id}
                       type="button"
-                      onClick={() =>
-                        markNotificationAsRead(
-                          notification.id
-                        )
-                      }
+                      onClick={() => openNotification(item)}
                       className={`flex w-full gap-3 border-b px-4 py-4 text-left transition-colors hover:bg-white/[0.03] ${
-                        notification.read
-                          ? "opacity-50"
-                          : ""
+                        read ? "opacity-50" : ""
                       }`}
-                      style={{
-                        borderColor:
-                          BORDER,
-                      }}
+                      style={{ borderColor: BORDER }}
                     >
-                      {getNotificationIcon(
-                        notification.type
-                      )}
+                      {getNotificationIcon(item.type)}
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="text-[10px] font-semibold leading-4 text-gray-200">
-                            {t(
-                              notification.title
-                            )}
+                          <p className="text-xs font-semibold leading-4 text-gray-200">
+                            {t(item.title)}
                           </p>
-
-                          {!notification.read && (
+                          {!read && (
                             <span
                               className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
-                              style={{
-                                backgroundColor:
-                                  GOLD,
-                              }}
+                              style={{ backgroundColor: GOLD }}
                             />
                           )}
                         </div>
 
-                        <p className="mt-1 text-[9px] leading-4 text-gray-600">
-                          {t(
-                            notification.message
-                          )}
-                        </p>
+                        {item.message && (
+                          <p className="mt-1 truncate text-xs leading-4 text-gray-500">
+                            {item.message}
+                          </p>
+                        )}
 
-                        <div className="mt-2 flex items-center gap-1 text-[8px] text-gray-700">
-                          <Clock3
-                            size={10}
-                          />
-
-                          {
-                            notification.time
-                          }
+                        <div className="mt-2 flex items-center gap-1 text-[11px] text-gray-600">
+                          <Clock3 size={11} />
+                          {timeAgo(item.createdAt, language)}
                         </div>
                       </div>
                     </button>
-                  )
-                )
+                  );
+                })
               )}
-            </div>
-
-            {/* =================================================
-                CLOSE NOTIFICATIONS
-            ================================================= */}
-
-            <div
-              className="border-t px-3 py-3"
-              style={{
-                borderColor:
-                  BORDER,
-              }}
-            >
-              <button
-                type="button"
-                onClick={
-                  closeNotifications
-                }
-                className="flex w-full items-center justify-center gap-2 rounded-xl border py-2.5 text-[9px] font-medium transition-all duration-200 hover:bg-white/[0.04] hover:text-white active:scale-[0.99]"
-                style={{
-                  borderColor:
-                    BORDER,
-                  color: MUTED,
-                }}
-              >
-                <X
-                  size={13}
-                  strokeWidth={1.8}
-                />
-
-                {t(
-                  "Close Notifications"
-                )}
-              </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* =================================================
-          BOTTOM SECTION
-
-          Hidden while Notifications is open.
-      ================================================= */}
-
       {!notificationsOpen && (
-        <div
-          className="border-t"
-          style={{
-            borderColor: BORDER,
-          }}
-        >
-          {/* =================================================
-              NOTIFICATIONS
-          ================================================= */}
-
+        <div className="border-t" style={{ borderColor: BORDER }}>
           <button
             type="button"
-            onClick={
-              openNotifications
-            }
+            onClick={() => setNotificationsOpen(true)}
             className="flex w-full items-center justify-between px-5 py-3 text-left transition-colors hover:bg-white/[0.03]"
           >
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Bell
-                  size={19}
-                  strokeWidth={1.8}
-                  style={{
-                    color: MUTED,
-                  }}
-                />
-
-                {notificationCount >
-                  0 && (
-                  <span
-                    className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[7px] font-bold"
-                    style={{
-                      backgroundColor:
-                        GOLD,
-                      color:
-                        "#0A0A0A",
-                    }}
-                  >
-                    {
-                      notificationCount
-                    }
-                  </span>
-                )}
+                <Bell size={19} strokeWidth={1.8} style={{ color: MUTED }} />
+                {badge}
               </div>
-
-              <span
-                className="text-sm font-medium"
-                style={{
-                  color: MUTED,
-                }}
-              >
+              <span className="text-sm font-medium" style={{ color: MUTED }}>
                 {t("Notifications")}
               </span>
             </div>
           </button>
 
-          {/* =================================================
-              COMPANY / USER
-          ================================================= */}
-
-          <div className="flex items-center gap-3 px-5 py-4">
-            {/* SAME COMPANY LOGO */}
-
+          <Link
+            href="/settings"
+            className="flex items-center gap-3 px-5 py-4 transition-colors hover:bg-white/[0.03]"
+          >
             {workspace.companyLogo ? (
               <img
-                src={
-                  workspace.companyLogo
-                }
-                alt={
-                  displayCompanyName
-                }
+                src={workspace.companyLogo}
+                alt={displayCompanyName}
                 className="h-10 w-10 shrink-0 rounded-full border border-white/10 object-cover"
               />
             ) : (
               <div
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold"
-                style={{
-                  backgroundColor:
-                    GOLD,
-                  color:
-                    "#0A0A0A",
-                }}
+                style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
               >
                 {getInitials()}
               </div>
             )}
 
-            {/* COMPANY + USER */}
-
             <div className="min-w-0 leading-tight">
               <div className="truncate text-sm font-semibold text-white">
-                {
-                  displayCompanyName
-                }
+                {displayCompanyName}
               </div>
-
-              <div
-                className="truncate text-xs"
-                style={{
-                  color: MUTED,
-                }}
-              >
-                {
-                  displayUserName
-                }
+              <div className="truncate text-xs" style={{ color: MUTED }}>
+                {displayUserName}
               </div>
-
-              {workspace.userEmail && (
-                <div
-                  className="mt-0.5 truncate text-[9px]"
-                  style={{
-                    color:
-                      "#5F5F5F",
-                  }}
-                >
-                  {
-                    workspace.userEmail
-                  }
-                </div>
-              )}
             </div>
-          </div>
-
-          {/* =================================================
-              LOG OUT
-          ================================================= */}
+          </Link>
 
           <div className="px-3 pb-4">
             <button
               type="button"
-              onClick={
-                handleLogout
-              }
-              disabled={
-                loggingOut
-              }
-              className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-red-500/[0.06] hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
-              style={{
-                color: MUTED,
-              }}
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-red-500/[0.06] hover:text-red-400 disabled:opacity-60"
+              style={{ color: MUTED }}
             >
-              <LogOut
-                size={22}
-                strokeWidth={1.8}
-              />
-
-              <span>
-                {loggingOut
-                  ? t(
-                      "Logging out..."
-                    )
-                  : t("Log out")}
-              </span>
+              <LogOut size={22} strokeWidth={1.8} />
+              <span>{loggingOut ? t("Logging out...") : t("Log out")}</span>
             </button>
           </div>
         </div>
       )}
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* DESKTOP SIDEBAR */}
+      <aside
+        className="baselead-sidebar sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r lg:flex"
+        style={{ borderColor: BORDER, backgroundColor: "#0A0A0A" }}
+      >
+        {panel}
+      </aside>
+
+      {/* MOBILE TOP BAR */}
+      <header
+        className="baselead-mobile-topbar fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b bg-[#0A0A0A]/95 px-4 backdrop-blur lg:hidden"
+        style={{ borderColor: BORDER }}
+      >
+        <button
+          type="button"
+          onClick={() => setMobileOpen(true)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-gray-300 hover:bg-white/5"
+          aria-label={t("Open menu")}
+        >
+          <Menu size={22} />
+        </button>
+
+        <Link href="/dashboard">
+          <img src="/logo.png" alt="BaseLead" className="h-8 w-auto rounded-lg" />
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => {
+            setNotificationsOpen(true);
+            setMobileOpen(true);
+          }}
+          className="relative flex h-10 w-10 items-center justify-center rounded-xl text-gray-300 hover:bg-white/5"
+          aria-label={t("Notifications")}
+        >
+          <span className="relative">
+            <Bell size={20} />
+            {badge}
+          </span>
+        </button>
+      </header>
+
+      {/* MOBILE DRAWER */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[70] lg:hidden">
+          <button
+            type="button"
+            aria-label={t("Close menu")}
+            onClick={() => setMobileOpen(false)}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          />
+          <aside
+            onClick={closeOnLinkClick}
+            className="baselead-sidebar relative flex h-full w-[86%] max-w-[300px] flex-col border-r shadow-2xl"
+            style={{ borderColor: BORDER, backgroundColor: "#0A0A0A" }}
+          >
+            {panel}
+          </aside>
+        </div>
+      )}
+
+      {/* MOBILE BOTTOM NAV */}
+      <nav
+        className="baselead-mobile-bottombar fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch justify-around border-t bg-[#050505]/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+        style={{ borderColor: BORDER }}
+      >
+        {MOBILE_NAV.map(({ icon: Icon, label, href }) => {
+          const active = isActive(href);
+
+          return (
+            <Link
+              key={href}
+              href={href}
+              className="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-medium"
+              style={{ color: active ? GOLD : MUTED }}
+            >
+              <Icon size={20} strokeWidth={1.8} />
+              <span className="max-w-full truncate px-1">{t(label)}</span>
+            </Link>
+          );
+        })}
+
+        <button
+          type="button"
+          onClick={() => {
+            setNotificationsOpen(false);
+            setMobileOpen(true);
+          }}
+          className="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-medium"
+          style={{ color: MUTED }}
+        >
+          <MoreHorizontal size={20} strokeWidth={1.8} />
+          <span>{t("More")}</span>
+        </button>
+      </nav>
+    </>
   );
 }
