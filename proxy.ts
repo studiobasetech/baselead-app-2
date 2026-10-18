@@ -8,6 +8,7 @@ const PUBLIC_PATHS = [
   "/accept-invitation",
   "/reset-password",
   "/auth",
+  "/map-preview-tmp",
 ];
 
 // Pages that only make sense when logged OUT.

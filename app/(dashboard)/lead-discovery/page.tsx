@@ -31,6 +31,7 @@ import {
 
 import { createClient } from "@/lib/supabase/client";
 import { recommendedServices } from "@/lib/recommendations";
+import OpportunityMap from "@/components/maps/OpportunityMap";
 
 /* =========================================================
    TYPES
@@ -100,6 +101,8 @@ type Lead = {
   source?: string;
   rating?: number | null;
   createdAt?: string;
+  latitude?: number | null;
+  longitude?: number | null;
 };
 
 type DiscoveryView =
@@ -980,6 +983,20 @@ function databaseLeadToLead(
 
     address:
       row.address || "",
+
+    latitude:
+      typeof row.latitude === "number"
+        ? row.latitude
+        : row.latitude
+        ? Number(row.latitude)
+        : null,
+
+    longitude:
+      typeof row.longitude === "number"
+        ? row.longitude
+        : row.longitude
+        ? Number(row.longitude)
+        : null,
 
     city:
       row.city || "",
@@ -2504,8 +2521,8 @@ function OpportunityRadar({
 
           <div className="pointer-events-none absolute -right-20 bottom-20 h-64 w-64 rounded-full bg-purple-500/[0.05] blur-3xl" />
 
-          <div className="absolute left-5 right-5 top-5 z-20 flex items-start justify-between gap-4">
-            <div className="rounded-xl border border-white/10 bg-black/75 px-4 py-3 backdrop-blur-md">
+          <div className="pointer-events-none absolute left-5 right-5 top-5 z-20 flex items-start justify-between gap-4">
+            <div className="pointer-events-auto rounded-xl border border-white/10 bg-black/75 px-4 py-3 backdrop-blur-md">
               <div className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#F5C518] shadow-[0_0_8px_rgba(255,208,0,0.8)]" />
 
@@ -2522,151 +2539,13 @@ function OpportunityRadar({
               </p>
             </div>
 
-            <div className="hidden items-center gap-3 rounded-xl border border-white/10 bg-black/75 px-3 py-2.5 backdrop-blur-md sm:flex">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-[#F5C518]" />
-                <span className="text-[10px] text-gray-500">
-                  High
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-[#84CC16]" />
-                <span className="text-[10px] text-gray-500">
-                  Strong
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-[#A78BFA]" />
-                <span className="text-[10px] text-gray-500">
-                  Emerging
-                </span>
-              </div>
-            </div>
           </div>
 
-          <div className="absolute inset-0 opacity-30">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
-                backgroundSize:
-                  "60px 60px",
-              }}
-            />
-          </div>
-
-          <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#F5C518]/10" />
-
-          <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#A78BFA]/[0.08]" />
-
-          <div className="absolute left-1/2 top-1/2 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-400/[0.08]" />
-
-          <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5C518] shadow-[0_0_25px_rgba(255,208,0,0.8)]" />
-
-          {filteredLocationGroups.map(
-            (
-              group,
-              index,
-            ) => {
-              const position =
-                getRadarPosition(
-                  group.name,
-                  index,
-                );
-
-              const averageScore =
-                group.leads.length
-                  ? Math.round(
-                      group.leads.reduce(
-                        (
-                          total,
-                          lead,
-                        ) =>
-                          total +
-                          lead.score,
-                        0,
-                      ) /
-                        group.leads
-                          .length,
-                    )
-                  : 0;
-
-              const isSelected =
-                selectedLocation !==
-                  "All locations" &&
-                locationMatches(
-                  group.leads[0],
-                  selectedLocation,
-                );
-
-              const color =
-                getRadarColor(
-                  index,
-                );
-
-              return (
-                <button
-                  key={group.key}
-                  type="button"
-                  onClick={() =>
-                    onLocationChange(
-                      group.name,
-                    )
-                  }
-                  className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 text-left"
-                  style={position}
-                >
-                  <span
-                    className={`absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border ${
-                      averageScore >=
-                      80
-                        ? `animate-pulse ${color.pulse}`
-                        : "border-white/10"
-                    }`}
-                  />
-
-                  <span
-                    className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition duration-200 ${
-                      isSelected
-                        ? `${color.selected} scale-125 ${color.glow}`
-                        : `${color.softBorder} ${color.bg} ${color.text} ${color.glow} group-hover:scale-110`
-                    }`}
-                  >
-                    <MapPin size={17} />
-                  </span>
-
-                  <span
-                    className={`absolute left-1/2 top-[calc(100%+12px)] min-w-max -translate-x-1/2 rounded-lg border px-3 py-2 shadow-xl backdrop-blur-md ${
-                      isSelected
-                        ? `${color.border} ${color.bg} ${color.text}`
-                        : "border-white/10 bg-[#0D0D0D]/95 text-white"
-                    }`}
-                  >
-                    <span className="flex items-center gap-1.5 text-xs font-medium">
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full ${color.dot}`}
-                      />
-
-                      {getLocationShortName(
-                        group.name,
-                      )}
-                    </span>
-
-                    <span className="mt-0.5 block text-[10px] text-gray-600">
-                      {group.leads.length}{" "}
-                      opportunities
-                      {averageScore
-                        ? ` • ${averageScore} avg.`
-                        : ""}
-                    </span>
-                  </span>
-                </button>
-              );
-            },
-          )}
+          <OpportunityMap
+            leads={radarLeads}
+            focusLocation={selectedLocation}
+            onSelectLead={onSelectLead}
+          />
 
           {leads.length === 0 && (
             <div className="absolute inset-0 z-20 flex items-center justify-center">
@@ -2689,7 +2568,7 @@ function OpportunityRadar({
                 </p>
 
                 <a
-                  href="/new-search"
+                  href="/search"
                   className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
                 >
                   <Search size={16} />
@@ -2739,33 +2618,43 @@ function OpportunityRadar({
               </div>
             )}
 
-          <div className="absolute bottom-5 left-5 right-5 z-20 flex flex-wrap items-center justify-between gap-3">
-            <div className="rounded-xl border border-white/10 bg-black/75 px-4 py-2.5 backdrop-blur-md">
+          <div className="pointer-events-none absolute bottom-5 left-5 right-16 z-20 flex flex-wrap items-center justify-between gap-3">
+            <div className="pointer-events-auto flex items-center gap-2 rounded-xl border border-white/10 bg-black/75 px-4 py-2.5 backdrop-blur-md">
               <p className="text-xs text-gray-500">
                 {filteredLocationGroups.length}{" "}
-                active locations
+                {filteredLocationGroups.length === 1 ? "location" : "locations"}
               </p>
+
+              {selectedLocation !== "All locations" && (
+                <button
+                  type="button"
+                  onClick={() => onLocationChange("All locations")}
+                  className="rounded-md border border-white/10 px-2 py-0.5 text-[11px] text-gray-400 hover:border-[#F5C518]/40 hover:text-[#F5C518]"
+                >
+                  Show all
+                </button>
+              )}
             </div>
 
-            <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 px-4 py-2.5 backdrop-blur-md">
+            <div className="pointer-events-auto flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 px-4 py-2.5 backdrop-blur-md">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#F5C518]" />
                 <span className="text-[11px] text-gray-500">
-                  High
+                  High 80+
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#84CC16]" />
                 <span className="text-[11px] text-gray-500">
-                  Strong
+                  Strong 60–79
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#A78BFA]" />
                 <span className="text-[11px] text-gray-500">
-                  Emerging
+                  Emerging &lt;60
                 </span>
               </div>
             </div>
@@ -3012,14 +2901,13 @@ function OpportunityRadar({
             </p>
 
             <p className="mt-1 text-xs leading-5 text-gray-600">
-              Opportunity Radar is
-              powered by your discovered
-              leads, opportunity scores,
-              estimated project values,
-              and Target Locations
-              configured in Company
-              Settings. The radar does
-              not require a paid map API.
+              Every pin is a real business at
+              its real location. Pin color shows
+              the opportunity score; click a pin
+              to see details or open the lead.
+              Dashed pins are placed at city level
+              because the exact address was not
+              available.
             </p>
           </div>
         </div>
@@ -5114,7 +5002,7 @@ ${companyName}`;
                   </div>
 
                   <a
-                    href="/new-search"
+                    href="/search"
                     className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0A0A0A] px-5 py-3 text-sm font-medium text-[#F5C518] transition hover:bg-white/5"
                   >
                     <SlidersHorizontal
@@ -5838,7 +5726,7 @@ ${companyName}`;
                         {leads.length ===
                           0 && (
                           <a
-                            href="/new-search"
+                            href="/search"
                             className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
                           >
                             <Search
