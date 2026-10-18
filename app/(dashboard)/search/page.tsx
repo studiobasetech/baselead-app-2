@@ -10,6 +10,7 @@ import {
   recommendedServices,
 } from "@/lib/recommendations";
 import {
+  ArrowLeft,
   ArrowRight,
   Check,
   ChevronDown,
@@ -299,6 +300,8 @@ function getWebsiteLabel(website: string) {
 function getWebsiteUrl(website: string) {
   return website.startsWith("http") ? website : `https://${website}`;
 }
+
+const LAST_SEARCH_KEY = "baselead_last_search";
 
 function parseRecommendations(value: unknown) {
   return recommendedServices(value);
@@ -1235,6 +1238,8 @@ function SearchResultsView({
   selectedLeadId,
   setSelectedLeadId,
   onCloseResults,
+  onBackToSearch,
+  searchSummary,
   onAddToPipeline,
   onGenerateOutreach,
 }: {
@@ -1243,6 +1248,8 @@ function SearchResultsView({
   selectedLeadId: string | null;
   setSelectedLeadId: (id: string | null) => void;
   onCloseResults: () => void;
+  onBackToSearch: () => void;
+  searchSummary: string;
   onAddToPipeline: (lead: SearchResultLead) => void;
   onGenerateOutreach: (lead: SearchResultLead) => void;
 }) {
@@ -1382,6 +1389,23 @@ function SearchResultsView({
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
+      <div className="flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#070707] px-5 py-3 lg:px-9">
+        <button
+          type="button"
+          onClick={onBackToSearch}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[#0D0D0D] px-3.5 py-2 text-sm text-gray-300 transition hover:border-[#FFD000]/40 hover:text-[#FFD000]"
+        >
+          <ArrowLeft size={16} />
+          Back to search
+        </button>
+
+        {searchSummary && (
+          <p className="min-w-0 truncate text-sm text-gray-500">
+            {searchSummary}
+          </p>
+        )}
+      </div>
+
       <div className="relative overflow-hidden border-b border-white/10 bg-[#060606]">
         <div className="pointer-events-none absolute left-1/4 top-0 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl" />
         <div className="pointer-events-none absolute right-1/4 top-0 h-48 w-48 rounded-full bg-[#FFD000]/10 blur-3xl" />
@@ -1674,6 +1698,45 @@ export default function NewSearchPage() {
     enrichment: true,
     excludeExisting: true,
   });
+
+  // Restore the last search (form + results) after a page reload.
+  useEffect(() => {
+    try {
+      const saved = window.sessionStorage.getItem(LAST_SEARCH_KEY);
+      if (!saved) return;
+
+      const data = JSON.parse(saved);
+
+      if (Array.isArray(data.results) && data.results.length) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSearchResults(data.results);
+        setSearchTotal(data.total ?? data.results.length);
+      }
+
+      if (data.form) {
+        setOffer(data.form.offer ?? "");
+        setIdealClient(data.form.idealClient ?? "");
+        setLocation(data.form.location ?? "");
+        setCompanySize(data.form.companySize ?? "");
+        setRevenue(data.form.revenue ?? "");
+        setBuyingIntent(data.form.buyingIntent ?? "");
+        setTags(Array.isArray(data.form.tags) ? data.form.tags : []);
+        setLeads(data.form.leads ?? "20");
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  // Browser Back/Forward between the form and the results.
+  useEffect(() => {
+    function onPopState(event: PopStateEvent) {
+      setSearchComplete(Boolean(event.state?.baseleadResults));
+    }
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   const targetLocationOptions = useMemo<SelectOption[]>(() => {
     if (targetLocations.length === 0) {
@@ -1987,6 +2050,36 @@ export default function NewSearchPage() {
       setSearchTotal(total);
       setSearchComplete(true);
 
+      // Lets the browser's Back button return to the form.
+      window.history.pushState(
+        { ...window.history.state, baseleadResults: true },
+        ""
+      );
+      window.scrollTo({ top: 0 });
+
+      // Remember the last search for this browser tab.
+      try {
+        window.sessionStorage.setItem(
+          LAST_SEARCH_KEY,
+          JSON.stringify({
+            results: returnedLeads,
+            total,
+            form: {
+              offer,
+              idealClient,
+              location,
+              companySize,
+              revenue,
+              buyingIntent,
+              tags,
+              leads: String(requestedLeads),
+            },
+          })
+        );
+      } catch {
+        // Storage full or unavailable: ignore.
+      }
+
       setSearchMessage(
         data.demo
           ? `Demo mode: showing ${total} sample businesses. Add a Google Places API key to search real businesses.`
@@ -2073,6 +2166,53 @@ export default function NewSearchPage() {
   }
 
 
+  // Back to the form with the same criteria; results are kept.
+  function backToSearch() {
+    setSearchComplete(false);
+    setActiveTab("builder");
+    window.scrollTo({ top: 0 });
+
+    if (window.history.state?.baseleadResults) {
+      window.history.back();
+    }
+  }
+
+  function showLastResults() {
+    if (!searchResults.length) return;
+
+    setSearchComplete(true);
+    window.history.pushState(
+      { ...window.history.state, baseleadResults: true },
+      ""
+    );
+    window.scrollTo({ top: 0 });
+  }
+
+  // "New Search": clear the form and the previous results.
+  function startNewSearch() {
+    setSearchComplete(false);
+    setSearchMessage("");
+    setSelectedLeadId(null);
+    setSearchResults([]);
+    setSearchTotal(0);
+    setOffer("");
+    setIdealClient("");
+    setCompanySize("");
+    setRevenue("");
+    setBuyingIntent("");
+    setTags([]);
+    setPrompt("");
+    setActiveTab("builder");
+
+    try {
+      window.sessionStorage.removeItem(LAST_SEARCH_KEY);
+    } catch {
+      // ignore
+    }
+
+    window.scrollTo({ top: 0 });
+  }
+
   if (searchComplete) {
     return (
       <SearchResultsView
@@ -2080,12 +2220,15 @@ export default function NewSearchPage() {
         total={searchTotal}
         selectedLeadId={selectedLeadId}
         setSelectedLeadId={setSelectedLeadId}
-        onCloseResults={() => {
-          setSearchComplete(false);
-          setSearchMessage("");
-          setSelectedLeadId(null);
-          setActiveTab("builder");
-        }}
+        onCloseResults={startNewSearch}
+        onBackToSearch={backToSearch}
+        searchSummary={[
+          idealClient,
+          offer && `for ${offer}`,
+          location && `in ${location}`,
+        ]
+          .filter(Boolean)
+          .join(" ")}
         onAddToPipeline={handleAddToPipeline}
         onGenerateOutreach={handleGenerateOutreach}
       />
@@ -2336,6 +2479,30 @@ export default function NewSearchPage() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "builder" && searchResults.length > 0 && (
+          <div className="px-5 pt-6 lg:px-9">
+            <div className="flex flex-col gap-3 rounded-2xl border border-[#FFD000]/20 bg-[#FFD000]/[0.05] p-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-gray-300">
+                Your last search found{" "}
+                <span className="font-semibold text-white">
+                  {searchTotal || searchResults.length}
+                </span>{" "}
+                businesses. Edit the criteria below and search again, or go
+                back to those results.
+              </p>
+
+              <button
+                type="button"
+                onClick={showLastResults}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#FFD000] px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+              >
+                View results
+                <ArrowRight size={16} />
+              </button>
             </div>
           </div>
         )}
