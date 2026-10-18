@@ -7,13 +7,8 @@ import {
   ArrowRight,
   CalendarDays,
   Check,
-  CircleDot,
   Flame,
-  Briefcase,
-  Mail,
   MessageSquareReply,
-  Phone,
-  Plus,
   RefreshCw,
   Sparkles,
   Video,
@@ -23,6 +18,7 @@ import {
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import BookingLinkCard from "@/components/booking/BookingLinkCard";
+import PostItBoard from "@/components/today/PostItBoard";
 
 type Task = {
   id: string;
@@ -63,14 +59,6 @@ type HotLead = {
   last_activity_at: string | null;
 };
 
-const TASK_ICON: Record<string, typeof Phone> = {
-  call: Phone,
-  email: Mail,
-  linkedin: Briefcase,
-  follow_up: RefreshCw,
-  todo: CircleDot,
-  task: CircleDot,
-};
 
 const ACTIVITY_COLOR: Record<string, string> = {
   reply: "#22D3EE",
@@ -107,7 +95,6 @@ export default function TodayPage() {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [toast, setToast] = useState("");
-  const [newTask, setNewTask] = useState("");
   const [setupNeeded, setSetupNeeded] = useState(false);
 
   const showToast = useCallback((message: string) => {
@@ -220,7 +207,7 @@ export default function TodayPage() {
     }
   }
 
-  async function complete(task: Task) {
+  async function complete(task: { id: string }) {
     setTasks((current) => current.filter((item) => item.id !== task.id));
 
     await supabase
@@ -229,11 +216,8 @@ export default function TodayPage() {
       .eq("id", task.id);
   }
 
-  async function addTask() {
-    const title = newTask.trim();
+  async function addNote(title: string, type: string) {
     if (!title || !userId) return;
-
-    setNewTask("");
 
     const { data, error } = await supabase
       .from("tasks")
@@ -241,7 +225,7 @@ export default function TodayPage() {
         title,
         user_id: userId,
         company_id: companyId,
-        type: "todo",
+        type,
         due_at: new Date().toISOString(),
       })
       .select("*")
@@ -255,7 +239,8 @@ export default function TodayPage() {
     setTasks((current) => [...current, data as Task]);
   }
 
-  const now = Date.now();
+
+
   const endToday = new Date();
   endToday.setHours(23, 59, 59, 999);
 
@@ -337,95 +322,13 @@ export default function TodayPage() {
 
       <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
         <div className="space-y-5">
-          {/* TASKS */}
-          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold">Your tasks</h2>
-              <span className="text-xs text-gray-500">{dueToday.length} due</span>
-            </div>
-
-            <div className="mt-4 flex gap-2">
-              <input
-                value={newTask}
-                onChange={(event) => setNewTask(event.target.value)}
-                onKeyDown={(event) => event.key === "Enter" && void addTask()}
-                placeholder="Add a task… e.g. Call Maria about the proposal"
-                className="h-11 flex-1 rounded-xl border border-[#202020] bg-black/30 px-4 text-sm outline-none transition focus:border-[#F5C518]/50"
-              />
-              <button
-                type="button"
-                onClick={() => void addTask()}
-                className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#202020] text-gray-300 transition hover:border-[#F5C518]/45 hover:text-[#F5C518]"
-                aria-label="Add task"
-              >
-                <Plus size={17} />
-              </button>
-            </div>
-
-            <ul className="mt-4 space-y-2">
-              {loading &&
-                [0, 1, 2].map((i) => (
-                  <li key={i} className="h-14 animate-pulse rounded-xl bg-white/[0.03]" />
-                ))}
-
-              {!loading && dueToday.length === 0 && (
-                <li className="rounded-xl border border-dashed border-[#202020] p-6 text-center text-sm text-gray-500">
-                  You&apos;re all caught up. New replies and follow-ups will appear here automatically.
-                </li>
-              )}
-
-              {[...dueToday, ...upcoming].map((task) => {
-                const Icon = TASK_ICON[task.type] ?? CircleDot;
-                const overdue = task.due_at && new Date(task.due_at).getTime() < now - 3600000;
-                const future = task.due_at && new Date(task.due_at).getTime() > endToday.getTime();
-
-                return (
-                  <li
-                    key={task.id}
-                    className={`group flex items-start gap-3 rounded-xl border border-[#202020] bg-[#0A0A0A] p-3.5 transition hover:border-[#2A2A2A] ${future ? "opacity-60" : ""}`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => void complete(task)}
-                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-[#3A3A3A] text-transparent transition hover:border-[#84CC16] hover:bg-[#84CC16]/15 hover:text-[#84CC16]"
-                      aria-label="Complete task"
-                    >
-                      <Check size={13} />
-                    </button>
-
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-gray-200">{task.title}</p>
-                      {task.notes && (
-                        <p className="mt-1 line-clamp-2 text-xs text-gray-500">{task.notes}</p>
-                      )}
-                      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px] text-gray-500">
-                        <span className="inline-flex items-center gap-1">
-                          <Icon size={11} /> {task.type.replace("_", " ")}
-                        </span>
-                        {task.due_at && (
-                          <span className={overdue ? "text-[#F0475C]" : ""}>
-                            · {overdue ? "overdue " : ""}{relative(task.due_at)}
-                          </span>
-                        )}
-                        {task.source !== "manual" && (
-                          <span className="rounded-full bg-[#A78BFA]/10 px-2 py-0.5 text-[#A78BFA]">auto</span>
-                        )}
-                      </div>
-                    </div>
-
-                    {task.lead_id && (
-                      <Link
-                        href={`/leads?lead=${task.lead_id}`}
-                        className="shrink-0 rounded-lg px-2 py-1 text-xs text-gray-500 transition hover:text-[#F5C518]"
-                      >
-                        Open
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+          {/* TASKS — post-it board */}
+          <PostItBoard
+            tasks={[...dueToday, ...upcoming]}
+            loading={loading}
+            onComplete={complete}
+            onAdd={addNote}
+          />
 
           {/* HOT LEADS */}
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">

@@ -2,6 +2,7 @@
 
 import { getTeamLimit } from "@/lib/plans";
 import TwoFactorCard from "@/components/security/TwoFactorCard";
+import DeleteAllLeadsCard from "@/components/leads/DeleteAllLeadsCard";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -7423,7 +7424,9 @@ phone:
 
               {activeTab ===
                 "My Profile" && (
-                <div className="mt-5">
+                <div className="mt-5 space-y-5">
+                  <DeleteAllLeadsCard onToast={showToast} />
+
                   <DangerZone
                     onDeleted={
                       handleAccountDeleted

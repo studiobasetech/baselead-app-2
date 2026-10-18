@@ -1,5 +1,7 @@
 "use client";
 
+import TwilioConnectCard from "@/components/integrations/TwilioConnectCard";
+
 import {
   useEffect,
   useMemo,
@@ -1815,6 +1817,9 @@ export default function IntegrationsPage() {
           </div>
         )}
       </header>
+
+      <TwilioConnectCard />
+
 
       {/* ===================================================
           TABS

@@ -152,3 +152,12 @@ HUNTER_API_KEY=...
 
 Uso: en el panel de cualquier lead (Pipeline o Leads) → **Find decision makers**. BaseLead busca a las personas de esa empresa por su sitio web, las ordena por quién decide (dueño, fundador, director…), y pone al mejor como contacto principal (reemplaza correos genéricos como info@). También puedes buscar en grupo desde **Sequences → Add leads**.
 Límites mensuales por plan: Starter 50, Pro 500, Scale 2,000 búsquedas.
+
+## 11. Llamadas y mensajes de texto (SMS)
+
+- **Llamar:** en el panel de cada lead, botón **Call** (abre el teléfono del celular o FaceTime/Skype en la computadora). Al volver, **Log call** guarda el resultado (habló, interesado, reunión agendada, buzón de voz, no contestó…), notas y duración; crea la tarea de seguimiento y mueve el pipeline solo.
+- **SMS (Pro y Scale):** crea una cuenta en https://twilio.com, compra un número con SMS y en BaseLead → **Integrations → Connect Twilio** pega el *Account SID*, *Auth Token* y el número. Luego copia la URL de webhook que aparece y pégala en Twilio → tu número → *Messaging → A message comes in*. Las respuestas del lead llegan a BaseLead, lo mueven a *Responded*, detienen la secuencia y crean una tarea.
+- Cada negocio usa su propia cuenta de Twilio (cada uno paga sus mensajes).
+
+## 12. Empezar de cero (borrar todos los leads)
+Configuración → **My Profile** → **Delete all leads** → escribe `DELETE ALL LEADS`. Borra todos los leads y su historial; tu cuenta, equipo y plan se quedan.
