@@ -33,7 +33,9 @@ Se usa solo en el servidor (activar planes después del pago, borrar cuenta, API
 GOOGLE_PLACES_API_KEY=...
 ```
 
-Sin esta clave la app funciona en **modo demo** (negocios de ejemplo, marcado claramente).
+Sin esta clave la búsqueda muestra un aviso pidiendo la clave (ya no se crean negocios de ejemplo).
+
+Para borrar los leads de ejemplo que se crearon antes: Supabase → SQL Editor → pega `supabase/cleanup_demo_leads.sql` → Run.
 
 ## 4. Gmail, Google Calendar y Google Sheets (para enviar correos y sincronizar el calendario)
 

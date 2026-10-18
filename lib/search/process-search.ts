@@ -3,7 +3,6 @@ import type {
   SearchCriteria,
   PotentialLead,
 } from "./types";
-import { getMockLeads } from "./mock-provider";
 import {
   isPlacesConfigured,
   searchGooglePlaces,
@@ -32,17 +31,16 @@ export async function processSearch(
   //    development when no Google key is configured.
   // ---------------------------------------------------------
 
-  const demo = !isPlacesConfigured();
+  // Real data only: no sample/demo businesses are ever created.
+  const demo = false;
 
-  if (demo && process.env.NODE_ENV === "production") {
+  if (!isPlacesConfigured()) {
     throw new Error(
-      "Lead search is not configured. Add GOOGLE_PLACES_API_KEY."
+      "Real lead search is not connected yet. Add your GOOGLE_PLACES_API_KEY to .env.local and restart the app (see SETUP-BASELEAD.md)."
     );
   }
 
-  const potentialLeads = demo
-    ? getMockLeads(criteria)
-    : await searchGooglePlaces({
+  const potentialLeads = await searchGooglePlaces({
         ...criteria,
         // Fetch extra so duplicates can be skipped.
         leads: criteria.excludeExisting
