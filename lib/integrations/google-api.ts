@@ -51,20 +51,33 @@ function encodeHeader(value: string) {
     : value;
 }
 
-/** Sends a plain-text email from the user's Gmail account. */
+/**
+ * Sends a plain-text email from the user's Gmail account.
+ * Pass threadId to send a follow-up in the same conversation.
+ */
 export async function sendGmail(
   accessToken: string,
-  email: { to: string; subject: string; body: string; fromName?: string }
-) {
-  const raw = [
+  email: {
+    to: string;
+    subject: string;
+    body: string;
+    threadId?: string | null;
+    inReplyTo?: string | null;
+  }
+): Promise<{ id: string; threadId: string }> {
+  const headers = [
     `To: ${email.to}`,
     `Subject: ${encodeHeader(email.subject)}`,
     "MIME-Version: 1.0",
     'Content-Type: text/plain; charset="UTF-8"',
     "Content-Transfer-Encoding: base64",
-    "",
-    Buffer.from(email.body, "utf8").toString("base64"),
-  ].join("\r\n");
+  ];
+
+  if (email.inReplyTo) {
+    headers.push(`In-Reply-To: ${email.inReplyTo}`, `References: ${email.inReplyTo}`);
+  }
+
+  const raw = [...headers, "", Buffer.from(email.body, "utf8").toString("base64")].join("\r\n");
 
   const response = await fetch(
     "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
@@ -74,7 +87,10 @@ export async function sendGmail(
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ raw: Buffer.from(raw).toString("base64url") }),
+      body: JSON.stringify({
+        raw: Buffer.from(raw).toString("base64url"),
+        ...(email.threadId ? { threadId: email.threadId } : {}),
+      }),
     }
   );
 
@@ -84,5 +100,111 @@ export async function sendGmail(
     throw new Error(json?.error?.message || "Gmail could not send the email.");
   }
 
-  return json.id as string;
+  return { id: json.id as string, threadId: json.threadId as string };
+}
+
+type GmailMessage = {
+  id: string;
+  labelIds?: string[];
+  internalDate?: string;
+  snippet?: string;
+  payload?: { headers?: { name: string; value: string }[] };
+};
+
+/**
+ * Returns the first message in a thread that was NOT sent by us
+ * (i.e. the prospect replied), or null. Needs gmail.readonly.
+ */
+export async function findReplyInThread(accessToken: string, threadId: string) {
+  const response = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/threads/${threadId}?format=metadata&metadataHeaders=From&metadataHeaders=Message-ID&metadataHeaders=Subject`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+
+  if (response.status === 403) {
+    throw new Error("Reconnect Gmail in Integrations to allow reply detection.");
+  }
+
+  if (!response.ok) return null;
+
+  const json = (await response.json()) as { messages?: GmailMessage[] };
+  const reply = (json.messages ?? []).find(
+    (message) => !(message.labelIds ?? []).includes("SENT")
+  );
+
+  if (!reply) return null;
+
+  const header = (name: string) =>
+    reply.payload?.headers?.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? "";
+
+  return {
+    id: reply.id,
+    from: header("From"),
+    messageId: header("Message-ID"),
+    snippet: reply.snippet ?? "",
+    receivedAt: reply.internalDate
+      ? new Date(Number(reply.internalDate)).toISOString()
+      : new Date().toISOString(),
+  };
+}
+
+/** Busy time ranges from Google Calendar (for booking pages). */
+export async function getGoogleBusy(
+  accessToken: string,
+  fromIso: string,
+  toIso: string
+): Promise<{ start: string; end: string }[]> {
+  const response = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ timeMin: fromIso, timeMax: toIso, items: [{ id: "primary" }] }),
+  });
+
+  if (!response.ok) return [];
+
+  const json = await response.json();
+  return json?.calendars?.primary?.busy ?? [];
+}
+
+/** Creates a Google Calendar event with a Google Meet link and invites the guest. */
+export async function createGoogleMeeting(
+  accessToken: string,
+  event: {
+    title: string;
+    description?: string;
+    start: string;
+    end: string;
+    guestEmail: string;
+    guestName?: string;
+  }
+) {
+  const response = await fetch(
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1&sendUpdates=all",
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        summary: event.title,
+        description: event.description,
+        start: { dateTime: event.start },
+        end: { dateTime: event.end },
+        attendees: [{ email: event.guestEmail, displayName: event.guestName }],
+        conferenceData: {
+          createRequest: { requestId: `bl-${Date.now()}`, conferenceSolutionKey: { type: "hangoutsMeet" } },
+        },
+        reminders: { useDefault: true },
+      }),
+    }
+  );
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(json?.error?.message || "Google Calendar could not create the meeting.");
+  }
+
+  return {
+    id: json.id as string,
+    meetUrl: (json.hangoutLink as string | undefined) ?? null,
+  };
 }

@@ -457,6 +457,7 @@ function isContacted(lead: SearchResultLead) {
   return [
     "contacted",
     "responded",
+    "meeting",
     "qualified",
     "proposal",
     "negotiation",
@@ -467,6 +468,7 @@ function isContacted(lead: SearchResultLead) {
 function isResponded(lead: SearchResultLead) {
   return [
     "responded",
+    "meeting",
     "qualified",
     "proposal",
     "negotiation",

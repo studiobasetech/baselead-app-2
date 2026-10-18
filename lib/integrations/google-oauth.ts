@@ -14,6 +14,8 @@ export type GoogleIntegrationId =
 const INTEGRATION_SCOPES: Record<GoogleIntegrationId, string[]> = {
   gmail: [
     "https://www.googleapis.com/auth/gmail.send",
+    // Needed to detect replies automatically.
+    "https://www.googleapis.com/auth/gmail.readonly",
     "https://www.googleapis.com/auth/userinfo.email",
   ],
   "google-calendar": [

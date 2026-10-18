@@ -293,6 +293,7 @@ function getPipelineStage(
 
     case "responded":
     case "replied":
+    case "meeting":
       return "Responded";
 
     case "qualified":

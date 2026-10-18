@@ -39,6 +39,8 @@ import { emitEvent } from "@/lib/events-client";
 type PipelineStage =
   | "New Lead"
   | "Contacted"
+  | "Responded"
+  | "Meeting"
   | "Qualified"
   | "Proposal"
   | "Negotiation"
@@ -108,6 +110,8 @@ const MUTED = "#777777";
 const stages: PipelineStage[] = [
   "New Lead",
   "Contacted",
+  "Responded",
+  "Meeting",
   "Qualified",
   "Proposal",
   "Negotiation",
@@ -117,6 +121,8 @@ const stages: PipelineStage[] = [
 const stageColors: Record<PipelineStage, string> = {
   "New Lead": "#E5E7EB",
   Contacted: GOLD,
+  Responded: "#22D3EE",
+  Meeting: "#F0475C",
   Qualified: "#60A5FA",
   Proposal: "#A78BFA",
   Negotiation: "#F97316",
@@ -126,6 +132,8 @@ const stageColors: Record<PipelineStage, string> = {
 const dbStatusByStage: Record<PipelineStage, string> = {
   "New Lead": "new",
   Contacted: "contacted",
+  Responded: "responded",
+  Meeting: "meeting",
   Qualified: "qualified",
   Proposal: "proposal",
   Negotiation: "negotiation",
@@ -137,8 +145,13 @@ function mapStatusToStage(
 ): PipelineStage {
   switch (status?.toLowerCase()) {
     case "contacted":
-    case "responded":
       return "Contacted";
+    case "responded":
+    case "replied":
+      return "Responded";
+    case "meeting":
+    case "meeting_scheduled":
+      return "Meeting";
     case "qualified":
       return "Qualified";
     case "proposal":
