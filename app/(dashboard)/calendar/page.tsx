@@ -178,7 +178,8 @@ function eventToPayload(event: CalendarEvent) {
 
   const at = (time: string) => {
     const [clock, modifier] = time.split(" ");
-    let [h, m] = clock.split(":").map(Number);
+    const [hours, m] = clock.split(":").map(Number);
+    let h = hours;
     if (modifier === "PM" && h !== 12) h += 12;
     if (modifier === "AM" && h === 12) h = 0;
     return new Date(year, month - 1, day, h, m).toISOString();
@@ -4131,6 +4132,46 @@ export default function CalendarPage() {
   const [selectedEventId, setSelectedEventId] =
     useState<number | null>(null);
 
+
+
+  const [filterOpen, setFilterOpen] =
+    useState(false);
+
+  const [activeFilter, setActiveFilter] =
+    useState<EventFilter>(
+      "All Events"
+    );
+
+  const [mobileEventOpen, setMobileEventOpen] =
+    useState(false);
+
+  const [sidebarOpen, setSidebarOpen] =
+    useState(true);
+
+  const [location, setLocation] =
+    useState("All locations");
+
+  const [locationOpen, setLocationOpen] =
+    useState(false);
+
+  const [datePickerOpen, setDatePickerOpen] =
+    useState(false);
+
+
+  const [mobileMenuOpen, setMobileMenuOpen] =
+    useState(false);
+
+  const [eventModalOpen, setEventModalOpen] =
+    useState(false);
+
+  const [editingEvent, setEditingEvent] =
+    useState<CalendarEvent | null>(
+      null
+    );
+
+  const [toastMessage, setToastMessage] =
+    useState<string | null>(null);
+
   // Load the workspace's real events.
   useEffect(() => {
     let mounted = true;
@@ -4184,44 +4225,6 @@ export default function CalendarPage() {
       mounted = false;
     };
   }, []);
-
-  const [filterOpen, setFilterOpen] =
-    useState(false);
-
-  const [activeFilter, setActiveFilter] =
-    useState<EventFilter>(
-      "All Events"
-    );
-
-  const [mobileEventOpen, setMobileEventOpen] =
-    useState(false);
-
-  const [sidebarOpen, setSidebarOpen] =
-    useState(true);
-
-  const [location, setLocation] =
-    useState("All locations");
-
-  const [locationOpen, setLocationOpen] =
-    useState(false);
-
-  const [datePickerOpen, setDatePickerOpen] =
-    useState(false);
-
-
-  const [mobileMenuOpen, setMobileMenuOpen] =
-    useState(false);
-
-  const [eventModalOpen, setEventModalOpen] =
-    useState(false);
-
-  const [editingEvent, setEditingEvent] =
-    useState<CalendarEvent | null>(
-      null
-    );
-
-  const [toastMessage, setToastMessage] =
-    useState<string | null>(null);
 
   const [hostProfileImage, setHostProfileImage] =
     useState<string | null>(null);

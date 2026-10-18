@@ -1,6 +1,7 @@
 "use client";
 
 import { getTeamLimit } from "@/lib/plans";
+import TwoFactorCard from "@/components/security/TwoFactorCard";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -4250,7 +4251,7 @@ function BillingPlan({
         return;
       }
 
-      window.location.href = result.url;
+      window.location.assign(result.url);
     } catch (error) {
       console.error("Billing error:", error);
       onToast(t("Your plan could not be updated. Please try again."));
@@ -5190,28 +5191,7 @@ function SecurityTab({
           </div>
         </div>
 
-        <div className="mt-6 rounded-lg border border-[#F5C518]/15 bg-[#F5C518]/[0.03] p-4">
-          <div className="flex gap-3">
-            <Lock
-              size={15}
-              className="mt-0.5 shrink-0 text-[#F5C518]"
-            />
-
-            <div>
-              <p className="text-[14px] font-medium text-gray-300">
-                {t(
-                  "Two-factor authentication"
-                )}
-              </p>
-
-              <p className="mt-1 text-[14px] leading-5 text-gray-600">
-                {t(
-                  "Two-factor authentication requires secure backend setup and is not enabled yet."
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
+        <TwoFactorCard onToast={onToast} />
 
         <div className="mt-5">
           <OutlineButton
@@ -6065,7 +6045,7 @@ function DangerZone({
 
             <p className="mt-1 text-[14px] text-gray-600">
               {t(
-                "Account deletion requires secure backend handling."
+                "Permanently delete your account, workspace and all data."
               )}
             </p>
           </div>
@@ -6090,7 +6070,7 @@ function DangerZone({
         <div className="rounded-lg border border-red-500/20 bg-red-500/[0.04] p-4">
           <p className="text-[14px] leading-5 text-gray-400">
             {t(
-              "Your account and workspace data should only be permanently deleted through a secure server-side process."
+              "This permanently deletes your account, your workspace, all leads, outreach and calendar events, and cancels your subscription. This cannot be undone."
             )}
           </p>
         </div>
@@ -6140,9 +6120,9 @@ function DangerZone({
         />
 
         <div className="mt-5 rounded-lg border border-yellow-500/15 bg-yellow-500/[0.03] p-4">
-          <p className="text-[8px] leading-4 text-gray-600">
+          <p className="text-[13px] leading-5 text-gray-500">
             {t(
-              "The secure account deletion endpoint has not been enabled yet. No account will be deleted from this screen."
+              "After confirming, you will be signed out and your data will be erased."
             )}
           </p>
         </div>
@@ -6905,12 +6885,35 @@ phone:
     }
   }
 
-  function handleAccountDeleted() {
-    showToast(
-      t(
-        "Account deletion is not enabled yet."
-      )
+  async function handleAccountDeleted() {
+    showToast(t("Deleting your account..."));
+
+    const response = await fetch(
+      "/api/account/delete",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          confirm: "DELETE",
+        }),
+      }
     );
+
+    const result = await response
+      .json()
+      .catch(() => ({}));
+
+    if (!response.ok) {
+      showToast(
+        result.error ||
+          t("Your account could not be deleted.")
+      );
+      return;
+    }
+
+    window.location.href = "/login";
   }
 
   function renderTab() {

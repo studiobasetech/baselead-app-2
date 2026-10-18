@@ -55,6 +55,24 @@ export async function proxy(request: NextRequest) {
 
   const { pathname, search } = request.nextUrl;
 
+  // Two-factor: signed in with password but code not entered yet.
+  let needsMfa = false;
+
+  if (isLoggedIn) {
+    const { data: aal } =
+      await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    needsMfa = aal?.nextLevel === "aal2" && aal?.currentLevel !== "aal2";
+  }
+
+  if (needsMfa && !pathname.startsWith("/api")) {
+    if (pathname === "/login") return response;
+
+    const mfaUrl = request.nextUrl.clone();
+    mfaUrl.pathname = "/login";
+    mfaUrl.search = "?mfa=1";
+    return redirectWithCookies(mfaUrl, response);
+  }
+
   // API routes answer 401 on their own; never redirect them.
   if (pathname.startsWith("/api")) {
     return response;

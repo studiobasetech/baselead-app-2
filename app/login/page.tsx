@@ -23,6 +23,26 @@ export default function LoginPage() {
   const [success, setSuccess] = useState("");
   const [inviteToken, setInviteToken] = useState("");
   const [nextPath, setNextPath] = useState("/dashboard");
+  const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState("");
+
+  /** Returns true when a 2FA code is required. */
+  async function startMfaStep() {
+    const { data: aal } =
+      await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+
+    if (aal?.nextLevel !== "aal2" || aal?.currentLevel === "aal2") {
+      return false;
+    }
+
+    const { data: factors } = await supabase.auth.mfa.listFactors();
+    const totp = factors?.totp?.find((item) => item.status === "verified");
+
+    if (!totp) return false;
+
+    setMfaFactorId(totp.id);
+    return true;
+  }
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -36,6 +56,10 @@ export default function LoginPage() {
     // Only accept internal paths to avoid open redirects.
     if (next.startsWith("/") && !next.startsWith("//")) {
       setNextPath(next);
+    }
+
+    if (params.get("mfa") === "1") {
+      void startMfaStep();
     }
 
     const authError = params.get("error");
@@ -76,6 +100,12 @@ export default function LoginPage() {
         return;
       }
 
+      // Two-factor enabled: ask for the authenticator code.
+      if (await startMfaStep()) {
+        setLoading(false);
+        return;
+      }
+
       setSuccess("Login successful. Redirecting...");
 
       if (inviteToken) {
@@ -91,6 +121,33 @@ export default function LoginPage() {
       setError("Something went wrong. Please try again.");
       setLoading(false);
     }
+  }
+
+  async function handleMfaSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!mfaFactorId) return;
+
+    setLoading(true);
+    setError("");
+
+    const { error: verifyError } =
+      await supabase.auth.mfa.challengeAndVerify({
+        factorId: mfaFactorId,
+        code: mfaCode.trim(),
+      });
+
+    if (verifyError) {
+      setError("That code is not valid. Try again.");
+      setLoading(false);
+      return;
+    }
+
+    setSuccess("Verified. Redirecting...");
+
+    window.location.href = inviteToken
+      ? `/accept-invitation?token=${encodeURIComponent(inviteToken)}`
+      : nextPath;
   }
 
   async function handleGoogleLogin() {
@@ -379,6 +436,58 @@ export default function LoginPage() {
                   </div>
                 )}
 
+                {mfaFactorId ? (
+                  <form
+                    onSubmit={handleMfaSubmit}
+                    className="space-y-4"
+                  >
+                    <p className="text-sm leading-6 text-gray-400">
+                      Enter the 6-digit code from your authenticator app.
+                    </p>
+
+                    <input
+                      value={mfaCode}
+                      onChange={(event) =>
+                        setMfaCode(
+                          event.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 6)
+                        )
+                      }
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      autoFocus
+                      placeholder="123456"
+                      className="h-14 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-center text-xl tracking-[0.5em] text-white outline-none focus:border-purple-500/60"
+                    />
+
+                    {error && (
+                      <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                        {error}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading || mfaCode.length !== 6}
+                      className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow-400 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:opacity-50"
+                    >
+                      {loading ? "Verifying..." : "Verify and continue"}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await supabase.auth.signOut();
+                        setMfaFactorId(null);
+                        setMfaCode("");
+                      }}
+                      className="w-full text-center text-xs text-gray-500 hover:text-white"
+                    >
+                      Use a different account
+                    </button>
+                  </form>
+                ) : (
                 <form
                   onSubmit={handleLogin}
                   className="mt-10"
@@ -507,6 +616,7 @@ export default function LoginPage() {
                     )}
                   </button>
                 </form>
+                )}
 
                 <div className="my-7 flex items-center gap-5">
                   <div className="h-px flex-1 bg-white/10" />
