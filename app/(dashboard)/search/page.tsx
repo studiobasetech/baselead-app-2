@@ -14,7 +14,6 @@ import {
   Lightbulb,
   Mail,
   MapPin,
-  Menu,
   MoreHorizontal,
   Plus,
   Save,
@@ -30,7 +29,6 @@ import {
   Zap,
   SlidersHorizontal,
   Brain,
-  Building2,
   Crosshair,
   Radar,
   MousePointer2,
@@ -1613,7 +1611,6 @@ function SearchResultsView({
 export default function NewSearchPage() {
   const router = useRouter();
 
-  const [mobileMenu, setMobileMenu] = useState(false);
   const [mode, setMode] = useState<SearchMode>("advanced");
   const [activeTab, setActiveTab] =
     useState<ActiveTab>("builder");
@@ -2058,17 +2055,6 @@ export default function NewSearchPage() {
     }
   }
 
-  const navigationItems = [
-    "Dashboard",
-    "Lead Discovery",
-    "Leads",
-    "Pipeline",
-    "Outreach",
-    "Calendar",
-    "Reports",
-    "Integrations",
-    "Settings",
-  ];
 
   if (searchComplete) {
     return (

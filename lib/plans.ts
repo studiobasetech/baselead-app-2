@@ -23,7 +23,11 @@ export type PlanFeature =
   | "advanced_reports"
   | "integrations_webhooks"
   | "priority_support"
-    | "api_access";
+  | "advanced_ai_recommendations"
+  | "advanced_automation"
+  | "team_permissions"
+  | "custom_reports"
+  | "api_access";
 
 export type PlanDefinition = {
   name: PlanName;
@@ -33,6 +37,8 @@ export type PlanDefinition = {
   teamLimit: number | null;
   integrationLimit: number | null;
   apiRequestLimit: number | null;
+  /** Active outreach campaigns allowed at the same time (null = unlimited). */
+  campaignLimit: number | null;
   features: readonly PlanFeature[];
 };
 
@@ -47,7 +53,8 @@ export const PLAN_DEFINITIONS: Record<
     leadLimit: 1000,
     teamLimit: 3,
     integrationLimit: 5,
-    apiRequestLimit: 1000,
+    apiRequestLimit: 0,
+    campaignLimit: 3,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -55,7 +62,6 @@ export const PLAN_DEFINITIONS: Record<
       "pipeline_management",
       "calendar_followups",
       "performance_reports",
-      "api_access",
     ],
   },
 
@@ -66,7 +72,8 @@ export const PLAN_DEFINITIONS: Record<
     leadLimit: 5000,
     teamLimit: 5,
     integrationLimit: null,
-    apiRequestLimit: 10000,
+    apiRequestLimit: 0,
+    campaignLimit: 25,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -81,7 +88,6 @@ export const PLAN_DEFINITIONS: Record<
       "advanced_reports",
       "integrations_webhooks",
       "priority_support",
-      "api_access",
     ],
   },
 
@@ -92,7 +98,8 @@ export const PLAN_DEFINITIONS: Record<
     leadLimit: 20000,
     teamLimit: null,
     integrationLimit: null,
-    apiRequestLimit: null,
+    apiRequestLimit: 100000,
+    campaignLimit: null,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -107,12 +114,16 @@ export const PLAN_DEFINITIONS: Record<
       "advanced_reports",
       "integrations_webhooks",
       "priority_support",
+      "advanced_ai_recommendations",
+      "advanced_automation",
+      "team_permissions",
+      "custom_reports",
       "api_access",
     ],
   },
 };
 
-export const DEFAULT_PLAN: PlanName = "Pro";
+export const DEFAULT_PLAN: PlanName = "Starter";
 export const TRIAL_PLAN: PlanName = "Starter";
 export const TRIAL_DURATION_DAYS = 7;
 export const TRIAL_LEAD_LIMIT = 100;
@@ -189,4 +200,24 @@ export function getIntegrationLimit(
   plan: PlanName | unknown,
 ): number | null {
   return getPlan(plan).integrationLimit;
+}
+
+/** The plan whose rules apply right now (trials use Starter rules). */
+export function effectivePlan(
+  plan: unknown,
+  billingStatus: unknown
+): PlanName {
+  if (billingStatus === "trialing") return TRIAL_PLAN;
+  return isPlanName(plan) ? plan : TRIAL_PLAN;
+}
+
+/** Human-readable name of the cheapest plan that includes a feature. */
+export function minimumPlanFor(feature: PlanFeature): PlanName {
+  return (["Starter", "Pro", "Scale"] as PlanName[]).find((name) =>
+    PLAN_DEFINITIONS[name].features.includes(feature)
+  ) ?? "Scale";
+}
+
+export function getCampaignLimit(plan: PlanName | unknown): number | null {
+  return getPlan(plan).campaignLimit;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { getTeamLimit } from "@/lib/plans";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -22,7 +23,6 @@ import {
   X,
   AlertTriangle,
   CheckCircle2,
-  FileText,
   Copy,
   Eye,
   EyeOff,
@@ -2228,6 +2228,10 @@ function TeamTab({
   onToast: (message: string) => void;
 }) {
   const { t } = useLanguage();
+  const {
+    definition: planDefinition,
+    can: canUsePlan,
+  } = usePlan();
 
   const [members, setMembers] =
     useState<TeamMember[]>([]);
@@ -2766,6 +2770,38 @@ function TeamTab({
       return;
     }
 
+    // Plan seat limit: owner + members + pending invitations.
+    const seatLimit = planDefinition.teamLimit;
+    const pendingInvites = invitations.filter(
+      (invitation) => invitation.status === "pending"
+    ).length;
+    const activeMembers = members.filter(
+      (member) => member.status !== "removed"
+    ).length;
+    const seatsUsed = Math.max(1, activeMembers) + pendingInvites;
+
+    if (seatLimit !== null && seatsUsed >= seatLimit) {
+      onToast(
+        `${t("Your plan includes")} ${seatLimit} ${t(
+          "team seats. Upgrade your plan to invite more people."
+        )}`
+      );
+      return;
+    }
+
+    // Manager/Admin roles are a Scale feature (team permissions).
+    if (
+      inviteRole !== "Member" &&
+      !canUsePlan("team_permissions")
+    ) {
+      onToast(
+        t(
+          "Custom roles and permissions are available on the Scale plan."
+        )
+      );
+      return;
+    }
+
     setInviting(true);
 
     try {
@@ -3080,6 +3116,18 @@ function TeamTab({
       onToast(
         t(
           "Only the workspace owner can change team roles."
+        )
+      );
+      return;
+    }
+
+    if (
+      nextRole !== "Member" &&
+      !canUsePlan("team_permissions")
+    ) {
+      onToast(
+        t(
+          "Custom roles and permissions are available on the Scale plan."
         )
       );
       return;
@@ -4156,65 +4204,95 @@ function BillingPlan({
     loadUsage();
   }, [companyId]);
 
-  async function choosePlan(name: string) {
-        if (name !== currentPlan) {
-      onToast(
-        t(
-          "Subscription checkout is not connected yet. Your free trial remains active."
-        )
-      );
+  // Show the result when Stripe sends the customer back.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const checkout = params.get("checkout");
 
-      return;
+    if (!checkout) return;
+
+    if (checkout === "success") {
+      onToast(t("Payment confirmed. Your new plan is active."));
+      void refreshPlan();
+    } else if (checkout === "cancelled") {
+      onToast(t("Checkout cancelled. No changes were made."));
+    } else if (checkout === "error") {
+      onToast(t("We couldn't confirm the payment. Please contact support."));
     }
 
-    if (!companyId) {
-      onToast(
-        t(
-          "Your workspace could not be found. Please refresh and try again."
-        )
-      );
-      return;
-    }
+    params.delete("checkout");
+    params.delete("reason");
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${query ? `?${query}` : ""}`
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  async function goToStripe(endpoint: string, body?: unknown) {
     setSavingPlan(true);
 
     try {
-      const { error } =
-        await supabase
-          .from("company_profiles")
-          .update({ plan: name })
-          .eq("id", companyId);
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body ?? {}),
+      });
 
-      if (error) {
-        console.error(
-          "BaseLead plan update error:",
-          error
-        );
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.url) {
         onToast(
-          t(
-            "Your plan could not be updated. Please try again."
-          )
+          t(result.error || "Your plan could not be updated. Please try again.")
         );
         return;
       }
 
-      await refreshPlan();
-
-      onToast(
-        `${name} ${t(
-          "plan selected. Your plan selection has been saved."
-        )}`
-      );
+      window.location.href = result.url;
     } catch (error) {
-      console.error(
-        "BaseLead plan selection error:",
-        error
-      );
+      console.error("Billing error:", error);
+      onToast(t("Your plan could not be updated. Please try again."));
+    } finally {
+      setSavingPlan(false);
+    }
+  }
+
+  // Opens Stripe Checkout for the selected plan and billing cycle.
+  async function choosePlan(name: string) {
+    if (!companyId) {
       onToast(
-        t(
-          "Your plan could not be updated. Please try again."
-        )
+        t("Your workspace could not be found. Please refresh and try again.")
       );
+      return;
+    }
+
+    await goToStripe("/api/billing/checkout", { plan: name, cycle });
+  }
+
+  // Development only: switch plans without paying to test each level.
+  async function switchTestPlan(name: string | "trial") {
+    setSavingPlan(true);
+
+    try {
+      const response = await fetch("/api/billing/test-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          name === "trial" ? { trial: true } : { plan: name }
+        ),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        onToast(result.error || "Test plan could not be applied.");
+        return;
+      }
+
+      await refreshPlan();
+      onToast(`Test mode: ${name === "trial" ? "Free trial" : name} applied.`);
     } finally {
       setSavingPlan(false);
     }
@@ -4247,15 +4325,7 @@ const displayedLeadUsage = isTrial
   ? trialLeadLimit - trialLeadsRemaining
   : leadUsage;
 
-const teamLimit =
-  activePlan.team === "Unlimited"
-    ? null
-    : Number(
-        String(activePlan.team).replace(
-          /,/g,
-          ""
-        )
-      ) || 0;
+const teamLimit = getTeamLimit(currentPlan);
 
 const leadPercent =
   displayedLeadLimit > 0
@@ -4349,6 +4419,37 @@ const teamPercent =
     </div>
   </div>
 )}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            {!isTrial && (
+              <button
+                type="button"
+                disabled={savingPlan}
+                onClick={() => void goToStripe("/api/billing/portal")}
+                className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-[#101010] px-4 py-2.5 text-[13px] font-medium text-gray-200 transition hover:border-white/20 hover:bg-[#171717] disabled:opacity-60"
+              >
+                <CreditCard size={14} />
+                {t("Manage billing, invoices & cancellation")}
+              </button>
+            )}
+
+            {process.env.NODE_ENV !== "production" && (
+              <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-dashed border-amber-400/30 bg-amber-400/[0.05] px-3 py-2 text-[11px] text-amber-200">
+                <span className="mr-1 font-semibold">Test mode (no charge):</span>
+                {(["trial", "Starter", "Pro", "Scale"] as const).map((name) => (
+                  <button
+                    key={name}
+                    type="button"
+                    disabled={savingPlan}
+                    onClick={() => void switchTestPlan(name)}
+                    className="rounded-md border border-amber-400/30 px-2 py-1 font-medium hover:bg-amber-400/10 disabled:opacity-50"
+                  >
+                    {name === "trial" ? "Trial" : name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             <div className="rounded-xl border border-white/10 bg-[#101010] p-4 transition hover:border-[#2A2A2A] hover:bg-[#171717]">
               <div className="flex items-center justify-between gap-3">
@@ -4496,6 +4597,8 @@ const teamPercent =
             plan.monthly * 12 - plan.yearly;
 
           const isCurrent =
+            !isTrial &&
+            !trialExpired &&
             currentPlan === plan.name;
 
           const planAccent =
@@ -5358,7 +5461,11 @@ function ApiTab({
   async function toggleApi(
     value: boolean
   ) {
-    
+    if (value && !can("api_access")) {
+      onToast(t("API access is available on the Scale plan."));
+      return;
+    }
+
     setApiEnabled(value);
 
     const {
@@ -5567,18 +5674,90 @@ function ApiTab({
     );
   }
 
-  async function copyApiKey() {
-    const key =
-      "BaseLead API keys will be generated securely.";
+  const [apiKeyPrefix, setApiKeyPrefix] =
+    useState<string | null>(null);
+  const [newApiKey, setNewApiKey] =
+    useState<string | null>(null);
+  const [apiUsage, setApiUsage] = useState<{
+    used: number;
+    limit: number | null;
+  } | null>(null);
+  const [generatingKey, setGeneratingKey] =
+    useState(false);
 
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(
-        key
-      );
+  useEffect(() => {
+    fetch("/api/settings/api-key")
+      .then((response) => response.json())
+      .then((result) => {
+        setApiKeyPrefix(result.key?.prefix ?? null);
+        setApiUsage({
+          used: result.key?.requests_this_month ?? 0,
+          limit: result.monthlyLimit ?? null,
+        });
+      })
+      .catch(() => undefined);
+  }, []);
+
+  async function generateKey() {
+    if (!can("api_access")) {
+      onToast(t("API access is available on the Scale plan."));
+      return;
     }
 
+    if (
+      apiKeyPrefix &&
+      !window.confirm(
+        t("Creating a new key will stop the current key from working. Continue?")
+      )
+    ) {
+      return;
+    }
+
+    setGeneratingKey(true);
+
+    try {
+      const response = await fetch("/api/settings/api-key", {
+        method: "POST",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        onToast(result.error || t("Could not create the API key."));
+        return;
+      }
+
+      setNewApiKey(result.key);
+      setApiKeyPrefix(result.prefix);
+      onToast(t("New API key created. Copy it now — it won't be shown again."));
+    } finally {
+      setGeneratingKey(false);
+    }
+  }
+
+  async function copyApiKey() {
+    if (!newApiKey) {
+      onToast(t("For security, keys are only shown once. Create a new key to copy it."));
+      return;
+    }
+
+    await navigator.clipboard?.writeText(newApiKey);
+    onToast(t("API key copied."));
+  }
+
+  async function testWebhook(webhook: Webhook) {
+    onToast(t("Sending test event..."));
+
+    const response = await fetch("/api/webhooks/test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: webhook.id }),
+    });
+    const result = await response.json().catch(() => ({}));
+
     onToast(
-      t("API key information copied.")
+      result.success
+        ? `${t("Test delivered")} (HTTP ${result.status}).`
+        : `${t("Test failed")}: ${result.error || `HTTP ${result.status}`}`
     );
   }
 
@@ -5613,7 +5792,7 @@ function ApiTab({
                 "Enable API access"
               )}
               description={t(
-                "API access will be connected to your plan."
+                "Allow your own tools to read your leads with an API key."
               )}
             >
               <Toggle
@@ -5630,21 +5809,44 @@ function ApiTab({
 
             <div className="mt-2 flex items-center justify-between gap-3">
               <code className="truncate text-[14px] text-gray-400">
-                bl_live_••••••••••••••••
+                {newApiKey
+                  ? newApiKey
+                  : apiKeyPrefix
+                  ? `${apiKeyPrefix}••••••••••••`
+                  : t("No API key yet")}
               </code>
 
-              <OutlineButton
-                onClick={copyApiKey}
-              >
-                <Copy size={12} />
-                {t("Copy")}
-              </OutlineButton>
+              <div className="flex shrink-0 items-center gap-2">
+                {newApiKey && (
+                  <OutlineButton onClick={copyApiKey}>
+                    <Copy size={12} />
+                    {t("Copy")}
+                  </OutlineButton>
+                )}
+
+                <OutlineButton onClick={generateKey}>
+                  <KeyRound size={12} />
+                  {generatingKey
+                    ? t("Creating...")
+                    : apiKeyPrefix
+                    ? t("Regenerate")
+                    : t("Create key")}
+                </OutlineButton>
+              </div>
             </div>
 
-            <p className="mt-3 text-[14px] leading-4 text-gray-700">
-              {t(
-                "Secure API key generation will be connected before API production launch."
-              )}
+            <p className="mt-3 text-[13px] leading-5 text-gray-600">
+              {can("api_access")
+                ? `${t("Use it as")} "Authorization: Bearer <key>" ${t("with")} GET /api/v1/leads. ${
+                    apiUsage
+                      ? `${apiUsage.used.toLocaleString()} / ${
+                          apiUsage.limit === null
+                            ? t("Unlimited")
+                            : apiUsage.limit.toLocaleString()
+                        } ${t("requests this month")}.`
+                      : ""
+                  }`
+                : t("API access is available on the Scale plan.")}
             </p>
           </div>
         </Card>
@@ -5658,7 +5860,7 @@ function ApiTab({
 
               <p className="mt-1 text-[14px] text-gray-600">
                 {t(
-                  "Save webhook endpoints for future BaseLead event delivery."
+                  "BaseLead sends a POST request to your URL when the event happens."
                 )}
               </p>
             </div>
@@ -5729,6 +5931,18 @@ function ApiTab({
                             : t(
                                 "Disabled"
                               )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            void testWebhook(
+                              webhook
+                            )
+                          }
+                          className="rounded-md bg-white/5 px-2 py-1 text-[11px] text-gray-400 hover:bg-white/10 hover:text-white"
+                        >
+                          {t("Test")}
                         </button>
 
                         <button

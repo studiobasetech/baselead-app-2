@@ -45,6 +45,18 @@ export default function TrialUpgradeModal() {
   trialLeadsRemaining,
 ]);
 
+  // Close with the Escape key.
+  useEffect(() => {
+    if (!open) return;
+
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") closeModal();
+    }
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   function closeModal() {
     window.sessionStorage.setItem(
       "baselead_trial_popup_seen",
@@ -94,7 +106,15 @@ export default function TrialUpgradeModal() {
 
   if (trialExpired) {
     return (
-      <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md">
+      <div
+        className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md"
+        role="dialog"
+        aria-modal="true"
+        onClick={(event) => {
+          // Clicking the dark background closes the modal.
+          if (event.target === event.currentTarget) closeModal();
+        }}
+      >
         <div className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-violet-400/30 bg-[#111111] p-7 shadow-[0_25px_100px_rgba(124,58,237,0.3)]">
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
@@ -151,7 +171,15 @@ export default function TrialUpgradeModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md">
+    <div
+        className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md"
+        role="dialog"
+        aria-modal="true"
+        onClick={(event) => {
+          // Clicking the dark background closes the modal.
+          if (event.target === event.currentTarget) closeModal();
+        }}
+      >
       <div className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-violet-400/30 bg-[#111111] p-7 shadow-[0_25px_100px_rgba(124,58,237,0.3)]">
         <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />

@@ -8,16 +8,11 @@ import {
   type ReactNode,
 } from "react";
 import {
-  Bell,
-  CalendarDays,
   Download,
   ExternalLink,
   Filter,
-  LayoutDashboard,
-  MapPin,
   Plus,
   Search,
-  SlidersHorizontal,
   Sparkles,
   Target,
   Users,
@@ -2751,41 +2746,6 @@ export default function PipelinePage() {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white transition-colors duration-200">
-      <div className="flex items-center justify-end gap-3 px-4 pt-5 sm:px-6 lg:px-7">
-        <button
-          type="button"
-          className="hidden items-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 py-2.5 text-xs text-gray-300 shadow-[0_7px_20px_rgba(0,0,0,0.18)] transition-all hover:-translate-y-0.5 hover:border-[#F5C518]/45 hover:bg-[#101010] hover:shadow-[0_12px_26px_rgba(0,0,0,0.28),0_0_18px_rgba(245,197,24,0.06)] sm:flex"
-        >
-          <MapPin
-            size={15}
-            className="text-[#F5C518]"
-          />
-          Pipeline
-        </button>
-
-        <button
-          type="button"
-          className="hidden items-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 py-2.5 text-xs text-gray-300 shadow-[0_7px_20px_rgba(0,0,0,0.18)] transition-all hover:-translate-y-0.5 hover:border-[#60A5FA]/45 hover:bg-[#101010] hover:shadow-[0_12px_26px_rgba(0,0,0,0.28),0_0_18px_rgba(96,165,250,0.06)] md:flex"
-        >
-          <CalendarDays
-            size={15}
-            className="text-[#60A5FA]"
-          />
-          All time
-        </button>
-
-        <button
-          type="button"
-          className="relative rounded-xl border border-[#202020] bg-[#0D0D0D] p-2.5 text-gray-300 shadow-[0_7px_20px_rgba(0,0,0,0.18)] transition-all hover:-translate-y-0.5 hover:border-[#F0475C]/45 hover:bg-[#101010] hover:text-white hover:shadow-[0_12px_26px_rgba(0,0,0,0.28),0_0_18px_rgba(240,71,92,0.06)]"
-          aria-label="Notifications"
-        >
-          <Bell
-            size={17}
-            className="text-[#F0475C]"
-          />
-        </button>
-      </div>
-
       <div className="px-4 pb-24 pt-5 sm:px-6 lg:px-7 lg:pb-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>

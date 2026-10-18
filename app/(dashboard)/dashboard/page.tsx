@@ -807,9 +807,7 @@ export default function DashboardPage() {
     );
 
   const [companyName, setCompanyName] =
-    useState(
-      "your company",
-    );
+    useState("");
 
   const [
     companyLocations,
@@ -962,9 +960,7 @@ export default function DashboardPage() {
         );
 
         setLeads([]);
-        setCompanyName(
-          "your company",
-        );
+        setCompanyName("");
         setCompanyLocations(
           [],
         );
@@ -1008,9 +1004,7 @@ export default function DashboardPage() {
           companyProfile.company_name.trim(),
         );
       } else {
-        setCompanyName(
-          "your company",
-        );
+        setCompanyName("");
       }
 
       /*
@@ -2409,16 +2403,18 @@ export default function DashboardPage() {
             {/* DYNAMIC COMPANY GREETING */}
 
             <h1 className="text-3xl font-bold leading-[1.05] tracking-[-0.04em] sm:text-4xl lg:text-[46px]">
-              Welcome back,
+              {companyName ? "Welcome back," : "Welcome back"}
 
-              <span
-                style={{
-                  color: GOLD,
-                }}
-              >
-                {" "}
-                {companyName}
-              </span>
+              {companyName && (
+                <span
+                  style={{
+                    color: GOLD,
+                  }}
+                >
+                  {" "}
+                  {companyName}
+                </span>
+              )}
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[#777] sm:text-[15px]">

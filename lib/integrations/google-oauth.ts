@@ -87,7 +87,10 @@ export function randomOAuthState() {
 }
 
 function encryptionKey() {
-  const raw = requiredEnv("INTEGRATION_TOKEN_ENCRYPTION_KEY");
+  // Accept either name (.env.local uses INTEGRATION_ENCRYPTION_KEY).
+  const raw =
+    process.env.INTEGRATION_TOKEN_ENCRYPTION_KEY ||
+    requiredEnv("INTEGRATION_ENCRYPTION_KEY");
   const key = /^[a-f\d]{64}$/i.test(raw)
     ? Buffer.from(raw, "hex")
     : Buffer.from(raw, "base64");
