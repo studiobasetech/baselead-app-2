@@ -9,6 +9,7 @@ const PUBLIC_PATHS = [
   "/reset-password",
   "/auth",
   "/book",
+  "/p",
 ];
 
 // Pages that only make sense when logged OUT.
