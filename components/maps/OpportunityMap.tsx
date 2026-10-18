@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/components/lib/supabase";
 
 /*
- * Real interactive map (Leaflet + CARTO dark tiles, no API key).
+ * Real interactive map (Leaflet + Esri dark tiles, no API key).
  * Each lead is pinned at its real coordinates. Leads without
  * coordinates are geocoded once (OpenStreetMap) and saved.
  */
@@ -165,14 +165,20 @@ export default function OpportunityMap({
           minZoom: 2,
         }).setView([25, -40], 2);
 
+        // Esri "Dark Gray Canvas": free with attribution, no API key.
         L.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+          "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
           {
-            subdomains: "abcd",
-            maxZoom: 19,
+            maxZoom: 16,
             attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+              'Tiles &copy; <a href="https://www.esri.com/">Esri</a> &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors',
           }
+        ).addTo(map);
+
+        // Street and city names on top.
+        L.tileLayer(
+          "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+          { maxZoom: 16, pane: "overlayPane" }
         ).addTo(map);
 
         L.control.zoom({ position: "bottomright" }).addTo(map);
@@ -332,9 +338,9 @@ export default function OpportunityMap({
     const bounds = points.map(({ point }) => [point.lat, point.lng] as [number, number]);
 
     if (bounds.length === 1) {
-      map.flyTo(bounds[0], 13, { duration: 0.8 });
+      map.flyTo(bounds[0], 14, { duration: 0.8 });
     } else if (bounds.length > 1) {
-      map.fitBounds(bounds, { padding: [70, 70], maxZoom: 14, animate: true });
+      map.fitBounds(bounds, { padding: [70, 70], maxZoom: 15, animate: true });
     }
   }, [points, ready, focusLocation]);
 
