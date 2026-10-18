@@ -9,6 +9,9 @@ const PUBLIC_PATHS = [
   "/reset-password",
   "/auth",
   "/book",
+  "/today", // TEMP-PREVIEW
+  "/dashboard", // TEMP-PREVIEW
+  "/pipeline", // TEMP-PREVIEW
 ];
 
 // Pages that only make sense when logged OUT.

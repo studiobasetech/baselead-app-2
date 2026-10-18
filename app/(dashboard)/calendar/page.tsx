@@ -327,10 +327,10 @@ function getPalette(
 
   return {
     page: "#050505",
-    hero: "#0A0A0A",
-    panel: "#0D0D0D",
-    elevated: "#101010",
-    inner: "#171717",
+    hero: "rgba(10, 10, 12, 0.55)",
+    panel: "rgba(13, 13, 15, 0.55)",
+    elevated: "rgba(18, 18, 20, 0.6)",
+    inner: "rgba(28, 28, 30, 0.6)",
     border: "#202020",
     borderLight: "#2A2A2A",
     grid: "rgba(255,255,255,0.045)",
@@ -341,7 +341,7 @@ function getPalette(
     muted: "#777777",
     mutedDark: "#666666",
     progress: "#191919",
-    hover: "#171717",
+    hover: "rgba(30, 30, 32, 0.65)",
     shadow:
       "0 10px 30px rgba(0,0,0,0.22)",
     hoverShadow:

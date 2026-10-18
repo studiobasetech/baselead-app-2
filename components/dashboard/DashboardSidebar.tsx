@@ -463,7 +463,12 @@ export default function DashboardSidebar() {
                   }`}
                   style={
                     active
-                      ? { backgroundColor: "#1F1F1F", color: "white" }
+                      ? {
+                          backgroundColor: "rgba(255, 255, 255, 0.07)",
+                          color: "white",
+                          boxShadow:
+                            "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 24px -12px rgba(0,0,0,0.8)",
+                        }
                       : { color: MUTED }
                   }
                 >
@@ -656,15 +661,15 @@ export default function DashboardSidebar() {
     <>
       {/* DESKTOP SIDEBAR */}
       <aside
-        className="baselead-sidebar sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r lg:flex"
-        style={{ borderColor: BORDER, backgroundColor: "#0A0A0A" }}
+        className="baselead-sidebar sticky top-0 z-30 hidden h-screen w-60 shrink-0 flex-col border-r backdrop-blur-2xl lg:flex"
+        style={{ borderColor: BORDER, backgroundColor: "rgba(8, 8, 10, 0.62)" }}
       >
         {panel}
       </aside>
 
       {/* MOBILE TOP BAR */}
       <header
-        className="baselead-mobile-topbar fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b bg-[#0A0A0A]/95 px-4 backdrop-blur lg:hidden"
+        className="baselead-mobile-topbar fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b bg-black/55 px-4 backdrop-blur-2xl lg:hidden"
         style={{ borderColor: BORDER }}
       >
         <button
@@ -707,8 +712,8 @@ export default function DashboardSidebar() {
           />
           <aside
             onClick={closeOnLinkClick}
-            className="baselead-sidebar relative flex h-full w-[86%] max-w-[300px] flex-col border-r shadow-2xl"
-            style={{ borderColor: BORDER, backgroundColor: "#0A0A0A" }}
+            className="baselead-sidebar relative flex h-full w-[86%] max-w-[300px] flex-col border-r shadow-2xl backdrop-blur-2xl"
+            style={{ borderColor: BORDER, backgroundColor: "rgba(8, 8, 10, 0.82)" }}
           >
             {panel}
           </aside>
@@ -717,7 +722,7 @@ export default function DashboardSidebar() {
 
       {/* MOBILE BOTTOM NAV */}
       <nav
-        className="baselead-mobile-bottombar fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch justify-around border-t bg-[#050505]/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+        className="baselead-mobile-bottombar fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch justify-around border-t bg-black/55 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
         style={{ borderColor: BORDER }}
       >
         {MOBILE_NAV.map(({ icon: Icon, label, href }) => {

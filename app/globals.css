@@ -1132,29 +1132,7 @@ h3 {
 }
 
 /* Ambient light behind every page (keeps the #050505 base) */
-html:not(.baselead-light) main[class*="bg-[#050505]"],
-html:not(.baselead-light) .baselead-main {
-  background-image:
-    radial-gradient(1100px 520px at 88% -8%, rgba(167, 139, 250, 0.075), transparent 62%),
-    radial-gradient(900px 480px at 8% -4%, rgba(245, 197, 24, 0.05), transparent 60%),
-    radial-gradient(900px 640px at 50% 118%, rgba(96, 165, 250, 0.045), transparent 60%);
-  background-attachment: fixed;
-}
 
-/* Soft glass sheen on panels (background-image only, so the
-   existing colors, borders, shadows and hovers are untouched) */
-html:not(.baselead-light) [class*="bg-[#0D0D0D]"],
-html:not(.baselead-light) [class*="bg-[#0A0A0A]"],
-html:not(.baselead-light) [class*="bg-[#090909]"],
-html:not(.baselead-light) [class*="bg-[#0B0B0D]"],
-html:not(.baselead-light) .bl-card {
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.028) 0%,
-    rgba(255, 255, 255, 0.008) 32%,
-    rgba(255, 255, 255, 0) 60%
-  );
-}
 
 /* Film grain for a richer, less flat black */
 html:not(.baselead-light) body::after {
@@ -1268,5 +1246,172 @@ body {
   html,
   body {
     overscroll-behavior-y: none;
+  }
+}
+
+
+/* =========================================================
+   GLASS LAYER — black, semi-transparent "glass" panels with
+   depth. Generated from the app's own color classes.
+   Brand colors, borders and colored hovers are untouched;
+   hover backgrounds become glass too.
+========================================================= */
+
+/* Page: pure black with soft studio lighting behind the glass */
+html:not(.baselead-light) main[class*="bg-[#050505]"],
+html:not(.baselead-light) .baselead-main {
+  background-image:
+    radial-gradient(1000px 560px at 92% -6%, rgba(167, 139, 250, 0.2), transparent 60%),
+    radial-gradient(820px 520px at 4% -2%, rgba(245, 197, 24, 0.1), transparent 58%),
+    radial-gradient(1000px 700px at 55% 112%, rgba(96, 165, 250, 0.12), transparent 60%),
+    radial-gradient(700px 500px at 75% 55%, rgba(34, 211, 238, 0.045), transparent 70%),
+    radial-gradient(600px 420px at 22% 60%, rgba(167, 139, 250, 0.06), transparent 70%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%);
+  background-attachment: fixed;
+}
+
+/* Translucent backgrounds */
+html:not(.baselead-light) .bg-\[\#060606\] { background-color: rgba(6,6,6,0.42); }
+html:not(.baselead-light) .bg-\[\#070707\] { background-color: rgba(7,7,7,0.42); }
+html:not(.baselead-light) .bg-\[\#07101C\] { background-color: rgba(7,16,28,0.5); }
+html:not(.baselead-light) .bg-\[\#080808\] { background-color: rgba(8,8,8,0.42); }
+html:not(.baselead-light) .bg-\[\#090909\] { background-color: rgba(9,9,9,0.42); }
+html:not(.baselead-light) .bg-\[\#0A0A0A\] { background-color: rgba(10,10,10,0.42); }
+html:not(.baselead-light) .bg-\[\#0B0B0D\] { background-color: rgba(11,11,13,0.42); }
+html:not(.baselead-light) .bg-\[\#0B0B0F\] { background-color: rgba(11,11,15,0.42); }
+html:not(.baselead-light) .bg-\[\#0B1524\] { background-color: rgba(11,21,36,0.5); }
+html:not(.baselead-light) .bg-\[\#0D0D0D\] { background-color: rgba(13,13,13,0.42); }
+html:not(.baselead-light) .bg-\[\#0a0a0a\] { background-color: rgba(10,10,10,0.42); }
+html:not(.baselead-light) .bg-\[\#0b0b08\] { background-color: rgba(11,11,8,0.42); }
+html:not(.baselead-light) .bg-\[\#101010\] { background-color: rgba(16,16,16,0.42); }
+html:not(.baselead-light) .bg-\[\#10243A\] { background-color: rgba(16,36,58,0.5); }
+html:not(.baselead-light) .bg-\[\#102A31\] { background-color: rgba(16,42,49,0.5); }
+html:not(.baselead-light) .bg-\[\#111111\] { background-color: rgba(17,17,17,0.42); }
+html:not(.baselead-light) .bg-\[\#123a1e\] { background-color: rgba(18,58,30,0.5); }
+html:not(.baselead-light) .bg-\[\#123b2c\] { background-color: rgba(18,59,44,0.5); }
+html:not(.baselead-light) .bg-\[\#171717\] { background-color: rgba(23,23,23,0.42); }
+html:not(.baselead-light) .bg-\[\#18200B\] { background-color: rgba(24,32,11,0.5); }
+html:not(.baselead-light) .bg-\[\#191919\] { background-color: rgba(25,25,25,0.42); }
+html:not(.baselead-light) .bg-\[\#19461f\] { background-color: rgba(25,70,31,0.5); }
+html:not(.baselead-light) .bg-\[\#1B1B1B\] { background-color: rgba(27,27,27,0.42); }
+html:not(.baselead-light) .bg-\[\#202020\] { background-color: rgba(32,32,32,0.42); }
+html:not(.baselead-light) .bg-\[\#241A38\] { background-color: rgba(36,26,56,0.5); }
+html:not(.baselead-light) .bg-\[\#2A2A2A\] { background-color: rgba(42,42,42,0.42); }
+html:not(.baselead-light) .bg-\[\#332A0C\] { background-color: rgba(51,42,12,0.5); }
+html:not(.baselead-light) .bg-\[\#3A1418\] { background-color: rgba(58,20,24,0.5); }
+
+/* Glass hovers (keep the color, add transparency) */
+html:not(.baselead-light) .focus\:bg-\[\#101010\]:focus { background-color: rgba(16,16,16,0.7); }
+html:not(.baselead-light) .focus\:bg-\[\#171717\]:focus { background-color: rgba(23,23,23,0.7); }
+html:not(.baselead-light) .group:hover .group-hover\:bg-\[\#171717\] { background-color: rgba(23,23,23,0.68); }
+html:not(.baselead-light) .group:hover .group-hover\:bg-\[\#191919\] { background-color: rgba(25,25,25,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#0D0D0D\]:hover { background-color: rgba(13,13,13,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#0a0a0a\]:hover { background-color: rgba(10,10,10,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#101010\]:hover { background-color: rgba(16,16,16,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#171717\]:hover { background-color: rgba(23,23,23,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#191919\]:hover { background-color: rgba(25,25,25,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#1B1B1B\]:hover { background-color: rgba(27,27,27,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#3A1418\]:hover { background-color: rgba(58,20,24,0.6); }
+
+/* Depth: glass edge light, inner sheen and layered shadows.
+   var(--tw-shadow) keeps every colored hover glow working. */
+:is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+):where([class*="rounded"]) {
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.015) 30%,
+      rgba(255, 255, 255, 0) 55%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.11),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 18px 50px -22px rgba(0, 0, 0, 0.95),
+    var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Frosted blur on large panels only. Skipped while a panel holds
+   an open dropdown/modal so menus are never trapped or clipped. */
+:is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+):where(.rounded-xl, .rounded-2xl, .rounded-3xl, [class*="rounded-[2rem]"], [class*="rounded-[28px]"]):not(:has(.fixed, [class*="z-"])) {
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+}
+
+/* Inline-styled panels (calendar & sidebar) get the same depth */
+html:not(.baselead-light) [style*="background-color: rgba(13, 13, 15, 0.55)"],
+html:not(.baselead-light) [style*="background-color: rgba(18, 18, 20, 0.6)"],
+html:not(.baselead-light) [style*="background-color: rgba(10, 10, 12, 0.55)"] {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 50%);
+}
+
+/* Text stays crisp on glass */
+html:not(.baselead-light) .baselead-main {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 1023px) {
+  /* Phones: lighter blur for smooth scrolling */
+  :is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+  ):where(.rounded-xl, .rounded-2xl, .rounded-3xl):not(:has(.fixed, [class*="z-"])) {
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
   }
 }
