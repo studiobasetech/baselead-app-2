@@ -1,0 +1,18 @@
+{
+  "appId": "com.studiobase.baselead",
+  "appName": "BaseLead",
+  "webDir": "public",
+  "server": {
+    "url": "https://app.YOUR-DOMAIN.com/today",
+    "cleartext": false,
+    "allowNavigation": ["app.YOUR-DOMAIN.com", "accounts.google.com", "checkout.stripe.com", "billing.stripe.com"]
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#050505",
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "android": {
+    "backgroundColor": "#050505"
+  }
+}

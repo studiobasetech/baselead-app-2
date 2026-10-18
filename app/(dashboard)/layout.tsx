@@ -11,7 +11,7 @@ export default function DashboardLayout({
       <DashboardSidebar />
 
       {/* On phones: room for the top bar (h-14) and bottom bar (h-16). */}
-      <main className="min-w-0 flex-1 pb-16 pt-14 lg:pb-0 lg:pt-0">
+      <main className="baselead-main min-w-0 flex-1 pb-16 pt-14 lg:pb-0 lg:pt-0">
         {children}
       </main>
 

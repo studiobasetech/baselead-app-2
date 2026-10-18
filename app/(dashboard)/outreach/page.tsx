@@ -3869,6 +3869,30 @@ ${senderName}`,
       });
     }
 
+    // Automatic pipeline for manual status changes.
+    const pipelineStage =
+      status === "Sent" || status === "Opened"
+        ? "contacted"
+        : status === "Replied"
+        ? "responded"
+        : status === "Interested"
+        ? "qualified"
+        : null;
+
+    if (pipelineStage && selectedOutreach.raw.lead_id) {
+      void fetch(
+        `/api/leads/${selectedOutreach.raw.lead_id}/advance`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: pipelineStage,
+            reason: `Outreach marked as ${status}.`,
+          }),
+        }
+      ).catch(() => undefined);
+    }
+
     setSaving(true);
 
     try {

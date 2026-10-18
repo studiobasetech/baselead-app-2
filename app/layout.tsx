@@ -1,19 +1,48 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
 import { PreferencesProvider } from "@/components/preferences/PreferencesProvider";
 import { PlanProvider } from "@/components/plans/PlanProvider";
 
-export const metadata: Metadata = {
-  title: "BaseLead",
-  description: "AI-Powered Client Finder",
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
-  icons: {
-    icon: "/baselead-favicon.png",
-    shortcut: "/baselead-favicon.png",
-    apple: "/baselead-favicon.png",
+export const metadata: Metadata = {
+  title: {
+    default: "BaseLead",
+    template: "%s · BaseLead",
   },
+  description: "AI-Powered Client Finder",
+  applicationName: "BaseLead",
+  appleWebApp: {
+    capable: true,
+    title: "BaseLead",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/icons/favicon-32.png",
+    apple: "/icons/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#050505",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -22,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body className="bg-[#050505] text-white antialiased">
         <LanguageProvider>
           <PreferencesProvider>

@@ -13,6 +13,10 @@ Cada clave va en el archivo `.env.local` (ya tiene las líneas vacías esperando
 
 Esto crea el calendario real, las claves de API, protege el plan para que nadie pueda “regalarse” un plan pagado y conecta tus leads antiguos con tu empresa.
 
+### 1b. Automatización de ventas (obligatorio)
+Ejecuta también `supabase/migrations/20261019_sales_automation.sql` (después del anterior).
+Activa: tareas de “Hoy”, historial de cada lead, secuencias, link de reservas, asignación de leads al equipo y el pipeline automático.
+
 ## 2. Clave de servicio de Supabase (obligatorio)
 
 Supabase → **Project Settings → API Keys** → copia la **service_role / secret key**.
@@ -50,7 +54,8 @@ GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
 ```
 
-Luego en la app: **Integraciones → Gmail → Conectar**. Desde ahí “Send email now” envía de verdad.
+Luego en la app: **Integraciones → Gmail → Conectar** (si ya lo habías conectado, desconéctalo y vuelve a conectarlo: ahora pide permiso para leer respuestas y así detectar cuando un lead contesta).
+Conecta también **Google Calendar**: el link de reservas revisa tu disponibilidad real y crea la reunión con link de Google Meet. Desde ahí “Send email now” envía de verdad.
 
 > Para “Continuar con Google” en el login: Supabase → Authentication → Providers → Google (usa el mismo Client ID/Secret) y agrega `http://localhost:3000/auth/callback` en **Authentication → URL Configuration → Redirect URLs**.
 
@@ -91,9 +96,10 @@ Tarjeta de prueba de Stripe: `4242 4242 4242 4242`.
 
 **Mientras tanto**, en Configuración → Facturación hay una barra “Test mode (no charge)” (solo visible en desarrollo) para cambiar entre Trial / Starter / Pro / Scale y probar los límites.
 
-## 7. Envíos programados (Pro y Scale)
+## 7. Automatización (respuestas, secuencias y envíos programados)
 
-Al publicar en Vercel, `vercel.json` ya llama a `/api/outreach/run-scheduled` cada 15 minutos.
+Al publicar en Vercel, `vercel.json` llama a `/api/automation/run` cada 15 minutos: detecta respuestas en Gmail, mueve los leads en el pipeline, envía los seguimientos de las secuencias y los correos programados.
+Mientras pruebas en tu computadora, usa el botón **“Check replies & run follow-ups”** en la página **Today**.
 Agrega en Vercel la variable `CRON_SECRET` (ya generada en tu `.env.local`).
 Nota: el plan gratis de Vercel solo permite crons diarios; para cada 15 min necesitas Vercel Pro.
 
