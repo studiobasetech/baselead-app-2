@@ -4261,6 +4261,81 @@ function BillingPlan({
   }
 
   // Opens Stripe Checkout for the selected plan and billing cycle.
+  // ---- Discount codes ----
+  const [promoInput, setPromoInput] = useState("");
+  const [promoChecking, setPromoChecking] = useState(false);
+  const [promoError, setPromoError] = useState("");
+  const [promo, setPromo] = useState<{
+    code: string;
+    type: "free" | "stripe";
+    label: string;
+  } | null>(null);
+
+  async function applyPromo() {
+    const code = promoInput.trim();
+    if (!code) return;
+
+    setPromoChecking(true);
+    setPromoError("");
+
+    try {
+      const response = await fetch("/api/billing/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.valid) {
+        setPromo(null);
+        setPromoError(result.error || t("This discount code is not valid."));
+        return;
+      }
+
+      setPromo({ code: result.code, type: result.type, label: result.label });
+    } finally {
+      setPromoChecking(false);
+    }
+  }
+
+  function removePromo() {
+    setPromo(null);
+    setPromoInput("");
+    setPromoError("");
+  }
+
+  // Free-plan code: activates the chosen plan without payment.
+  async function activateFreePlan(name: string) {
+    if (!promo) return;
+
+    setSavingPlan(true);
+
+    try {
+      const response = await fetch("/api/billing/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: promo.code,
+          plan: name,
+          cycle,
+          apply: true,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        onToast(result.error || t("The code could not be applied."));
+        return;
+      }
+
+      await refreshPlan();
+      removePromo();
+      onToast(`${name} ${t("plan activated for free with your code.")}`);
+    } finally {
+      setSavingPlan(false);
+    }
+  }
+
   async function choosePlan(name: string) {
     if (!companyId) {
       onToast(
@@ -4269,7 +4344,16 @@ function BillingPlan({
       return;
     }
 
-    await goToStripe("/api/billing/checkout", { plan: name, cycle });
+    if (promo?.type === "free") {
+      await activateFreePlan(name);
+      return;
+    }
+
+    await goToStripe("/api/billing/checkout", {
+      plan: name,
+      cycle,
+      promoCode: promo?.type === "stripe" ? promo.code : undefined,
+    });
   }
 
   // Development only: switch plans without paying to test each level.
@@ -4584,6 +4668,75 @@ const teamPercent =
         </div>
       </div>
 
+      {/* DISCOUNT CODE */}
+      <div className="relative overflow-hidden rounded-2xl border border-[#60A5FA]/25 bg-[#0B1524] p-5 shadow-[0_10px_30px_rgba(59,130,246,0.08)]">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#60A5FA]/10 blur-3xl" />
+
+        <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#60A5FA]/15 text-[#60A5FA]">
+              <Sparkles size={18} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">
+                {t("Have a discount code?")}
+              </p>
+              <p className="mt-0.5 text-xs text-[#93B4DA]">
+                {promo
+                  ? `${promo.code} · ${t(promo.label)}`
+                  : t("Apply it before choosing your plan.")}
+              </p>
+            </div>
+          </div>
+
+          {promo ? (
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#60A5FA]/40 bg-[#60A5FA]/15 px-3 py-1.5 text-xs font-semibold text-[#93C5FD]">
+                <Check size={13} />
+                {t("Code applied")}
+              </span>
+              <button
+                type="button"
+                onClick={removePromo}
+                className="rounded-lg px-2 py-1.5 text-xs text-[#93B4DA] transition hover:text-white"
+              >
+                {t("Remove")}
+              </button>
+            </div>
+          ) : (
+            <div className="flex w-full gap-2 lg:w-auto">
+              <input
+                value={promoInput}
+                onChange={(event) => {
+                  setPromoInput(event.target.value.toUpperCase());
+                  setPromoError("");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") void applyPromo();
+                }}
+                placeholder={t("Enter code")}
+                autoCapitalize="characters"
+                autoCorrect="off"
+                spellCheck={false}
+                className="h-11 min-w-0 flex-1 rounded-xl border border-[#60A5FA]/25 bg-[#07101C] px-4 text-sm uppercase tracking-wider text-white outline-none transition placeholder:normal-case placeholder:tracking-normal placeholder:text-[#4F6B8E] focus:border-[#60A5FA]/60 lg:w-56"
+              />
+              <button
+                type="button"
+                disabled={promoChecking || !promoInput.trim()}
+                onClick={() => void applyPromo()}
+                className="h-11 shrink-0 rounded-xl bg-[#3B82F6] px-5 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.25)] transition hover:-translate-y-0.5 hover:bg-[#4F8FF7] disabled:opacity-50 disabled:hover:translate-y-0"
+              >
+                {promoChecking ? t("Checking...") : t("Apply")}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {promoError && (
+          <p className="relative mt-3 text-xs text-[#F0475C]">{promoError}</p>
+        )}
+      </div>
+
       <div className="grid gap-5 xl:grid-cols-3">
         {PLANS.map((plan) => {
           const price =
@@ -4781,6 +4934,8 @@ const teamPercent =
                   className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-[13px] font-semibold transition-all duration-200 ${
                     isCurrent
                       ? "cursor-default border border-white/10 bg-white/[0.03] text-gray-500"
+                      : promo?.type === "free"
+                      ? "bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.25)] hover:-translate-y-0.5 hover:bg-[#4F8FF7]"
                       : plan.popular
                       ? "bg-[#F5C518] text-black shadow-[0_6px_18px_rgba(245,197,24,0.12)] hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(245,197,24,0.2)]"
                       : "border border-white/10 bg-[#101010] text-gray-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-[#171717]"
@@ -4797,11 +4952,18 @@ const teamPercent =
                       {t("Saving...")}
                     </>
                   ) : (
-                    <>
-                      <CreditCard size={13} />
-                      {t("Choose")}{" "}
-                      {plan.name}
-                    </>
+                    promo?.type === "free" ? (
+                      <>
+                        <Sparkles size={13} />
+                        {t("Activate")} {plan.name} {t("free")}
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard size={13} />
+                        {t("Choose")}{" "}
+                        {plan.name}
+                      </>
+                    )
                   )}
                 </button>
               </div>

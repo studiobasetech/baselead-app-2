@@ -191,3 +191,10 @@ drop policy if exists "Workspace members access leads" on public.leads;
 create policy "Workspace members access leads" on public.leads
   for all using (company_id is not null and public.is_company_member(company_id))
   with check (company_id is not null and public.is_company_member(company_id));
+
+-- ---------------------------------------------------------
+-- Discount codes: remember which code activated the plan.
+-- (Protected like the other billing columns.)
+-- ---------------------------------------------------------
+alter table public.company_profiles
+  add column if not exists promo_code text;

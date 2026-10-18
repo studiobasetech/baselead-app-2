@@ -31,6 +31,18 @@ const LanguageContext =
 
 const TRANSLATIONS: Record<string, string> = {
   /* Added: billing, team, API, sidebar */
+  "Have a discount code?": "¿Tienes un código de descuento?",
+  "Apply it before choosing your plan.": "Aplícalo antes de elegir tu plan.",
+  "Code applied": "Código aplicado",
+  "Enter code": "Escribe el código",
+  "Checking...": "Verificando...",
+  "Apply": "Aplicar",
+  "This discount code is not valid.": "Este código de descuento no es válido.",
+  "The code could not be applied.": "No se pudo aplicar el código.",
+  "plan activated for free with your code.": "activado gratis con tu código.",
+  "Activate": "Activar",
+  "free": "gratis",
+  "100% off — any plan free": "100% de descuento — cualquier plan gratis",
   Today: "Hoy",
   Sequences: "Secuencias",
   "On": "Activada",

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getWorkspaceAccess } from "@/lib/workspace";
 import { isPlanName } from "@/lib/plans";
+import { findStripePromotion, isFreePlanCode } from "@/lib/discounts";
 import {
   appUrl,
   isStripeConfigured,
@@ -12,10 +13,18 @@ import {
 
 // Starts a Stripe Checkout for the chosen plan.
 export async function POST(request: Request) {
-  const { plan, cycle } = (await request.json().catch(() => ({}))) as {
+  const { plan, cycle, promoCode } = (await request.json().catch(() => ({}))) as {
     plan?: string;
     cycle?: BillingCycle;
+    promoCode?: string;
   };
+
+  if (promoCode && isFreePlanCode(promoCode)) {
+    return NextResponse.json(
+      { error: "Use “Activate free” to apply this code." },
+      { status: 400 }
+    );
+  }
 
   if (!isPlanName(plan)) {
     return NextResponse.json({ error: "Unknown plan." }, { status: 400 });
@@ -82,6 +91,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ url: portal.url });
     }
 
+    const promotion = promoCode ? await findStripePromotion(promoCode) : null;
+
+    if (promoCode && !promotion) {
+      return NextResponse.json(
+        { error: "This discount code is not valid." },
+        { status: 400 }
+      );
+    }
+
     const session = await stripeRequest<{ url: string }>(
       "POST",
       "checkout/sessions",
@@ -93,7 +111,10 @@ export async function POST(request: Request) {
           ? undefined
           : access.user.email,
         line_items: { 0: { price, quantity: 1 } },
-        allow_promotion_codes: "true",
+        // Either a code entered in BaseLead, or let Stripe ask for one.
+        ...(promotion
+          ? { discounts: { 0: { promotion_code: promotion.id } } }
+          : { allow_promotion_codes: "true" }),
         metadata: { company_id: access.company.id, plan },
         subscription_data: {
           metadata: { company_id: access.company.id, plan },
