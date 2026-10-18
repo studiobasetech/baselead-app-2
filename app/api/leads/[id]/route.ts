@@ -13,6 +13,12 @@ const EDITABLE = [
   "website",
   "industry",
   "location",
+  "assigned_to",
+  "deal_value",
+  "expected_close_date",
+  "contact_name",
+  "contact_title",
+  "lost_reason",
 ] as const;
 
 // Update a lead (e.g. move it in the pipeline).

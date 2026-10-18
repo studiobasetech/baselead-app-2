@@ -259,6 +259,8 @@ ${top
         company_id:
           options.companyId || null,
 
+        assigned_to: userId,
+
         name:
           lead.name || null,
 
@@ -384,13 +386,28 @@ ${top
   // 5. Save the leads.
   // ---------------------------------------------------------
 
-  const {
+  let {
     data: insertedLeads,
     error: leadsError,
   } = await supabase
     .from("leads")
     .insert(leadsToInsert)
     .select();
+
+  // Database not migrated yet: retry without the new column.
+  if (leadsError?.message?.includes("assigned_to")) {
+    const retry = await supabase
+      .from("leads")
+      .insert(
+        leadsToInsert.map(
+          ({ assigned_to: _ignored, ...rest }) => rest
+        )
+      )
+      .select();
+
+    insertedLeads = retry.data;
+    leadsError = retry.error;
+  }
 
   if (leadsError) {
     console.error(
