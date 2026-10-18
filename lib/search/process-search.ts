@@ -15,6 +15,8 @@ import { askAiJson, isAiConfigured } from "@/lib/ai";
 export type ProcessSearchOptions = {
   /** Pro+: AI recommendations (service, value, reasons). */
   recommendations: boolean;
+  /** Workspace the leads belong to (shared with the team). */
+  companyId?: string | null;
 };
 
 export async function processSearch(
@@ -255,6 +257,9 @@ ${top
     selectedLeads.map(
       (lead: PotentialLead) => ({
         user_id: userId,
+
+        company_id:
+          options.companyId || null,
 
         name:
           lead.name || null,

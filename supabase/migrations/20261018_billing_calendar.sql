@@ -143,3 +143,20 @@ create policy "Users manage their API keys"
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- ---------------------------------------------------------
+-- 5. Link older leads to their workspace so they appear in
+--    Outreach, Calendar and Reports for the whole team.
+-- ---------------------------------------------------------
+update public.leads l
+set company_id = c.id
+from public.company_profiles c
+where l.company_id is null
+  and c.user_id = l.user_id;
+
+-- ---------------------------------------------------------
+-- 6. Outreach: keep the Gmail message id after sending.
+-- ---------------------------------------------------------
+alter table public.outreach
+  add column if not exists gmail_message_id text,
+  add column if not exists send_error text;

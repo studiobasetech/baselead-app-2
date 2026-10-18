@@ -320,7 +320,7 @@ export async function POST(request: Request) {
         search.id,
         user.id,
         criteria,
-        { recommendations: canRecommend }
+        { recommendations: canRecommend, companyId: company.id }
       );
 
       // Notify the user's "lead.created" webhooks (Pro/Scale).

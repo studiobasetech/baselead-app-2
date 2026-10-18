@@ -1,0 +1,5 @@
+{
+  "crons": [
+    { "path": "/api/outreach/run-scheduled", "schedule": "*/15 * * * *" }
+  ]
+}
