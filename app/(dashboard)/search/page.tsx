@@ -1902,8 +1902,8 @@ export default function NewSearchPage() {
     }
 
     const requestedLeads = Math.min(
-      1000,
-      Math.max(1, Number(leads) || 50)
+      60,
+      Math.max(1, Number(leads) || 20)
     );
 
     setLeads(String(requestedLeads));
@@ -1973,7 +1973,9 @@ export default function NewSearchPage() {
       setSearchComplete(true);
 
       setSearchMessage(
-        `Search completed successfully with ${total} matching businesses.`
+        data.demo
+          ? `Demo mode: showing ${total} sample businesses. Add a Google Places API key to search real businesses.`
+          : `Search completed successfully with ${total} matching businesses.`
       );
 
       if (returnedLeads.length) {
@@ -2426,7 +2428,7 @@ export default function NewSearchPage() {
                     <label className="mb-2 flex items-center justify-between text-sm text-gray-400">
                       <span>How many leads do you want?</span>
                       <span className="text-xs text-gray-600">
-                        Up to 1,000
+                        Up to 60 per search
                       </span>
                     </label>
 
@@ -2438,7 +2440,7 @@ export default function NewSearchPage() {
                         }
                         type="number"
                         min="1"
-                        max="1000"
+                        max="60"
                         className="w-full rounded-2xl border border-white/10 bg-[#070707] px-4 py-4 pr-20 text-white outline-none focus:border-[#FFD000]/40"
                       />
 

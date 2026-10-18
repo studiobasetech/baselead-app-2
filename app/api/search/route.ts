@@ -8,6 +8,7 @@ import {
   TRIAL_LEAD_LIMIT,
 } from "@/lib/plans";
 import type { SearchCriteria } from "@/lib/search/types";
+import { dispatchWebhooks } from "@/lib/webhooks";
 
 export async function POST(request: Request) {
   try {
@@ -227,9 +228,10 @@ export async function POST(request: Request) {
       workspaceLeadCount
     );
 
+    // Google Places returns at most 60 businesses per search.
     const requestedLeads = Math.min(
-      1000,
-      Math.max(1, Number(leads) || 50)
+      60,
+      Math.max(1, Number(leads) || 20)
     );
 
     const remainingLeads = Math.max(
@@ -253,19 +255,29 @@ export async function POST(request: Request) {
       );
     }
 
+    // Plan rules for this search.
+    const effective = getPlan(isTrial ? "Starter" : paidPlan);
+    const canAdvanced = effective.features.includes(
+      "advanced_ai_lead_discovery"
+    );
+    const canRecommend = effective.features.includes(
+      "ai_recommendations"
+    );
+
     const criteria: SearchCriteria = {
       offer,
       idealClient,
       leads: requestedLeads,
       industry,
-      companySize,
-      revenue,
+      // Advanced targeting is a Pro/Scale feature.
+      companySize: canAdvanced ? companySize : undefined,
+      revenue: canAdvanced ? revenue : undefined,
       location,
       radius,
-      buyingIntent,
+      buyingIntent: canAdvanced ? buyingIntent : undefined,
       tags,
       scoring,
-      intent,
+      intent: canAdvanced ? intent : false,
       enrichment,
       excludeExisting,
     };
@@ -307,8 +319,22 @@ export async function POST(request: Request) {
         supabase,
         search.id,
         user.id,
-        criteria
+        criteria,
+        { recommendations: canRecommend }
       );
+
+      // Notify the user's "lead.created" webhooks (Pro/Scale).
+      if (
+        effective.features.includes("integrations_webhooks") &&
+        result.leads.length > 0
+      ) {
+        void dispatchWebhooks(
+          supabase,
+          user.id,
+          "lead.created",
+          result.leads
+        ).catch(() => undefined);
+      }
 
       const {
         data: completedSearch,
@@ -346,6 +372,7 @@ export async function POST(request: Request) {
         search: completedSearch,
         leads: result.leads,
         totalFound: result.totalFound,
+        demo: result.demo,
         criteria,
       });
     } catch (processingError) {

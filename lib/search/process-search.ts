@@ -4,24 +4,55 @@ import type {
   PotentialLead,
 } from "./types";
 import { getMockLeads } from "./mock-provider";
+import {
+  isPlacesConfigured,
+  searchGooglePlaces,
+} from "./google-places-provider";
+import { enrichWebsite, mapLimit } from "./enrich";
+import { scoreLead } from "./scoring";
+import { askAiJson, isAiConfigured } from "@/lib/ai";
+
+export type ProcessSearchOptions = {
+  /** Pro+: AI recommendations (service, value, reasons). */
+  recommendations: boolean;
+};
 
 export async function processSearch(
   supabase: SupabaseClient,
   searchId: string,
   userId: string,
-  criteria: SearchCriteria
+  criteria: SearchCriteria,
+  options: ProcessSearchOptions = { recommendations: false }
 ) {
   // ---------------------------------------------------------
-  // 1. Get leads from the current search provider.
+  // 1. Get leads from the search provider.
+  //    Real data: Google Places. Demo data is only used in
+  //    development when no Google key is configured.
   // ---------------------------------------------------------
 
-  const potentialLeads =
-    getMockLeads(criteria);
+  const demo = !isPlacesConfigured();
+
+  if (demo && process.env.NODE_ENV === "production") {
+    throw new Error(
+      "Lead search is not configured. Add GOOGLE_PLACES_API_KEY."
+    );
+  }
+
+  const potentialLeads = demo
+    ? getMockLeads(criteria)
+    : await searchGooglePlaces({
+        ...criteria,
+        // Fetch extra so duplicates can be skipped.
+        leads: criteria.excludeExisting
+          ? Math.min(60, (criteria.leads ?? 20) * 2)
+          : criteria.leads,
+      });
 
   if (potentialLeads.length === 0) {
     return {
       leads: [],
       totalFound: 0,
+      demo,
     };
   }
 
@@ -90,20 +121,10 @@ export async function processSearch(
     }
   }
 
-  /*
-   * If every test lead already exists, the old behavior
-   * returned zero results. That makes the development
-   * search appear broken after running it once.
-   *
-   * For the current test provider, we instead allow the
-   * current search to return its matching businesses.
-   *
-   * This keeps the UI usable while we are still using
-   * test business data. Once a real provider is connected,
-   * duplicate exclusion can be enforced normally using
-   * provider IDs.
-   */
+  // Demo data only: if every sample lead already exists,
+  // show them again so the demo search keeps working.
   if (
+    demo &&
     leadsToProcess.length === 0 &&
     potentialLeads.length > 0
   ) {
@@ -134,7 +155,96 @@ export async function processSearch(
     return {
       leads: [],
       totalFound: 0,
+      demo,
     };
+  }
+
+  // ---------------------------------------------------------
+  // 3b. Enrich (emails + social links from the website)
+  //     and score with real signals.
+  // ---------------------------------------------------------
+
+  if (!demo) {
+    if (criteria.enrichment !== false) {
+      await mapLimit(selectedLeads, 6, async (lead) => {
+        const found = await enrichWebsite(lead.website);
+
+        lead.email = found.emails[0] ?? lead.email;
+        lead.email_addresses = found.emails;
+        lead.instagram_url = found.instagram_url;
+        lead.facebook_url = found.facebook_url;
+        lead.linkedin_url = found.linkedin_url;
+        lead.x_url = found.x_url;
+        lead.tiktok_url = found.tiktok_url;
+        lead.pinterest_url = found.pinterest_url;
+        lead.raw_data = {
+          ...(lead.raw_data ?? {}),
+          website_reachable: lead.website ? found.reachable : null,
+          website_ssl: lead.website ? found.has_ssl : null,
+          enriched: true,
+        };
+      });
+    }
+
+    for (const lead of selectedLeads) {
+      if (criteria.scoring === false) continue;
+
+      const result = scoreLead(lead, criteria);
+
+      lead.ai_score = result.score;
+      lead.ai_opportunity = result.opportunity;
+      lead.ai_reason = result.reason;
+      lead.ai_recommendations = options.recommendations
+        ? {
+            recommended_service: criteria.offer,
+            estimated_project_value: result.estimatedValue,
+            reasons: result.reasons,
+            buying_intent: result.buyingIntent,
+            tags: criteria.tags || [],
+          }
+        : { reasons: result.reasons, buying_intent: result.buyingIntent };
+    }
+
+    // Pro+: personalised AI recommendations for the top leads.
+    if (options.recommendations && isAiConfigured() && criteria.scoring !== false) {
+      const top = [...selectedLeads]
+        .sort((a, b) => (b.ai_score ?? 0) - (a.ai_score ?? 0))
+        .slice(0, 15);
+
+      try {
+        const answer = await askAiJson<
+          { index: number; reason: string; service: string; value: string; reasons: string[] }[]
+        >(
+          `You help a business that sells "${criteria.offer}" to "${criteria.idealClient}".
+For each prospect below, write a one-sentence reason it is a good fit, the most relevant service to pitch, an estimated project value range in USD, and up to 3 short evidence-based reasons. Only use the facts given.
+Reply with JSON only: [{"index":0,"reason":"","service":"","value":"","reasons":[""]}]
+
+${top
+  .map(
+    (lead, index) =>
+      `${index}. ${lead.company} | ${lead.category ?? ""} | ${lead.location} | rating ${lead.rating ?? "n/a"} (${lead.review_count ?? 0} reviews) | website: ${lead.website ? "yes" : "no"} | socials: ${[lead.instagram_url, lead.facebook_url, lead.linkedin_url].filter(Boolean).length} | score ${lead.ai_score}`
+  )
+  .join("\n")}`,
+          { maxTokens: 2500 }
+        );
+
+        for (const item of answer) {
+          const lead = top[item.index];
+          if (!lead) continue;
+
+          lead.ai_reason = item.reason || lead.ai_reason;
+          lead.ai_recommendations = {
+            ...(lead.ai_recommendations ?? {}),
+            recommended_service: item.service || criteria.offer,
+            estimated_project_value:
+              item.value || lead.ai_recommendations?.estimated_project_value,
+            reasons: item.reasons?.length ? item.reasons : lead.ai_recommendations?.reasons,
+          };
+        }
+      } catch (error) {
+        console.error("AI recommendations skipped:", error);
+      }
+    }
   }
 
   // ---------------------------------------------------------
@@ -209,7 +319,7 @@ export async function processSearch(
           lead.longitude ?? null,
 
         source:
-          lead.source || "test",
+          lead.source || (demo ? "demo" : "search"),
 
         source_id:
           lead.source_id || null,
@@ -261,8 +371,8 @@ export async function processSearch(
 
         raw_data:
           lead.raw_data || {
-            provider: "mock",
-            test_data: true,
+            provider: demo ? "demo" : "unknown",
+            test_data: demo,
           },
       })
     );
@@ -297,6 +407,7 @@ export async function processSearch(
     return {
       leads: [],
       totalFound: 0,
+      demo,
     };
   }
 
@@ -338,5 +449,6 @@ export async function processSearch(
     leads: insertedLeads,
     totalFound:
       insertedLeads.length,
+    demo,
   };
 }
