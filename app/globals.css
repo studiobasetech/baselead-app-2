@@ -73,15 +73,18 @@ body {
     color 180ms ease;
 }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
+/* In a layer so Tailwind text-size classes on buttons still apply */
+@layer base {
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
 
-button {
-  cursor: pointer;
+  button {
+    cursor: pointer;
+  }
 }
 
 /* =========================================================
