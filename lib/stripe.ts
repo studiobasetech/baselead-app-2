@@ -64,9 +64,11 @@ function encode(params: Record<string, unknown>, prefix = ""): string[] {
 export async function stripeRequest<T = Record<string, unknown>>(
   method: "GET" | "POST",
   path: string,
-  params: Record<string, unknown> = {}
+  params: Record<string, unknown> = {},
+  /** Use another Stripe account (e.g. a workspace's own key). */
+  apiKey?: string
 ): Promise<T> {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = apiKey || process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY is not configured.");
 
   const body = encode(params).join("&");
