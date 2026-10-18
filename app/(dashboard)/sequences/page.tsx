@@ -188,6 +188,35 @@ export default function SequencesPage() {
     void load();
   }
 
+  async function findPeople() {
+    const ids = (picked.length ? picked : visibleLeads.map((lead) => lead.id)).slice(0, 25);
+    if (!ids.length) return;
+
+    setBusy(true);
+    showToast("Searching for decision makers…");
+
+    const response = await fetch("/api/contacts/bulk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ leadIds: ids }),
+    });
+    const result = await response.json();
+    setBusy(false);
+
+    if (!response.ok) {
+      showToast(result.error || "Search failed.");
+      return;
+    }
+
+    showToast(
+      `Searched ${result.searched} companies · decision makers found for ${result.withContacts}${
+        result.skipped ? ` · ${result.skipped} skipped (monthly limit)` : ""
+      }`
+    );
+
+    if (enrolling) void openEnroll(enrolling);
+  }
+
   const visibleLeads = useMemo(() => {
     const q = query.trim().toLowerCase();
     return leads.filter(
@@ -435,6 +464,15 @@ export default function SequencesPage() {
                 Select all with email
               </button>
             </div>
+
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void findPeople()}
+              className="mt-2 w-full rounded-xl border border-[#60A5FA]/30 bg-[#60A5FA]/[0.06] py-2.5 text-xs font-medium text-[#93C5FD] transition hover:bg-[#60A5FA]/15 disabled:opacity-50"
+            >
+              Find decision makers for {picked.length ? `${picked.length} selected` : "the first 25"} leads (emails the right person, not info@)
+            </button>
 
             <ul className="mt-3 flex-1 space-y-1.5 overflow-y-auto">
               {visibleLeads.map((lead) => {

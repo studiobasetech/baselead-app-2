@@ -140,3 +140,15 @@ Los límites se aplican también en el servidor: aunque alguien modifique la pá
 
 ## 9. Rendimiento del equipo
 **Team Performance** (Pro y Scale; dueño, Admin o Manager): correos, respuestas, reuniones, propuestas, ingresos ganados por vendedor, embudo y metas mensuales (el dueño las define haciendo clic en “Set goal”).
+
+## 10. Contactos de tomadores de decisión (Hunter.io)
+
+1. Crea una cuenta en https://hunter.io (el plan gratis da 25 búsquedas al mes; los planes pagos dan más).
+2. **API → API key** → cópiala en `.env.local`:
+```
+HUNTER_API_KEY=...
+```
+3. Reinicia `npm run dev`.
+
+Uso: en el panel de cualquier lead (Pipeline o Leads) → **Find decision makers**. BaseLead busca a las personas de esa empresa por su sitio web, las ordena por quién decide (dueño, fundador, director…), y pone al mejor como contacto principal (reemplaza correos genéricos como info@). También puedes buscar en grupo desde **Sequences → Add leads**.
+Límites mensuales por plan: Starter 50, Pro 500, Scale 2,000 búsquedas.

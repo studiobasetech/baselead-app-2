@@ -30,6 +30,7 @@ import {
 } from "react";
 
 import { recommendationReasons } from "@/lib/recommendations";
+import LeadDealPanel from "@/components/leads/LeadDealPanel";
 import { supabase } from "@/components/lib/supabase";
 import { usePreferences } from "@/components/preferences/PreferencesProvider";
 
@@ -1050,6 +1051,8 @@ function LeadDetailPanel({
             </span>
           </div>
         </div>
+
+        <LeadDealPanel leadId={lead.id} />
       </div>
     </aside>
   );

@@ -39,6 +39,8 @@ export type PlanDefinition = {
   apiRequestLimit: number | null;
   /** Active outreach campaigns allowed at the same time (null = unlimited). */
   campaignLimit: number | null;
+  /** Decision-maker lookups per month. */
+  contactLookupLimit: number;
   features: readonly PlanFeature[];
 };
 
@@ -55,6 +57,7 @@ export const PLAN_DEFINITIONS: Record<
     integrationLimit: 5,
     apiRequestLimit: 0,
     campaignLimit: 3,
+    contactLookupLimit: 50,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -74,6 +77,7 @@ export const PLAN_DEFINITIONS: Record<
     integrationLimit: null,
     apiRequestLimit: 0,
     campaignLimit: 25,
+    contactLookupLimit: 500,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -100,6 +104,7 @@ export const PLAN_DEFINITIONS: Record<
     integrationLimit: null,
     apiRequestLimit: 100000,
     campaignLimit: null,
+    contactLookupLimit: 2000,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",

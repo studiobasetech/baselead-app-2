@@ -14,6 +14,7 @@ import {
 
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
+import LeadContacts from "@/components/leads/LeadContacts";
 
 type Member = { user_id: string; label: string };
 
@@ -209,6 +210,8 @@ export default function LeadDealPanel({
 
   return (
     <div className="mt-6 space-y-4 border-t border-[#202020] pt-5">
+      <LeadContacts leadId={leadId} onChanged={onChanged} />
+
       <a
         href={`/proposals?lead=${leadId}`}
         className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#A78BFA]/30 bg-[#A78BFA]/[0.06] text-xs font-medium text-[#A78BFA] transition hover:bg-[#A78BFA]/15"
