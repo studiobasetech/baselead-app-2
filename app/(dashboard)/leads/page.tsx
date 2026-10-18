@@ -29,6 +29,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { recommendationReasons } from "@/lib/recommendations";
 import { supabase } from "@/components/lib/supabase";
 import { usePreferences } from "@/components/preferences/PreferencesProvider";
 
@@ -1691,16 +1692,9 @@ export default function LeadsPage() {
           ),
 
           reasons:
-            lead.ai_recommendations
-              ? String(
-                  lead.ai_recommendations
-                )
-                  .split(/\n|•|;/)
-                  .map((item: string) =>
-                    item.trim()
-                  )
-                  .filter(Boolean)
-              : [],
+            recommendationReasons(
+              lead.ai_recommendations
+            ),
 
           email: lead.email ?? "",
 

@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
+import { recommendedServices } from "@/lib/recommendations";
 
 /* =========================================================
    TYPES
@@ -932,12 +933,10 @@ function databaseLeadToLead(
     );
   }
 
-  const rawServices =
-    Array.isArray(
+  const rawServices: unknown[] =
+    recommendedServices(
       row.ai_recommendations,
-    )
-      ? row.ai_recommendations
-      : [];
+    );
 
   const services =
     rawServices

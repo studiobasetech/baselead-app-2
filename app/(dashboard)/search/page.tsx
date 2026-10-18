@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import PlanGate from "@/components/plans/PlanGate";
 import {
+  recommendationReasons,
+  recommendationValue,
+  recommendedServices,
+} from "@/lib/recommendations";
+import {
   ArrowRight,
   Check,
   ChevronDown,
@@ -70,7 +75,7 @@ type SearchResultLead = {
   intent_score?: number | null;
   ai_opportunity?: string | null;
   ai_reason?: string | null;
-  ai_recommendations?: string | null;
+  ai_recommendations?: unknown;
   raw_data?: unknown;
 };
 
@@ -295,14 +300,8 @@ function getWebsiteUrl(website: string) {
   return website.startsWith("http") ? website : `https://${website}`;
 }
 
-function parseRecommendations(value: string | null | undefined) {
-  return value
-    ? value
-        .split(/[,;\n|]+/)
-        .map((item) => item.trim())
-        .filter(Boolean)
-        .slice(0, 4)
-    : [];
+function parseRecommendations(value: unknown) {
+  return recommendedServices(value);
 }
 
 function getRawDataObject(
@@ -319,6 +318,14 @@ function findSocialUrl(
   lead: SearchResultLead,
   platform: "instagram" | "facebook"
 ) {
+  const topLevel = (lead as Record<string, unknown>)[
+    `${platform}_url`
+  ];
+
+  if (typeof topLevel === "string" && topLevel.trim()) {
+    return topLevel;
+  }
+
   const raw = getRawDataObject(lead.raw_data);
 
   if (!raw) return null;
@@ -355,6 +362,10 @@ function getRecommendedServices(lead: SearchResultLead) {
 }
 
 function getEstimatedValue(lead: SearchResultLead) {
+  const fromAi = recommendationValue(lead.ai_recommendations);
+
+  if (fromAi) return fromAi;
+
   const raw = getRawDataObject(lead.raw_data);
 
   if (!raw) return null;
@@ -376,6 +387,10 @@ function getEstimatedValue(lead: SearchResultLead) {
 }
 
 function getOpportunityReasons(lead: SearchResultLead) {
+  const aiReasons = recommendationReasons(lead.ai_recommendations);
+
+  if (aiReasons.length) return aiReasons;
+
   const raw = getRawDataObject(lead.raw_data);
 
   if (Array.isArray(raw?.opportunity_reasons)) {
