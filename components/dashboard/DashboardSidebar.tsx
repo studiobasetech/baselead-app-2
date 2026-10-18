@@ -19,6 +19,8 @@ import {
   CheckCircle2,
   Menu,
   MoreHorizontal,
+  Sun,
+  Workflow,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -34,11 +36,13 @@ const BORDER = "#262626";
 const MUTED = "#8C8C8C";
 
 const NAV = [
+  { icon: Sun, label: "Today", href: "/today" },
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Search, label: "Lead Discovery", href: "/lead-discovery" },
   { icon: Users, label: "Leads", href: "/leads" },
   { icon: GitBranch, label: "Pipeline", href: "/pipeline" },
   { icon: Send, label: "Outreach", href: "/outreach" },
+  { icon: Workflow, label: "Sequences", href: "/sequences" },
   { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
   { icon: BarChart3, label: "Reports", href: "/reports" },
   { icon: Plug, label: "Integrations", href: "/integrations" },
@@ -46,7 +50,9 @@ const NAV = [
 ];
 
 // The four most-used pages shown in the mobile bottom bar.
-const MOBILE_NAV = NAV.slice(0, 4);
+const MOBILE_NAV = ["/today", "/lead-discovery", "/pipeline", "/outreach"].map(
+  (href) => NAV.find((item) => item.href === href)!
+);
 
 type WorkspaceData = {
   companyName: string;

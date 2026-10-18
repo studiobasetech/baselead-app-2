@@ -34,6 +34,7 @@ import { useRouter } from "next/navigation";
 
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
+import LeadDealPanel from "@/components/leads/LeadDealPanel";
 import { emitEvent } from "@/lib/events-client";
 
 type PipelineStage =
@@ -1147,6 +1148,8 @@ function LeadDetailPanel({
           </button>
         </div>
       </div>
+
+      <LeadDealPanel leadId={lead.id} />
     </div>
   );
 }
@@ -1707,16 +1710,29 @@ export default function PipelinePage() {
       return;
     }
 
-    const {
+    // Leads I own or that were assigned to me.
+    let {
       data,
       error: leadsError,
     } = await supabase
       .from("leads")
       .select("*")
-      .eq("user_id", user.id)
+      .or(`user_id.eq.${user.id},assigned_to.eq.${user.id}`)
       .order("updated_at", {
         ascending: false,
       });
+
+    // Before the sales-automation migration there is no assigned_to.
+    if (leadsError?.message?.includes("assigned_to")) {
+      const fallback = await supabase
+        .from("leads")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false });
+
+      data = fallback.data;
+      leadsError = fallback.error;
+    }
 
     if (leadsError) {
       console.error(
@@ -1734,7 +1750,15 @@ export default function PipelinePage() {
 
     const mappedLeads: Lead[] = (
       (data ?? []) as DatabaseLead[]
-    ).map((lead) => {
+    )
+      // Lost and nurture deals are not on the active board.
+      .filter(
+        (lead) =>
+          !["lost", "nurture"].includes(
+            (lead.status ?? "").toLowerCase()
+          )
+      )
+      .map((lead) => {
       const social =
         extractSocialProfiles(
           lead.raw_data
@@ -2140,8 +2164,7 @@ export default function PipelinePage() {
           ],
         updated_at: now,
       })
-      .eq("id", id)
-      .eq("user_id", user.id);
+      .eq("id", id);
 
     setSavingLeadId(null);
 

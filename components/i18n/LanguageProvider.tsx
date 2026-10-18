@@ -31,6 +31,8 @@ const LanguageContext =
 
 const TRANSLATIONS: Record<string, string> = {
   /* Added: billing, team, API, sidebar */
+  Today: "Hoy",
+  Sequences: "Secuencias",
   "On": "Activada",
   "Your account asks for a code from your authenticator app when you sign in.": "Tu cuenta pide un código de tu app de autenticación al iniciar sesión.",
   "Protect your account with a 6-digit code from an authenticator app.": "Protege tu cuenta con un código de 6 dígitos de una app de autenticación.",

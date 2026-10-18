@@ -86,7 +86,7 @@ export async function proxy(request: NextRequest) {
     loginUrl.pathname = "/login";
     loginUrl.search = "";
 
-    if (pathname !== "/" && pathname !== "/dashboard") {
+    if (pathname !== "/" && pathname !== "/today") {
       loginUrl.searchParams.set("next", `${pathname}${search}`);
     }
 
@@ -106,7 +106,7 @@ export async function proxy(request: NextRequest) {
       target.pathname = "/accept-invitation";
       target.searchParams.set("token", invite);
     } else {
-      target.pathname = safeNext(params.get("next")) ?? "/dashboard";
+      target.pathname = safeNext(params.get("next")) ?? "/today";
     }
 
     return redirectWithCookies(target, response);
