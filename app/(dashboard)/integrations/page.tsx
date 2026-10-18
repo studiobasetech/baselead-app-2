@@ -1265,9 +1265,19 @@ export default function IntegrationsPage() {
     return;
   }
       if (integration.id === "google-maps") {
-      showToast(
-        "Google Maps connection setup will be available after the Maps API key is configured."
-      );
+      // Google Maps is the lead data source, configured on the server.
+      void fetch("/api/integrations/status")
+        .then((response) => response.json())
+        .then((status) =>
+          showToast(
+            status.googlePlaces
+              ? "Google Maps is active: lead searches use real Google business data."
+              : "Google Maps is not set up yet. Add GOOGLE_PLACES_API_KEY to the server settings."
+          )
+        )
+        .catch(() =>
+          showToast("Could not check the Google Maps status.")
+        );
 
       return;
     }

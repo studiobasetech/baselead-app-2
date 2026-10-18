@@ -45,13 +45,23 @@ export async function dispatchWebhooks(
   const hooks: { url: string }[] = [...(settingsHooks ?? [])];
   const meta = (integration?.metadata ?? {}) as {
     webhookUrl?: string;
-    events?: string[];
+    events?: Record<string, boolean>;
+  };
+
+  // Integrations page stores checkboxes with these keys.
+  const integrationKey: Record<WebhookEvent, string> = {
+    "lead.created": "leadCreated",
+    "lead.updated": "leadUpdated",
+    "lead.status_changed": "leadUpdated",
+    "outreach.created": "outreachReply",
+    "outreach.replied": "outreachReply",
+    "meeting.created": "meetingBooked",
   };
 
   if (
     integration?.status === "connected" &&
     meta.webhookUrl &&
-    (!meta.events?.length || meta.events.includes(event))
+    meta.events?.[integrationKey[event]] !== false
   ) {
     hooks.push({ url: meta.webhookUrl });
   }
