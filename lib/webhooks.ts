@@ -25,14 +25,38 @@ export async function dispatchWebhooks(
   event: WebhookEvent,
   data: unknown
 ) {
-  const { data: hooks } = await supabase
-    .from("webhooks")
-    .select("id, url")
-    .eq("user_id", userId)
-    .eq("event", event)
-    .eq("active", true);
+  const [{ data: settingsHooks }, { data: integration }] = await Promise.all([
+    // Settings → API & Webhooks
+    supabase
+      .from("webhooks")
+      .select("id, url")
+      .eq("user_id", userId)
+      .eq("event", event)
+      .eq("active", true),
+    // Integrations → Webhooks
+    supabase
+      .from("connected_integrations")
+      .select("metadata, status")
+      .eq("user_id", userId)
+      .eq("provider", "webhook")
+      .maybeSingle(),
+  ]);
 
-  if (!hooks?.length) return { delivered: 0, failed: 0 };
+  const hooks: { url: string }[] = [...(settingsHooks ?? [])];
+  const meta = (integration?.metadata ?? {}) as {
+    webhookUrl?: string;
+    events?: string[];
+  };
+
+  if (
+    integration?.status === "connected" &&
+    meta.webhookUrl &&
+    (!meta.events?.length || meta.events.includes(event))
+  ) {
+    hooks.push({ url: meta.webhookUrl });
+  }
+
+  if (!hooks.length) return { delivered: 0, failed: 0 };
 
   const body = JSON.stringify({
     event,

@@ -4384,7 +4384,7 @@ ${companyName}`;
 
       if (action === "send") {
         setToast(
-          "Outreach saved in Outreach as Ready to send. Email sending integration is not connected yet.",
+          "Outreach saved. Open Outreach to send it from your Gmail.",
         );
       } else if (action === "schedule") {
         setToast(

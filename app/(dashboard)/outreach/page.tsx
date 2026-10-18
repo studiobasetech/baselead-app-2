@@ -35,6 +35,8 @@ import {
   X,
 } from "lucide-react";
 import { supabase } from "@/components/lib/supabase";
+import { usePlan } from "@/components/plans/PlanProvider";
+import { emitEvent } from "@/lib/events-client";
 
 /* =========================================================
    TYPES
@@ -1048,9 +1050,51 @@ function NewOutreachModal({
         String(leadId)
     ) || null;
 
-  function generate() {
+  const [
+    generating,
+    setGenerating,
+  ] = useState(false);
+
+  // Uses AI when the plan includes it (Pro/Scale) and falls
+  // back to BaseLead's smart template otherwise.
+  async function generate() {
     if (!selectedLead) {
       return;
+    }
+
+    setGenerating(true);
+
+    try {
+      const response = await fetch(
+        "/api/outreach/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            leadId: selectedLead.id,
+            campaign,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const ai =
+          await response.json();
+
+        if (ai.subject && ai.message) {
+          setSubject(ai.subject);
+          setMessage(ai.message);
+          setGenerated(true);
+          return;
+        }
+      }
+    } catch {
+      // Fall back to the template below.
+    } finally {
+      setGenerating(false);
     }
 
     const result =
@@ -1315,7 +1359,7 @@ function NewOutreachModal({
                     </p>
 
                     <p className="mt-1 text-[10px] text-[#777]">
-                      Email sending will be connected later.
+                      Sent from your connected Gmail account.
                     </p>
                   </div>
 
@@ -1357,13 +1401,16 @@ function NewOutreachModal({
                   onClick={generate}
                   disabled={
                     !selectedLead ||
-                    saving
+                    saving ||
+                    generating
                   }
                   className="flex items-center justify-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-[10px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(245,197,24,0.18)] disabled:opacity-40 disabled:hover:translate-y-0"
                 >
                   <Sparkles size={12} />
 
-                  {generated
+                  {generating
+                    ? "Writing..."
+                    : generated
                     ? "Regenerate"
                     : "Generate"}
                 </button>
@@ -1554,7 +1601,7 @@ function NewOutreachModal({
                   </p>
 
                   <p className="mt-1 text-[10px] leading-4 text-[#666]">
-                    The Send Outreach action is already part of the workflow. Actual email delivery will be connected when an email provider is added.
+                    "Send now" delivers the email from your connected Gmail account (Integrations → Gmail). Scheduled sending is included in Pro and Scale.
                   </p>
                 </div>
               </div>
@@ -1860,6 +1907,7 @@ function OutreachDetail({
   onReply,
   onDelete,
   onStatusChange,
+  onSendEmail,
 }: {
   outreach: Outreach;
   saving: boolean;
@@ -1868,6 +1916,7 @@ function OutreachDetail({
   onFollowUp: () => void;
   onReply: () => void;
   onDelete: () => void;
+  onSendEmail: () => void;
   onStatusChange: (
     status: OutreachStatus
   ) => void;
@@ -2099,6 +2148,26 @@ function OutreachDetail({
             Edit
           </button>
         </div>
+
+        {!outreach.raw.sent_at && (
+          <button
+            type="button"
+            disabled={
+              saving ||
+              !outreach.email
+            }
+            onClick={onSendEmail}
+            title={
+              outreach.email
+                ? "Send from your connected Gmail"
+                : "This lead has no email address"
+            }
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] py-2.5 text-[11px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.12)] transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
+          >
+            <Send size={13} />
+            Send email now
+          </button>
+        )}
 
         <button
           type="button"
@@ -2410,6 +2479,31 @@ function OutreachRow({
 ========================================================= */
 
 function OutreachPageContent() {
+  const {
+    can: canUsePlan,
+    definition: planDefinition,
+    companyId: planCompanyId,
+  } = usePlan();
+
+  // Used to sign generated emails.
+  const [senderName, setSenderName] =
+    useState("");
+
+  useEffect(() => {
+    if (!planCompanyId) return;
+
+    supabase
+      .from("company_profiles")
+      .select("company_name")
+      .eq("id", planCompanyId)
+      .maybeSingle()
+      .then(({ data }) =>
+        setSenderName(
+          data?.company_name?.trim() || ""
+        )
+      );
+  }, [planCompanyId]);
+
   /*
    * IMPORTANT:
    * We intentionally do NOT use useSearchParams() here.
@@ -3116,11 +3210,6 @@ function OutreachPageContent() {
         lead
       );
 
-    const location =
-      getLeadLocation(
-        lead
-      );
-
     const services =
       deriveServices(
         lead
@@ -3159,10 +3248,8 @@ I had a few specific ideas for ${business} and would be happy to share them.
 
 Would you be open to a quick conversation?
 
-Best,
-StudioBase
-
-Location: ${location}`,
+Best regards,
+${senderName}`,
     };
   }
 
@@ -3192,6 +3279,40 @@ Location: ${location}`,
     if (!data.message.trim()) {
       showToast(
         "Please add a message."
+      );
+      return;
+    }
+
+    // Scheduled sending is part of outreach automation (Pro/Scale).
+    if (
+      data.status === "Scheduled" &&
+      !canUsePlan("outreach_automation")
+    ) {
+      showToast(
+        "Scheduled sending is available on the Pro and Scale plans."
+      );
+      return;
+    }
+
+    // Active campaign limit per plan.
+    const campaignName =
+      data.campaign.trim() ||
+      "General Outreach";
+    const campaignLimit =
+      planDefinition.campaignLimit;
+    const activeCampaigns = new Set(
+      outreach.map(
+        (item) => item.campaign
+      )
+    );
+
+    if (
+      campaignLimit !== null &&
+      !activeCampaigns.has(campaignName) &&
+      activeCampaigns.size >= campaignLimit
+    ) {
+      showToast(
+        `Your plan includes ${campaignLimit} campaigns. Use an existing campaign or upgrade your plan.`
       );
       return;
     }
@@ -3370,9 +3491,54 @@ Location: ${location}`,
           false
         );
 
-        showToast(
-          "Outreach saved as a draft. Email sending will be connected next."
+        // Deliver it now through Gmail.
+        const response = await fetch(
+          "/api/outreach/send",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              id: mapped.id,
+            }),
+          }
         );
+
+        const result = await response
+          .json()
+          .catch(() => ({}));
+
+        if (
+          response.ok &&
+          result.outreach
+        ) {
+          const sentItem =
+            mapOutreach(
+              result.outreach as OutreachRecord,
+              selectedLead
+            );
+
+          setOutreach((current) =>
+            current.map((item) =>
+              item.id === sentItem.id
+                ? sentItem
+                : item
+            )
+          );
+
+          showToast(
+            "Email sent successfully."
+          );
+        } else {
+          showToast(
+            `Saved as a draft, but not sent: ${
+              result.error ||
+              "unknown error"
+            }`
+          );
+        }
 
         return;
       }
@@ -3452,6 +3618,8 @@ Location: ${location}`,
       setNewOpen(
         false
       );
+
+      emitEvent("outreach.created", created);
 
       showToast(
         scheduled
@@ -3614,11 +3782,91 @@ Location: ${location}`,
      STATUS
   ===================================================== */
 
+  async function sendSelectedEmail() {
+    if (!selectedOutreach) {
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const response = await fetch(
+        "/api/outreach/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            id: selectedOutreach.id,
+          }),
+        }
+      );
+
+      const result = await response
+        .json()
+        .catch(() => ({}));
+
+      if (!response.ok) {
+        showToast(
+          result.error ||
+            "The email could not be sent."
+        );
+        return;
+      }
+
+      const lead = leads.find(
+        (item) =>
+          String(item.id) ===
+          String(
+            selectedOutreach.raw.lead_id
+          )
+      );
+
+      if (lead && result.outreach) {
+        const sentItem = mapOutreach(
+          result.outreach as OutreachRecord,
+          lead
+        );
+
+        setOutreach((current) =>
+          current.map((item) =>
+            item.id === sentItem.id
+              ? sentItem
+              : item
+          )
+        );
+      }
+
+      showToast("Email sent successfully.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   async function changeStatus(
     status: OutreachStatus
   ) {
     if (!selectedOutreach) {
       return;
+    }
+
+    if (
+      status === "Scheduled" &&
+      !canUsePlan("outreach_automation")
+    ) {
+      showToast(
+        "Scheduled sending is available on the Pro and Scale plans."
+      );
+      return;
+    }
+
+    if (status === "Replied") {
+      emitEvent("outreach.replied", {
+        id: selectedOutreach.id,
+        lead_id: selectedOutreach.raw.lead_id,
+      });
     }
 
     setSaving(true);
@@ -5017,6 +5265,9 @@ StudioBase`;
               onStatusChange={
                 changeStatus
               }
+              onSendEmail={() =>
+                void sendSelectedEmail()
+              }
             />
           </div>
         </aside>
@@ -5071,6 +5322,9 @@ StudioBase`;
                   }
                   onStatusChange={
                     changeStatus
+                  }
+                  onSendEmail={() =>
+                    void sendSelectedEmail()
                   }
                 />
               </div>

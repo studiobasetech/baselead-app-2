@@ -30,6 +30,45 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/components/lib/supabase";
+import { usePlan } from "@/components/plans/PlanProvider";
+import PlanGate from "@/components/plans/PlanGate";
+import type { PlanFeature } from "@/lib/plans";
+
+/** Which plan feature unlocks each report tab. */
+const TAB_FEATURE: Record<ReportTab, PlanFeature> = {
+  Overview: "performance_reports",
+  Leads: "performance_reports",
+  Outreach: "performance_reports",
+  Pipeline: "advanced_reports",
+  Revenue: "advanced_reports",
+  "Custom Reports": "custom_reports",
+};
+
+/** Midpoint of an AI "$5,000 - $15,000" estimate, or a score-based estimate. */
+function estimateLeadValue(lead: Record<string, unknown>, score: number) {
+  const recommendations = lead.ai_recommendations as
+    | { estimated_project_value?: string }
+    | string
+    | null
+    | undefined;
+
+  const text =
+    typeof recommendations === "string"
+      ? recommendations
+      : recommendations?.estimated_project_value ?? "";
+
+  const numbers = (String(text).match(/\d[\d,]*/g) ?? []).map((n) =>
+    Number(n.replace(/,/g, ""))
+  );
+
+  if (numbers.length >= 2) return Math.round((numbers[0] + numbers[1]) / 2);
+  if (numbers.length === 1) return numbers[0];
+
+  if (score >= 80) return 10000;
+  if (score >= 60) return 7000;
+  if (score >= 40) return 4500;
+  return 2000;
+}
 
 type ReportTab =
   | "Overview"
@@ -1719,6 +1758,8 @@ export default function ReportsPage() {
   const [isLightMode, setIsLightMode] =
     useState(false);
 
+  const { can: canUsePlan } = usePlan();
+
   const [activeTab, setActiveTab] =
     useState<ReportTab>("Overview");
 
@@ -2158,26 +2199,15 @@ export default function ReportsPage() {
 
   const pipelineValue =
     filteredLeads.reduce(
-      (sum, lead) => {
-        const score =
-          getScore(lead);
-
-        if (score >= 80) {
-          return sum + 10000;
-        }
-
-        if (score >= 60) {
-          return sum + 7000;
-        }
-
-        if (score >= 40) {
-          return sum + 4500;
-        }
-
-        return sum + 2500;
-      },
+      (sum, lead) =>
+        sum +
+        estimateLeadValue(
+          lead as unknown as Record<string, unknown>,
+          getScore(lead),
+        ),
       0,
     );
+
 
   const sources = useMemo(() => {
     const counts =
@@ -2372,18 +2402,87 @@ export default function ReportsPage() {
     [filteredLeads],
   );
 
-  const handleExport = () => {
-    downloadCSV(
-      "baselead-report.csv",
+  // CSV export is part of Advanced reports (Pro/Scale).
+  const exportRows = (
+    filename: string,
+    rows: Record<string, unknown>[],
+  ) => {
+    if (!canUsePlan("advanced_reports")) {
+      setToast(
+        "CSV export is available on the Pro and Scale plans.",
+      );
+      return;
+    }
+
+    downloadCSV(filename, rows);
+
+    setToast(
+      rows.length
+        ? "Report exported successfully."
+        : "There is no data to export.",
+    );
+  };
+
+  const handleExport = () =>
+    exportRows(
+      "baselead-leads-report.csv",
       reportRows,
     );
 
-    setToast(
-      reportRows.length
-        ? "Report exported successfully."
-        : "There are no leads to export.",
+  const exportPipelineReport = () => {
+    const counts = new Map<string, { leads: number; value: number }>();
+
+    for (const lead of filteredLeads) {
+      const stage = getStage(lead);
+      const current = counts.get(stage) ?? { leads: 0, value: 0 };
+      current.leads += 1;
+      current.value += estimateLeadValue(
+        lead as unknown as Record<string, unknown>,
+        getScore(lead),
+      );
+      counts.set(stage, current);
+    }
+
+    exportRows(
+      "baselead-pipeline-report.csv",
+      [...counts.entries()].map(([stage, item]) => ({
+        Stage: stage,
+        Leads: item.leads,
+        "Share %": filteredLeads.length
+          ? ((item.leads / filteredLeads.length) * 100).toFixed(1)
+          : "0",
+        "Estimated value (USD)": item.value,
+      })),
     );
   };
+
+  const exportRevenueReport = () =>
+    exportRows(
+      "baselead-revenue-report.csv",
+      filteredLeads.map((lead) => ({
+        Lead: lead.company || lead.name || "",
+        Stage: getStage(lead),
+        Score: getScore(lead),
+        "Estimated value (USD)": estimateLeadValue(
+          lead as unknown as Record<string, unknown>,
+          getScore(lead),
+        ),
+      })),
+    );
+
+  const exportOutreachReport = () =>
+    exportRows(
+      "baselead-outreach-report.csv",
+      outreach.map((item) => ({
+        Campaign: item.campaign ?? "",
+        Subject: item.subject ?? "",
+        Status: item.status ?? "",
+        Created: item.created_at ?? "",
+        Sent: item.sent_at ?? "",
+        Replied: item.replied_at ?? "",
+        "Next step": item.next_step ?? "",
+      })),
+    );
 
   const renderLeadRow = (
     lead: Lead,
@@ -3195,6 +3294,7 @@ export default function ReportsPage() {
       const customReports = [
         {
           name: "Lead Performance",
+          onExport: handleExport,
           description:
             "Export lead scores, stages, sources, and locations.",
           color: PURPLE,
@@ -3204,6 +3304,7 @@ export default function ReportsPage() {
         },
         {
           name: "Pipeline Report",
+          onExport: exportPipelineReport,
           description:
             "Export the current pipeline distribution.",
           color: RED,
@@ -3213,6 +3314,7 @@ export default function ReportsPage() {
         },
         {
           name: "Revenue Report",
+          onExport: exportRevenueReport,
           description:
             "Export estimated opportunity and revenue data.",
           color: GOLD,
@@ -3224,6 +3326,7 @@ export default function ReportsPage() {
         },
         {
           name: "Outreach Report",
+          onExport: exportOutreachReport,
           description:
             "Export available outreach activity records.",
           color: BLUE,
@@ -3278,7 +3381,7 @@ export default function ReportsPage() {
                     <button
                       type="button"
                       onClick={
-                        handleExport
+                        report.onExport
                       }
                       style={{
                         ...accentStyle(
@@ -3312,6 +3415,24 @@ export default function ReportsPage() {
     };
 
   const renderTab = () => {
+    const feature = TAB_FEATURE[activeTab];
+
+    if (!canUsePlan(feature)) {
+      return (
+        <PlanGate
+          feature={feature}
+          title={`${activeTab} reports are not included in your plan`}
+          description={
+            feature === "custom_reports"
+              ? "Custom reports are available on the Scale plan."
+              : "Pipeline and revenue analytics are available on the Pro and Scale plans."
+          }
+        >
+          {null}
+        </PlanGate>
+      );
+    }
+
     switch (activeTab) {
       case "Leads":
         return renderLeads();

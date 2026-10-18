@@ -33,6 +33,8 @@ import {
 import { useRouter } from "next/navigation";
 
 import { supabase } from "@/components/lib/supabase";
+import { usePlan } from "@/components/plans/PlanProvider";
+import { emitEvent } from "@/lib/events-client";
 
 type PipelineStage =
   | "New Lead"
@@ -1566,6 +1568,7 @@ function ListRow({
 }
 
 export default function PipelinePage() {
+  const { can: canUsePlan } = usePlan();
   const router = useRouter();
 
   const [leads, setLeads] =
@@ -2129,6 +2132,14 @@ export default function PipelinePage() {
 
     setSavingLeadId(null);
 
+    if (!updateError) {
+      emitEvent("lead.status_changed", {
+        id,
+        from: previousStage,
+        to: stage,
+      });
+    }
+
     if (updateError) {
       console.error(
         "Pipeline update error:",
@@ -2627,6 +2638,14 @@ export default function PipelinePage() {
   }
 
   function exportPipeline() {
+    // Export is part of Advanced pipeline (Pro/Scale).
+    if (!canUsePlan("advanced_pipeline")) {
+      setError(
+        "Pipeline export and advanced filters are available on the Pro and Scale plans. Upgrade in Settings → Billing."
+      );
+      return;
+    }
+
     const headers = [
       "Name",
       "Company",
@@ -2898,11 +2917,22 @@ export default function PipelinePage() {
 
           <button
             type="button"
-            onClick={() =>
+            onClick={() => {
+              if (
+                !canUsePlan(
+                  "advanced_pipeline"
+                )
+              ) {
+                setError(
+                  "Advanced pipeline filters are available on the Pro and Scale plans. Upgrade in Settings → Billing."
+                );
+                return;
+              }
+
               setFilterOpen(
                 !filterOpen
-              )
-            }
+              );
+            }}
             className={`flex h-10 items-center justify-center gap-2 rounded-xl border px-4 text-xs shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
               filterOpen
                 ? "border-[#F5C518]/40 bg-[#332A0C] text-[#F5C518] shadow-[0_0_22px_rgba(245,197,24,0.07)]"

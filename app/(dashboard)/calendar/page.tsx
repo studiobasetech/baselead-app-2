@@ -40,6 +40,9 @@ type EventType =
 
 type CalendarEvent = {
   id: number;
+  /** Row id in Supabase (calendar_events.id). */
+  dbId?: string;
+  leadId?: string | null;
   title: string;
   lead: string;
   type: EventType;
@@ -87,11 +90,7 @@ const CYAN = "#22D3EE";
 
 const supabase = createClient();
 
-const DEFAULT_DATE = new Date(
-  2025,
-  4,
-  14
-);
+const DEFAULT_DATE = new Date();
 
 const hours = [
   "8 AM",
@@ -112,303 +111,94 @@ const hours = [
    EVENTS
 ========================================================= */
 
-const initialEvents: CalendarEvent[] = [
-  {
-    id: 1,
-    title: "Discovery Call",
-    lead: "Luna Med Spa",
-    type: "Meeting",
-    date: "May 12",
-    dateKey: "2025-05-12",
-    start: "9:00 AM",
-    end: "9:45 AM",
-    color: "purple",
-    icon: "video",
-    category: "Med Spa",
-    location: "Austin, TX",
-    host: "Studio Base",
-    attendee: "Sarah Mitchell",
-    source: "BaseLead",
-    notes:
-      "Discuss their current website, online visibility and booking system.",
-  },
-  {
-    id: 2,
-    title: "Intro Call",
-    lead: "Glow Aesthetics",
-    type: "Meeting",
-    date: "May 13",
-    dateKey: "2025-05-13",
-    start: "10:00 AM",
-    end: "10:45 AM",
-    color: "blue",
-    icon: "video",
-    category: "Med Spa",
-    location: "Austin, TX",
-  },
-  {
-    id: 3,
-    title: "Follow-up Call",
-    lead: "Revive Wellness",
-    type: "Call",
-    date: "May 14",
-    dateKey: "2025-05-14",
-    start: "10:00 AM",
-    end: "10:30 AM",
-    color: "purple",
-    icon: "phone",
-    category: "Wellness Center",
-    location: "Austin, TX",
-  },
-  {
-    id: 4,
-    title: "Discovery Call",
-    lead: "Austin Orthodontics",
-    type: "Call",
-    date: "May 14",
-    dateKey: "2025-05-14",
-    start: "8:30 AM",
-    end: "9:15 AM",
-    color: "green",
-    icon: "video",
-    status: "Upcoming",
-    host: "Studio Base",
-    attendee: "Dr. Sarah Mitchell",
-    category: "Orthodontics",
-    location: "Austin, TX",
-    source: "BaseLead",
-    notes:
-      "Discuss their current website, online visibility and booking system.",
-  },
-  {
-    id: 5,
-    title: "Lunch Break",
-    lead: "",
-    type: "Break",
-    date: "May 14",
-    dateKey: "2025-05-14",
-    start: "12:00 PM",
-    end: "1:00 PM",
-    color: "gray",
-    icon: "break",
-  },
-  {
-    id: 6,
-    title: "Follow-up Email",
-    lead: "Modern Home Staging",
-    type: "Email",
-    date: "May 14",
-    dateKey: "2025-05-14",
-    start: "2:00 PM",
-    end: "2:45 PM",
-    color: "orange",
-    icon: "email",
-  },
-  {
-    id: 7,
-    title: "Demo Call",
-    lead: "Urban Tans",
-    type: "Meeting",
-    date: "May 14",
-    dateKey: "2025-05-14",
-    start: "4:30 PM",
-    end: "5:15 PM",
-    color: "blue",
-    icon: "video",
-  },
-  {
-    id: 8,
-    title: "Proposal Meeting",
-    lead: "Austin Lash Studio",
-    type: "Meeting",
-    date: "May 15",
-    dateKey: "2025-05-15",
-    start: "9:30 AM",
-    end: "10:15 AM",
-    color: "blue",
-    icon: "video",
-  },
-  {
-    id: 9,
-    title: "Call",
-    lead: "Pure Beauty Bar",
-    type: "Call",
-    date: "May 15",
-    dateKey: "2025-05-15",
-    start: "11:30 AM",
-    end: "12:15 PM",
-    color: "green",
-    icon: "phone",
-  },
-  {
-    id: 10,
-    title: "Discovery Call",
-    lead: "Maven Dentistry",
-    type: "Meeting",
-    date: "May 15",
-    dateKey: "2025-05-15",
-    start: "1:30 PM",
-    end: "2:15 PM",
-    color: "purple",
-    icon: "video",
-  },
-  {
-    id: 11,
-    title: "Follow-up Email",
-    lead: "Bloom Nutrition",
-    type: "Email",
-    date: "May 15",
-    dateKey: "2025-05-15",
-    start: "3:30 PM",
-    end: "4:15 PM",
-    color: "orange",
-    icon: "email",
-  },
-  {
-    id: 12,
-    title: "Task: Prepare Proposal",
-    lead: "Elite Performance",
-    type: "Task",
-    date: "May 15",
-    dateKey: "2025-05-15",
-    start: "5:00 PM",
-    end: "6:00 PM",
-    color: "teal",
-    icon: "task",
-  },
-  {
-    id: 13,
-    title: "Book Call",
-    lead: "Café Aroma",
-    type: "Call",
-    date: "May 16",
-    dateKey: "2025-05-16",
-    start: "10:00 AM",
-    end: "10:45 AM",
-    color: "green",
-    icon: "phone",
-  },
-  {
-    id: 14,
-    title: "Follow-up Call",
-    lead: "Serene Spa",
-    type: "Call",
-    date: "May 16",
-    dateKey: "2025-05-16",
-    start: "12:00 PM",
-    end: "12:45 PM",
-    color: "purple",
-    icon: "phone",
-  },
-  {
-    id: 15,
-    title: "Demo Call",
-    lead: "Haven Med Spa",
-    type: "Meeting",
-    date: "May 16",
-    dateKey: "2025-05-16",
-    start: "2:00 PM",
-    end: "2:45 PM",
-    color: "blue",
-    icon: "video",
-  },
-  {
-    id: 16,
-    title: "Follow-up Email",
-    lead: "Glow Aesthetics",
-    type: "Email",
-    date: "May 16",
-    dateKey: "2025-05-16",
-    start: "4:00 PM",
-    end: "4:45 PM",
-    color: "orange",
-    icon: "email",
-  },
-  {
-    id: 17,
-    title: "Follow-up Email",
-    lead: "Haven Med Spa",
-    type: "Email",
-    date: "May 12",
-    dateKey: "2025-05-12",
-    start: "11:00 AM",
-    end: "11:45 AM",
-    color: "orange",
-    icon: "email",
-  },
-  {
-    id: 18,
-    title: "Proposal Call",
-    lead: "Elite Performance",
-    type: "Call",
-    date: "May 12",
-    dateKey: "2025-05-12",
-    start: "2:00 PM",
-    end: "2:45 PM",
-    color: "green",
-    icon: "video",
-  },
-  {
-    id: 19,
-    title: "Follow-up Call",
-    lead: "Parkside Smiles",
-    type: "Call",
-    date: "May 12",
-    dateKey: "2025-05-12",
-    start: "4:00 PM",
-    end: "4:45 PM",
-    color: "blue",
-    icon: "phone",
-  },
-  {
-    id: 20,
-    title: "Follow-up Email",
-    lead: "Serene Spa",
-    type: "Email",
-    date: "May 13",
-    dateKey: "2025-05-13",
-    start: "1:00 PM",
-    end: "1:45 PM",
-    color: "orange",
-    icon: "email",
-  },
-  {
-    id: 21,
-    title: "Strategy Call",
-    lead: "The IV Lounge",
-    type: "Meeting",
-    date: "May 13",
-    dateKey: "2025-05-13",
-    start: "3:00 PM",
-    end: "3:45 PM",
-    color: "purple",
-    icon: "video",
-  },
-  {
-    id: 22,
-    title: "Task: Research",
-    lead: "Austin Lash Studio",
-    type: "Task",
-    date: "May 13",
-    dateKey: "2025-05-13",
-    start: "5:00 PM",
-    end: "6:00 PM",
-    color: "teal",
-    icon: "task",
-  },
-  {
-    id: 23,
-    title: "Weekly Review & Planning",
-    lead: "",
-    type: "Review",
-    date: "May 17",
-    dateKey: "2025-05-17",
-    start: "11:00 AM",
-    end: "12:00 PM",
-    color: "gray",
-    icon: "star",
-  },
+/* Events are loaded from Supabase (calendar_events). */
+
+type CalendarEventRow = {
+  id: string;
+  title: string;
+  type: string;
+  starts_at: string;
+  ends_at: string | null;
+  location: string | null;
+  notes: string | null;
+  status: string | null;
+  attendee: string | null;
+  lead_id: string | null;
+  lead_name?: string | null;
+  opportunity_value: number | null;
+};
+
+const EVENT_TYPES: EventType[] = [
+  "Meeting",
+  "Call",
+  "Email",
+  "Task",
+  "Break",
+  "Review",
 ];
+
+function formatClock(date: Date) {
+  const hours = date.getHours();
+  const modifier = hours >= 12 ? "PM" : "AM";
+  return `${hours % 12 || 12}:${String(date.getMinutes()).padStart(2, "0")} ${modifier}`;
+}
+
+function rowToEvent(row: CalendarEventRow, index: number): CalendarEvent {
+  const start = new Date(row.starts_at);
+  const end = row.ends_at ? new Date(row.ends_at) : null;
+  const type = (EVENT_TYPES.includes(row.type as EventType)
+    ? row.type
+    : "Meeting") as EventType;
+  const isPast = (end ?? start).getTime() < Date.now();
+
+  return {
+    id: index + 1,
+    dbId: row.id,
+    leadId: row.lead_id,
+    title: row.title,
+    lead: row.lead_name || row.attendee || "",
+    type,
+    date: start.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+    dateKey: `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, "0")}-${String(start.getDate()).padStart(2, "0")}`,
+    start: formatClock(start),
+    end: end ? formatClock(end) : undefined,
+    color: colorForType(type),
+    icon: iconForType(type),
+    location: row.location || undefined,
+    notes: row.notes || undefined,
+    attendee: row.attendee || undefined,
+    status: row.status || (isPast ? "Completed" : "Upcoming"),
+    source: "BaseLead",
+    opportunityValue: row.opportunity_value ?? undefined,
+  };
+}
+
+function eventToPayload(event: CalendarEvent) {
+  const [year, month, day] = (event.dateKey ?? "").split("-").map(Number);
+
+  const at = (time: string) => {
+    const [clock, modifier] = time.split(" ");
+    let [h, m] = clock.split(":").map(Number);
+    if (modifier === "PM" && h !== 12) h += 12;
+    if (modifier === "AM" && h === 12) h = 0;
+    return new Date(year, month - 1, day, h, m).toISOString();
+  };
+
+  return {
+    id: event.dbId,
+    title: event.title,
+    type: event.type,
+    starts_at: at(event.start),
+    ends_at: event.end ? at(event.end) : null,
+    location: event.location || null,
+    notes: event.notes || null,
+    status: event.status || "Upcoming",
+    attendee: event.attendee || event.lead || null,
+    lead_id: event.leadId ?? null,
+    lead_name: event.lead || null,
+    opportunity_value: event.opportunityValue ?? null,
+  };
+}
 
 /* =========================================================
    THEME
@@ -902,33 +692,8 @@ function getOpportunityProfile(event: CalendarEvent) {
     };
   }
 
-  const profiles: Record<
-    string,
-    { value: number; score: number }
-  > = {
-    "Austin Orthodontics": { value: 4800, score: 96 },
-    "Elite Performance": { value: 4200, score: 91 },
-    "Luna Med Spa": { value: 3800, score: 86 },
-    "Glow Aesthetics": { value: 3200, score: 78 },
-    "Haven Med Spa": { value: 3000, score: 74 },
-    "Maven Dentistry": { value: 2800, score: 71 },
-    "Austin Lash Studio": { value: 2600, score: 68 },
-    "The IV Lounge": { value: 2400, score: 64 },
-    "Serene Spa": { value: 2200, score: 59 },
-    "Parkside Smiles": { value: 2100, score: 56 },
-    "Revive Wellness": { value: 1900, score: 52 },
-    "Urban Tans": { value: 1800, score: 48 },
-    "Pure Beauty Bar": { value: 1700, score: 44 },
-    "Bloom Nutrition": { value: 1600, score: 41 },
-    "Modern Home Staging": { value: 1500, score: 38 },
-    "Café Aroma": { value: 1400, score: 35 },
-  };
-
-  const fallback = event.lead
-    ? { value: 1200, score: 32 }
-    : { value: 0, score: 0 };
-
-  const profile = profiles[event.lead] ?? fallback;
+  // No value or score recorded for this event yet.
+  const profile = { value: 0, score: 0 };
 
   return {
     ...profile,
@@ -3242,7 +3007,7 @@ function EventModal({
   const [end, setEnd] =
     useState("10:45");
   const [location, setLocation] =
-    useState("Austin, TX");
+    useState("");
   const [notes, setNotes] =
     useState("");
 
@@ -3391,8 +3156,7 @@ function EventModal({
           : "10:45"
       );
       setLocation(
-        event.location ??
-          "Austin, TX"
+        event.location ?? ""
       );
       setNotes(
         event.notes ?? ""
@@ -3406,7 +3170,7 @@ function EventModal({
       );
       setStart("10:00");
       setEnd("10:45");
-      setLocation("Austin, TX");
+      setLocation("");
       setNotes("");
     }
   }, [
@@ -3431,11 +3195,21 @@ function EventModal({
     const dateObject =
       dateFromKey(date);
 
+    const matchedLead = leadOptions.find(
+      (option) =>
+        (option.company || option.name) === lead
+    );
+
     const nextEvent: CalendarEvent =
       {
         id:
           event?.id ??
           Date.now(),
+        dbId: event?.dbId,
+        leadId:
+          matchedLead?.id ??
+          event?.leadId ??
+          null,
         title: title.trim(),
         lead: lead.trim(),
         type,
@@ -3809,7 +3583,7 @@ function EventModal({
                   e.target.value
                 )
               }
-              placeholder="Austin, TX"
+              placeholder="Office address or meeting link"
               className={inputClass}
               style={{
                 borderColor:
@@ -4352,12 +4126,64 @@ export default function CalendarPage() {
     );
 
   const [calendarEvents, setCalendarEvents] =
-    useState<CalendarEvent[]>(
-      initialEvents
-    );
+    useState<CalendarEvent[]>([]);
 
   const [selectedEventId, setSelectedEventId] =
-    useState<number | null>(4);
+    useState<number | null>(null);
+
+  // Load the workspace's real events.
+  useEffect(() => {
+    let mounted = true;
+
+    fetch("/api/calendar/events")
+      .then((response) => response.json())
+      .then((result) => {
+        if (!mounted) return;
+
+        const rows = (result.events ?? []) as CalendarEventRow[];
+        const events = rows.map(rowToEvent);
+        setCalendarEvents(events);
+
+        // Attach each lead's real opportunity score.
+        const leadIds = events
+          .map((event) => event.leadId)
+          .filter((id): id is string => Boolean(id));
+
+        if (leadIds.length) {
+          supabase
+            .from("leads")
+            .select("id, ai_score, intent_score")
+            .in("id", leadIds)
+            .then(({ data }) => {
+              if (!mounted || !data) return;
+              const scores = new Map(
+                data.map((lead) => [
+                  String(lead.id),
+                  Number(lead.ai_score ?? lead.intent_score ?? 0),
+                ])
+              );
+              setCalendarEvents((current) =>
+                current.map((event) =>
+                  event.leadId && scores.has(event.leadId)
+                    ? { ...event, opportunityScore: scores.get(event.leadId) }
+                    : event
+                )
+              );
+            });
+        }
+
+        if (result.error) {
+          setToastMessage(
+            "Calendar could not load. Run the latest Supabase migration."
+          );
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const [filterOpen, setFilterOpen] =
     useState(false);
@@ -4374,7 +4200,7 @@ export default function CalendarPage() {
     useState(true);
 
   const [location, setLocation] =
-    useState("Austin, Texas");
+    useState("All locations");
 
   const [locationOpen, setLocationOpen] =
     useState(false);
@@ -4421,23 +4247,34 @@ export default function CalendarPage() {
         selectedEventId
     ) ?? null;
 
+  // Real locations taken from the events themselves.
+  const locationOptions = useMemo(
+    () => [
+      "All locations",
+      ...Array.from(
+        new Set(
+          calendarEvents
+            .map((event) => event.location?.trim())
+            .filter((value): value is string => Boolean(value))
+        )
+      ),
+    ],
+    [calendarEvents]
+  );
+
   const visibleEvents =
     useMemo(() => {
-      if (
-        activeFilter ===
-        "All Events"
-      ) {
-        return calendarEvents;
-      }
-
       return calendarEvents.filter(
         (event) =>
-          event.type ===
-          activeFilter
+          (activeFilter === "All Events" ||
+            event.type === activeFilter) &&
+          (location === "All locations" ||
+            event.location?.trim() === location)
       );
     }, [
       activeFilter,
       calendarEvents,
+      location,
     ]);
 
   useEffect(() => {
@@ -4617,41 +4454,78 @@ export default function CalendarPage() {
     setMobileEventOpen(false);
   }
 
-  function saveEvent(
+  // Saves to Supabase (and Google Calendar when connected).
+  async function persistEvent(
+    event: CalendarEvent
+  ): Promise<CalendarEvent | null> {
+    const response = await fetch(
+      "/api/calendar/events",
+      {
+        method: event.dbId ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventToPayload(event)),
+      }
+    );
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || !result.event) {
+      setToastMessage(
+        result.error || "The event could not be saved."
+      );
+      return null;
+    }
+
+    return {
+      ...rowToEvent(result.event as CalendarEventRow, 0),
+      id: event.id,
+      leadId: event.leadId ?? null,
+      lead: event.lead,
+      opportunityScore: event.opportunityScore,
+    };
+  }
+
+  async function saveEvent(
     event: CalendarEvent
   ) {
+    const saved = await persistEvent(event);
+
+    if (!saved) {
+      return;
+    }
+
     setCalendarEvents(
       (current) => {
         const exists =
           current.some(
             (item) =>
               item.id ===
-              event.id
+              saved.id
           );
 
         if (exists) {
           return current.map(
             (item) =>
-              item.id === event.id
-                ? event
+              item.id === saved.id
+                ? saved
                 : item
           );
         }
 
         return [
           ...current,
-          event,
+          saved,
         ];
       }
     );
 
     setSelectedEventId(
-      event.id
+      saved.id
     );
 
     setSelectedDate(
       dateFromKey(
-        eventDateKey(event)
+        eventDateKey(saved)
       )
     );
 
@@ -4663,7 +4537,7 @@ export default function CalendarPage() {
     );
   }
 
-  function deleteEvent(
+  async function deleteEvent(
     event: CalendarEvent
   ) {
     const confirmed =
@@ -4673,6 +4547,20 @@ export default function CalendarPage() {
 
     if (!confirmed) {
       return;
+    }
+
+    if (event.dbId) {
+      const response = await fetch(
+        `/api/calendar/events?id=${encodeURIComponent(event.dbId)}`,
+        { method: "DELETE" }
+      );
+
+      if (!response.ok) {
+        setToastMessage(
+          "The event could not be deleted."
+        );
+        return;
+      }
     }
 
     setCalendarEvents(
@@ -4691,15 +4579,16 @@ export default function CalendarPage() {
     );
   }
 
-  function createAutomaticFollowUp(event: CalendarEvent) {
+  async function createAutomaticFollowUp(event: CalendarEvent) {
     const baseDate = dateFromKey(eventDateKey(event));
     const followUpDate = new Date(baseDate);
     followUpDate.setDate(followUpDate.getDate() + 3);
 
     const existingIds = calendarEvents.map((item) => item.id);
     const nextId = Math.max(0, ...existingIds) + 1;
-    const followUp: CalendarEvent = {
+    const draft: CalendarEvent = {
       id: nextId,
+      leadId: event.leadId ?? null,
       title: `Follow-up: ${event.lead || event.title}`,
       lead: event.lead,
       type: "Call",
@@ -4711,11 +4600,17 @@ export default function CalendarPage() {
       icon: "phone",
       category: event.category,
       location: event.location,
-      source: "BaseLead AI",
-      notes: `Automatic follow-up created from ${event.title}. Review the AI meeting brief before the call.`,
-      opportunityValue: getOpportunityProfile(event).value,
-      opportunityScore: getOpportunityProfile(event).score,
+      source: "BaseLead",
+      notes: `Follow-up created from ${event.title}.`,
+      opportunityValue: event.opportunityValue,
+      opportunityScore: event.opportunityScore,
     };
+
+    const followUp = await persistEvent(draft);
+
+    if (!followUp) {
+      return;
+    }
 
     setCalendarEvents((current) => [...current, followUp]);
     setSelectedEventId(followUp.id);
@@ -4724,11 +4619,20 @@ export default function CalendarPage() {
     setToastMessage(`Follow-up scheduled for ${formatShortDate(followUpDate)} at 10:00 AM.`);
   }
 
+  // Opens the meeting link saved in the event's location.
   function handleJoinCall() {
+    const link = selectedEvent?.location?.match(/https?:\/\/\S+/)?.[0];
+
+    if (link) {
+      window.open(link, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     setToastMessage(
-      "Call ready — opening your meeting action."
+      "Add a meeting link (Zoom, Google Meet...) to the event's location to join from here."
     );
   }
+
 
   return (
     <main
@@ -4795,11 +4699,7 @@ export default function CalendarPage() {
                   palette.hoverShadow,
               }}
             >
-              {[
-                "Austin, Texas",
-                "Round Rock, Texas",
-                "Cedar Park, Texas",
-              ].map((item) => (
+              {locationOptions.map((item) => (
                 <button
                   key={item}
                   type="button"
@@ -5139,11 +5039,7 @@ export default function CalendarPage() {
                     palette.hoverShadow,
                 }}
               >
-                {[
-                  "Austin, Texas",
-                  "Round Rock, Texas",
-                  "Cedar Park, Texas",
-                ].map(
+                {locationOptions.map(
                   (item) => (
                     <button
                       key={item}

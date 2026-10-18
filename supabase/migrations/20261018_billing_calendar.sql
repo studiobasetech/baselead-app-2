@@ -80,6 +80,7 @@ create table if not exists public.calendar_events (
   user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   company_id uuid references public.company_profiles(id) on delete cascade,
   lead_id uuid,
+  lead_name text,
   title text not null,
   type text not null default 'Meeting',
   starts_at timestamptz not null,
@@ -93,6 +94,9 @@ create table if not exists public.calendar_events (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.calendar_events
+  add column if not exists lead_name text;
 
 create index if not exists calendar_events_user_start_idx
   on public.calendar_events (user_id, starts_at);
