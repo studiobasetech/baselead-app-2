@@ -45,6 +45,8 @@ const TRANSLATIONS: Record<string, string> = {
   "100% off — any plan free": "100% de descuento — cualquier plan gratis",
   Today: "Hoy",
   Sequences: "Secuencias",
+  Proposals: "Propuestas",
+  "Team Performance": "Rendimiento del equipo",
   "On": "Activada",
   "Your account asks for a code from your authenticator app when you sign in.": "Tu cuenta pide un código de tu app de autenticación al iniciar sesión.",
   "Protect your account with a 6-digit code from an authenticator app.": "Protege tu cuenta con un código de 6 dígitos de una app de autenticación.",

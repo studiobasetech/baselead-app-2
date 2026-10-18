@@ -21,6 +21,8 @@ import {
   MoreHorizontal,
   Sun,
   Workflow,
+  FileSignature,
+  Trophy,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -43,8 +45,10 @@ const NAV = [
   { icon: GitBranch, label: "Pipeline", href: "/pipeline" },
   { icon: Send, label: "Outreach", href: "/outreach" },
   { icon: Workflow, label: "Sequences", href: "/sequences" },
+  { icon: FileSignature, label: "Proposals", href: "/proposals" },
   { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
   { icon: BarChart3, label: "Reports", href: "/reports" },
+  { icon: Trophy, label: "Team Performance", href: "/team" },
   { icon: Plug, label: "Integrations", href: "/integrations" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ];
