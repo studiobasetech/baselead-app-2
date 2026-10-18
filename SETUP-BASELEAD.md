@@ -127,3 +127,16 @@ Nota: el plan gratis de Vercel solo permite crons diarios; para cada 15 min nece
 | API pública (`GET /api/v1/leads`) | – | – | – | ✓ (100,000 solicitudes/mes) |
 
 Los límites se aplican también en el servidor: aunque alguien modifique la página, no puede saltarse su plan.
+
+---
+
+## 8. Propuestas con firma y pago
+
+- Ya incluidas en `supabase/RUN_THIS_IN_SUPABASE.sql` (tabla `proposals`).
+- Crea una propuesta en **Proposals** o desde un lead en el Pipeline (“Create proposal”).
+- El cliente recibe un link (`/p/...`), la firma con el dedo o el mouse y, si eliges depósito o pago completo, paga con tarjeta.
+- Para cobrar en línea: **Proposals → Connect payments** y pega la *secret key* de **tu propia cuenta de Stripe** (la del negocio que cobra). El dinero va directo a esa cuenta.
+- Automático: enviada → etapa *Proposal*; abierta → tarea “haz seguimiento ahora”; firmada → *Negotiation* (o *Won* si no hay pago); pagada → *Won* con el valor del trato.
+
+## 9. Rendimiento del equipo
+**Team Performance** (Pro y Scale; dueño, Admin o Manager): correos, respuestas, reuniones, propuestas, ingresos ganados por vendedor, embudo y metas mensuales (el dueño las define haciendo clic en “Set goal”).
