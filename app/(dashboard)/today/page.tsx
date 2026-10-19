@@ -95,7 +95,7 @@ export default function TodayPage() {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [toast, setToast] = useState("");
-  const [setupNeeded, setSetupNeeded] = useState(false);
+  const [setupNeeded, setSetupNeeded] = useState<string | null>(null);
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -155,7 +155,7 @@ export default function TodayPage() {
           .gte("replied_at", weekAgo),
       ]);
 
-    setSetupNeeded(Boolean(taskResult.error || activityResult.error));
+    setSetupNeeded((taskResult.error || activityResult.error)?.message ?? null);
     setTasks((taskResult.data ?? []) as Task[]);
     setMeetings((meetingResult.data ?? []) as Meeting[]);
     setActivity((activityResult.data ?? []) as ActivityRow[]);
@@ -232,7 +232,7 @@ export default function TodayPage() {
       .single();
 
     if (error) {
-      showToast("Run the latest Supabase migration to enable tasks.");
+      showToast(`Could not save the note: ${error.message}`);
       return;
     }
 
@@ -316,7 +316,12 @@ export default function TodayPage() {
 
       {setupNeeded && (
         <div className="mt-4 rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4 text-sm text-amber-200">
-          Run <code>supabase/migrations/20261019_sales_automation.sql</code> in Supabase to turn on tasks, the activity timeline and automation.
+          {/permission denied/i.test(setupNeeded) ? (
+            <>Supabase is blocking the app from the new tables. Run <code>supabase/FIX_PERMISSIONS.sql</code> in Supabase → SQL Editor.</>
+          ) : (
+            <>Run <code>supabase/RUN_THIS_IN_SUPABASE.sql</code> in Supabase → SQL Editor to turn on tasks, the activity timeline and automation.</>
+          )}
+          <span className="mt-1 block text-xs text-amber-200/60">Supabase says: {setupNeeded}</span>
         </div>
       )}
 
