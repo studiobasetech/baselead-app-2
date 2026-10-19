@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "i18n:missing": "node scripts/extract-ui-strings.cjs scripts/i18n/missing.json"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.6",
