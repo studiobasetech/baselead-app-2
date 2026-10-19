@@ -37,7 +37,7 @@ export default function SetupBanner() {
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-semibold text-white">
-          Finish setting up BaseLead ({progress.done}/{progress.total})
+          {`Finish setting up BaseLead (${progress.done}/${progress.total})`}
         </span>
         {progress.next && (
           <span className="block truncate text-xs text-gray-400">Next: {progress.next}</span>
