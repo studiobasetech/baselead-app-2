@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { Check, Copy, MessageSquare } from "lucide-react";
 
 /* Connect the workspace's own Twilio number for texting leads. */
-export default function TwilioConnectCard() {
+export default function TwilioConnectCard({
+  embedded = false,
+  onStatusChange,
+}: {
+  embedded?: boolean;
+  onStatusChange?: (connected: boolean) => void;
+} = {}) {
   const [state, setState] = useState<{
     configured: boolean;
     connected: boolean;
@@ -20,7 +26,10 @@ export default function TwilioConnectCard() {
 
   async function load() {
     const response = await fetch("/api/settings/twilio", { cache: "no-store" });
-    if (response.ok) setState(await response.json());
+    if (!response.ok) return;
+    const next = await response.json();
+    setState(next);
+    onStatusChange?.(Boolean(next.connected));
   }
 
   useEffect(() => {
@@ -49,7 +58,13 @@ export default function TwilioConnectCard() {
   }
 
   return (
-    <div className="mx-4 mb-5 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 sm:mx-6 lg:mx-7">
+    <div
+      className={
+        embedded
+          ? "rounded-xl border border-white/10 bg-black/20 p-4"
+          : "mx-4 mb-5 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 sm:mx-6 lg:mx-7"
+      }
+    >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F22F46]/15 text-[#F22F46]">
@@ -135,6 +150,10 @@ export default function TwilioConnectCard() {
 
       {state && !state.configured && (
         <p className="mt-3 text-xs text-gray-500">Add SUPABASE_SERVICE_ROLE_KEY to enable this.</p>
+      )}
+
+      {state?.configured && !state.isOwner && !state.connected && (
+        <p className="mt-3 text-xs text-gray-500">Ask your workspace owner to connect Twilio.</p>
       )}
     </div>
   );

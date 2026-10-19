@@ -36,6 +36,7 @@ import {
   X,
   Zap,
   MapPinned,
+  MessageSquare,
 } from "lucide-react";
 import PlanGate from "@/components/plans/PlanGate";
 import { usePlan } from "@/components/plans/PlanProvider";
@@ -84,6 +85,8 @@ function getCategoryIconStyle(color: string): CSSProperties {
   } as CSSProperties;
 }
 
+const TWILIO_RED = "#F22F46";
+
 function getCategoryColor(category: Exclude<Category, "All">) {
   switch (category) {
     case "Email":
@@ -92,6 +95,8 @@ function getCategoryColor(category: Exclude<Category, "All">) {
       return BLUE;
     case "Data":
       return GREEN;
+    case "Phone":
+      return TWILIO_RED;
     case "Automation":
       return GOLD;
   }
@@ -108,6 +113,7 @@ type Category =
   | "Email"
   | "Calendar"
   | "Data"
+  | "Phone"
   | "Automation";
 
 type ViewMode = "grid" | "list";
@@ -118,6 +124,7 @@ type IntegrationId =
   | "google-sheets"
   | "google-maps"
   | "csv"
+  | "twilio"
   | "webhook";
 
 type Integration = {
@@ -178,6 +185,7 @@ const categories: Category[] = [
   "Email",
   "Calendar",
   "Data",
+  "Phone",
   "Automation",
 ];
 
@@ -275,6 +283,23 @@ const integrations: Integration[] = [
       "Detect duplicate records",
       "Use a standard CSV format",
     ],
+  },
+  {
+    id: "twilio",
+    name: "Twilio — Calls & SMS",
+    description:
+      "Text and call leads from your own business number. Replies land in BaseLead and move the pipeline.",
+    category: "Phone",
+    color: TWILIO_RED,
+    icon: <MessageSquare size={21} />,
+    popular: true,
+    details: [
+      "Text leads from your business number",
+      "Call leads with one tap",
+      "Replies are logged on the lead and move the pipeline",
+      "Credentials are encrypted on the server",
+    ],
+    externalUrl: "https://console.twilio.com/",
   },
   {
     id: "webhook",
@@ -673,6 +698,16 @@ export default function IntegrationsPage() {
   const [activeTab, setActiveTab] =
     useState<Tab>("Store");
 
+  const [twilioConnected, setTwilioConnected] =
+    useState(false);
+
+  useEffect(() => {
+    void fetch("/api/settings/twilio", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((status) => setTwilioConnected(Boolean(status?.connected)))
+      .catch(() => undefined);
+  }, []);
+
   const [connections, setConnections] =
     useState<SavedConnection[]>([]);
 
@@ -947,6 +982,8 @@ export default function IntegrationsPage() {
   function isConnected(
     id: IntegrationId
   ) {
+    if (id === "twilio") return twilioConnected;
+
     return connections.some(
       (
         item: SavedConnection
@@ -1256,6 +1293,11 @@ export default function IntegrationsPage() {
   function handleConnect(
     integration: Integration
   ) {
+    if (integration.id === "twilio") {
+      setSelectedIntegration(integration);
+      return;
+    }
+
       if (
     !isConnected(integration.id) &&
     integrationLimitReached
@@ -1687,6 +1729,13 @@ export default function IntegrationsPage() {
       color: GREEN,
     },
     {
+      name: "Phone",
+      description:
+        "Call & text leads",
+      icon: <MessageSquare size={17} />,
+      color: TWILIO_RED,
+    },
+    {
       name: "Automation",
       description:
         "Automate work",
@@ -1818,7 +1867,6 @@ export default function IntegrationsPage() {
         )}
       </header>
 
-      <TwilioConnectCard />
 
 
       {/* ===================================================
@@ -2583,7 +2631,12 @@ export default function IntegrationsPage() {
             </div>
 
 
-            {isConnected(
+            {selectedIntegration.id === "twilio" ? (
+              <TwilioConnectCard
+                embedded
+                onStatusChange={setTwilioConnected}
+              />
+            ) : isConnected(
               selectedIntegration.id
             ) ? (
               <div className="space-y-3">
