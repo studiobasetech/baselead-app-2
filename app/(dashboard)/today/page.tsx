@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SetupBanner from "@/components/setup/SetupBanner";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Activity,
@@ -313,6 +314,8 @@ export default function TodayPage() {
           ))}
         </div>
       </section>
+
+      <SetupBanner />
 
       {setupNeeded && (
         <div className="mt-4 rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4 text-sm text-amber-200">

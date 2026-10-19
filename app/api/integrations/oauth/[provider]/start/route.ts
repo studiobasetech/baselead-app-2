@@ -165,7 +165,7 @@ export async function GET(
       !clientId ||
       !process.env.GOOGLE_CLIENT_SECRET ||
       !process.env.GOOGLE_OAUTH_STATE_SECRET ||
-      !process.env.INTEGRATION_TOKEN_ENCRYPTION_KEY
+      !(process.env.INTEGRATION_TOKEN_ENCRYPTION_KEY || process.env.INTEGRATION_ENCRYPTION_KEY)
     ) {
       throw new Error(
         "Google OAuth is not configured yet. Add the required server environment settings first."

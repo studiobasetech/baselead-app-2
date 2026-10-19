@@ -23,6 +23,7 @@ import {
   Workflow,
   FileSignature,
   Trophy,
+  ListChecks,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -51,6 +52,7 @@ const NAV = [
   { icon: Trophy, label: "Team Performance", href: "/team" },
   { icon: Plug, label: "Integrations", href: "/integrations" },
   { icon: Settings, label: "Settings", href: "/settings" },
+  { icon: ListChecks, label: "Setup", href: "/setup" },
 ];
 
 // The four most-used pages shown in the mobile bottom bar.
