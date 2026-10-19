@@ -7,7 +7,7 @@ import { createClient } from "@supabase/supabase-js";
  */
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = serverKey();
 
   if (!url || !key) {
     throw new Error(
@@ -20,6 +20,11 @@ export function createAdminClient() {
   });
 }
 
+/** Accepts the new "secret" key (sb_secret_…) or the legacy service_role key. */
+function serverKey() {
+  return (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
+}
+
 export function hasAdminClient() {
-  return Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return Boolean(serverKey());
 }
