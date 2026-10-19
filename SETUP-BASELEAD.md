@@ -170,3 +170,10 @@ BaseLead emails each rep when: a lead replies, someone books a meeting, a propos
 - Optional branded emails: create a free account at resend.com, verify your domain, then set `RESEND_API_KEY` and `NOTIFY_FROM_EMAIL="BaseLead <alerts@yourdomain.com>"` in `.env.local`.
 - Needs `SUPABASE_SERVICE_ROLE_KEY`. Reminders and the weekly report run from the `/api/automation/run` cron.
 - Each person controls them in Settings → Notifications ("Send test email" checks delivery).
+
+## 14. Unsubscribe & daily sending limit (email compliance)
+
+- Run `supabase/UPDATE_2_RUN_THIS.sql` once in Supabase → SQL Editor.
+- Every outreach/sequence email now ends with your company name + address (Settings → Company) and an unsubscribe link, plus Gmail's native one-click "Unsubscribe" header.
+- Leads who unsubscribe, or reply "stop / unsubscribe / not interested", are marked **Do not contact** and are never emailed again (any lead with the same email too). Toggle it manually in the lead's deal panel.
+- Daily cap: 150 emails per user per 24 h (change with `DAILY_SEND_LIMIT=` in `.env.local`). Extra sequence emails wait and go out automatically the next day.

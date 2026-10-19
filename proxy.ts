@@ -10,6 +10,9 @@ const PUBLIC_PATHS = [
   "/auth",
   "/book",
   "/p",
+  "/u",
+  "/privacy",
+  "/terms",
 ];
 
 // Pages that only make sense when logged OUT.

@@ -63,6 +63,7 @@ export async function sendGmail(
     body: string;
     threadId?: string | null;
     inReplyTo?: string | null;
+    headers?: string[];
   }
 ): Promise<{ id: string; threadId: string }> {
   const headers = [
@@ -72,6 +73,10 @@ export async function sendGmail(
     'Content-Type: text/plain; charset="UTF-8"',
     "Content-Transfer-Encoding: base64",
   ];
+
+  if (email.headers?.length) {
+    headers.push(...email.headers);
+  }
 
   if (email.inReplyTo) {
     headers.push(`In-Reply-To: ${email.inReplyTo}`, `References: ${email.inReplyTo}`);

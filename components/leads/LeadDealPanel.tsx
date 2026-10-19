@@ -64,6 +64,7 @@ export default function LeadDealPanel({
   const [note, setNote] = useState("");
   const [sequences, setSequences] = useState<{ id: string; name: string }[]>([]);
   const [message, setMessage] = useState("");
+  const [doNotContact, setDoNotContact] = useState(false);
 
   const flash = (text: string) => {
     setMessage(text);
@@ -74,7 +75,7 @@ export default function LeadDealPanel({
     const [{ data: lead }, { data: rows }] = await Promise.all([
       supabase
         .from("leads")
-        .select("assigned_to, user_id, deal_value, expected_close_date")
+        .select("*")
         .eq("id", leadId)
         .maybeSingle(),
       supabase
@@ -89,6 +90,7 @@ export default function LeadDealPanel({
     setValue(lead?.deal_value != null ? String(lead.deal_value) : "");
     setCloseDate(lead?.expected_close_date || "");
     setActivity((rows ?? []) as ActivityRow[]);
+    setDoNotContact(Boolean(lead?.do_not_contact));
   }, [leadId]);
 
   useEffect(() => {
@@ -334,6 +336,23 @@ export default function LeadDealPanel({
           })}
         </ol>
       </div>
+
+      <button
+        type="button"
+        onClick={() =>
+          void patch(
+            { do_not_contact: !doNotContact },
+            doNotContact ? "Emails allowed again." : "Marked do not contact. No more emails will be sent."
+          ).then(() => load())
+        }
+        className={`flex w-full items-center justify-center gap-1.5 rounded-lg border py-2 text-[11px] transition ${
+          doNotContact
+            ? "border-[#F0475C]/40 bg-[#F0475C]/10 text-[#F0475C]"
+            : "border-[#202020] text-gray-500 hover:border-[#F0475C]/30 hover:text-[#F0475C]"
+        }`}
+      >
+        {doNotContact ? "Do not contact (unsubscribed) · undo" : "Mark as do not contact"}
+      </button>
 
       <button
         type="button"

@@ -1,6 +1,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { notifyUser } from "@/lib/notify";
 import {
+  checkCanEmail,
+  isOptOutReply,
+  markDoNotContact,
+  unsubscribeHeaders,
+  withComplianceFooter,
+} from "@/lib/compliance";
+import {
   findReplyInThread,
   getGoogleAccessToken,
   sendGmail,
@@ -239,6 +246,17 @@ export async function detectReplies(supabase: SupabaseClient, userId: string) {
 
     await advanceLead(supabase, item.lead_id, "responded", "The lead replied to your email.", userId);
 
+    if (isOptOutReply(reply.snippet || "")) {
+      await markDoNotContact(supabase, item.lead_id, "Replied asking not to be contacted");
+      await logActivity(supabase, {
+        leadId: item.lead_id,
+        companyId: item.company_id,
+        userId,
+        type: "unsubscribed",
+        title: "Asked not to be contacted — BaseLead won't email them again",
+      });
+    }
+
     await supabase.from("tasks").insert({
       company_id: item.company_id,
       user_id: userId,
@@ -333,6 +351,23 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
       if (step.type === "email") {
         if (!lead.email) throw new Error("Lead has no email address.");
 
+        const allowed = await checkCanEmail(supabase, enrollment.user_id, lead);
+        if (!allowed.ok) {
+          if (allowed.retryTomorrow) {
+            // Daily cap: try again in ~a day, keep the sequence running.
+            await supabase
+              .from("sequence_enrollments")
+              .update({ next_run_at: new Date(Date.now() + 20 * 3600000).toISOString(), last_error: allowed.reason })
+              .eq("id", enrollment.id);
+            continue;
+          }
+          await supabase
+            .from("sequence_enrollments")
+            .update({ status: "stopped", next_run_at: null, last_error: allowed.reason })
+            .eq("id", enrollment.id);
+          continue;
+        }
+
         if (!tokens.has(enrollment.user_id)) {
           tokens.set(
             enrollment.user_id,
@@ -349,8 +384,9 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
         const message = await sendGmail(token, {
           to: lead.email,
           subject: threadId && !/^re:/i.test(subject) ? `Re: ${subject}` : subject,
-          body,
+          body: await withComplianceFooter(supabase, body, lead.id, enrollment.company_id),
           threadId,
+          headers: unsubscribeHeaders(lead.id),
         });
 
         threadId = threadId || message.threadId;

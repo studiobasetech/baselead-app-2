@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getGoogleAccessToken, sendGmail } from "@/lib/integrations/google-api";
 import { advanceLead, logActivity } from "@/lib/automation";
+import { checkCanEmail, unsubscribeHeaders, withComplianceFooter } from "@/lib/compliance";
 
 /**
  * Sends one outreach row by email through the owner's Gmail
@@ -21,13 +22,16 @@ export async function sendOutreachEmail(
 
   const { data: lead } = await supabase
     .from("leads")
-    .select("email, company, name")
+    .select("*")
     .eq("id", item.lead_id)
     .maybeSingle();
 
   if (!lead?.email) {
     throw new Error("This lead has no email address.");
   }
+
+  const allowed = await checkCanEmail(supabase, item.user_id, lead);
+  if (!allowed.ok) throw new Error(allowed.reason);
 
   const token = await getGoogleAccessToken(supabase, item.user_id, "gmail");
 
@@ -39,7 +43,8 @@ export async function sendOutreachEmail(
     const message = await sendGmail(token, {
       to: lead.email,
       subject: item.subject || `Hello ${lead.company || lead.name || ""}`.trim(),
-      body: item.message || "",
+      body: await withComplianceFooter(supabase, item.message || "", lead.id, lead.company_id),
+      headers: unsubscribeHeaders(lead.id),
     });
 
     const now = new Date().toISOString();

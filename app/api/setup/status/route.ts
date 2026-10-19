@@ -45,6 +45,11 @@ export async function GET() {
     if (error) tableErrors.push(`${table}: ${error.message}`);
   }
 
+  {
+    const { error } = await supabase.from("leads").select("do_not_contact", { head: true, count: "exact" }).limit(1);
+    if (error) tableErrors.push(`leads.do_not_contact: run supabase/UPDATE_2_RUN_THIS.sql (${error.message})`);
+  }
+
   const permissionProblem = tableErrors.some((message) => /permission denied/i.test(message));
 
   checks.push({
@@ -55,7 +60,9 @@ export async function GET() {
     detail: tableErrors.length
       ? permissionProblem
         ? "The tables exist but Supabase is blocking the app. Run supabase/FIX_PERMISSIONS.sql in Supabase → SQL Editor."
-        : `Run supabase/RUN_THIS_IN_SUPABASE.sql in Supabase → SQL Editor. (${tableErrors[0]})`
+        : tableErrors.every((message) => message.startsWith("leads.do_not_contact"))
+          ? "One small update is missing: run supabase/UPDATE_2_RUN_THIS.sql in Supabase → SQL Editor (adds unsubscribe support)."
+          : `Run supabase/RUN_THIS_IN_SUPABASE.sql in Supabase → SQL Editor. (${tableErrors[0]})`
       : "Tasks, timeline, sequences, bookings, proposals and contacts are ready.",
   });
 
@@ -188,6 +195,18 @@ export async function GET() {
           .filter(Boolean)
           .join(", ")}. See SETUP-BASELEAD.md section 6.`,
     action: { label: "Open Stripe", href: "https://dashboard.stripe.com/apikeys" },
+  });
+
+  /* ---------- Legal ---------- */
+  checks.push({
+    id: "legal",
+    group: "Recommended",
+    title: "Privacy Policy & Terms contact details",
+    ok: env("NEXT_PUBLIC_SUPPORT_EMAIL"),
+    detail: env("NEXT_PUBLIC_SUPPORT_EMAIL")
+      ? "Your /privacy and /terms pages show your support email (Google and Apple require this)."
+      : "Add NEXT_PUBLIC_SUPPORT_EMAIL (and optionally NEXT_PUBLIC_LEGAL_ENTITY, NEXT_PUBLIC_LEGAL_STATE) to .env.local so /privacy and /terms show how to contact you.",
+    action: { label: "View Privacy Policy", href: "/privacy" },
   });
 
   /* ---------- Optional extras ---------- */

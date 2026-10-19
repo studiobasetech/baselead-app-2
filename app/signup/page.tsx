@@ -437,6 +437,13 @@ export default function SignupPage() {
                   Your data is secure and encrypted
                 </span>
               </div>
+
+                <p className="mt-4 text-center text-xs text-gray-600">
+                  By continuing you agree to our{" "}
+                  <a href="/terms" className="text-gray-400 underline-offset-2 hover:text-white hover:underline">Terms</a>{" "}
+                  and{" "}
+                  <a href="/privacy" className="text-gray-400 underline-offset-2 hover:text-white hover:underline">Privacy Policy</a>.
+                </p>
             </section>
           </div>
         </div>

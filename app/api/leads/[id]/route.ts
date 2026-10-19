@@ -19,6 +19,7 @@ const EDITABLE = [
   "contact_name",
   "contact_title",
   "lost_reason",
+  "do_not_contact",
 ] as const;
 
 // Update a lead (e.g. move it in the pipeline).
