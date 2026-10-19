@@ -33,8 +33,12 @@ function looksLikeUi(s) {
   return /^[A-Z¿¡"'(0-9$€+•✓·—…]/.test(s) || s.includes(" ");
 }
 
+function decode(s) {
+  return s.replace(/&apos;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ").replace(/&rarr;/g, "→").replace(/&middot;/g, "·").replace(/&mdash;/g, "—");
+}
+
 function add(s) {
-  const v = s.replace(/\s+/g, " ").trim();
+  const v = decode(s).replace(/\s+/g, " ").trim();
   if (looksLikeUi(v)) out.add(v);
 }
 
@@ -68,7 +72,7 @@ for (const file of files) {
   visit(src);
 }
 
-const existing = fs.readFileSync("components/i18n/LanguageProvider.tsx", "utf8");
+const existing = fs.readFileSync("components/i18n/LanguageProvider.tsx", "utf8") + fs.readFileSync("components/i18n/es-ui.json", "utf8");
 const list = [...out].filter((s) => !existing.includes(JSON.stringify(s) + ":")).sort();
 fs.writeFileSync(process.argv[2] || "ui-strings.json", JSON.stringify(list, null, 0));
 console.log(out.size, "found;", list.length, "new");
