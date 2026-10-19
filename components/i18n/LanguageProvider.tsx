@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import { supabase } from "@/components/lib/supabase";
+import { DomTranslator } from "@/components/i18n/DomTranslator";
 
 export type Language = "en" | "es";
 
@@ -1098,21 +1099,15 @@ export function LanguageProvider({
    * This avoids blocking the entire application.
    */
 
-  if (!ready) {
-    return (
-      <LanguageContext.Provider
-        value={value}
-      >
-        {children}
-      </LanguageContext.Provider>
-    );
-  }
-
   return (
     <LanguageContext.Provider
       value={value}
     >
       {children}
+      <DomTranslator
+        active={ready && language === "es"}
+        extra={TRANSLATIONS}
+      />
     </LanguageContext.Provider>
   );
 }
