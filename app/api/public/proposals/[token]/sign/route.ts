@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hasAdminClient } from "@/lib/supabase/admin";
 import { loadPublicProposal } from "@/lib/public-proposal";
 import { advanceLead, logActivity } from "@/lib/automation";
+import { notifyUser } from "@/lib/notify";
 import { formatMoney } from "@/lib/proposals";
 import { dispatchWebhooks } from "@/lib/webhooks";
 
@@ -100,6 +101,19 @@ export async function POST(
       }).catch(() => undefined);
     }
   }
+
+  await notifyUser(admin, proposal.user_id, "proposal_signed", {
+    subject: `Signed: ${proposal.title} (${formatMoney(proposal.total, proposal.currency)})`,
+    heading: `${name} signed your proposal ✍️`,
+    lines: [
+      `"${proposal.title}" — ${formatMoney(proposal.total, proposal.currency)}`,
+      proposal.payment_mode === "none"
+        ? "The deal is marked as Won."
+        : "They're being sent to payment next. The deal moved to Negotiation.",
+    ],
+    ctaLabel: "View proposal",
+    ctaPath: "/proposals",
+  });
 
   return NextResponse.json({ success: true, needsPayment: proposal.payment_mode !== "none" });
 }

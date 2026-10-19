@@ -4,6 +4,7 @@ import { loadPublicProposal } from "@/lib/public-proposal";
 import { getWorkspaceSecret } from "@/lib/workspace-secrets";
 import { appUrl, stripeRequest } from "@/lib/stripe";
 import { advanceLead, logActivity } from "@/lib/automation";
+import { notifyUser } from "@/lib/notify";
 import { formatMoney } from "@/lib/proposals";
 
 // Stripe returns the client here after paying. We verify with Stripe.
@@ -68,6 +69,17 @@ export async function GET(
 
       await advanceLead(admin, proposal.lead_id, "won", "Proposal paid.", proposal.user_id);
     }
+
+    await notifyUser(admin, proposal.user_id, "proposal_paid", {
+      subject: `Payment received: ${formatMoney(paid, proposal.currency)}`,
+      heading: "You got paid 💸",
+      lines: [
+        `${proposal.client_name || "Your client"} paid ${formatMoney(paid, proposal.currency)} for "${proposal.title}".`,
+        "The deal is marked as Won.",
+      ],
+      ctaLabel: "View proposal",
+      ctaPath: "/proposals",
+    });
 
     return back("payment=success");
   } catch {

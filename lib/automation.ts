@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { notifyUser } from "@/lib/notify";
 import {
   findReplyInThread,
   getGoogleAccessToken,
@@ -247,6 +248,18 @@ export async function detectReplies(supabase: SupabaseClient, userId: string) {
       notes: reply.snippet,
       due_at: new Date().toISOString(),
       source: "automation",
+    });
+
+    await notifyUser(supabase, userId, "reply", {
+      subject: `${reply.from.replace(/<.*>/, "").trim() || "A lead"} replied to "${item.subject || "your email"}"`,
+      heading: "A lead just replied 🎉",
+      lines: [
+        `From: ${reply.from}`,
+        `"${reply.snippet}"`,
+        "The lead moved to Responded and their follow-up sequence was stopped.",
+      ],
+      ctaLabel: "Reply now",
+      ctaPath: "/outreach",
     });
 
     void dispatchWebhooks(supabase, userId, "outreach.replied", {

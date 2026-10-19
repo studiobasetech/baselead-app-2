@@ -5064,6 +5064,29 @@ function NotificationsTab({
     loadNotifications();
   }, [onToast, t]);
 
+  const [testing, setTesting] =
+    useState(false);
+
+  async function sendTestNotification() {
+    setTesting(true);
+
+    try {
+      const response = await fetch(
+        "/api/notifications/test",
+        { method: "POST" }
+      );
+      const json = await response.json().catch(() => ({}));
+
+      onToast(
+        response.ok
+          ? `${t("Test email sent to")} ${json.to}`
+          : json.error || t("Could not send the test email.")
+      );
+    } finally {
+      setTesting(false);
+    }
+  }
+
   async function saveNotifications() {
     setSaving(true);
 
@@ -5243,7 +5266,7 @@ function NotificationsTab({
             </PreferenceRow>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <YellowButton
               onClick={saveNotifications}
               disabled={saving}
@@ -5255,7 +5278,25 @@ function NotificationsTab({
                     "Save Notifications"
                   )}
             </YellowButton>
+
+            <button
+              type="button"
+              onClick={sendTestNotification}
+              disabled={testing}
+              className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs font-semibold text-gray-200 transition hover:border-[#a3e635]/60 hover:text-white disabled:opacity-50"
+            >
+              <Mail size={13} />
+              {testing
+                ? t("Sending...")
+                : t("Send test email")}
+            </button>
           </div>
+
+          <p className="mt-3 text-xs leading-relaxed text-gray-500">
+            {t(
+              "Notifications are sent to your login email through your connected Gmail. Meeting reminders arrive 1 hour before; the weekly report every Monday."
+            )}
+          </p>
         </>
       )}
     </Card>

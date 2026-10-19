@@ -7,6 +7,7 @@ import {
   getGoogleBusy,
 } from "@/lib/integrations/google-api";
 import { advanceLead, logActivity } from "@/lib/automation";
+import { notifyUser } from "@/lib/notify";
 import { dispatchWebhooks } from "@/lib/webhooks";
 
 async function loadPage(slug: string) {
@@ -244,6 +245,19 @@ export async function POST(
     type: "call",
     due_at: new Date(new Date(slot.start).getTime() - 3600000).toISOString(),
     source: "booking",
+  });
+
+  await notifyUser(admin, page.user_id, "booking", {
+    subject: `New meeting booked: ${body.company?.trim() || name}`,
+    heading: "Someone booked a meeting with you",
+    lines: [
+      `${name} (${email})${body.company?.trim() ? ` from ${body.company.trim()}` : ""}`,
+      `When: ${new Date(slot.start).toUTCString()}`,
+      ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
+      ...(body.notes?.trim() ? [`Notes: ${body.notes.trim()}`] : []),
+    ],
+    ctaLabel: "Open calendar",
+    ctaPath: "/calendar",
   });
 
   void dispatchWebhooks(admin, page.user_id, "meeting.created", event).catch(() => undefined);

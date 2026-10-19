@@ -705,6 +705,12 @@ const TRANSLATIONS: Record<string, string> = {
   "Save Notifications":
     "Guardar notificaciones",
 
+  "Sending...": "Enviando...",
+  "Send test email": "Enviar correo de prueba",
+  "Test email sent to": "Correo de prueba enviado a",
+  "Could not send the test email.": "No se pudo enviar el correo de prueba.",
+  "Notifications are sent to your login email through your connected Gmail. Meeting reminders arrive 1 hour before; the weekly report every Monday.":
+    "Las notificaciones llegan a tu correo de acceso a través de tu Gmail conectado. Los recordatorios de reunión llegan 1 hora antes y el reporte semanal cada lunes.",
   "Notification settings saved.":
     "Configuración de notificaciones guardada.",
 

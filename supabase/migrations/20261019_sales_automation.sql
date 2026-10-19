@@ -37,7 +37,9 @@ alter table public.leads
   add column if not exists contact_title text,
   add column if not exists linkedin_contact_url text;
 
-update public.leads set assigned_to = user_id where assigned_to is null;
+update public.leads set assigned_to = user_id
+where assigned_to is null
+  and user_id in (select id from auth.users);
 
 create index if not exists leads_assigned_idx on public.leads (assigned_to);
 create index if not exists leads_company_status_idx on public.leads (company_id, status);

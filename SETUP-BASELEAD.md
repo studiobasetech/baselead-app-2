@@ -161,3 +161,12 @@ Límites mensuales por plan: Starter 50, Pro 500, Scale 2,000 búsquedas.
 
 ## 12. Empezar de cero (borrar todos los leads)
 Configuración → **My Profile** → **Delete all leads** → escribe `DELETE ALL LEADS`. Borra todos los leads y su historial; tu cuenta, equipo y plan se quedan.
+
+## 13. Email notifications
+
+BaseLead emails each rep when: a lead replies, someone books a meeting, a proposal is opened / signed / paid / declined, 1 hour before every meeting, and a weekly report on Mondays (if turned on).
+
+- Works automatically through the rep's **connected Gmail** (Integrations → Gmail).
+- Optional branded emails: create a free account at resend.com, verify your domain, then set `RESEND_API_KEY` and `NOTIFY_FROM_EMAIL="BaseLead <alerts@yourdomain.com>"` in `.env.local`.
+- Needs `SUPABASE_SERVICE_ROLE_KEY`. Reminders and the weekly report run from the `/api/automation/run` cron.
+- Each person controls them in Settings → Notifications ("Send test email" checks delivery).

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hasAdminClient } from "@/lib/supabase/admin";
 import { loadPublicProposal } from "@/lib/public-proposal";
 import { logActivity } from "@/lib/automation";
+import { notifyUser } from "@/lib/notify";
 import { amountDue } from "@/lib/proposals";
 import { getWorkspaceSecret } from "@/lib/workspace-secrets";
 
@@ -47,6 +48,17 @@ export async function GET(
         source: "automation",
       });
     }
+
+    await notifyUser(admin, proposal.user_id, "proposal_viewed", {
+      subject: `${proposal.client_name || "Your client"} opened "${proposal.title}"`,
+      heading: "Your proposal was just opened 👀",
+      lines: [
+        `${proposal.client_name || "The client"} is looking at "${proposal.title}" right now.`,
+        "This is the best moment to follow up with a quick call.",
+      ],
+      ctaLabel: "View proposal",
+      ctaPath: "/proposals",
+    });
 
     proposal.viewed_at = now;
     if (proposal.status === "sent") proposal.status = "viewed";

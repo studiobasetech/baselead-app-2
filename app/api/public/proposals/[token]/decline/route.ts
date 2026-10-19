@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hasAdminClient } from "@/lib/supabase/admin";
 import { loadPublicProposal } from "@/lib/public-proposal";
 import { logActivity } from "@/lib/automation";
+import { notifyUser } from "@/lib/notify";
 
 // Public: the client declines the proposal.
 export async function POST(
@@ -49,6 +50,18 @@ export async function POST(
       source: "automation",
     });
   }
+
+  await notifyUser(admin, proposal.user_id, "proposal_declined", {
+    subject: `Declined: ${proposal.title}`,
+    heading: "A proposal was declined",
+    lines: [
+      `${proposal.client_name || "The client"} declined "${proposal.title}".`,
+      ...(reason ? [`Reason: ${reason}`] : []),
+      "A call to understand why is on your Today board.",
+    ],
+    ctaLabel: "Open Today",
+    ctaPath: "/today",
+  });
 
   return NextResponse.json({ success: true });
 }
