@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, hasAdminClient } from "@/lib/supabase/admin";
 import { getWorkspaceAccess } from "@/lib/workspace";
 import { getWorkspaceSecret } from "@/lib/workspace-secrets";
+import { isPlatformAdmin } from "@/lib/platform-admin";
 
 /*
  * Launch checklist: tells the user exactly what is configured and what is
@@ -35,6 +36,9 @@ export async function GET() {
   const access = await getWorkspaceAccess(supabase);
 
   if (!access) return NextResponse.json({ error: "Please sign in." }, { status: 401 });
+  if (!isPlatformAdmin(access.user.email)) {
+    return NextResponse.json({ error: "Only the BaseLead owner can see the launch checklist." }, { status: 403 });
+  }
 
   const checks: Check[] = [];
 

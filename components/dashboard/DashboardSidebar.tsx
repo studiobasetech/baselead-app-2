@@ -212,6 +212,14 @@ export default function DashboardSidebar() {
 
   const [loggingOut, setLoggingOut] = useState(false);
   const [workspace, setWorkspace] = useState<WorkspaceData>(EMPTY_WORKSPACE);
+  // The Setup checklist is only for the BaseLead owner, never for customers.
+  const [platformAdmin, setPlatformAdmin] = useState(false);
+  useEffect(() => {
+    fetch("/api/setup/admin")
+      .then((response) => (response.ok ? response.json() : { admin: false }))
+      .then((result) => setPlatformAdmin(Boolean(result.admin)))
+      .catch(() => undefined);
+  }, []);
   const [loadingWorkspace, setLoadingWorkspace] = useState(true);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -458,7 +466,7 @@ export default function DashboardSidebar() {
       <div className="flex min-h-0 flex-1 flex-col">
         {!notificationsOpen ? (
           <nav className="flex-1 space-y-1 overflow-y-auto px-3">
-            {NAV.map(({ icon: Icon, label, href, color }) => {
+            {NAV.filter((item) => item.href !== "/setup" || platformAdmin).map(({ icon: Icon, label, href, color }) => {
               const active = isActive(href);
 
               return (
