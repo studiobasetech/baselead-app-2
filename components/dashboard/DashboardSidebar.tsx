@@ -24,6 +24,7 @@ import {
   FileSignature,
   Trophy,
   ListChecks,
+  BookOpen,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -47,6 +48,7 @@ const NAV = [
   { icon: Send, label: "Outreach", href: "/outreach" },
   { icon: Workflow, label: "Sequences", href: "/sequences" },
   { icon: FileSignature, label: "Proposals", href: "/proposals" },
+  { icon: BookOpen, label: "Sales Toolkit", href: "/resources" },
   { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
   { icon: BarChart3, label: "Reports", href: "/reports" },
   { icon: Trophy, label: "Team Performance", href: "/team" },
