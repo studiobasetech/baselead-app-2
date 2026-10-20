@@ -148,7 +148,7 @@ export default function TeamPerformancePage() {
         {[
           { label: "Emails sent", value: totals.emails, icon: Mail, color: "#3B82F6" },
           { label: "Replies", value: totals.replies, icon: MessageSquareReply, color: "#2DD4BF" },
-          { label: "Meetings", value: totals.meetings, icon: Video, color: "#F22F46" },
+          { label: "Meetings", value: totals.meetings, icon: Video, color: "#F97316" },
           { label: "Proposals", value: totals.proposals, icon: FileSignature, color: "#A78BFA" },
           { label: "Revenue won", value: formatMoney(totals.wonValue), icon: Trophy, color: "#84CC16" },
         ].map(({ label, value, icon: Icon, color }) => (

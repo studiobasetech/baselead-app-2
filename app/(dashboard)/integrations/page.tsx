@@ -1898,7 +1898,7 @@ export default function IntegrationsPage() {
       const active = activeTab === tab;
       const meta = {
         Store: { icon: Store, color: "#3B82F6" },
-        "My Apps": { icon: LayoutGrid, color: "#84CC16" },
+        "My Apps": { icon: LayoutGrid, color: "#F5C518" },
         Webhooks: { icon: Webhook, color: "#2DD4BF" },
       }[tab];
       const TabIcon = meta.icon;
