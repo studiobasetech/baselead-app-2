@@ -37,6 +37,8 @@ import {
   Zap,
   MapPinned,
   MessageSquare,
+  Store,
+  LayoutGrid,
 } from "lucide-react";
 import PlanGate from "@/components/plans/PlanGate";
 import { usePlan } from "@/components/plans/PlanProvider";
@@ -1885,7 +1887,7 @@ export default function IntegrationsPage() {
   }}
   className="overflow-x-auto border-b"
 >
-  <div className="flex min-w-max items-center gap-7 px-4 sm:px-6 lg:px-7">
+  <div className="flex min-w-max items-center gap-1 px-4 sm:px-6 lg:px-7">
     {(
       [
         "Store",
@@ -1894,26 +1896,23 @@ export default function IntegrationsPage() {
       ] as Tab[]
     ).map((tab: Tab) => {
       const active = activeTab === tab;
+      const meta = {
+        Store: { icon: Store, color: "#F5C518" },
+        "My Apps": { icon: LayoutGrid, color: "#84CC16" },
+        Webhooks: { icon: Webhook, color: "#2DD4BF" },
+      }[tab];
+      const TabIcon = meta.icon;
 
       return (
         <button
           key={tab}
           type="button"
           onClick={() => setActiveTab(tab)}
-          style={{
-            color: active
-              ? isLightMode
-                ? "#111827"
-                : "#FFFFFF"
-              : isLightMode
-                ? "#777777"
-                : "#777777",
-            borderColor: active
-              ? "#F5C518"
-              : "transparent",
-          }}
-          className="relative border-b-2 pb-3 pt-4 text-xs font-medium transition-all duration-200 hover:-translate-y-[1px]"
+          data-active={active}
+          style={{ "--tab": meta.color, color: isLightMode ? "#555555" : "#8C8C8C" } as CSSProperties}
+          className="bl-tab my-2 flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-2 text-xs font-medium"
         >
+          <TabIcon size={14} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: meta.color }} aria-hidden />
           {tab}
 
           {tab === "My Apps" &&

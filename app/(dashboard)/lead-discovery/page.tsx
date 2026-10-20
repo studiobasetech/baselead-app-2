@@ -4,7 +4,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
+, type CSSProperties } from "react";
 
 import {
   CalendarDays,
@@ -27,6 +27,10 @@ import {
   TrendingUp,
   Users,
   X,
+  List,
+  Send,
+  MessageCircle,
+  Handshake,
 } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
@@ -4349,6 +4353,14 @@ ${companyName}`;
      TABS
   ======================================================= */
 
+  const LEAD_TAB_STYLE: Record<string, { icon: typeof Users; color: string }> = {
+    "All Leads": { icon: List, color: "#F5C518" },
+    "High-Intent": { icon: Flame, color: "#F97316" },
+    Contacted: { icon: Send, color: "#60A5FA" },
+    Responded: { icon: MessageCircle, color: "#A78BFA" },
+    Client: { icon: Handshake, color: "#84CC16" },
+  };
+
   const tabs = [
     ["All Leads", leads.length],
     [
@@ -4811,24 +4823,14 @@ ${companyName}`;
                   "Leads",
                 )
               }
-              className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-                discoveryView ===
-                "Leads"
-                  ? "bg-[#F5C518] text-black"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
+              data-active={discoveryView === "Leads"}
+              style={{ "--tab": "#F5C518" } as CSSProperties}
+              className="bl-tab flex items-center gap-2 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium text-gray-500"
             >
-              <Users size={16} />
+              <Users size={16} className="bl-tab-emoji" style={{ color: "#F5C518" }} />
               Leads
 
-              <span
-                className={`rounded-full px-1.5 py-0.5 text-[10px] ${
-                  discoveryView ===
-                  "Leads"
-                    ? "bg-black/10 text-black"
-                    : "bg-white/5 text-gray-600"
-                }`}
-              >
+              <span className="bl-tab-count rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] text-gray-600">
                 {leads.length}
               </span>
             </button>
@@ -4840,14 +4842,11 @@ ${companyName}`;
                   "Opportunity Radar",
                 )
               }
-              className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-                discoveryView ===
-                "Opportunity Radar"
-                  ? "bg-[#F5C518] text-black"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
+              data-active={discoveryView === "Opportunity Radar"}
+              style={{ "--tab": "#22D3EE" } as CSSProperties}
+              className="bl-tab flex items-center gap-2 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium text-gray-500"
             >
-              <Target size={16} />
+              <Target size={16} className="bl-tab-emoji" style={{ color: "#22D3EE" }} />
               Opportunity Radar
             </button>
           </div>
@@ -5073,7 +5072,7 @@ ${companyName}`;
 
               {/* TABS */}
 
-              <div className="mt-5 flex gap-6 overflow-x-auto border-b border-white/10">
+              <div className="mt-5 flex gap-1 overflow-x-auto border-b border-white/10">
                 {tabs.map(
                   ([
                     label,
@@ -5087,23 +5086,14 @@ ${companyName}`;
                           label,
                         )
                       }
-                      className={`flex shrink-0 items-center gap-2 border-b-2 px-1 pb-3 text-sm transition ${
-                        activeTab ===
-                        label
-                          ? "border-[#F5C518] text-white"
-                          : "border-transparent text-gray-500 hover:text-gray-300"
-                      }`}
+                      data-active={activeTab === label}
+                      style={{ "--tab": LEAD_TAB_STYLE[label].color } as CSSProperties}
+                      className="bl-tab mb-2 flex shrink-0 items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-sm text-gray-500"
                     >
+                      {(() => { const TabIcon = LEAD_TAB_STYLE[label].icon; return <TabIcon size={15} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: LEAD_TAB_STYLE[label].color }} aria-hidden />; })()}
                       {label}
 
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-xs ${
-                          activeTab ===
-                          label
-                            ? "bg-[#F5C518]/10 text-[#F5C518]"
-                            : "bg-white/5 text-gray-500"
-                        }`}
-                      >
+                      <span className="bl-tab-count rounded-full bg-white/5 px-2 py-0.5 text-xs text-gray-500">
                         {count}
                       </span>
                     </button>

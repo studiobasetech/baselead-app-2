@@ -44,6 +44,7 @@ import {
   Send,
   MessageCircle,
   Handshake,
+  Wand2,
 } from "lucide-react";
 
 type SearchMode = "simple" | "advanced";
@@ -2527,24 +2528,22 @@ export default function NewSearchPage() {
                       <button
                         type="button"
                         onClick={() => setMode("simple")}
-                        className={`rounded-lg px-5 py-2 text-sm transition ${
-                          mode === "simple"
-                            ? "bg-white/10 text-white"
-                            : "text-gray-500"
-                        }`}
+                        data-active={mode === "simple"}
+                        style={{ "--tab": "#60A5FA" } as CSSProperties}
+                        className="bl-tab flex items-center gap-1.5 rounded-lg border border-transparent px-4 py-2 text-sm text-gray-500"
                       >
+                        <Wand2 size={14} className="bl-tab-emoji" style={{ color: "#60A5FA" }} />
                         Simple
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setMode("advanced")}
-                        className={`rounded-lg px-5 py-2 text-sm transition ${
-                          mode === "advanced"
-                            ? "bg-[#FFD000]/10 text-[#FFD000]"
-                            : "text-gray-500"
-                        }`}
+                        data-active={mode === "advanced"}
+                        style={{ "--tab": "#F5C518" } as CSSProperties}
+                        className="bl-tab flex items-center gap-1.5 rounded-lg border border-transparent px-4 py-2 text-sm text-gray-500"
                       >
+                        <SlidersHorizontal size={14} className="bl-tab-emoji" style={{ color: "#F5C518" }} />
                         Advanced
                       </button>
                     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState , type CSSProperties } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 import {
@@ -24,6 +24,11 @@ import {
   Trash2,
   Video,
   X,
+  Sun,
+  Rows3,
+  CalendarDays,
+  CalendarRange,
+  Crosshair,
 } from "lucide-react";
 
 /* =========================================================
@@ -5161,13 +5166,15 @@ export default function CalendarPage() {
                   palette.smallShadow,
               }}
             >
-              {[
-                "Day",
-                "Week",
-                "Month",
-                "Year",
-                "Focus",
-              ].map((item) => (
+              {(
+                [
+                  ["Day", Sun, "#F5C518"],
+                  ["Week", Rows3, "#60A5FA"],
+                  ["Month", CalendarDays, "#A78BFA"],
+                  ["Year", CalendarRange, "#22D3EE"],
+                  ["Focus", Crosshair, "#F472B6"],
+                ] as const
+              ).map(([item, Icon, color]) => (
                 <button
                   key={item}
                   type="button"
@@ -5176,22 +5183,15 @@ export default function CalendarPage() {
                       item as CalendarView
                     )
                   }
-                  className="px-4 py-2.5 text-[10px] transition-all hover:-translate-y-0.5"
+                  data-active={view === item}
+                  className="bl-tab m-0.5 flex items-center gap-1.5 rounded-lg border border-transparent px-3.5 py-2 text-xs"
                   style={{
-                    backgroundColor:
-                      view === item
-                        ? GOLD
-                        : "transparent",
-                    color:
-                      view === item
-                        ? "#000000"
-                        : palette.secondary,
-                    fontWeight:
-                      view === item
-                        ? 600
-                        : 400,
-                  }}
+                    "--tab": color,
+                    color: palette.secondary,
+                    fontWeight: view === item ? 600 : 500,
+                  } as CSSProperties}
                 >
+                  <Icon size={14} strokeWidth={2.2} className="bl-tab-emoji" style={{ color }} aria-hidden />
                   {item}
                 </button>
               ))}
