@@ -547,6 +547,18 @@ export function PreferencesProvider({
       DEFAULT_PREFERENCES
     );
 
+  // Reveal theme-dependent pages once they've read the theme (prevents a dark flash in light mode).
+  useEffect(() => {
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => document.documentElement.classList.add("bl-ready"));
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(second);
+    };
+  }, []);
+
   const [
     currentUserId,
     setCurrentUserId,

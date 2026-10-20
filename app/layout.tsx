@@ -59,7 +59,7 @@ export default function RootLayout({
         {/* Apply the saved light/dark theme before the first paint (no flash). */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("baselead-theme");var d=t!=="light";var r=document.documentElement;r.classList.add(d?"baselead-dark":"baselead-light");r.dataset.baseleadTheme=d?"dark":"light";r.dataset.baseleadDarkMode=d?"true":"false";r.style.colorScheme=d?"dark":"light";r.style.backgroundColor=d?"#050505":"#f5f5f7";}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem("baselead-theme");var d=t!=="light";var r=document.documentElement;r.classList.add(d?"baselead-dark":"baselead-light");r.dataset.baseleadTheme=d?"dark":"light";r.dataset.baseleadDarkMode=d?"true":"false";r.style.colorScheme=d?"dark":"light";r.style.backgroundColor=d?"#050505":"#f5f5f7";setTimeout(function(){r.classList.add("bl-ready")},1500);}catch(e){}})();`,
           }}
         />
       </head>

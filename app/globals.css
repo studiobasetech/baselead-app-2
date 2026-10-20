@@ -1721,3 +1721,9 @@ html.baselead-light [style*="border-color: rgb(23, 23, 23)"] {
 html.baselead-light [style*="background-color: rgba(8, 8, 10"] {
   background-color: rgba(255, 255, 255, 0.86) !important;
 }
+
+/* Light mode: hide page content for the first frames until components have
+   read the theme, so nothing flashes dark while loading. */
+html.baselead-light:not(.bl-ready) .baselead-main > * {
+  opacity: 0 !important;
+}
