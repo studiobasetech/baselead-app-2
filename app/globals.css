@@ -1625,17 +1625,19 @@ html.baselead-light .bl-tab .bl-tab-emoji {
   filter: drop-shadow(0 0 8px color-mix(in srgb, var(--nav) 60%, transparent));
 }
 
-/* Cards: soft gold edge-light on hover */
+/* Cards: soft edge-light on hover, in the color of the card's own icon
+   or chart (--hover-accent is set by components/ui/HoverAccent). */
 .bl-card,
 .baselead-main [class*="rounded-2xl"][class*="border-[#202020]"] {
   transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 .bl-card:hover,
-.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
-  border-color: rgba(59, 130, 246, 0.22) !important;
+.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover,
+.baselead-main [data-hover-accent="1"]:hover {
+  border-color: color-mix(in srgb, var(--hover-accent, #3B82F6) 34%, transparent) !important;
   box-shadow:
-    0 0 0 1px rgba(59, 130, 246, 0.06),
-    0 18px 40px -22px rgba(59, 130, 246, 0.28),
+    0 0 0 1px color-mix(in srgb, var(--hover-accent, #3B82F6) 8%, transparent),
+    0 18px 40px -22px color-mix(in srgb, var(--hover-accent, #3B82F6) 45%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
 }
 

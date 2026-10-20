@@ -148,6 +148,9 @@ const LIGHT_ICON_SURFACES = {
   [BLUE]: "#EAF3FF",
 };
 
+// Leads by Source uses shades of the brand blue.
+const SOURCE_COLORS = ["#3B82F6", "#3B82F6B3", "#3B82F680", "#3B82F659", "#3B82F638", "#3B82F626"];
+
 const DASHBOARD_COLORS = [
   GOLD,
   BLUE,
@@ -851,7 +854,7 @@ function SourceDonut({
               }%`,
           )
           .join(", ")})`
-      : `conic-gradient(${GOLD} 0% 100%)`;
+      : `conic-gradient(${BLUE} 0% 100%)`;
 
   return (
     <Card
@@ -866,11 +869,11 @@ function SourceDonut({
             style={{
               backgroundColor:
                 getIconBackground(
-                  PURPLE,
+                  BLUE,
                 ),
-              color: PURPLE,
+              color: BLUE,
               borderColor:
-                softBorder(PURPLE),
+                softBorder(BLUE),
             }}
             className="rounded-full border px-2.5 py-1 text-[10px] font-semibold"
           >
@@ -887,7 +890,7 @@ function SourceDonut({
             style={{
               background: gradient,
               boxShadow: `0 12px 40px ${softGlow(
-                GOLD,
+                BLUE,
               )}`,
             }}
           >
@@ -2222,9 +2225,9 @@ export default function ReportsPage() {
           name,
           count,
           color:
-            DASHBOARD_COLORS[
+            SOURCE_COLORS[
               index %
-                DASHBOARD_COLORS.length
+                SOURCE_COLORS.length
             ],
         }),
       );
