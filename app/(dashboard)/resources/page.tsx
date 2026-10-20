@@ -66,11 +66,11 @@ const EMOJIS = ["📁", "🎤", "🛡️", "🎓", "🏆", "💰", "✉️", "�
 
 const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string }[] = [
   { id: "all", label: "All", icon: BookOpen, color: "#3B82F6" },
-  { id: "document", label: "Documents", icon: FileText, color: "#3B82F6" },
+  { id: "document", label: "Documents", icon: FileText, color: "#F5C518" },
   { id: "video", label: "Videos", icon: PlayCircle, color: "#F22F46" },
   { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA" },
   { id: "link", label: "Links", icon: Link2, color: "#2DD4BF" },
-  { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16" },
+  { id: "text", label: "Scripts", icon: Sparkles, color: "#F472B6" },
 ];
 
 const kindMeta = (kind: Kind) => KINDS.find((item) => item.id === kind) ?? KINDS[1];

@@ -88,7 +88,7 @@ const TEMPLATES: { key: string; name: string; description: string; icon: typeof 
     name: "New client outreach",
     description: "3 emails and a call over 10 days. Best for new leads you found.",
     icon: Rocket,
-    color: "#3B82F6",
+    color: "#2DD4BF",
     steps: [
       {
         delay_days: 0,
@@ -119,7 +119,7 @@ const TEMPLATES: { key: string; name: string; description: string; icon: typeof 
     name: "Follow up on a proposal",
     description: "Gentle nudges after you send a quote, with a call in between.",
     icon: FileSignature,
-    color: "#84CC16",
+    color: "#F97316",
     steps: [
       {
         delay_days: 0,

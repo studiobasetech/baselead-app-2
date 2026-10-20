@@ -597,14 +597,28 @@ function ToggleCard({
   enabled: boolean;
   onToggle: () => void;
   icon: ReactNode;
-  accent: "yellow" | "purple" | "blue" | "green";
+  accent: "yellow" | "purple" | "blue" | "green" | "red" | "teal" | "pink" | "orange";
 }) {
   const iconClasses = {
     yellow: "bg-[#3B82F6]/10 text-[#3B82F6]",
     purple: "bg-[#A78BFA]/10 text-[#A78BFA]",
     blue: "bg-[#3B82F6]/10 text-[#3B82F6]",
     green: "bg-[#84CC16]/10 text-[#84CC16]",
+    red: "bg-[#F22F46]/10 text-[#F22F46]",
+    teal: "bg-[#2DD4BF]/10 text-[#2DD4BF]",
+    pink: "bg-[#F472B6]/10 text-[#F472B6]",
+    orange: "bg-[#F97316]/10 text-[#F97316]",
   };
+  const glow = {
+    yellow: "bg-[#3B82F6]",
+    purple: "bg-[#A78BFA]",
+    blue: "bg-[#3B82F6]",
+    green: "bg-[#84CC16]",
+    red: "bg-[#F22F46]",
+    teal: "bg-[#2DD4BF]",
+    pink: "bg-[#F472B6]",
+    orange: "bg-[#F97316]",
+  }[accent];
 
   return (
     <div
@@ -617,7 +631,7 @@ function ToggleCard({
       <div
         className={`absolute right-0 top-0 h-24 w-24 rounded-full blur-3xl transition-opacity ${
           enabled ? "opacity-20" : "opacity-0"
-        } ${accent === "yellow" ? "bg-[#3B82F6]" : accent === "purple" ? "bg-[#A78BFA]" : accent === "blue" ? "bg-[#3B82F6]" : "bg-[#84CC16]"}`}
+        } ${glow}`}
       />
 
       <div className="relative flex items-start justify-between gap-4">
@@ -2675,7 +2689,7 @@ export default function NewSearchPage() {
 
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A78BFA]/10 text-[#A78BFA]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316]/10 text-[#F97316]">
                     <SlidersHorizontal size={19} />
                   </span>
 
@@ -2758,7 +2772,7 @@ export default function NewSearchPage() {
 
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#84CC16]/10 text-[#84CC16]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F5C518]/10 text-[#F5C518]">
                     <Brain size={19} />
                   </span>
 
@@ -2800,7 +2814,7 @@ export default function NewSearchPage() {
                       }))
                     }
                     icon={<Zap size={17} />}
-                    accent="purple"
+                    accent="red"
                   />
 
                   <ToggleCard
@@ -2814,7 +2828,7 @@ export default function NewSearchPage() {
                       }))
                     }
                     icon={<Sparkles size={17} />}
-                    accent="blue"
+                    accent="teal"
                   />
 
                   <ToggleCard
@@ -2829,7 +2843,7 @@ export default function NewSearchPage() {
                       }))
                     }
                     icon={<Users size={17} />}
-                    accent="green"
+                    accent="pink"
                   />
                 </div>
 

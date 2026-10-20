@@ -2475,7 +2475,7 @@ export default function DashboardPage() {
                     style={{
                       backgroundColor:
                         getDashboardIconSurface(
-                          RED_SURFACE,
+                          GOLD_SURFACE,
                           isLightMode,
                         ),
                     }}
@@ -2483,7 +2483,7 @@ export default function DashboardPage() {
                     <Flame
                       size={12}
                       style={{
-                        color: RED,
+                        color: "#F97316",
                       }}
                     />
                   </div>
@@ -2520,7 +2520,7 @@ export default function DashboardPage() {
                     style={{
                       backgroundColor:
                         getDashboardIconSurface(
-                          PURPLE_SURFACE,
+                          BLUE_SURFACE,
                           isLightMode,
                         ),
                     }}
@@ -2529,7 +2529,7 @@ export default function DashboardPage() {
                       size={12}
                       style={{
                         color:
-                          PURPLE,
+                          "#2DD4BF",
                       }}
                     />
                   </div>
@@ -3898,7 +3898,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        GOLD_SURFACE,
+                        PURPLE_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -3906,7 +3906,7 @@ export default function DashboardPage() {
                   <Activity
                     size={14}
                     style={{
-                      color: GOLD,
+                      color: "#F472B6",
                     }}
                   />
                 </div>
@@ -4115,15 +4115,15 @@ export default function DashboardPage() {
               style={{
                 border:
                   `1px solid ${hexToRgba(
-                    GOLD,
+                    BRAND,
                     0.1,
                   )}`,
                 backgroundColor:
                   hexToRgba(
-                    GOLD,
+                    BRAND,
                     0.03,
                   ),
-                color: GOLD,
+                color: BRAND,
               }}
             >
               View all

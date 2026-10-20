@@ -96,11 +96,11 @@ function getCategoryColor(category: Exclude<Category, "All">) {
     case "Calendar":
       return BLUE;
     case "Data":
-      return GREEN;
+      return PURPLE;
     case "Phone":
-      return TWILIO_RED;
+      return "#2DD4BF";
     case "Automation":
-      return GOLD;
+      return "#F97316";
   }
 }
 
@@ -1728,7 +1728,7 @@ export default function IntegrationsPage() {
       description:
         "Move your data",
       icon: <FileSpreadsheet size={17} />,
-      color: GREEN,
+      color: PURPLE,
     },
     {
       name: "Phone",
@@ -1742,7 +1742,7 @@ export default function IntegrationsPage() {
       description:
         "Automate work",
       icon: <Zap size={17} />,
-      color: GOLD,
+      color: "#F97316",
     },
     {
       name: "All",
@@ -1899,7 +1899,7 @@ export default function IntegrationsPage() {
       const meta = {
         Store: { icon: Store, color: "#3B82F6" },
         "My Apps": { icon: LayoutGrid, color: "#F5C518" },
-        Webhooks: { icon: Webhook, color: "#2DD4BF" },
+        Webhooks: { icon: Webhook, color: "#F472B6" },
       }[tab];
       const TabIcon = meta.icon;
 

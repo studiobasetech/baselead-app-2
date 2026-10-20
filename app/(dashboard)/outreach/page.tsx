@@ -136,6 +136,8 @@ const BLUE = "#3B82F6";
 const GREEN = "#84CC16";
 const RED = "#F22F46";
 const CYAN = "#2DD4BF";
+const PINK = "#F472B6";
+const ORANGE = "#F97316";
 
 const PAGE_BACKGROUND = "#050505";
 const DEEP_SURFACE = "#0A0A0A";
@@ -217,7 +219,7 @@ function iconSurface(accent: string) {
         [CYAN]: DARK_ICON_SURFACES.cyan,
       };
 
-  return map[accent as keyof typeof map] || (light ? LIGHT_ICON_SURFACES.neutral : DARK_ICON_SURFACES.neutral);
+  return map[accent as keyof typeof map] || (accent.startsWith("#") ? hexToRgba(accent, light ? 0.14 : 0.16) : light ? LIGHT_ICON_SURFACES.neutral : DARK_ICON_SURFACES.neutral);
 }
 
 
@@ -245,10 +247,10 @@ const STATUSES = [
 ] as const;
 
 const STATUS_STYLE: Record<(typeof STATUSES)[number], { icon: typeof Inbox; color: string }> = {
-  All: { icon: Inbox, color: "#F5C518" },
+  All: { icon: Inbox, color: "#3B82F6" },
   Drafts: { icon: FilePen, color: "#9CA3AF" },
   Scheduled: { icon: CalendarClock, color: "#2DD4BF" },
-  Sent: { icon: Send, color: "#3B82F6" },
+  Sent: { icon: Send, color: "#F5C518" },
   Opened: { icon: Eye, color: "#A78BFA" },
   Replied: { icon: Reply, color: "#84CC16" },
   "Follow-ups": { icon: Repeat, color: "#F97316" },
@@ -934,7 +936,7 @@ function EngagementPulse({ outreach }: { outreach: Outreach }) {
     { active: Boolean(outreach.raw.sent_at) || ["Sent","Opened","Replied","Interested"].includes(outreach.status), color: BLUE },
     { active: Boolean(outreach.raw.opened_at), color: PURPLE },
     { active: Boolean(outreach.raw.replied_at), color: GREEN },
-    { active: outreach.status === "Interested", color: GOLD },
+    { active: outreach.status === "Interested", color: PINK },
   ];
   return (
     <div className="flex items-center gap-1" title="Engagement progression">
@@ -958,7 +960,7 @@ function OutreachIntelligence({ outreach, onOpen }: { outreach: Outreach[]; onOp
     {label:"Sent",value:outreach.filter(x=>Boolean(x.raw.sent_at)).length,color:BLUE},
     {label:"Opened",value:opened.length,color:PURPLE},
     {label:"Replied",value:replied.length,color:GREEN},
-    {label:"Interested",value:interested.length,color:GOLD},
+    {label:"Interested",value:interested.length,color:PINK},
   ];
   const max=Math.max(1,...activity.map(x=>x.value));
   return (
@@ -976,7 +978,7 @@ function OutreachIntelligence({ outreach, onOpen }: { outreach: Outreach[]; onOp
             <ChevronRight size={14} className="text-[#555] transition-all group-hover/action:translate-x-1 group-hover/action:text-[#A78BFA]"/>
           </button>
         ) : <div className="mt-4 rounded-xl border border-[#202020] bg-[#101010] p-4"><p className="text-[12px] font-semibold text-white">Your outreach engine is ready.</p><p className="mt-1 text-[10px] leading-4 text-[#666]">Create your first personalized message and BaseLead will surface engagement signals here.</p></div>}
-        <div className="mt-4 grid grid-cols-3 gap-2">{[["Replies",replied.length,GREEN],["Interested",interested.length,GOLD],["Opened",opened.length,PURPLE]].map(([label,value,color])=><div key={String(label)} className="rounded-xl border border-[#202020] bg-[#101010] p-3"><p className="text-[10px] uppercase tracking-wider text-[#555]">{String(label)}</p><p className="mt-1 text-lg font-semibold" style={{color:String(color)}}>{String(value)}</p></div>)}</div>
+        <div className="mt-4 grid grid-cols-3 gap-2">{[["Replies",replied.length,GREEN],["Interested",interested.length,PINK],["Opened",opened.length,PURPLE]].map(([label,value,color])=><div key={String(label)} className="rounded-xl border border-[#202020] bg-[#101010] p-3"><p className="text-[10px] uppercase tracking-wider text-[#555]">{String(label)}</p><p className="mt-1 text-lg font-semibold" style={{color:String(color)}}>{String(value)}</p></div>)}</div>
       </div>
       <div className="group relative overflow-hidden rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#3B82F6]/30 hover:shadow-[0_18px_40px_rgba(59,130,246,0.08)]">
         <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A]"><Activity size={14} className="text-[#3B82F6]" /></div><div><p className="text-[12px] font-semibold text-white">Engagement Pulse</p><p className="text-[10px] text-[#666]">Current outreach momentum</p></div></div><TrendingUp size={14} className="text-[#84CC16]"/></div>
@@ -4662,7 +4664,7 @@ StudioBase`;
               outreach.length
             )}
             detail="Live from Supabase"
-            accent={GREEN}
+            accent={BLUE}
             surface={GREEN_SURFACE}
           />
 
@@ -4678,7 +4680,7 @@ StudioBase`;
               sentCount
             )}
             detail="Records marked sent"
-            accent={BLUE}
+            accent={GOLD}
             surface={BLUE_SURFACE}
           />
 
@@ -4726,7 +4728,7 @@ StudioBase`;
               interestedCount
             )}
             detail="Interested leads"
-            accent={GOLD}
+            accent={PINK}
             surface={GOLD_SURFACE}
           />
 

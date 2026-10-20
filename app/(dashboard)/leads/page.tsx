@@ -4465,7 +4465,7 @@ ${companyName}`;
   const LEAD_TAB_STYLE: Record<string, { icon: typeof Users; color: string }> = {
     "All Leads": { icon: List, color: "#3B82F6" },
     "High-Intent": { icon: Flame, color: "#F97316" },
-    Contacted: { icon: Send, color: "#3B82F6" },
+    Contacted: { icon: Send, color: "#F472B6" },
     Responded: { icon: MessageCircle, color: "#A78BFA" },
     Client: { icon: Handshake, color: "#84CC16" },
   };

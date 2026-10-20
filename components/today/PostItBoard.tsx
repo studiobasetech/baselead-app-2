@@ -167,7 +167,7 @@ export default function PostItBoard({
 
       <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="bl-icon-tile" style={{ "--tab": "#F5C518" } as CSSProperties} aria-hidden>
+          <span className="bl-icon-tile" style={{ "--tab": "#3B82F6" } as CSSProperties} aria-hidden>
             <StickyNote size={17} strokeWidth={2.2} />
           </span>
           <div>

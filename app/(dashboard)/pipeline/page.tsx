@@ -2891,13 +2891,13 @@ export default function PipelinePage() {
             icon={
               <Target
                 size={18}
-                className="text-[#3B82F6]"
+                className="text-[#F5C518]"
               />
             }
             label="Avg. Score"
             value={`${averageScore}/100`}
             change={`${highOpportunityCount} high opportunity`}
-            iconClass="border border-[#3B82F6]/10 bg-[#10243A]"
+            iconClass="border border-[#F5C518]/10 bg-[#F5C518]/10"
           />
 
           <KpiCard
