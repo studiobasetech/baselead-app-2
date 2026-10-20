@@ -542,7 +542,7 @@ function AppStoreAction({
         disabled:cursor-not-allowed
         disabled:opacity-40
         ${primary
-          ? "border-[#3B82F6] bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.18)] hover:border-[#2F74E8] hover:bg-[#2F74E8] hover:text-black hover:shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
+          ? "border-[#3B82F6] bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.18)] hover:border-[#2F74E8] hover:bg-[#2F74E8] hover:text-white hover:shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
           : "border-[#202020] bg-[#101010] text-[#3B82F6] hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6] hover:shadow-[0_8px_24px_rgba(59,130,246,0.12)]"}
         ${className}
       `}
