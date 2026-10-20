@@ -166,7 +166,7 @@ export default function TeamPerformancePage() {
 
       <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
         {/* Leaderboard */}
-        <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+        <section className="min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center gap-3">
             <span className="bl-icon-tile" style={{ "--tab": "#F5C518" } as CSSProperties}>
               <Medal size={17} strokeWidth={2.2} />
@@ -253,7 +253,7 @@ export default function TeamPerformancePage() {
         </section>
 
         {/* Funnel */}
-        <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+        <section className="min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center gap-3">
             <span className="bl-icon-tile" style={{ "--tab": "#22D3EE" } as CSSProperties}>
               <Filter size={17} strokeWidth={2.2} />
