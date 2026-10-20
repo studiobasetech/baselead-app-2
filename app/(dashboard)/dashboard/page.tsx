@@ -2401,21 +2401,10 @@ export default function DashboardPage() {
               </span>
             </div>
 
-            {/* DYNAMIC COMPANY GREETING */}
+            {/* PAGE TITLE */}
 
             <h1 className="text-3xl font-bold leading-[1.05] tracking-[-0.04em] sm:text-4xl lg:text-[46px]">
-              {companyName ? "Welcome back," : "Welcome back"}
-
-              {companyName && (
-                <span
-                  style={{
-                    color: GOLD,
-                  }}
-                >
-                  {" "}
-                  {companyName}
-                </span>
-              )}
+              Dashboard
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[#777] sm:text-[15px]">
