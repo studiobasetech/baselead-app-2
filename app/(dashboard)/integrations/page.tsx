@@ -251,6 +251,7 @@ const integrations: Integration[] = [
   {
   id: "google-maps",
   name: "Google Maps",
+  builtIn: true,
   description:
     "Find businesses, locations, and nearby companies for your lead searches.",
   category: "Data",
@@ -701,6 +702,16 @@ export default function IntegrationsPage() {
   const [twilioConnected, setTwilioConnected] =
     useState(false);
 
+  const [placesReady, setPlacesReady] =
+    useState(false);
+
+  useEffect(() => {
+    void fetch("/api/integrations/status", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((status) => setPlacesReady(Boolean(status?.googlePlaces)))
+      .catch(() => undefined);
+  }, []);
+
   useEffect(() => {
     void fetch("/api/settings/twilio", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
@@ -983,6 +994,7 @@ export default function IntegrationsPage() {
     id: IntegrationId
   ) {
     if (id === "twilio") return twilioConnected;
+    if (id === "google-maps") return placesReady;
 
     return connections.some(
       (
@@ -1309,20 +1321,8 @@ export default function IntegrationsPage() {
     return;
   }
       if (integration.id === "google-maps") {
-      // Google Maps is the lead data source, configured on the server.
-      void fetch("/api/integrations/status")
-        .then((response) => response.json())
-        .then((status) =>
-          showToast(
-            status.googlePlaces
-              ? "Google Maps is active: lead searches use real Google business data."
-              : "Google Maps is not set up yet. Add GOOGLE_PLACES_API_KEY to the server settings."
-          )
-        )
-        .catch(() =>
-          showToast("Could not check the Google Maps status.")
-        );
-
+      // Built into BaseLead (server API key) — nothing for the user to log into.
+      setSelectedIntegration(integration);
       return;
     }
     if (integration.id === "csv") {
@@ -2631,7 +2631,18 @@ export default function IntegrationsPage() {
             </div>
 
 
-            {selectedIntegration.id === "twilio" ? (
+            {selectedIntegration.id === "google-maps" ? (
+              <div className={`rounded-xl border p-4 ${placesReady ? "border-[#84CC16]/20 bg-[#18200B]" : "border-[#F5C518]/25 bg-[#F5C518]/[0.05]"}`}>
+                <p className={`text-sm font-semibold ${placesReady ? "text-[#84CC16]" : "text-[#F5C518]"}`}>
+                  {placesReady ? "Active — built into BaseLead" : "Using free OpenStreetMap data for now"}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-gray-400">
+                  {placesReady
+                    ? "There is nothing to log into. Every search in Lead Discovery uses real Google Maps business data automatically, for every user of your workspace."
+                    : "Google Maps is not a login. Lead Discovery already finds real businesses using free OpenStreetMap data. When the BaseLead owner adds a Google Places API key on the server, searches switch to Google Maps data (ratings, reviews, more contacts) for every user automatically."}
+                </p>
+              </div>
+            ) : selectedIntegration.id === "twilio" ? (
               <TwilioConnectCard
                 embedded
                 onStatusChange={setTwilioConnected}

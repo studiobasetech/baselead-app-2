@@ -7,6 +7,7 @@ import {
   isPlacesConfigured,
   searchGooglePlaces,
 } from "./google-places-provider";
+import { searchOpenStreetMap } from "./osm-provider";
 import { enrichWebsite, mapLimit } from "./enrich";
 import { scoreLead } from "./scoring";
 import { askAiJson, isAiConfigured } from "@/lib/ai";
@@ -34,19 +35,19 @@ export async function processSearch(
   // Real data only: no sample/demo businesses are ever created.
   const demo = false;
 
-  if (!isPlacesConfigured()) {
-    throw new Error(
-      "Real lead search is not connected yet. Add your GOOGLE_PLACES_API_KEY to .env.local and restart the app (see SETUP-BASELEAD.md)."
-    );
-  }
+  // Google Places when the owner has a key; otherwise the free
+  // OpenStreetMap source, so lead discovery always works.
+  const providerCriteria = {
+    ...criteria,
+    // Fetch extra so duplicates can be skipped.
+    leads: criteria.excludeExisting
+      ? Math.min(60, (criteria.leads ?? 20) * 2)
+      : criteria.leads,
+  };
 
-  const potentialLeads = await searchGooglePlaces({
-        ...criteria,
-        // Fetch extra so duplicates can be skipped.
-        leads: criteria.excludeExisting
-          ? Math.min(60, (criteria.leads ?? 20) * 2)
-          : criteria.leads,
-      });
+  const potentialLeads = isPlacesConfigured()
+    ? await searchGooglePlaces(providerCriteria)
+    : await searchOpenStreetMap(providerCriteria);
 
   if (potentialLeads.length === 0) {
     return {

@@ -93,12 +93,12 @@ export async function GET() {
   /* ---------- Lead source ---------- */
   checks.push({
     id: "google-places",
-    group: "Required",
-    title: "Google Places API (real leads)",
+    group: "Recommended",
+    title: "Google Places API (richer lead data)",
     ok: env("GOOGLE_PLACES_API_KEY"),
     detail: env("GOOGLE_PLACES_API_KEY")
-      ? "Lead Discovery searches real businesses on Google Maps."
-      : "Without it, searches can't find leads. Google Cloud Console → enable “Places API (New)” → Credentials → Create API key → add GOOGLE_PLACES_API_KEY to .env.local.",
+      ? "Lead Discovery searches real businesses on Google Maps (ratings, reviews, more phones and websites)."
+      : "Lead Discovery already works with free OpenStreetMap data. Add a Google Places key later (needs billing on Google Cloud) for ratings, reviews and more complete contact info.",
     action: { label: "Open Google Cloud", href: "https://console.cloud.google.com/apis/library/places.googleapis.com" },
   });
 

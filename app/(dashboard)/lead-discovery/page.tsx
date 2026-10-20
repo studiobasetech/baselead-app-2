@@ -6391,6 +6391,9 @@ ${companyName}`;
           </div>
         </div>
       )}
+      <p className="px-6 pb-6 text-center text-[11px] text-gray-600">
+        Lead data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">OpenStreetMap contributors</a> and Google Maps, where available.
+      </p>
     </main>
   );
 }

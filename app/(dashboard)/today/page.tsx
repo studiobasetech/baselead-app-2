@@ -19,7 +19,7 @@ import {
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import BookingLinkCard from "@/components/booking/BookingLinkCard";
-import PostItBoard from "@/components/today/PostItBoard";
+import PostItBoard, { type BoardColumn } from "@/components/today/PostItBoard";
 
 type Task = {
   id: string;
@@ -30,6 +30,7 @@ type Task = {
   completed_at: string | null;
   lead_id: string | null;
   source: string;
+  board_status?: string | null;
 };
 
 type Meeting = {
@@ -127,7 +128,8 @@ export default function TodayPage() {
           .from("tasks")
           .select("*")
           .eq("user_id", user.id)
-          .is("completed_at", null)
+          // Open tasks + the ones finished in the last 7 days (Done column).
+          .or(`completed_at.is.null,completed_at.gte.${weekAgo}`)
           .order("due_at", { ascending: true, nullsFirst: false })
           .limit(50),
         supabase
@@ -208,13 +210,27 @@ export default function TodayPage() {
     }
   }
 
-  async function complete(task: { id: string }) {
-    setTasks((current) => current.filter((item) => item.id !== task.id));
+  async function moveTask(task: { id: string }, column: BoardColumn) {
+    const completedAt = column === "done" ? new Date().toISOString() : null;
 
-    await supabase
+    setTasks((current) =>
+      current.map((item) =>
+        item.id === task.id ? { ...item, board_status: column, completed_at: completedAt } : item
+      )
+    );
+
+    const { error } = await supabase
       .from("tasks")
-      .update({ completed_at: new Date().toISOString() })
+      .update({ board_status: column, completed_at: completedAt })
       .eq("id", task.id);
+
+    if (error) {
+      // Older database without the board_status column: keep Done working.
+      await supabase.from("tasks").update({ completed_at: completedAt }).eq("id", task.id);
+      if (column === "doing") {
+        showToast("Run supabase/UPDATE_3_RUN_THIS.sql in Supabase to save the In progress column.");
+      }
+    }
   }
 
   async function addNote(title: string, type: string) {
@@ -248,15 +264,19 @@ export default function TodayPage() {
   const dueToday = useMemo(
     () =>
       tasks.filter(
-        (task) => !task.due_at || new Date(task.due_at).getTime() <= endToday.getTime()
+        (task) =>
+          !task.completed_at &&
+          (!task.due_at || new Date(task.due_at).getTime() <= endToday.getTime())
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [tasks]
   );
 
   const upcoming = tasks.filter(
-    (task) => task.due_at && new Date(task.due_at).getTime() > endToday.getTime()
+    (task) => !task.completed_at && task.due_at && new Date(task.due_at).getTime() > endToday.getTime()
   );
+
+  const finished = tasks.filter((task) => task.completed_at);
 
   const todaysMeetings = meetings.filter(
     (meeting) => new Date(meeting.starts_at).getTime() <= endToday.getTime()
@@ -332,9 +352,9 @@ export default function TodayPage() {
         <div className="space-y-5">
           {/* TASKS — post-it board */}
           <PostItBoard
-            tasks={[...dueToday, ...upcoming]}
+            tasks={[...dueToday, ...upcoming, ...finished]}
             loading={loading}
-            onComplete={complete}
+            onMove={moveTask}
             onAdd={addNote}
           />
 

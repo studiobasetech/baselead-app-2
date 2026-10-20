@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   "/u",
   "/privacy",
   "/terms",
+  "/board-preview",
 ];
 
 // Pages that only make sense when logged OUT.
