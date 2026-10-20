@@ -142,6 +142,20 @@ export async function GET() {
     action: { label: "Go to Integrations", href: "/integrations" },
   });
 
+  /* ---------- Reply detection ---------- */
+  const replyTracking = env("INBOUND_REPLY_DOMAIN") && env("INBOUND_EMAIL_SECRET");
+  checks.push({
+    id: "reply-tracking",
+    group: "Recommended",
+    title: "Automatic reply detection",
+    ok: replyTracking || process.env.GMAIL_INBOX_READ === "true",
+    detail: replyTracking
+      ? "Replies are detected through your reply-tracking address (no inbox access needed)."
+      : process.env.GMAIL_INBOX_READ === "true"
+        ? "Replies are detected by scanning Gmail (restricted scope — needs Google's paid security review before public launch)."
+        : "Free with Cloudflare Email Routing: set INBOUND_REPLY_DOMAIN and deploy cloudflare/reply-worker.js (SETUP-BASELEAD.md section 15). Until then, mark replies manually in Outreach.",
+  });
+
   /* ---------- Booking link ---------- */
   const { data: booking } = await supabase
     .from("booking_pages")

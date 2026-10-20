@@ -3867,6 +3867,11 @@ ${senderName}`,
         id: selectedOutreach.id,
         lead_id: selectedOutreach.raw.lead_id,
       });
+
+      // Stops the follow-up sequence and logs the reply on the timeline.
+      if (selectedOutreach.raw.lead_id) {
+        void fetch(`/api/leads/${selectedOutreach.raw.lead_id}/replied`, { method: "POST" }).catch(() => undefined);
+      }
     }
 
     // Automatic pipeline for manual status changes.

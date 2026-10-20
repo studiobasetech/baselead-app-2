@@ -183,3 +183,47 @@ export async function markDoNotContact(supabase: SupabaseClient, leadId: string,
 
   return lead;
 }
+
+/* =========================================================
+   REPLY TRACKING ADDRESS (no inbox access needed)
+   Outreach emails carry  Reply-To: rep@company.com, r+<lead>.<sig>@INBOUND_REPLY_DOMAIN
+   so a reply reaches the rep's inbox AND BaseLead (via a free
+   Cloudflare Email Routing worker → /api/inbound/email).
+========================================================= */
+
+function replySignature(leadId: string) {
+  return createHmac("sha256", secret()).update(`reply:${leadId}`).digest("hex").slice(0, 16);
+}
+
+export function replyTrackingAddress(leadId: string) {
+  const domain = process.env.INBOUND_REPLY_DOMAIN?.trim();
+  if (!domain) return null;
+  return `r+${leadId}.${replySignature(leadId)}@${domain}`;
+}
+
+/** Lead id from an address like r+<uuid>.<sig>@domain, or null if forged. */
+export function leadFromReplyAddress(address: string) {
+  const match = address.toLowerCase().match(/r\+([0-9a-f-]{36})\.([0-9a-f]{16})@/);
+  if (!match) return null;
+  const [, leadId, signature] = match;
+  return replySignature(leadId) === signature ? leadId : null;
+}
+
+/** Reply-To header so replies reach both the rep and BaseLead. */
+export async function replyToHeaders(supabase: SupabaseClient, userId: string, leadId: string) {
+  const tracking = replyTrackingAddress(leadId);
+  if (!tracking) return [];
+
+  const { data } = await supabase
+    .from("connected_integrations")
+    .select("account_email, account_name")
+    .eq("user_id", userId)
+    .eq("provider", "gmail")
+    .maybeSingle();
+
+  if (!data?.account_email) return [];
+
+  const name = (data.account_name || "").replace(/["<>]/g, "");
+  const rep = name ? `"${name}" <${data.account_email}>` : data.account_email;
+  return [`Reply-To: ${rep}, ${tracking}`];
+}

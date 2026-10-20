@@ -4,6 +4,7 @@ import {
   checkCanEmail,
   isOptOutReply,
   markDoNotContact,
+  replyToHeaders,
   unsubscribeHeaders,
   withComplianceFooter,
 } from "@/lib/compliance";
@@ -183,7 +184,124 @@ async function templateValues(
    REPLY DETECTION (Gmail)
 ========================================================= */
 
+/** Everything that happens when a lead replies (Gmail scan, reply address, or manual). */
+export async function handleLeadReply(
+  supabase: SupabaseClient,
+  reply: {
+    userId: string;
+    leadId: string;
+    companyId?: string | null;
+    outreachId?: string | null;
+    threadId?: string | null;
+    subject?: string | null;
+    from: string;
+    snippet: string;
+    receivedAt?: string;
+    source: "gmail" | "reply-address" | "manual";
+  }
+) {
+  const now = new Date().toISOString();
+  const update = {
+    status: "replied",
+    replied_at: reply.receivedAt || now,
+    next_step: "Reply to the lead",
+    next_step_at: now,
+    updated_at: now,
+  };
+
+  // Mark the conversation (or the lead's latest email) as replied.
+  if (reply.threadId) {
+    await supabase.from("outreach").update(update).eq("gmail_thread_id", reply.threadId);
+  } else if (reply.outreachId) {
+    await supabase.from("outreach").update(update).eq("id", reply.outreachId);
+  } else {
+    const { data: last } = await supabase
+      .from("outreach")
+      .select("id")
+      .eq("lead_id", reply.leadId)
+      .not("sent_at", "is", null)
+      .order("sent_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (last) await supabase.from("outreach").update(update).eq("id", last.id);
+  }
+
+  // Stop the follow-up sequence for this lead.
+  await supabase
+    .from("sequence_enrollments")
+    .update({ status: "replied", next_run_at: null })
+    .eq("lead_id", reply.leadId)
+    .eq("status", "active");
+
+  const name = reply.from.replace(/<.*>/, "").replace(/"/g, "").trim() || "the lead";
+
+  await logActivity(supabase, {
+    leadId: reply.leadId,
+    companyId: reply.companyId,
+    userId: reply.userId,
+    type: "reply",
+    title: `Reply received: ${reply.subject || "your email"}`,
+    body: reply.snippet,
+    metadata: { from: reply.from, thread: reply.threadId, source: reply.source },
+  });
+
+  await advanceLead(supabase, reply.leadId, "responded", "The lead replied to your email.", reply.userId);
+
+  if (isOptOutReply(reply.snippet || "")) {
+    await markDoNotContact(supabase, reply.leadId, "Replied asking not to be contacted");
+    await logActivity(supabase, {
+      leadId: reply.leadId,
+      companyId: reply.companyId,
+      userId: reply.userId,
+      type: "unsubscribed",
+      title: "Asked not to be contacted — BaseLead won't email them again",
+    });
+  }
+
+  if (reply.source === "manual") return;
+
+  await supabase.from("tasks").insert({
+    company_id: reply.companyId,
+    user_id: reply.userId,
+    lead_id: reply.leadId,
+    title: `Answer the reply from ${name}`,
+    type: "email",
+    notes: reply.snippet,
+    due_at: now,
+    source: "automation",
+  });
+
+  await notifyUser(supabase, reply.userId, "reply", {
+    subject: `${name} replied to "${reply.subject || "your email"}"`,
+    heading: "A lead just replied 🎉",
+    lines: [`From: ${reply.from}`, `"${reply.snippet}"`, "The lead moved to Responded and their follow-up sequence was stopped."],
+    ctaLabel: "Reply now",
+    ctaPath: "/outreach",
+  });
+
+  void dispatchWebhooks(supabase, reply.userId, "outreach.replied", {
+    outreach_id: reply.outreachId,
+    lead_id: reply.leadId,
+    snippet: reply.snippet,
+  }).catch(() => undefined);
+}
+
+/** True when this user's Gmail connection includes inbox read access. */
+async function canReadInbox(supabase: SupabaseClient, userId: string) {
+  const { data } = await supabase
+    .from("integration_credentials")
+    .select("scopes")
+    .eq("user_id", userId)
+    .eq("provider", "gmail")
+    .maybeSingle();
+  const scopes = (data?.scopes ?? []) as string[];
+  return scopes.some((scope) => scope.includes("gmail.readonly"));
+}
+
+/** Optional inbox scan (only when the Gmail connection has read access). */
 export async function detectReplies(supabase: SupabaseClient, userId: string) {
+  if (!(await canReadInbox(supabase, userId))) return { checked: 0, replies: 0 };
+
   let token: string | null = null;
 
   try {
@@ -196,7 +314,7 @@ export async function detectReplies(supabase: SupabaseClient, userId: string) {
 
   const { data: open } = await supabase
     .from("outreach")
-    .select("id, lead_id, subject, gmail_thread_id, company_id, enrollment_id")
+    .select("id, lead_id, subject, gmail_thread_id, company_id")
     .eq("user_id", userId)
     .not("gmail_thread_id", "is", null)
     .is("replied_at", null)
@@ -214,77 +332,18 @@ export async function detectReplies(supabase: SupabaseClient, userId: string) {
     if (!reply) continue;
 
     replies++;
-
-    // Mark every outreach in this conversation as replied.
-    await supabase
-      .from("outreach")
-      .update({
-        status: "replied",
-        replied_at: reply.receivedAt,
-        next_step: "Reply to the lead",
-        next_step_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("gmail_thread_id", item.gmail_thread_id);
-
-    // Stop the follow-up sequence for this lead.
-    await supabase
-      .from("sequence_enrollments")
-      .update({ status: "replied", next_run_at: null })
-      .eq("lead_id", item.lead_id)
-      .eq("status", "active");
-
-    await logActivity(supabase, {
+    await handleLeadReply(supabase, {
+      userId,
       leadId: item.lead_id,
       companyId: item.company_id,
-      userId,
-      type: "reply",
-      title: `Reply received: ${item.subject || "your email"}`,
-      body: reply.snippet,
-      metadata: { from: reply.from, thread: item.gmail_thread_id },
-    });
-
-    await advanceLead(supabase, item.lead_id, "responded", "The lead replied to your email.", userId);
-
-    if (isOptOutReply(reply.snippet || "")) {
-      await markDoNotContact(supabase, item.lead_id, "Replied asking not to be contacted");
-      await logActivity(supabase, {
-        leadId: item.lead_id,
-        companyId: item.company_id,
-        userId,
-        type: "unsubscribed",
-        title: "Asked not to be contacted — BaseLead won't email them again",
-      });
-    }
-
-    await supabase.from("tasks").insert({
-      company_id: item.company_id,
-      user_id: userId,
-      lead_id: item.lead_id,
-      title: `Answer the reply from ${reply.from.replace(/<.*>/, "").trim() || "the lead"}`,
-      type: "email",
-      notes: reply.snippet,
-      due_at: new Date().toISOString(),
-      source: "automation",
-    });
-
-    await notifyUser(supabase, userId, "reply", {
-      subject: `${reply.from.replace(/<.*>/, "").trim() || "A lead"} replied to "${item.subject || "your email"}"`,
-      heading: "A lead just replied 🎉",
-      lines: [
-        `From: ${reply.from}`,
-        `"${reply.snippet}"`,
-        "The lead moved to Responded and their follow-up sequence was stopped.",
-      ],
-      ctaLabel: "Reply now",
-      ctaPath: "/outreach",
-    });
-
-    void dispatchWebhooks(supabase, userId, "outreach.replied", {
-      outreach_id: item.id,
-      lead_id: item.lead_id,
+      outreachId: item.id,
+      threadId: item.gmail_thread_id,
+      subject: item.subject,
+      from: reply.from,
       snippet: reply.snippet,
-    }).catch(() => undefined);
+      receivedAt: reply.receivedAt,
+      source: "gmail",
+    });
   }
 
   return { checked: seenThreads.size, replies };
@@ -386,7 +445,7 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
           subject: threadId && !/^re:/i.test(subject) ? `Re: ${subject}` : subject,
           body: await withComplianceFooter(supabase, body, lead.id, enrollment.company_id),
           threadId,
-          headers: unsubscribeHeaders(lead.id),
+          headers: [...unsubscribeHeaders(lead.id), ...(await replyToHeaders(supabase, enrollment.user_id, lead.id))],
         });
 
         threadId = threadId || message.threadId;

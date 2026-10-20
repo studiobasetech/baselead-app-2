@@ -41,7 +41,7 @@ export default function PrivacyPage() {
       <Section title="3. Google user data">
         <p>If you connect your Google account, {LEGAL.product} requests only the permissions needed for the features you use:</p>
         <ul>
-          <li><strong>Gmail:</strong> to send emails you write or approve from your own Gmail account, and to read messages in the conversation threads started from {LEGAL.product} so we can detect when a lead replies. We do not read, store or analyze other emails in your inbox.</li>
+          <li><strong>Gmail:</strong> to send emails you write or approve from your own Gmail account (send-only access). {LEGAL.product} does not read your inbox. To know when a lead replies, outreach emails include a reply-tracking address alongside your own, so a copy of the lead’s reply to that email is delivered to {LEGAL.product}.</li>
           <li><strong>Google Calendar:</strong> to check when you are free so leads can book a time, and to create meetings (with Google Meet links) that you or your leads schedule.</li>
           <li><strong>Google Sheets:</strong> only if you choose to export data to a spreadsheet.</li>
         </ul>

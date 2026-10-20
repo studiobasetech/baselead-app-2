@@ -177,3 +177,22 @@ BaseLead emails each rep when: a lead replies, someone books a meeting, a propos
 - Every outreach/sequence email now ends with your company name + address (Settings → Company) and an unsubscribe link, plus Gmail's native one-click "Unsubscribe" header.
 - Leads who unsubscribe, or reply "stop / unsubscribe / not interested", are marked **Do not contact** and are never emailed again (any lead with the same email too). Toggle it manually in the lead's deal panel.
 - Daily cap: 150 emails per user per 24 h (change with `DAILY_SEND_LIMIT=` in `.env.local`). Extra sequence emails wait and go out automatically the next day.
+
+## 15. Reply detection without reading anyone's inbox (free)
+
+BaseLead now asks Google only for **send** permission on Gmail. That's a "sensitive" scope (free verification) instead of a "restricted" one (≈$540+/year security assessment). Replies are detected like this:
+
+1. Each outreach email gets `Reply-To: rep@company.com, r+<lead>.<code>@reply.yourdomain.com`.
+2. When the lead hits Reply, it goes to the rep's inbox **and** to the tracking address.
+3. A free Cloudflare Email Worker forwards that copy to BaseLead → lead moves to Responded, follow-ups stop, the rep gets a task + notification.
+
+Setup (once, free):
+1. Your domain's DNS must be on Cloudflare (free plan). Pick a subdomain, e.g. `reply.studiobase.tech`.
+2. Cloudflare → domain → **Email → Email Routing** → enable for that subdomain (Cloudflare adds the MX records).
+3. **Workers & Pages → Create Worker** → paste `cloudflare/reply-worker.js` → Deploy. In the worker's **Settings → Variables** add `BASELEAD_URL` (your live app URL) and `INBOUND_EMAIL_SECRET` (copy it from `.env.local`).
+4. Email Routing → **Routing rules → Catch-all → Send to a Worker** → choose the worker.
+5. In `.env.local` set `INBOUND_REPLY_DOMAIN=reply.studiobase.tech` and restart.
+
+Needs the app to be online (deployed) so Cloudflare can reach it. Until then, mark replies by setting an outreach to **Replied** (also stops follow-ups).
+
+Want inbox scanning instead? Set `GMAIL_INBOX_READ=true` and reconnect Gmail — fine for your own team in testing, but public launch then requires Google's paid CASA review.

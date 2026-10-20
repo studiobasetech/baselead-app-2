@@ -12,10 +12,15 @@ export type GoogleIntegrationId =
   | "google-sheets";
 
 const INTEGRATION_SCOPES: Record<GoogleIntegrationId, string[]> = {
+  // Send-only by default: "gmail.send" is a *sensitive* scope (free Google
+  // verification). Inbox reading ("gmail.readonly") is *restricted* and needs a
+  // paid yearly security assessment, so it is opt-in via GMAIL_INBOX_READ=true.
+  // Replies are detected through the reply-tracking address instead.
   gmail: [
     "https://www.googleapis.com/auth/gmail.send",
-    // Needed to detect replies automatically.
-    "https://www.googleapis.com/auth/gmail.readonly",
+    ...(process.env.GMAIL_INBOX_READ === "true"
+      ? ["https://www.googleapis.com/auth/gmail.readonly"]
+      : []),
     "https://www.googleapis.com/auth/userinfo.email",
   ],
   "google-calendar": [

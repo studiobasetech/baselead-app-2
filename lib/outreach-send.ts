@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getGoogleAccessToken, sendGmail } from "@/lib/integrations/google-api";
 import { advanceLead, logActivity } from "@/lib/automation";
-import { checkCanEmail, unsubscribeHeaders, withComplianceFooter } from "@/lib/compliance";
+import { checkCanEmail, replyToHeaders, unsubscribeHeaders, withComplianceFooter } from "@/lib/compliance";
 
 /**
  * Sends one outreach row by email through the owner's Gmail
@@ -44,7 +44,7 @@ export async function sendOutreachEmail(
       to: lead.email,
       subject: item.subject || `Hello ${lead.company || lead.name || ""}`.trim(),
       body: await withComplianceFooter(supabase, item.message || "", lead.id, lead.company_id),
-      headers: unsubscribeHeaders(lead.id),
+      headers: [...unsubscribeHeaders(lead.id), ...(await replyToHeaders(supabase, item.user_id, lead.id))],
     });
 
     const now = new Date().toISOString();
