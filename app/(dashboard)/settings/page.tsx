@@ -6377,6 +6377,26 @@ export default function SettingsPage() {
       "My Profile"
     );
 
+  // Deep links: /settings?section=billing (team, notifications, security, api…)
+  useEffect(() => {
+    const section = new URLSearchParams(window.location.search).get("section")?.toLowerCase();
+    const map: Record<string, SettingsTab> = {
+      profile: "My Profile",
+      company: "Company",
+      ai: "AI & Services",
+      preferences: "Preferences",
+      team: "Team",
+      billing: "Billing & Plan",
+      plan: "Billing & Plan",
+      notifications: "Notifications",
+      security: "Security",
+      api: "API & Webhooks",
+      webhooks: "API & Webhooks",
+    };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (section && map[section]) setActiveTab(map[section]);
+  }, []);
+
   const [toast, setToast] =
     useState("");
 
