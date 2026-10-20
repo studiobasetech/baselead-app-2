@@ -2850,13 +2850,13 @@ export default function PipelinePage() {
             icon={
               <BarChart3
                 size={18}
-                className="text-[#A78BFA]"
+                className="text-[#F472B6]"
               />
             }
             label="Pipeline Value"
             value="—"
             change="Deal values not tracked yet"
-            iconClass="border border-[#A78BFA]/10 bg-[#241A38]"
+            iconClass="border border-[#F472B6]/10 bg-[#F472B6]/10"
           />
 
           <KpiCard

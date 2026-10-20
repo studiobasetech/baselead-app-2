@@ -4656,7 +4656,7 @@ StudioBase`;
             icon={
               <Send
                 size={17}
-                className="text-[#84CC16]"
+                className="text-[#3B82F6]"
               />
             }
             label="All Outreach"
@@ -4665,14 +4665,14 @@ StudioBase`;
             )}
             detail="Live from Supabase"
             accent={BLUE}
-            surface={GREEN_SURFACE}
+            surface={BLUE_SURFACE}
           />
 
           <KpiCard
             icon={
               <Send
                 size={17}
-                className="text-[#3B82F6]"
+                className="text-[#F5C518]"
               />
             }
             label="Sent"
@@ -4681,7 +4681,7 @@ StudioBase`;
             )}
             detail="Records marked sent"
             accent={GOLD}
-            surface={BLUE_SURFACE}
+            surface={GOLD_SURFACE}
           />
 
           <KpiCard
@@ -4720,7 +4720,7 @@ StudioBase`;
             icon={
               <Star
                 size={17}
-                className="text-[#3B82F6]"
+                className="text-[#F472B6]"
               />
             }
             label="Interested"
@@ -4729,7 +4729,7 @@ StudioBase`;
             )}
             detail="Interested leads"
             accent={PINK}
-            surface={GOLD_SURFACE}
+            surface={PURPLE_SURFACE}
           />
 
           <KpiCard
