@@ -174,9 +174,27 @@ const DARK_ICON_SURFACES = {
   neutral: "#171717",
 } as const;
 
+// Theme is read after hydration (server and first client render are identical),
+// then updated live when the user switches light/dark.
+let LIGHT_MODE = false;
+
 function isLightMode() {
-  if (typeof document === "undefined") return false;
-  return document.documentElement.classList.contains("baselead-light");
+  return LIGHT_MODE;
+}
+
+function useThemeIsLight() {
+  const [light, setLight] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setLight(root.classList.contains("baselead-light"));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return light;
 }
 
 function iconSurface(accent: string) {
@@ -2495,6 +2513,7 @@ function OutreachRow({
 ========================================================= */
 
 function OutreachPageContent() {
+  LIGHT_MODE = useThemeIsLight();
   const {
     can: canUsePlan,
     definition: planDefinition,

@@ -1744,3 +1744,8 @@ html.baselead-light [class*="bg-[#0A0A0C]"],
 html.baselead-light [class*="bg-[#0a0a0c]"] {
   background-color: #ffffff !important;
 }
+
+/* Light mode: pop-up backdrops stay a soft dim, not a white wash */
+html.baselead-light .fixed.inset-0[class*="bg-black/"] {
+  background-color: rgba(17, 17, 20, 0.38) !important;
+}
