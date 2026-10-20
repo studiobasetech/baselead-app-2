@@ -1708,3 +1708,16 @@ html.baselead-light .baselead-main [class*="rounded-2xl"][class*="border-[#20202
 html.baselead-light .bl-icon-tile {
   background: color-mix(in srgb, var(--tab) 18%, #ffffff);
 }
+
+/* Light mode: soften dark borders set inline by components (sidebar,
+   workspace footer, mobile bars, tables) — no harsh black lines. */
+html.baselead-light [style*="border-color: rgb(38, 38, 38)"],
+html.baselead-light [style*="border-color: rgb(32, 32, 32)"],
+html.baselead-light [style*="border-color: rgb(42, 42, 42)"],
+html.baselead-light [style*="border-color: rgb(26, 26, 26)"],
+html.baselead-light [style*="border-color: rgb(23, 23, 23)"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="background-color: rgba(8, 8, 10"] {
+  background-color: rgba(255, 255, 255, 0.86) !important;
+}
