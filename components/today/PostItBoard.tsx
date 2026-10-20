@@ -17,6 +17,8 @@ export type BoardTask = {
   source: string;
   board_status?: string | null;
   completed_at?: string | null;
+  color?: string | null;
+  label?: string | null;
 };
 
 export type BoardColumn = "todo" | "doing" | "done";
@@ -28,19 +30,38 @@ export function columnOf(task: BoardTask): BoardColumn {
 }
 
 const COLUMNS: { id: BoardColumn; emoji: string; title: string; hint: string; accent: string }[] = [
-  { id: "todo", emoji: "🎯", title: "Up next", hint: "Drop new ideas here", accent: "#F5C518" },
+  { id: "todo", emoji: "🎯", title: "Up next", hint: "Ready to start", accent: "#F5C518" },
   { id: "doing", emoji: "⚡", title: "In progress", hint: "What you're working on", accent: "#60A5FA" },
   { id: "done", emoji: "🏆", title: "Done", hint: "Wins from the last 7 days", accent: "#84CC16" },
 ];
 
-// Each task type gets its own sticky-note color.
-const NOTE: Record<string, { paper: string; tape: string; ink: string; label: string }> = {
-  call: { paper: "linear-gradient(160deg,#ECFCCB 0%,#BEF264 100%)", tape: "rgba(132,204,22,0.45)", ink: "#1A2E05", label: "Call" },
-  email: { paper: "linear-gradient(160deg,#CFFAFE 0%,#67E8F9 100%)", tape: "rgba(34,211,238,0.45)", ink: "#083344", label: "Email" },
-  linkedin: { paper: "linear-gradient(160deg,#EDE9FE 0%,#C4B5FD 100%)", tape: "rgba(167,139,250,0.5)", ink: "#2E1065", label: "LinkedIn" },
-  follow_up: { paper: "linear-gradient(160deg,#FCE7F3 0%,#F9A8D4 100%)", tape: "rgba(244,114,182,0.45)", ink: "#500724", label: "Follow up" },
-  todo: { paper: "linear-gradient(160deg,#FEF9C3 0%,#FDE047 100%)", tape: "rgba(245,197,24,0.5)", ink: "#422006", label: "To do" },
+// Note colors are just colors — the user writes their own title/label.
+const NOTE: Record<string, { paper: string; tape: string; ink: string; name: string }> = {
+  yellow: { paper: "linear-gradient(160deg,#FEF9C3 0%,#FDE047 100%)", tape: "rgba(245,197,24,0.5)", ink: "#422006", name: "Yellow" },
+  green: { paper: "linear-gradient(160deg,#ECFCCB 0%,#BEF264 100%)", tape: "rgba(132,204,22,0.45)", ink: "#1A2E05", name: "Green" },
+  blue: { paper: "linear-gradient(160deg,#CFFAFE 0%,#67E8F9 100%)", tape: "rgba(34,211,238,0.45)", ink: "#083344", name: "Blue" },
+  purple: { paper: "linear-gradient(160deg,#EDE9FE 0%,#C4B5FD 100%)", tape: "rgba(167,139,250,0.5)", ink: "#2E1065", name: "Purple" },
+  pink: { paper: "linear-gradient(160deg,#FCE7F3 0%,#F9A8D4 100%)", tape: "rgba(244,114,182,0.45)", ink: "#500724", name: "Pink" },
 };
+
+// Automatic tasks (from replies, bookings…) keep a sensible default color and label.
+const TYPE_DEFAULTS: Record<string, { color: string; label: string }> = {
+  call: { color: "green", label: "Call" },
+  email: { color: "blue", label: "Email" },
+  linkedin: { color: "purple", label: "LinkedIn" },
+  follow_up: { color: "pink", label: "Follow up" },
+  todo: { color: "yellow", label: "" },
+};
+
+function noteStyle(task: BoardTask) {
+  const fallback = TYPE_DEFAULTS[task.type] ?? TYPE_DEFAULTS.todo;
+  return NOTE[task.color || fallback.color] ?? NOTE.yellow;
+}
+
+function noteLabel(task: BoardTask) {
+  if (task.label !== undefined && task.label !== null) return task.label;
+  return task.source === "manual" ? "" : (TYPE_DEFAULTS[task.type]?.label ?? "");
+}
 
 const ROTATIONS = [-2.2, 1.6, -1.1, 2.4, -1.8, 1.1, -2.6, 1.9];
 
@@ -65,10 +86,11 @@ export default function PostItBoard({
   tasks: BoardTask[];
   loading: boolean;
   onMove: (task: BoardTask, column: BoardColumn) => Promise<void> | void;
-  onAdd: (title: string, type: string) => Promise<void> | void;
+  onAdd: (title: string, color: string, label: string) => Promise<void> | void;
 }) {
   const [draft, setDraft] = useState("");
-  const [draftType, setDraftType] = useState("todo");
+  const [draftLabel, setDraftLabel] = useState("");
+  const [draftColor, setDraftColor] = useState("yellow");
   // Pointer-based drag & drop (mouse/trackpad). On phones the arrow buttons move notes.
   const [drag, setDrag] = useState<{ id: string; x: number; y: number; dx: number; dy: number; width: number } | null>(null);
   const [over, setOver] = useState<BoardColumn | null>(null);
@@ -80,7 +102,8 @@ export default function PostItBoard({
     const title = draft.trim();
     if (!title) return;
     setDraft("");
-    await onAdd(title, draftType);
+    setDraftLabel("");
+    await onAdd(title, draftColor, draftLabel.trim());
   }
 
   function columnAt(x: number, y: number) {
@@ -147,7 +170,57 @@ export default function PostItBoard({
         </span>
       </div>
 
-      <div className="relative mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      {/* New note — above the columns */}
+      <div className="relative mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-4 transition focus-within:border-[#F5C518]/40">
+        <div className="flex flex-col gap-3 md:flex-row md:items-end">
+          <div className="flex-1 space-y-2">
+            <input
+              value={draftLabel}
+              onChange={(event) => setDraftLabel(event.target.value.slice(0, 40))}
+              placeholder="Title (optional) — e.g. Urgent, Client call, Ideas"
+              className="w-full bg-transparent text-xs font-semibold uppercase tracking-[0.12em] text-gray-300 outline-none placeholder:normal-case placeholder:tracking-normal placeholder:text-gray-600"
+            />
+            <textarea
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  void add();
+                }
+              }}
+              rows={2}
+              placeholder="Write a new note…"
+              className={`${handwriting.className} w-full resize-none bg-transparent text-[22px] leading-6 text-gray-200 outline-none placeholder:text-gray-600`}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-3 md:flex-col md:items-end">
+            <div className="flex gap-1.5">
+              {Object.entries(NOTE).map(([color, note]) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setDraftColor(color)}
+                  title={note.name}
+                  aria-label={note.name}
+                  className={`h-6 w-6 rounded-full border-2 transition ${draftColor === color ? "scale-110 border-white" : "border-transparent opacity-70 hover:opacity-100"}`}
+                  style={{ background: note.paper }}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => void add()}
+              disabled={!draft.trim()}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#F5C518] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-30"
+            >
+              <Plus size={13} /> Stick it
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
         {COLUMNS.map((column) => {
           const items = tasks.filter((task) => columnOf(task) === column.id);
           const isOver = over === column.id;
@@ -176,51 +249,13 @@ export default function PostItBoard({
               </div>
 
               <div className="flex flex-1 flex-col gap-4 px-1 pb-1">
-                {column.id === "todo" && (
-                  <div className="relative flex flex-col rounded-[6px] border border-dashed border-white/15 bg-white/[0.02] p-3 transition hover:border-[#F5C518]/40">
-                    <div className="flex gap-1.5">
-                      {Object.entries(NOTE).map(([type, note]) => (
-                        <button
-                          key={type}
-                          type="button"
-                          onClick={() => setDraftType(type)}
-                          title={note.label}
-                          aria-label={note.label}
-                          className={`h-5 w-5 rounded-full border transition ${draftType === type ? "scale-110 border-white" : "border-transparent opacity-70 hover:opacity-100"}`}
-                          style={{ background: note.paper }}
-                        />
-                      ))}
-                    </div>
-                    <textarea
-                      value={draft}
-                      onChange={(event) => setDraft(event.target.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" && !event.shiftKey) {
-                          event.preventDefault();
-                          void add();
-                        }
-                      }}
-                      rows={2}
-                      placeholder="Write a new note…"
-                      className={`${handwriting.className} mt-2 resize-none bg-transparent text-[22px] leading-6 text-gray-200 outline-none placeholder:text-gray-600`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => void add()}
-                      disabled={!draft.trim()}
-                      className="mt-1 inline-flex items-center justify-center gap-1.5 self-end rounded-lg bg-[#F5C518] px-3 py-1.5 text-xs font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-30"
-                    >
-                      <Plus size={13} /> Stick it
-                    </button>
-                  </div>
-                )}
-
                 {loading && column.id !== "done" && (
                   <div className="min-h-[140px] animate-pulse rounded-[6px] bg-white/[0.04]" />
                 )}
 
                 {items.map((task, index) => {
-                  const note = NOTE[task.type] ?? NOTE.todo;
+                  const note = noteStyle(task);
+                  const label = noteLabel(task);
                   const rotation = ROTATIONS[index % ROTATIONS.length] * 0.6;
                   const done = column.id === "done";
                   const overdue = !done && task.due_at && new Date(task.due_at).getTime() < now - 3600000;
@@ -269,7 +304,7 @@ export default function PostItBoard({
                       />
 
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{note.label}</span>
+                        <span className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{label}</span>
                         {task.source !== "manual" && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
                             <Sparkles size={9} /> auto
@@ -323,9 +358,9 @@ export default function PostItBoard({
                   );
                 })}
 
-                {!loading && items.length === 0 && column.id !== "todo" && (
+                {!loading && items.length === 0 && (
                   <div className="flex flex-1 items-center justify-center rounded-[6px] border border-dashed border-white/10 p-6 text-center text-xs text-gray-600">
-                    {column.id === "doing" ? "Drag a note here when you start it." : "Finished notes land here."}
+                    {column.id === "todo" ? "Stick a note above to get started." : column.id === "doing" ? "Drag a note here when you start it." : "Finished notes land here."}
                   </div>
                 )}
               </div>
@@ -337,7 +372,7 @@ export default function PostItBoard({
       {drag && (() => {
         const task = tasks.find((item) => item.id === drag.id);
         if (!task) return null;
-        const note = NOTE[task.type] ?? NOTE.todo;
+        const note = noteStyle(task);
         return (
           <div
             className="pointer-events-none fixed left-0 top-0 z-[300] rounded-[4px] p-4 pt-6"
@@ -349,7 +384,7 @@ export default function PostItBoard({
               boxShadow: "0 30px 60px -15px rgba(0,0,0,0.75), 0 10px 20px -8px rgba(0,0,0,0.5)",
             }}
           >
-            <span className="text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{note.label}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{noteLabel(task)}</span>
             <p className={`${handwriting.className} mt-2 line-clamp-3 text-[22px] font-bold leading-[1.15]`}>{task.title}</p>
           </div>
         );

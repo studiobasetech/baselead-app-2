@@ -31,6 +31,8 @@ type Task = {
   lead_id: string | null;
   source: string;
   board_status?: string | null;
+  color?: string | null;
+  label?: string | null;
 };
 
 type Meeting = {
@@ -233,20 +235,28 @@ export default function TodayPage() {
     }
   }
 
-  async function addNote(title: string, type: string) {
+  async function addNote(title: string, color: string, label: string) {
     if (!title || !userId) return;
 
-    const { data, error } = await supabase
+    const base = {
+      title,
+      user_id: userId,
+      company_id: companyId,
+      type: "todo",
+      due_at: new Date().toISOString(),
+    };
+
+    let { data, error } = await supabase
       .from("tasks")
-      .insert({
-        title,
-        user_id: userId,
-        company_id: companyId,
-        type,
-        due_at: new Date().toISOString(),
-      })
+      .insert({ ...base, color, label: label || null })
       .select("*")
       .single();
+
+    if (error && /color|label|column/i.test(error.message)) {
+      // Database not updated yet: save the note without color/title.
+      ({ data, error } = await supabase.from("tasks").insert(base).select("*").single());
+      if (!error) showToast("Run supabase/UPDATE_3_RUN_THIS.sql in Supabase to keep note colors and titles.");
+    }
 
     if (error) {
       showToast(`Could not save the note: ${error.message}`);
