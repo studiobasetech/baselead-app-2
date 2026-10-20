@@ -968,7 +968,7 @@ function OutreachIntelligence({ outreach, onOpen }: { outreach: Outreach[]; onOp
       <div className="group relative overflow-hidden rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#A78BFA]/30 hover:shadow-[0_18px_40px_rgba(167,139,250,0.08)]">
         <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#A78BFA]/[0.06] blur-3xl" />
         <div className="relative flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2"><div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38]"><Sparkles size={14} className="text-[#A78BFA]" /></div><div><p className="text-[12px] font-semibold text-white">AI Next Actions</p><p className="text-[10px] text-[#666]">Prioritized from current outreach activity</p></div></div>
+          <div className="flex items-center gap-2"><div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A]"><Sparkles size={14} className="text-[#3B82F6]" /></div><div><p className="text-[12px] font-semibold text-white">AI Next Actions</p><p className="text-[10px] text-[#666]">Prioritized from current outreach activity</p></div></div>
           <span className="rounded-full border border-[#84CC16]/25 bg-[#EFFBDC] dark:bg-[#18200B] px-2.5 py-1 text-[10px] font-medium text-[#84CC16]">{replied.length+interested.length} attention items</span>
         </div>
         {primary ? (

@@ -856,11 +856,11 @@ function SourceDonut({
   return (
     <Card
       className="min-h-[390px] p-5"
-      accentColor={PURPLE}
+      accentColor={BLUE}
     >
       <SectionHeader
         title="Leads by Source"
-        color={PURPLE}
+        color={BLUE}
         action={
           <span
             style={{

@@ -168,7 +168,7 @@ export default function TeamPerformancePage() {
         {/* Leaderboard */}
         <section className="min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center gap-3">
-            <span className="bl-icon-tile" style={{ "--tab": "#F5C518" } as CSSProperties}>
+            <span className="bl-icon-tile" style={{ "--tab": "#3B82F6" } as CSSProperties}>
               <Medal size={17} strokeWidth={2.2} />
             </span>
             <h2 className="text-base font-semibold">Leaderboard</h2>
