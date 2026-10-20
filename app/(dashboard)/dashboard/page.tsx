@@ -1794,8 +1794,10 @@ export default function DashboardPage() {
           PURPLE,
         Referrals:
           GREEN,
-        Test: "#555555",
-        Other: "#333333",
+        Test: "#22D3EE",
+        OpenStreetMap: "#60A5FA",
+        "Google Maps": GOLD,
+        Other: "#F472B6",
       };
 
       return Array.from(
@@ -1820,7 +1822,7 @@ export default function DashboardPage() {
               sourceColors[
                 name
               ] ||
-              "#333333",
+              ["#2DD4BF", "#F97316", "#F472B6", "#38BDF8", "#C084FC"][name.length % 5],
           }),
         )
         .sort(
@@ -3610,8 +3612,7 @@ export default function DashboardPage() {
                             {
                               name: "Empty",
                               value: 1,
-                              color:
-                                "#222",
+                              color: "rgba(140, 140, 150, 0.22)",
                             },
                           ]
                     }
@@ -3640,8 +3641,7 @@ export default function DashboardPage() {
                           {
                             name: "Empty",
                             value: 1,
-                            color:
-                              "#222",
+                            color: "rgba(140, 140, 150, 0.22)",
                           },
                         ]
                     ).map(
@@ -4276,10 +4276,7 @@ export default function DashboardPage() {
 
           <ArrowUpRight
             size={14}
-            style={{
-              color: "#333",
-            }}
-            className="transition group-hover:text-[#F5C518]"
+            className="text-gray-600 transition group-hover:text-[#F5C518]"
           />
         </button>
 
@@ -4322,10 +4319,7 @@ export default function DashboardPage() {
 
           <ArrowUpRight
             size={14}
-            style={{
-              color: "#333",
-            }}
-            className="transition group-hover:text-[#A78BFA]"
+            className="text-gray-600 transition group-hover:text-[#A78BFA]"
           />
         </button>
 
@@ -4373,10 +4367,7 @@ export default function DashboardPage() {
 
           <ArrowUpRight
             size={14}
-            style={{
-              color: "#333",
-            }}
-            className="transition group-hover:text-[#84CC16]"
+            className="text-gray-600 transition group-hover:text-[#84CC16]"
           />
         </button>
       </section>

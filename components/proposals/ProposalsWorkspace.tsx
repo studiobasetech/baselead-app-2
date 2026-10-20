@@ -265,11 +265,11 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex shrink-0 flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setPaymentsOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 py-3 text-sm text-gray-300 transition hover:border-[#84CC16]/40 hover:text-[#84CC16]"
+            className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 py-3 text-sm text-gray-300 transition hover:border-[#84CC16]/40 hover:text-[#84CC16]"
           >
             <CreditCard size={16} />
             {payments?.connected ? "Payments on" : "Connect payments"}
@@ -277,7 +277,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
           <button
             type="button"
             onClick={() => setDraft(emptyDraft())}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.2)] transition hover:-translate-y-0.5 hover:bg-[#ffe044]"
+            className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.2)] transition hover:-translate-y-0.5 hover:bg-[#ffe044]"
           >
             <Plus size={16} /> New proposal
           </button>
