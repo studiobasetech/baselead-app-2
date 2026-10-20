@@ -2433,7 +2433,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        GOLD_SURFACE,
+                        BLUE_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -2441,7 +2441,7 @@ export default function DashboardPage() {
                   <Zap
                     size={12}
                     style={{
-                      color: GOLD,
+                      color: BRAND,
                     }}
                   />
                 </div>
@@ -2830,7 +2830,7 @@ export default function DashboardPage() {
             style={{
               backgroundColor:
                 hexToRgba(
-                  GOLD,
+                  BRAND,
                   0.09,
                 ),
             }}
@@ -2842,7 +2842,7 @@ export default function DashboardPage() {
               style={{
                 backgroundColor:
                   getDashboardIconSurface(
-                    GOLD_SURFACE,
+                    BLUE_SURFACE,
                     isLightMode,
                   ),
               }}
@@ -2850,7 +2850,7 @@ export default function DashboardPage() {
               <Users
                 size={19}
                 style={{
-                  color: GOLD,
+                  color: BRAND,
                 }}
               />
             </div>
@@ -2860,10 +2860,10 @@ export default function DashboardPage() {
               style={{
                 backgroundColor:
                   hexToRgba(
-                    GOLD,
+                    BRAND,
                     0.06,
                   ),
-                color: GOLD,
+                color: BRAND,
               }}
             >
               <TrendingUp
@@ -2885,7 +2885,7 @@ export default function DashboardPage() {
             <p
               className="mt-2 text-[11px] font-medium"
               style={{
-                color: GOLD,
+                color: BRAND,
               }}
             >
               {leadsThisWeek >
@@ -3183,7 +3183,7 @@ export default function DashboardPage() {
             style={{
               backgroundColor:
                 hexToRgba(
-                  GOLD,
+                  BRAND,
                   0.035,
                 ),
             }}
@@ -3197,7 +3197,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        GOLD_SURFACE,
+                        BLUE_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -3205,7 +3205,7 @@ export default function DashboardPage() {
                   <BarChart3
                     size={16}
                     style={{
-                      color: GOLD,
+                      color: BRAND,
                     }}
                   />
                 </div>
@@ -3228,12 +3228,12 @@ export default function DashboardPage() {
                 style={{
                   border:
                     `1px solid ${hexToRgba(
-                      GOLD,
+                      BRAND,
                       0.1,
                     )}`,
                   backgroundColor:
                     hexToRgba(
-                      GOLD,
+                      BRAND,
                       0.03,
                     ),
                   color: "#999",
@@ -3243,7 +3243,7 @@ export default function DashboardPage() {
                   className="h-2 w-2 rounded-full"
                   style={{
                     backgroundColor:
-                      GOLD,
+                      BRAND,
                   }}
                 />
 
@@ -3330,14 +3330,14 @@ export default function DashboardPage() {
                 <Line
                   type="monotone"
                   dataKey="total"
-                  stroke={GOLD}
+                  stroke={BRAND}
                   strokeWidth={
                     3
                   }
                   dot={false}
                   activeDot={{
                     r: 5,
-                    fill: GOLD,
+                    fill: BRAND,
                     strokeWidth: 0,
                   }}
                 />

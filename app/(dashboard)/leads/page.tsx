@@ -1833,11 +1833,11 @@ function LeadDetailPanel({
                 borderTopColor:
                   lead.score >= 80
                     ? "#84CC16"
-                    : "#F5C518",
+                    : "#3B82F6",
                 borderLeftColor:
                   lead.score >= 80
                     ? "#84CC16"
-                    : "#F5C518",
+                    : "#3B82F6",
                 transform:
                   "rotate(-35deg)",
               }}
@@ -4463,7 +4463,7 @@ ${companyName}`;
   ======================================================= */
 
   const LEAD_TAB_STYLE: Record<string, { icon: typeof Users; color: string }> = {
-    "All Leads": { icon: List, color: "#F5C518" },
+    "All Leads": { icon: List, color: "#3B82F6" },
     "High-Intent": { icon: Flame, color: "#F97316" },
     Contacted: { icon: Send, color: "#60A5FA" },
     Responded: { icon: MessageCircle, color: "#A78BFA" },
@@ -4941,10 +4941,10 @@ ${companyName}`;
                 )
               }
               data-active={discoveryView === "Leads"}
-              style={{ "--tab": "#F5C518" } as CSSProperties}
+              style={{ "--tab": "#3B82F6" } as CSSProperties}
               className="bl-tab flex items-center gap-2 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium text-gray-500"
             >
-              <Users size={16} className="bl-tab-emoji" style={{ color: "#F5C518" }} />
+              <Users size={16} className="bl-tab-emoji" style={{ color: "#3B82F6" }} />
               Leads
 
               <span className="bl-tab-count rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] text-gray-600">

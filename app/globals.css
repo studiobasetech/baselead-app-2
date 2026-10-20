@@ -2138,3 +2138,37 @@ html:not(.baselead-light) .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(
 html:not(.baselead-light) .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
   color: #60A5FA !important;
 }
+
+/* Solid blue buttons and badges: always white text and icons (light + dark) */
+html [class~="bg-[#3B82F6]"],
+html [class~="bg-[#3B82F6]"] *,
+html [class~="bg-[#2F74E8]"],
+html [class~="bg-[#2F74E8]"] *,
+html [class*="from-[#3B82F6]"][class*="bg-gradient"],
+html [class*="from-[#3B82F6]"][class*="bg-gradient"] *,
+html [class~="hover:bg-[#3B82F6]"]:hover,
+html [class~="hover:bg-[#3B82F6]"]:hover *,
+html [class~="hover:bg-[#2F74E8]"]:hover,
+html [class~="hover:bg-[#2F74E8]"]:hover *,
+html [style*="background-color: rgb(59, 130, 246)"],
+html [style*="background-color: rgb(59, 130, 246)"] *,
+html [style*="background-color:#3B82F6"],
+html [style*="background-color:#3B82F6"] *,
+html.baselead-light [class~="bg-[#3B82F6]"],
+html.baselead-light [class~="bg-[#3B82F6]"] *,
+html.baselead-light [class~="hover:bg-[#3B82F6]"]:hover,
+html.baselead-light [class~="hover:bg-[#3B82F6]"]:hover *,
+html.baselead-light [style*="background-color: rgb(59, 130, 246)"],
+html.baselead-light [style*="background-color: rgb(59, 130, 246)"] * {
+  color: #ffffff !important;
+}
+html.baselead-light [style*="background-color:#3B82F6"],
+html.baselead-light [style*="background-color:#3B82F6"] *,
+html.baselead-light [style*="background-color: #3B82F6"],
+html.baselead-light [style*="background-color: #3B82F6"] *,
+html.baselead-light [class~="bg-[#2F74E8]"],
+html.baselead-light [class~="bg-[#2F74E8]"] *,
+html.baselead-light [class*="from-[#3B82F6]"][class*="bg-gradient"],
+html.baselead-light [class*="from-[#3B82F6]"][class*="bg-gradient"] * {
+  color: #ffffff !important;
+}
