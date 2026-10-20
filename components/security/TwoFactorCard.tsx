@@ -113,12 +113,12 @@ export default function TwoFactorCard({
   }
 
   return (
-    <div className="mt-6 rounded-lg border border-[#F5C518]/15 bg-[#F5C518]/[0.03] p-4">
+    <div className="mt-6 rounded-lg border border-[#3B82F6]/15 bg-[#3B82F6]/[0.03] p-4">
       <div className="flex gap-3">
         {factor ? (
           <ShieldCheck size={15} className="mt-0.5 shrink-0 text-[#84CC16]" />
         ) : (
-          <Lock size={15} className="mt-0.5 shrink-0 text-[#F5C518]" />
+          <Lock size={15} className="mt-0.5 shrink-0 text-[#3B82F6]" />
         )}
 
         <div className="min-w-0 flex-1">
@@ -162,13 +162,13 @@ export default function TwoFactorCard({
                   }
                   inputMode="numeric"
                   placeholder="123456"
-                  className="h-10 w-32 rounded-lg border border-white/10 bg-black px-3 text-sm tracking-widest text-white outline-none focus:border-[#F5C518]/50"
+                  className="h-10 w-32 rounded-lg border border-white/10 bg-black px-3 text-sm tracking-widest text-white outline-none focus:border-[#3B82F6]/50"
                 />
                 <button
                   type="button"
                   disabled={busy || code.length !== 6}
                   onClick={() => void confirmEnroll()}
-                  className="rounded-lg bg-[#F5C518] px-4 text-[13px] font-semibold text-black disabled:opacity-40"
+                  className="rounded-lg bg-[#3B82F6] px-4 text-[13px] font-semibold text-white disabled:opacity-40"
                 >
                   {t("Verify")}
                 </button>
@@ -189,7 +189,7 @@ export default function TwoFactorCard({
               className={`mt-4 rounded-lg border px-4 py-2 text-[13px] font-medium transition disabled:opacity-50 ${
                 factor
                   ? "border-red-500/30 text-red-400 hover:bg-red-500/10"
-                  : "border-[#F5C518]/40 text-[#F5C518] hover:bg-[#F5C518]/10"
+                  : "border-[#3B82F6]/40 text-[#3B82F6] hover:bg-[#3B82F6]/10"
               }`}
             >
               {factor ? t("Turn off") : t("Turn on two-factor")}

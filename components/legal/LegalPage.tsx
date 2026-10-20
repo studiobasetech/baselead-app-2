@@ -11,7 +11,7 @@ export const LEGAL = {
 
 export function ContactLine() {
   return LEGAL.email ? (
-    <a href={`mailto:${LEGAL.email}`} className="text-[#F5C518] hover:underline">
+    <a href={`mailto:${LEGAL.email}`} className="text-[#3B82F6] hover:underline">
       {LEGAL.email}
     </a>
   ) : (
@@ -36,7 +36,7 @@ export default function LegalPage({ title, intro, children }: { title: string; i
       <div className="mx-auto max-w-3xl">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-2xl font-extrabold tracking-tight">
-            Base<span className="text-[#F5C518]">Lead</span>
+            Base<span className="text-[#3B82F6]">Lead</span>
           </Link>
           <nav className="flex gap-5 text-sm text-gray-400">
             <Link href="/privacy" className="hover:text-white">Privacy</Link>

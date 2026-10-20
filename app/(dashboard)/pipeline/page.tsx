@@ -514,8 +514,8 @@ function PipelineCard({
       onClick={onClick}
       className={`group relative w-full rounded-xl border border-l-2 p-2.5 text-left transition-all duration-200 ease-out ${
         selected
-          ? "border-[#F5C518]/50 border-l-[#F5C518] bg-[#F5C518]/[0.045] shadow-[0_14px_34px_rgba(0,0,0,0.32),0_0_28px_rgba(245,197,24,0.07)]"
-          : "border-[#202020] border-l-transparent bg-[#0D0D0D] shadow-[0_8px_22px_rgba(0,0,0,0.20)] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:border-l-[#F5C518]/50 hover:bg-[#101010] hover:shadow-[0_16px_36px_rgba(0,0,0,0.34),0_0_24px_rgba(245,197,24,0.045)]"
+          ? "border-[#3B82F6]/50 border-l-[#3B82F6] bg-[#3B82F6]/[0.045] shadow-[0_14px_34px_rgba(0,0,0,0.32),0_0_28px_rgba(59,130,246,0.07)]"
+          : "border-[#202020] border-l-transparent bg-[#0D0D0D] shadow-[0_8px_22px_rgba(0,0,0,0.20)] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:border-l-[#3B82F6]/50 hover:bg-[#101010] hover:shadow-[0_16px_36px_rgba(0,0,0,0.34),0_0_24px_rgba(59,130,246,0.045)]"
       }`}
     >
       <div
@@ -578,7 +578,7 @@ function PipelineCard({
             .map((service) => (
               <span
                 key={service}
-                className="truncate rounded-md border border-[#F5C518]/10 bg-[#332A0C] px-1.5 py-1 text-[8px] font-medium text-[#F5C518] transition-all duration-200 group-hover:border-[#F5C518]/20 group-hover:shadow-[0_0_16px_rgba(245,197,24,0.08)]"
+                className="truncate rounded-md border border-[#3B82F6]/10 bg-[#332A0C] px-1.5 py-1 text-[8px] font-medium text-[#3B82F6] transition-all duration-200 group-hover:border-[#3B82F6]/20 group-hover:shadow-[0_0_16px_rgba(59,130,246,0.08)]"
               >
                 {service}
               </span>
@@ -822,7 +822,7 @@ function LeadDetailPanel({
                 className={`mt-2 inline-flex rounded-md px-2 py-1 text-[10px] ${
                   lead.score >= 80
                     ? "border border-[#84CC16]/10 bg-[#18200B] text-[#84CC16]"
-                    : "border border-[#F5C518]/10 bg-[#332A0C] text-[#F5C518]"
+                    : "border border-[#3B82F6]/10 bg-[#332A0C] text-[#3B82F6]"
                 }`}
               >
                 {lead.score >= 80
@@ -837,7 +837,7 @@ function LeadDetailPanel({
                 filter: `drop-shadow(0 0 12px ${
                   lead.score >= 80
                     ? "rgba(132,204,22,0.16)"
-                    : "rgba(245,197,24,0.14)"
+                    : "rgba(59,130,246,0.14)"
                 })`,
               }}
             >
@@ -879,7 +879,7 @@ function LeadDetailPanel({
               (service) => (
                 <span
                   key={service}
-                  className="rounded-md border border-[#F5C518]/10 bg-[#F5C518] px-2 py-1.5 text-[9px] font-medium text-black shadow-[0_5px_14px_rgba(245,197,24,0.10)] transition-all hover:-translate-y-0.5 hover:bg-[#F5C518] hover:shadow-[0_8px_20px_rgba(245,197,24,0.18)]"
+                  className="rounded-md border border-[#3B82F6]/10 bg-[#3B82F6] px-2 py-1.5 text-[9px] font-medium text-white shadow-[0_5px_14px_rgba(59,130,246,0.10)] transition-all hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_8px_20px_rgba(59,130,246,0.18)]"
                 >
                   {service}
                 </span>
@@ -911,7 +911,7 @@ function LeadDetailPanel({
             >
               <Mail
                 size={12}
-                className="transition-colors group-hover:text-[#F5C518]"
+                className="transition-colors group-hover:text-[#3B82F6]"
               />
 
               <span className="truncate">
@@ -927,7 +927,7 @@ function LeadDetailPanel({
             >
               <Phone
                 size={12}
-                className="transition-colors group-hover:text-[#F5C518]"
+                className="transition-colors group-hover:text-[#3B82F6]"
               />
 
               <span>
@@ -1099,7 +1099,7 @@ function LeadDetailPanel({
               lead
             )
           }
-          className="group flex w-full items-center justify-center gap-2 rounded-lg bg-[#F5C518] py-3 text-xs font-semibold text-black shadow-[0_8px_24px_rgba(245,197,24,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#F5C518] hover:shadow-[0_14px_32px_rgba(245,197,24,0.22),0_0_22px_rgba(245,197,24,0.10)]"
+          className="group flex w-full items-center justify-center gap-2 rounded-lg bg-[#3B82F6] py-3 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(59,130,246,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_14px_32px_rgba(59,130,246,0.22),0_0_22px_rgba(59,130,246,0.10)]"
         >
           <Sparkles
             size={14}
@@ -1117,7 +1117,7 @@ function LeadDetailPanel({
         >
           <ExternalLink
             size={14}
-            className="transition-colors group-hover:text-[#F5C518]"
+            className="transition-colors group-hover:text-[#3B82F6]"
           />
           View Lead Profile
         </button>
@@ -1132,7 +1132,7 @@ function LeadDetailPanel({
           >
             <Pencil
               size={12}
-              className="transition-colors group-hover:text-[#F5C518]"
+              className="transition-colors group-hover:text-[#3B82F6]"
             />
             Edit
           </button>
@@ -1174,7 +1174,7 @@ function KpiCard({
 
       <div className="flex items-start gap-3">
         <div
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${iconClass} shadow-[0_6px_18px_rgba(0,0,0,0.20)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_8px_22px_rgba(245,197,24,0.08)]`}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${iconClass} shadow-[0_6px_18px_rgba(0,0,0,0.20)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_8px_22px_rgba(59,130,246,0.08)]`}
         >
           {icon}
         </div>
@@ -1279,7 +1279,7 @@ function LeadFormModal({
       <div
         role="dialog"
         aria-modal="true"
-        className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#202020] bg-[#0D0D0D] shadow-[0_30px_80px_rgba(0,0,0,0.60),0_0_50px_rgba(245,197,24,0.035)]"
+        className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#202020] bg-[#0D0D0D] shadow-[0_30px_80px_rgba(0,0,0,0.60),0_0_50px_rgba(59,130,246,0.035)]"
       >
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#202020] bg-[#0D0D0D]/95 px-5 py-4 backdrop-blur-xl">
           <div>
@@ -1398,7 +1398,7 @@ function LeadFormModal({
                       .value as PipelineStage
                   )
                 }
-                className="h-10 w-full rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all focus:border-[#F5C518]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(245,197,24,0.07)]"
+                className="h-10 w-full rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all focus:border-[#3B82F6]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(59,130,246,0.07)]"
               >
                 {stages.map(
                   (item) => (
@@ -1428,7 +1428,7 @@ function LeadFormModal({
               }
               placeholder="Add notes about this lead..."
               rows={4}
-              className="w-full resize-none rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 py-2.5 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all placeholder:text-gray-700 focus:border-[#F5C518]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(245,197,24,0.07)]"
+              className="w-full resize-none rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 py-2.5 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all placeholder:text-gray-700 focus:border-[#3B82F6]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(59,130,246,0.07)]"
             />
           </div>
 
@@ -1448,7 +1448,7 @@ function LeadFormModal({
                 (!name.trim() &&
                   !company.trim())
               }
-              className="flex items-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-xs font-semibold text-black shadow-[0_7px_20px_rgba(245,197,24,0.12)] transition-all hover:-translate-y-0.5 hover:bg-[#F5C518] hover:shadow-[0_12px_28px_rgba(245,197,24,0.20)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex items-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_7px_20px_rgba(59,130,246,0.12)] transition-all hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_12px_28px_rgba(59,130,246,0.20)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? (
                 <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-black/20 border-t-black" />
@@ -1497,7 +1497,7 @@ function Field({
           )
         }
         placeholder={placeholder}
-        className="h-10 w-full rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all placeholder:text-gray-700 focus:border-[#F5C518]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(245,197,24,0.07)]"
+        className="h-10 w-full rounded-lg border border-[#202020] bg-[#0D0D0D] px-3 text-xs text-white shadow-[0_5px_16px_rgba(0,0,0,0.16)] outline-none transition-all placeholder:text-gray-700 focus:border-[#3B82F6]/50 focus:bg-[#101010] focus:shadow-[0_0_20px_rgba(59,130,246,0.07)]"
       />
     </div>
   );
@@ -1521,8 +1521,8 @@ function ListRow({
     <div
       className={`group grid cursor-pointer grid-cols-[minmax(180px,1.5fr)_minmax(100px,1fr)_minmax(120px,1fr)_90px_100px_40px] items-center gap-3 border-b border-[#202020] border-l-2 px-4 py-3 transition-all duration-200 ${
         selected
-          ? "border-l-[#F5C518] bg-[#F5C518]/[0.035] shadow-[inset_0_0_30px_rgba(245,197,24,0.025),0_0_24px_rgba(245,197,24,0.035)]"
-          : "border-l-transparent hover:border-l-[#F5C518]/40 hover:bg-[#101010] hover:shadow-[inset_0_0_24px_rgba(245,197,24,0.018)]"
+          ? "border-l-[#3B82F6] bg-[#3B82F6]/[0.035] shadow-[inset_0_0_30px_rgba(59,130,246,0.025),0_0_24px_rgba(59,130,246,0.035)]"
+          : "border-l-transparent hover:border-l-[#3B82F6]/40 hover:bg-[#101010] hover:shadow-[inset_0_0_24px_rgba(59,130,246,0.018)]"
       }`}
       onClick={onSelect}
     >
@@ -2819,7 +2819,7 @@ export default function PipelinePage() {
             onClick={() =>
               openAddModal()
             }
-            className="group flex w-fit items-center gap-2 rounded-xl bg-[#F5C518] px-4 py-2.5 text-xs font-semibold text-black shadow-[0_8px_24px_rgba(245,197,24,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#F5C518] hover:shadow-[0_14px_32px_rgba(245,197,24,0.22),0_0_24px_rgba(245,197,24,0.08)]"
+            className="group flex w-fit items-center gap-2 rounded-xl bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(59,130,246,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_14px_32px_rgba(59,130,246,0.22),0_0_24px_rgba(59,130,246,0.08)]"
           >
             <Plus
               size={15}
@@ -2835,7 +2835,7 @@ export default function PipelinePage() {
             icon={
               <Target
                 size={18}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
             }
             label="All Pipeline"
@@ -2843,7 +2843,7 @@ export default function PipelinePage() {
               leads.length
             )}
             change="Real leads"
-            iconClass="border border-[#F5C518]/10 bg-[#332A0C]"
+            iconClass="border border-[#3B82F6]/10 bg-[#332A0C]"
           />
 
           <KpiCard
@@ -2926,8 +2926,8 @@ export default function PipelinePage() {
               className={`group flex h-10 w-10 items-center justify-center rounded-xl border shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
                 viewMode ===
                 "kanban"
-                  ? "border-[#F5C518]/40 bg-[#332A0C] text-[#F5C518] shadow-[0_0_22px_rgba(245,197,24,0.07)]"
-                  : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#F5C518]/45 hover:bg-[#101010] hover:text-[#F5C518] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(245,197,24,0.06)]"
+                  ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                  : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
               }`}
               aria-label="Kanban view"
             >
@@ -2943,8 +2943,8 @@ export default function PipelinePage() {
               }
               className={`group flex h-10 w-10 items-center justify-center rounded-xl border shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
                 viewMode === "list"
-                  ? "border-[#F5C518]/40 bg-[#332A0C] text-[#F5C518] shadow-[0_0_22px_rgba(245,197,24,0.07)]"
-                  : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#F5C518]/45 hover:bg-[#101010] hover:text-[#F5C518] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(245,197,24,0.06)]"
+                  ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                  : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
               }`}
               aria-label="List view"
             >
@@ -2972,8 +2972,8 @@ export default function PipelinePage() {
             }}
             className={`flex h-10 items-center justify-center gap-2 rounded-xl border px-4 text-xs shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
               filterOpen
-                ? "border-[#F5C518]/40 bg-[#332A0C] text-[#F5C518] shadow-[0_0_22px_rgba(245,197,24,0.07)]"
-                : "border-[#202020] bg-[#0D0D0D] text-gray-300 hover:-translate-y-0.5 hover:border-[#F5C518]/45 hover:bg-[#101010] hover:text-[#F5C518] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(245,197,24,0.06)]"
+                ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                : "border-[#202020] bg-[#0D0D0D] text-gray-300 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
             }`}
           >
             <Filter size={15} />
@@ -2993,10 +2993,10 @@ export default function PipelinePage() {
             Export
           </button>
 
-          <div className="group flex min-w-0 flex-1 items-center rounded-xl border border-[#202020] bg-[#0D0D0D] px-3 shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 focus-within:border-[#F5C518]/45 focus-within:bg-[#101010] focus-within:shadow-[0_0_22px_rgba(245,197,24,0.045)] xl:ml-auto xl:max-w-[250px]">
+          <div className="group flex min-w-0 flex-1 items-center rounded-xl border border-[#202020] bg-[#0D0D0D] px-3 shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 focus-within:border-[#3B82F6]/45 focus-within:bg-[#101010] focus-within:shadow-[0_0_22px_rgba(59,130,246,0.045)] xl:ml-auto xl:max-w-[250px]">
             <Search
               size={15}
-              className="mr-2 shrink-0 text-gray-600 transition-colors group-focus-within:text-[#F5C518]"
+              className="mr-2 shrink-0 text-gray-600 transition-colors group-focus-within:text-[#3B82F6]"
             />
 
             <input
@@ -3032,8 +3032,8 @@ export default function PipelinePage() {
                     className={`rounded-lg border px-3 py-2 text-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-150 ${
                       categoryFilter ===
                       category
-                        ? "border-[#F5C518]/30 bg-[#F5C518] text-black shadow-[0_0_18px_rgba(245,197,24,0.12)]"
-                        : "border-[#202020] bg-[#101010] text-gray-400 hover:-translate-y-0.5 hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518] hover:shadow-[0_0_18px_rgba(245,197,24,0.05)]"
+                        ? "border-[#3B82F6]/30 bg-[#3B82F6] text-white shadow-[0_0_18px_rgba(59,130,246,0.12)]"
+                        : "border-[#202020] bg-[#101010] text-gray-400 hover:-translate-y-0.5 hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6] hover:shadow-[0_0_18px_rgba(59,130,246,0.05)]"
                     }`}
                   >
                     {category}
@@ -3057,8 +3057,8 @@ export default function PipelinePage() {
                 className={`rounded-lg border px-3 py-2 text-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all ${
                   stageFilter ===
                   "All Stages"
-                    ? "border-[#F5C518]/30 bg-[#F5C518] text-black shadow-[0_0_18px_rgba(245,197,24,0.12)]"
-                    : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518]"
+                    ? "border-[#3B82F6]/30 bg-[#3B82F6] text-white shadow-[0_0_18px_rgba(59,130,246,0.12)]"
+                    : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6]"
                 }`}
               >
                 All Stages
@@ -3077,8 +3077,8 @@ export default function PipelinePage() {
                     className={`rounded-lg border px-3 py-2 text-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all ${
                       stageFilter ===
                       stage
-                        ? "border-[#F5C518]/30 bg-[#F5C518] text-black shadow-[0_0_18px_rgba(245,197,24,0.12)]"
-                        : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518]"
+                        ? "border-[#3B82F6]/30 bg-[#3B82F6] text-white shadow-[0_0_18px_rgba(59,130,246,0.12)]"
+                        : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6]"
                     }`}
                   >
                     {stage}
@@ -3112,8 +3112,8 @@ export default function PipelinePage() {
                     className={`rounded-lg border px-3 py-2 text-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all ${
                       opportunityFilter ===
                       option
-                        ? "border-[#F5C518]/30 bg-[#F5C518] text-black shadow-[0_0_18px_rgba(245,197,24,0.12)]"
-                        : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518]"
+                        ? "border-[#3B82F6]/30 bg-[#3B82F6] text-white shadow-[0_0_18px_rgba(59,130,246,0.12)]"
+                        : "border-[#202020] bg-[#101010] text-gray-400 hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6]"
                     }`}
                   >
                     {option}
@@ -3126,7 +3126,7 @@ export default function PipelinePage() {
                 onClick={
                   clearFilters
                 }
-                className="ml-auto rounded-lg border border-[#202020] bg-[#101010] px-3 py-2 text-[10px] text-gray-500 shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518]"
+                className="ml-auto rounded-lg border border-[#202020] bg-[#101010] px-3 py-2 text-[10px] text-gray-500 shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6]"
               >
                 Clear
               </button>
@@ -3153,7 +3153,7 @@ export default function PipelinePage() {
         {loading ? (
           <div className="mt-6 flex min-h-[400px] items-center justify-center rounded-xl border border-[#202020] bg-[#0D0D0D] shadow-[0_14px_36px_rgba(0,0,0,0.24)]">
             <div className="text-center">
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#F5C518] shadow-[0_0_20px_rgba(245,197,24,0.12)]" />
+              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6] shadow-[0_0_20px_rgba(59,130,246,0.12)]" />
 
               <p className="mt-3 text-xs text-gray-500">
                 Loading pipeline...
@@ -3183,7 +3183,7 @@ export default function PipelinePage() {
                 onClick={() =>
                   openAddModal()
                 }
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-xs font-semibold text-black shadow-[0_8px_22px_rgba(245,197,24,0.12)] transition-all hover:-translate-y-0.5 hover:bg-[#F5C518] hover:shadow-[0_12px_28px_rgba(245,197,24,0.20)]"
+                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_8px_22px_rgba(59,130,246,0.12)] transition-all hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_12px_28px_rgba(59,130,246,0.20)]"
               >
                 <Plus size={14} />
                 Add Your First Lead
@@ -3254,7 +3254,7 @@ export default function PipelinePage() {
             </div>
 
             {savingLeadId && (
-              <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-full border border-[#202020] bg-[#101010] px-4 py-2 text-[10px] text-gray-300 shadow-[0_12px_30px_rgba(0,0,0,0.40),0_0_20px_rgba(245,197,24,0.05)] xl:bottom-5">
+              <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-full border border-[#202020] bg-[#101010] px-4 py-2 text-[10px] text-gray-300 shadow-[0_12px_30px_rgba(0,0,0,0.40),0_0_20px_rgba(59,130,246,0.05)] xl:bottom-5">
                 Saving stage...
               </div>
             )}
@@ -3314,7 +3314,7 @@ export default function PipelinePage() {
       </div>
 
       {selectedLead && (
-        <aside className="fixed bottom-0 right-0 top-0 z-30 hidden w-[292px] overflow-hidden border-l border-[#202020] bg-[#0A0A0A] shadow-[-24px_0_60px_rgba(0,0,0,0.42),-4px_0_24px_rgba(245,197,24,0.018)] xl:block">
+        <aside className="fixed bottom-0 right-0 top-0 z-30 hidden w-[292px] overflow-hidden border-l border-[#202020] bg-[#0A0A0A] shadow-[-24px_0_60px_rgba(0,0,0,0.42),-4px_0_24px_rgba(59,130,246,0.018)] xl:block">
           <div className="h-full overflow-y-auto bg-[#0A0A0A] p-5">
             <LeadDetailPanel
               lead={selectedLead}
@@ -3343,7 +3343,7 @@ export default function PipelinePage() {
       {mobileDetailOpen &&
         selectedLead && (
           <div className="fixed inset-0 z-50 flex items-end bg-black/70 backdrop-blur-sm xl:hidden">
-            <div className="max-h-[75vh] w-full overflow-hidden rounded-t-2xl border border-[#202020] bg-[#0A0A0A] shadow-[0_-20px_60px_rgba(0,0,0,0.55),0_-4px_30px_rgba(245,197,24,0.025)]">
+            <div className="max-h-[75vh] w-full overflow-hidden rounded-t-2xl border border-[#202020] bg-[#0A0A0A] shadow-[0_-20px_60px_rgba(0,0,0,0.55),0_-4px_30px_rgba(59,130,246,0.025)]">
               <div className="flex justify-center py-2">
                 <div className="h-1 w-10 rounded-full bg-[#2A2A2A]" />
               </div>

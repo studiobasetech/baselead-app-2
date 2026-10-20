@@ -59,7 +59,7 @@ export default function TermsPage() {
       <Section title="5. Third-party data and services">
         <ul>
           <li>Business information comes from third parties such as Google Maps Platform and public websites. We do not guarantee it is accurate, complete or current; please verify it before relying on it.</li>
-          <li>Your use of Google Maps features is also subject to the <a className="text-[#F5C518] hover:underline" href="https://maps.google.com/help/terms_maps/" target="_blank" rel="noopener noreferrer">Google Maps/Google Earth Additional Terms of Service</a> and the <a className="text-[#F5C518] hover:underline" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</li>
+          <li>Your use of Google Maps features is also subject to the <a className="text-[#3B82F6] hover:underline" href="https://maps.google.com/help/terms_maps/" target="_blank" rel="noopener noreferrer">Google Maps/Google Earth Additional Terms of Service</a> and the <a className="text-[#3B82F6] hover:underline" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</li>
           <li>Connected services (Google, Twilio, Stripe, Hunter and others) are governed by their own terms, and their fees, if any, are your responsibility.</li>
         </ul>
       </Section>
@@ -74,7 +74,7 @@ export default function TermsPage() {
       <Section title="7. Your data">
         <p>
           You own the data you put into {LEGAL.product}. You give us permission to host, process and transmit it only as needed
-          to provide and improve the service, as described in our <Link href="/privacy" className="text-[#F5C518] hover:underline">Privacy Policy</Link>.
+          to provide and improve the service, as described in our <Link href="/privacy" className="text-[#3B82F6] hover:underline">Privacy Policy</Link>.
           You can export your leads (CSV) and delete your data at any time.
         </p>
       </Section>

@@ -62,7 +62,7 @@ export default function PlanGate({
               window.location.href =
                 "/settings?section=billing";
             }}
-            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-4 py-2.5 text-xs font-semibold text-black transition hover:bg-[#ffe044]"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#2F74E8]"
           >
             View plans
             <ArrowRight size={14} />

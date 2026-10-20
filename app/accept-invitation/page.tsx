@@ -149,7 +149,7 @@ export default function AcceptInvitationPage() {
 
         <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-cyan-500/[0.06] blur-[160px]" />
 
-        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-yellow-400/[0.025] blur-[130px]" />
+        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-blue-400/[0.025] blur-[130px]" />
 
         <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
 
@@ -160,7 +160,7 @@ export default function AcceptInvitationPage() {
 
           <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent" />
 
-          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-yellow-400/30 to-transparent" />
+          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-blue-400/30 to-transparent" />
 
           <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
@@ -174,7 +174,7 @@ export default function AcceptInvitationPage() {
 
       {/* PAGE */}
       <div className="relative z-10 flex min-h-screen items-center justify-center p-5">
-        <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-yellow-400/60 p-[1.5px]">
+        <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-blue-400/60 p-[1.5px]">
           <section className="rounded-2xl bg-[#050506]/95 p-8 text-center sm:p-12">
             {/* LOGO */}
             <div className="mb-10 flex justify-center">
@@ -227,7 +227,7 @@ export default function AcceptInvitationPage() {
                   <button
                     type="button"
                     onClick={handleLogin}
-                    className="relative flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-lg font-bold text-black shadow-[0_8px_30px_rgba(245,197,24,0.18)] transition hover:scale-[1.01] hover:from-yellow-300 hover:to-amber-400"
+                    className="relative flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
                   >
                     Log in
 
@@ -253,7 +253,7 @@ export default function AcceptInvitationPage() {
               <div className="flex flex-col items-center">
                 <Loader2
                   size={42}
-                  className="animate-spin text-yellow-400"
+                  className="animate-spin text-blue-400"
                 />
 
                 <h1 className="mt-7 text-3xl font-bold">
@@ -291,7 +291,7 @@ export default function AcceptInvitationPage() {
                     Your role
                   </p>
 
-                  <p className="mt-1 text-lg font-semibold text-yellow-400">
+                  <p className="mt-1 text-lg font-semibold text-blue-400">
                     {role}
                   </p>
                 </div>
@@ -299,7 +299,7 @@ export default function AcceptInvitationPage() {
                 <button
                   type="button"
                   onClick={handleDashboard}
-                  className="relative mt-8 flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-lg font-bold text-black shadow-[0_8px_30px_rgba(245,197,24,0.18)] transition hover:scale-[1.01] hover:from-yellow-300 hover:to-amber-400"
+                  className="relative mt-8 flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
                 >
                   Go to Dashboard
 

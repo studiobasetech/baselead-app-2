@@ -115,7 +115,7 @@ export default function BookingPage({
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] px-4 py-10 text-white sm:py-16">
       <div className="pointer-events-none absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-violet-600/[0.12] blur-[140px]" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full bg-[#F5C518]/[0.06] blur-[140px]" />
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full bg-[#3B82F6]/[0.06] blur-[140px]" />
 
       <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0B0B0D]/90 shadow-[0_40px_120px_rgba(0,0,0,0.6)] backdrop-blur-xl">
         <div className="grid md:grid-cols-[300px_1fr]">
@@ -125,7 +125,7 @@ export default function BookingPage({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={info.logo} alt={info.company} className="h-12 w-12 rounded-xl object-cover" />
             ) : (
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F5C518] text-lg font-bold text-black">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#3B82F6] text-lg font-bold text-white">
                 {(info?.company || info?.host || "B").charAt(0)}
               </div>
             )}
@@ -137,7 +137,7 @@ export default function BookingPage({
 
             <div className="mt-5 space-y-2.5 text-sm text-gray-400">
               <p className="flex items-center gap-2">
-                <Clock3 size={16} className="text-[#F5C518]" />
+                <Clock3 size={16} className="text-[#3B82F6]" />
                 {info?.duration ?? 30} minutes
               </p>
               <p className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default function BookingPage({
                     href={done.meetUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black"
+                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3 text-sm font-semibold text-white"
                   >
                     <Video size={16} /> Meeting link
                   </a>
@@ -216,7 +216,7 @@ export default function BookingPage({
                             onClick={() => setDay(key)}
                             className={`flex min-w-[68px] flex-col items-center rounded-2xl border px-3 py-3 transition ${
                               active
-                                ? "border-[#F5C518]/60 bg-[#F5C518]/10 text-[#F5C518] shadow-[0_0_24px_rgba(245,197,24,0.15)]"
+                                ? "border-[#3B82F6]/60 bg-[#3B82F6]/10 text-[#3B82F6] shadow-[0_0_24px_rgba(59,130,246,0.15)]"
                                 : "border-white/10 bg-white/[0.02] text-gray-300 hover:border-white/20"
                             }`}
                           >
@@ -242,7 +242,7 @@ export default function BookingPage({
                           key={item.start}
                           type="button"
                           onClick={() => setSlot(item)}
-                          className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-sm font-medium text-gray-200 transition hover:border-[#F5C518]/50 hover:bg-[#F5C518]/10 hover:text-[#F5C518]"
+                          className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-sm font-medium text-gray-200 transition hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]"
                         >
                           {time(item.start)}
                         </button>
@@ -263,8 +263,8 @@ export default function BookingPage({
                   <ArrowLeft size={15} /> Change time
                 </button>
 
-                <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#F5C518]/25 bg-[#F5C518]/[0.06] p-4">
-                  <CalendarCheck2 className="text-[#F5C518]" size={20} />
+                <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#3B82F6]/25 bg-[#3B82F6]/[0.06] p-4">
+                  <CalendarCheck2 className="text-[#3B82F6]" size={20} />
                   <div>
                     <p className="text-sm font-medium">{longDate(slot.start)}</p>
                     <p className="text-sm text-gray-400">
@@ -288,7 +288,7 @@ export default function BookingPage({
                         type={type}
                         value={form[key]}
                         onChange={(event) => setForm({ ...form, [key]: event.target.value })}
-                        className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none transition focus:border-[#F5C518]/50"
+                        className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none transition focus:border-[#3B82F6]/50"
                       />
                     </label>
                   ))}
@@ -300,7 +300,7 @@ export default function BookingPage({
                     value={form.notes}
                     onChange={(event) => setForm({ ...form, notes: event.target.value })}
                     rows={3}
-                    className="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none transition focus:border-[#F5C518]/50"
+                    className="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none transition focus:border-[#3B82F6]/50"
                   />
                 </label>
 
@@ -314,7 +314,7 @@ export default function BookingPage({
                   type="button"
                   disabled={sending || !form.name || !form.email}
                   onClick={() => void book()}
-                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-50"
+                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50"
                 >
                   {sending ? <Loader2 className="animate-spin" size={16} /> : <CalendarCheck2 size={16} />}
                   Confirm booking

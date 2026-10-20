@@ -233,7 +233,7 @@ export default function LoginPage() {
     },
     {
       icon: TrendingUp,
-      color: "text-yellow-400",
+      color: "text-blue-400",
       text: "Close more deals",
     },
   ];
@@ -245,7 +245,7 @@ export default function LoginPage() {
 
         <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-cyan-500/[0.06] blur-[160px]" />
 
-        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-yellow-400/[0.025] blur-[130px]" />
+        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-blue-400/[0.025] blur-[130px]" />
 
         <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
 
@@ -256,7 +256,7 @@ export default function LoginPage() {
 
           <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent" />
 
-          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-yellow-400/30 to-transparent" />
+          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-blue-400/30 to-transparent" />
 
           <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
@@ -270,7 +270,7 @@ export default function LoginPage() {
 
           <div className="absolute left-[45%] top-[25%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
 
-          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-yellow-400 shadow-[0_0_10px_#facc15]" />
+          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa]" />
 
           <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
 
@@ -305,7 +305,7 @@ export default function LoginPage() {
                 Find better clients.
                 <br />
                 Close{" "}
-                <span className="text-yellow-400">
+                <span className="text-blue-400">
                   bigger
                 </span>{" "}
                 deals.
@@ -358,10 +358,10 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-yellow-400/40 bg-yellow-400/[0.04]">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-blue-400/[0.04]">
                   <TrendingUp
                     size={27}
-                    className="text-yellow-400"
+                    className="text-blue-400"
                   />
                 </div>
 
@@ -379,7 +379,7 @@ export default function LoginPage() {
           </section>
 
           <div className="relative flex items-center justify-center py-8 lg:py-6">
-            <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-yellow-400/60 p-[1.5px]">
+            <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-blue-400/60 p-[1.5px]">
               <section className="relative rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
                 <div className="absolute right-8 top-8 hidden text-sm text-gray-500 lg:block">
                   Don&apos;t have an account?
@@ -392,7 +392,7 @@ export default function LoginPage() {
                           )}`
                         : "/signup"
                     }
-                    className="ml-2 font-medium text-yellow-400 transition hover:text-yellow-300"
+                    className="ml-2 font-medium text-blue-400 transition hover:text-blue-300"
                   >
                     Sign up
                   </a>
@@ -430,7 +430,7 @@ export default function LoginPage() {
                 </div>
 
                 {inviteToken && (
-                  <div className="mt-7 rounded-xl border border-yellow-400/20 bg-yellow-400/[0.04] px-4 py-3 text-center text-sm text-yellow-300">
+                  <div className="mt-7 rounded-xl border border-blue-400/20 bg-blue-400/[0.04] px-4 py-3 text-center text-sm text-blue-300">
                     You&apos;re signing in to accept a team
                     invitation.
                   </div>
@@ -470,7 +470,7 @@ export default function LoginPage() {
                     <button
                       type="submit"
                       disabled={loading || mfaCode.length !== 6}
-                      className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow-400 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:opacity-50"
+                      className="flex h-12 w-full items-center justify-center rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50"
                     >
                       {loading ? "Verifying..." : "Verify and continue"}
                     </button>
@@ -576,7 +576,7 @@ export default function LoginPage() {
                       type="button"
                       onClick={handleForgotPassword}
                       disabled={loading}
-                      className="text-sm font-medium text-yellow-400 transition hover:text-yellow-300 disabled:opacity-50"
+                      className="text-sm font-medium text-blue-400 transition hover:text-blue-300 disabled:opacity-50"
                     >
                       Forgot password?
 
@@ -602,7 +602,7 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-lg font-bold text-black shadow-[0_8px_30px_rgba(245,197,24,0.18)] transition hover:scale-[1.01] hover:from-yellow-300 hover:to-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {loading
                       ? "Logging in..."
@@ -674,7 +674,7 @@ export default function LoginPage() {
                           )}`
                         : "/signup"
                     }
-                    className="ml-2 inline-flex items-center font-medium text-yellow-400"
+                    className="ml-2 inline-flex items-center font-medium text-blue-400"
                   >
                     Sign up
 

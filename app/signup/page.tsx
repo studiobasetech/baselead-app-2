@@ -135,14 +135,14 @@ export default function SignupPage() {
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
         <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-cyan-500/[0.06] blur-[160px]" />
-        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-yellow-400/[0.025] blur-[130px]" />
+        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-blue-400/[0.025] blur-[130px]" />
         <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
         <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-cyan-500/[0.07] blur-[150px]" />
 
         <div className="absolute inset-0 opacity-50">
           <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-purple-500/40 to-transparent" />
           <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent" />
-          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-yellow-400/30 to-transparent" />
+          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-blue-400/30 to-transparent" />
 
           <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
           <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
@@ -151,7 +151,7 @@ export default function SignupPage() {
 
           <div className="absolute left-[39%] top-[16%] h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
           <div className="absolute left-[45%] top-[25%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
-          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-yellow-400 shadow-[0_0_10px_#facc15]" />
+          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa]" />
           <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
           <div className="absolute left-[32%] top-[65%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
         </div>
@@ -160,7 +160,7 @@ export default function SignupPage() {
       {/* PAGE */}
       <div className="relative z-10 min-h-screen p-3 sm:p-5 lg:p-6">
         <div className="mx-auto flex min-h-[calc(100vh-24px)] max-w-[1600px] items-center justify-center">
-          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-yellow-400/60 p-[1.5px]">
+          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-blue-400/60 p-[1.5px]">
             <section className="rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
 
               {/* TOP NAV */}
@@ -177,7 +177,7 @@ export default function SignupPage() {
                   Already have an account?
                   <a
                     href="/login"
-                    className="ml-2 font-medium text-yellow-400 transition hover:text-yellow-300"
+                    className="ml-2 font-medium text-blue-400 transition hover:text-blue-300"
                   >
                     Log in
                   </a>
@@ -370,7 +370,7 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-lg font-bold text-black shadow-[0_8px_30px_rgba(245,197,24,0.18)] transition hover:scale-[1.01] hover:from-yellow-300 hover:to-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Creating account..." : "Create account"}
 

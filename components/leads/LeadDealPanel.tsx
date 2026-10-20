@@ -241,7 +241,7 @@ export default function LeadDealPanel({
               setOwner(event.target.value);
               void patch({ assigned_to: event.target.value }, "Owner updated.");
             }}
-            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#F5C518]/40"
+            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#3B82F6]/40"
           >
             {members.length === 0 && <option value={owner}>Me</option>}
             {members.map((member) => (
@@ -260,7 +260,7 @@ export default function LeadDealPanel({
             onChange={(event) => setValue(event.target.value)}
             onBlur={() => void patch({ deal_value: value ? Number(value) : null }, "Deal value saved.")}
             placeholder="0"
-            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#F5C518]/40"
+            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#3B82F6]/40"
           />
         </label>
 
@@ -273,7 +273,7 @@ export default function LeadDealPanel({
               setCloseDate(event.target.value);
               void patch({ expected_close_date: event.target.value || null }, "Close date saved.");
             }}
-            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#F5C518]/40"
+            className="mt-1.5 h-10 w-full rounded-lg border border-[#202020] bg-[#0A0A0A] px-2.5 text-xs text-gray-200 outline-none focus:border-[#3B82F6]/40"
           />
         </label>
       </div>
@@ -303,12 +303,12 @@ export default function LeadDealPanel({
             onChange={(event) => setNote(event.target.value)}
             onKeyDown={(event) => event.key === "Enter" && void addNote()}
             placeholder="Add a note or call summary…"
-            className="h-10 flex-1 rounded-lg border border-[#202020] bg-[#0A0A0A] px-3 text-xs outline-none focus:border-[#F5C518]/40"
+            className="h-10 flex-1 rounded-lg border border-[#202020] bg-[#0A0A0A] px-3 text-xs outline-none focus:border-[#3B82F6]/40"
           />
           <button
             type="button"
             onClick={() => void addNote()}
-            className="rounded-lg border border-[#202020] px-3 text-xs text-gray-300 transition hover:border-[#F5C518]/40 hover:text-[#F5C518]"
+            className="rounded-lg border border-[#202020] px-3 text-xs text-gray-300 transition hover:border-[#3B82F6]/40 hover:text-[#3B82F6]"
           >
             Save
           </button>

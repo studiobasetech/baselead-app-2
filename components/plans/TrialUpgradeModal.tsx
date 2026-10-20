@@ -170,7 +170,7 @@ export default function TrialUpgradeModal() {
         @keyframes blSpin { to { transform: rotate(360deg); } }
         @keyframes blFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
         @keyframes blConfetti { 0% { transform: translateY(-20px) rotate(0); opacity: 1 } 100% { transform: translateY(380px) rotate(540deg); opacity: 0 } }
-        @keyframes blPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,197,24,.45) } 50% { box-shadow: 0 0 0 8px rgba(245,197,24,0) } }
+        @keyframes blPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,.45) } 50% { box-shadow: 0 0 0 8px rgba(59,130,246,0) } }
       `}</style>
 
       {/* animated aurora border */}
@@ -186,7 +186,7 @@ export default function TrialUpgradeModal() {
 
         <div className="bl-journey-panel relative max-h-[90vh] overflow-y-auto rounded-[calc(2rem-1.5px)] bg-[#0A0A0C]/95 p-6 sm:p-8">
           <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#F5C518]/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
           <button
             type="button"
@@ -225,7 +225,7 @@ export default function TrialUpgradeModal() {
               <button
                 type="button"
                 onClick={() => setReason(null)}
-                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-6 py-3 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
               >
                 Let&apos;s go <ArrowRight size={16} />
               </button>
@@ -252,7 +252,7 @@ export default function TrialUpgradeModal() {
                 <div className="relative">
                   <div className="absolute left-0 right-0 top-[11px] h-[3px] rounded-full bg-white/10" />
                   <div
-                    className="absolute left-0 top-[11px] h-[3px] rounded-full bg-gradient-to-r from-[#A78BFA] via-[#22D3EE] to-[#F5C518] transition-all duration-700"
+                    className="absolute left-0 top-[11px] h-[3px] rounded-full bg-gradient-to-r from-[#A78BFA] via-[#22D3EE] to-[#3B82F6] transition-all duration-700"
                     style={{ width: `${reason === "expired" ? 100 : ((dayOfTrial - 1) / 6) * 100}%` }}
                   />
                   <div className="relative flex justify-between">
@@ -262,7 +262,7 @@ export default function TrialUpgradeModal() {
                         <div key={step.day} className="flex w-16 flex-col items-center text-center first:items-start first:text-left last:items-end last:text-right">
                           <span
                             className={`flex h-6 w-6 items-center justify-center rounded-full border-2 text-[10px] font-bold ${
-                              reached ? "border-[#F5C518] bg-[#F5C518] text-black" : "border-white/20 bg-[var(--j-bg)] text-gray-500"
+                              reached ? "border-[#3B82F6] bg-[#3B82F6] text-white" : "border-white/20 bg-[var(--j-bg)] text-gray-500"
                             }`}
                             style={dayOfTrial === step.day && reason !== "expired" ? { animation: "blPulse 1.8s ease-in-out infinite" } : undefined}
                           >
@@ -292,7 +292,7 @@ export default function TrialUpgradeModal() {
                       {reason === "expired" ? "Ended" : `${daysLeft} day${daysLeft === 1 ? "" : "s"}`}
                     </p>
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#F5C518] to-[#F472B6]" style={{ width: `${reason === "expired" ? 0 : Math.round((daysLeft / 7) * 100)}%` }} />
+                      <div className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#F472B6]" style={{ width: `${reason === "expired" ? 0 : Math.round((daysLeft / 7) * 100)}%` }} />
                     </div>
                   </div>
                 </div>
@@ -370,7 +370,7 @@ export default function TrialUpgradeModal() {
                 <button
                   type="button"
                   onClick={goToPlans}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-6 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-6 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
                 >
                   Compare all plans <ArrowRight size={16} />
                 </button>

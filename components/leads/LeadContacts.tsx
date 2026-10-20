@@ -81,18 +81,18 @@ export default function LeadContacts({
 
       <div className="mt-2 space-y-2">
         {contacts.map((contact) => (
-          <div key={contact.id} className={`rounded-lg border p-2.5 ${contact.is_primary ? "border-[#F5C518]/35 bg-[#F5C518]/[0.04]" : "border-[#202020]"}`}>
+          <div key={contact.id} className={`rounded-lg border p-2.5 ${contact.is_primary ? "border-[#3B82F6]/35 bg-[#3B82F6]/[0.04]" : "border-[#202020]"}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <p className="flex items-center gap-1.5 truncate text-xs font-medium text-gray-100">
-                  {contact.is_primary && <Star size={11} className="shrink-0 fill-[#F5C518] text-[#F5C518]" />}
+                  {contact.is_primary && <Star size={11} className="shrink-0 fill-[#3B82F6] text-[#3B82F6]" />}
                   {contact.full_name || contact.email}
                 </p>
                 {contact.title && <p className="truncate text-[11px] text-gray-500">{contact.title}</p>}
               </div>
               <div className="flex shrink-0 gap-1">
                 {!contact.is_primary && (
-                  <button type="button" onClick={() => void call({ action: "primary", contactId: contact.id })} className="rounded-md p-1 text-gray-500 hover:text-[#F5C518]" aria-label="Make main contact" title="Make main contact">
+                  <button type="button" onClick={() => void call({ action: "primary", contactId: contact.id })} className="rounded-md p-1 text-gray-500 hover:text-[#3B82F6]" aria-label="Make main contact" title="Make main contact">
                     <Star size={12} />
                   </button>
                 )}
@@ -139,7 +139,7 @@ export default function LeadContacts({
               value={form[key]}
               onChange={(event) => setForm({ ...form, [key]: event.target.value })}
               placeholder={{ full_name: "Name", title: "Title (e.g. Owner)", email: "Email", phone: "Phone" }[key]}
-              className="h-9 w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 text-xs outline-none focus:border-[#F5C518]/40"
+              className="h-9 w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 text-xs outline-none focus:border-[#3B82F6]/40"
             />
           ))}
           <div className="flex gap-1.5">
@@ -152,7 +152,7 @@ export default function LeadContacts({
                   setForm({ full_name: "", title: "", email: "", phone: "" });
                 }
               }}
-              className="h-9 flex-1 rounded-lg bg-[#F5C518] text-xs font-semibold text-black"
+              className="h-9 flex-1 rounded-lg bg-[#3B82F6] text-xs font-semibold text-white"
             >
               Save contact
             </button>
@@ -167,7 +167,7 @@ export default function LeadContacts({
             type="button"
             disabled={busy}
             onClick={() => void call({ action: "find" })}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-[#F5C518]/30 text-[11px] font-medium text-[#F5C518] transition hover:bg-[#F5C518]/10 disabled:opacity-50"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-[#3B82F6]/30 text-[11px] font-medium text-[#3B82F6] transition hover:bg-[#3B82F6]/10 disabled:opacity-50"
           >
             {busy ? <Loader2 size={12} className="animate-spin" /> : <UserSearch size={12} />}
             Find decision makers

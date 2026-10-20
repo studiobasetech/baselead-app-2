@@ -2259,7 +2259,7 @@ export default function DashboardPage() {
         <div className="flex min-h-[70vh] items-center justify-center">
           <div className="text-center">
             <div
-              className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-white/10 border-t-[#F5C518]"
+              className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]"
             />
 
             <p
@@ -2340,7 +2340,7 @@ export default function DashboardPage() {
               {/* BRAND ICON */}
 
               <div
-                className="flex h-8 w-8 items-center justify-center rounded-xl shadow-[0_0_25px_rgba(245,197,24,0.18)]"
+                className="flex h-8 w-8 items-center justify-center rounded-xl shadow-[0_0_25px_rgba(59,130,246,0.18)]"
                 style={{
                   backgroundColor:
                     GOLD,
@@ -2822,7 +2822,7 @@ export default function DashboardPage() {
           onClick={
             goToLeads
           }
-          className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0D0D0D] ${cardPadding} text-left transition duration-300 hover:-translate-y-1 hover:border-[#F5C518]/30`}
+          className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0D0D0D] ${cardPadding} text-left transition duration-300 hover:-translate-y-1 hover:border-[#3B82F6]/30`}
         >
           <div
             className="absolute -right-10 -top-10 h-28 w-28 rounded-full blur-2xl transition"
@@ -2896,7 +2896,7 @@ export default function DashboardPage() {
 
           <ArrowUpRight
             size={15}
-            className="absolute bottom-5 right-5 text-[#333] transition group-hover:text-[#F5C518]"
+            className="absolute bottom-5 right-5 text-[#333] transition group-hover:text-[#3B82F6]"
           />
         </button>
 
@@ -4060,7 +4060,7 @@ export default function DashboardPage() {
             onClick={
               goToPipeline
             }
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] py-2.5 text-[10px] font-medium text-[#777] transition hover:border-[#F5C518]/20 hover:bg-[#F5C518]/[0.03] hover:text-[#F5C518]"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] py-2.5 text-[10px] font-medium text-[#777] transition hover:border-[#3B82F6]/20 hover:bg-[#3B82F6]/[0.03] hover:text-[#3B82F6]"
           >
             Open Pipeline
             <ExternalLink
@@ -4244,7 +4244,7 @@ export default function DashboardPage() {
           onClick={
             goToLeads
           }
-          className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-[#0A0A0A] p-4 text-left transition hover:border-[#F5C518]/20 hover:bg-[#0D0D0D]"
+          className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-[#0A0A0A] p-4 text-left transition hover:border-[#3B82F6]/20 hover:bg-[#0D0D0D]"
         >
           <div
             className="flex h-9 w-9 items-center justify-center rounded-lg"
@@ -4276,7 +4276,7 @@ export default function DashboardPage() {
 
           <ArrowUpRight
             size={14}
-            className="text-gray-600 transition group-hover:text-[#F5C518]"
+            className="text-gray-600 transition group-hover:text-[#3B82F6]"
           />
         </button>
 

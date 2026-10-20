@@ -87,7 +87,7 @@ export default function TwilioConnectCard({
             className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
               state.connected
                 ? "border border-[#202020] text-gray-400 hover:text-[#F0475C]"
-                : "bg-[#F5C518] text-black hover:bg-[#ffe044]"
+                : "bg-[#3B82F6] text-white hover:bg-[#2F74E8]"
             }`}
           >
             {state.connected ? "Disconnect" : "Connect Twilio"}
@@ -133,14 +133,14 @@ export default function TwilioConnectCard({
               value={form[key]}
               onChange={(event) => setForm({ ...form, [key]: event.target.value })}
               placeholder={placeholder}
-              className="h-11 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50"
+              className="h-11 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50"
             />
           ))}
           <button
             type="button"
             disabled={busy}
             onClick={() => void save()}
-            className="h-11 rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-50 sm:col-span-3"
+            className="h-11 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50 sm:col-span-3"
           >
             {busy ? "Connecting…" : "Save & verify"}
           </button>

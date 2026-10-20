@@ -462,7 +462,7 @@ export default function SequencesPage() {
         <button
           type="button"
           onClick={() => setChoosing(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.2)] transition hover:-translate-y-0.5 hover:bg-[#ffe044]"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.2)] transition hover:-translate-y-0.5 hover:bg-[#2F74E8]"
         >
           <Plus size={16} /> New sequence
         </button>
@@ -610,7 +610,7 @@ export default function SequencesPage() {
                   <button
                     type="button"
                     onClick={() => void openEnroll(sequence)}
-                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5C518] py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#3B82F6] py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
                   >
                     <UserPlus size={15} /> Add leads
                   </button>
@@ -697,7 +697,7 @@ export default function SequencesPage() {
               <input
                 value={editing.name}
                 onChange={(e) => setEditing({ ...editing, name: e.target.value })}
-                className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none focus:border-[#F5C518]/50"
+                className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none focus:border-[#3B82F6]/50"
                 placeholder="e.g. New client outreach"
               />
 
@@ -735,7 +735,7 @@ export default function SequencesPage() {
                               max={60}
                               value={step.delay_days}
                               onChange={(e) => updateStep(index, { delay_days: Math.max(0, Math.min(60, Number(e.target.value) || 0)) })}
-                              className="w-14 rounded-lg border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-white outline-none focus:border-[#F5C518]/50"
+                              className="w-14 rounded-lg border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-white outline-none focus:border-[#3B82F6]/50"
                             />
                             day{step.delay_days === 1 ? "" : "s"} after the previous step
                           </label>
@@ -791,7 +791,7 @@ export default function SequencesPage() {
                               value={step.subject ?? ""}
                               onChange={(e) => updateStep(index, { subject: e.target.value })}
                               placeholder={isEmail ? "Subject line" : "What should the rep do?"}
-                              className="mt-3 h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50"
+                              className="mt-3 h-10 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50"
                             />
                             <textarea
                               value={step.body ?? ""}
@@ -804,7 +804,7 @@ export default function SequencesPage() {
                               }}
                               rows={isEmail ? 6 : 2}
                               placeholder={isEmail ? "Write your email…" : "Notes for the rep (optional)"}
-                              className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm leading-6 outline-none focus:border-[#F5C518]/50"
+                              className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm leading-6 outline-none focus:border-[#3B82F6]/50"
                             />
                           </>
                         )}
@@ -819,7 +819,7 @@ export default function SequencesPage() {
                                     key={variable.token}
                                     type="button"
                                     onClick={() => insertVariable(index, variable.token)}
-                                    className="rounded-full border border-white/10 px-2 py-0.5 text-[11px] text-gray-400 transition hover:border-[#F5C518]/40 hover:text-[#F5C518]"
+                                    className="rounded-full border border-white/10 px-2 py-0.5 text-[11px] text-gray-400 transition hover:border-[#3B82F6]/40 hover:text-[#3B82F6]"
                                     title={`Adds ${variable.token}`}
                                   >
                                     + {variable.label}
@@ -830,7 +830,7 @@ export default function SequencesPage() {
                             <button
                               type="button"
                               onClick={() => setPreviewing(showPreview ? null : index)}
-                              className="ml-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-[#F5C518] hover:bg-[#F5C518]/10"
+                              className="ml-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-[#3B82F6] hover:bg-[#3B82F6]/10"
                             >
                               {showPreview ? <Pencil size={11} /> : <Eye size={11} />}
                               {showPreview ? "Edit" : "Preview"}
@@ -885,7 +885,7 @@ export default function SequencesPage() {
                 type="button"
                 disabled={busy}
                 onClick={() => void save()}
-                className="h-11 flex-1 rounded-xl bg-[#F5C518] px-6 text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-60 sm:flex-none"
+                className="h-11 flex-1 rounded-xl bg-[#3B82F6] px-6 text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-60 sm:flex-none"
               >
                 {busy ? "Saving..." : editing.id ? "Save changes" : "Create sequence"}
               </button>
@@ -928,7 +928,7 @@ export default function SequencesPage() {
                 <button
                   type="button"
                   onClick={() => setPicked(visibleLeads.filter((l) => l.email).map((l) => l.id))}
-                  className="rounded-full border border-[#F5C518]/30 bg-[#F5C518]/5 px-3 py-1 font-medium text-[#F5C518] transition hover:bg-[#F5C518]/10"
+                  className="rounded-full border border-[#3B82F6]/30 bg-[#3B82F6]/5 px-3 py-1 font-medium text-[#3B82F6] transition hover:bg-[#3B82F6]/10"
                 >
                   Select all ({visibleLeads.filter((l) => l.email).length})
                 </button>
@@ -938,7 +938,7 @@ export default function SequencesPage() {
                   </button>
                 )}
                 <label className="ml-auto flex cursor-pointer items-center gap-1.5 text-gray-400">
-                  <input type="checkbox" checked={onlyWithEmail} onChange={(e) => setOnlyWithEmail(e.target.checked)} className="accent-[#F5C518]" />
+                  <input type="checkbox" checked={onlyWithEmail} onChange={(e) => setOnlyWithEmail(e.target.checked)} className="accent-[#3B82F6]" />
                   Only leads with email
                 </label>
               </div>
@@ -980,7 +980,7 @@ export default function SequencesPage() {
                     <li key={lead.id}>
                       <label
                         className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition ${
-                          checked ? "border-[#F5C518]/40 bg-[#F5C518]/[0.06]" : "border-[#202020] hover:border-[#2A2A2A]"
+                          checked ? "border-[#3B82F6]/40 bg-[#3B82F6]/[0.06]" : "border-[#202020] hover:border-[#2A2A2A]"
                         } ${lead.email ? "" : "cursor-not-allowed opacity-50"}`}
                       >
                         <input
@@ -988,7 +988,7 @@ export default function SequencesPage() {
                           checked={checked}
                           disabled={!lead.email}
                           onChange={() => setPicked((current) => (checked ? current.filter((id) => id !== lead.id) : [...current, lead.id]))}
-                          className="h-4 w-4 accent-[#F5C518]"
+                          className="h-4 w-4 accent-[#3B82F6]"
                         />
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm">{lead.company || lead.name}</p>
@@ -1012,7 +1012,7 @@ export default function SequencesPage() {
                 type="button"
                 disabled={busy || picked.length === 0}
                 onClick={() => void enroll()}
-                className="h-12 w-full rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-50"
+                className="h-12 w-full rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50"
               >
                 {busy
                   ? "Starting..."
@@ -1063,7 +1063,7 @@ function TemplateGrid({ onPick, withBlank = false }: { onPick: (template: (typeo
         <button
           type="button"
           onClick={() => onPick(null)}
-          className="bl-card flex items-start gap-3 rounded-2xl border border-dashed border-[#2A2A2A] p-4 text-left transition hover:border-[#F5C518]/40"
+          className="bl-card flex items-start gap-3 rounded-2xl border border-dashed border-[#2A2A2A] p-4 text-left transition hover:border-[#3B82F6]/40"
         >
           <span className="bl-icon-tile" style={tile("#9CA3AF")}>
             <Plus size={16} strokeWidth={2.2} />

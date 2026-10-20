@@ -164,7 +164,7 @@ export default function PublicProposalPage({
   return (
     <main className="proposal-page relative min-h-screen overflow-hidden bg-[#050505] px-4 py-8 text-white sm:py-14">
       <div className="no-print pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-violet-600/[0.14] blur-[150px]" />
-      <div className="no-print pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full bg-[#F5C518]/[0.07] blur-[150px]" />
+      <div className="no-print pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full bg-[#3B82F6]/[0.07] blur-[150px]" />
 
       <article className="proposal-doc relative mx-auto w-full max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0B0B0D]/80 shadow-[0_40px_120px_rgba(0,0,0,0.6)] backdrop-blur-xl">
         {/* Header */}
@@ -174,7 +174,7 @@ export default function PublicProposalPage({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={company.logo_url} alt="" className="h-14 w-14 rounded-2xl object-cover" />
             ) : (
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F5C518] text-xl font-bold text-black">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3B82F6] text-xl font-bold text-white">
                 {(company?.company_name || "P").charAt(0)}
               </div>
             )}
@@ -187,7 +187,7 @@ export default function PublicProposalPage({
           </div>
 
           <div className="text-left sm:text-right">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#F5C518]">Proposal</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Proposal</p>
             <p className="mt-1 text-sm text-gray-400">{proposal.number}</p>
             <p className="text-sm text-gray-500">
               {new Date(proposal.created_at).toLocaleDateString([], { year: "numeric", month: "long", day: "numeric" })}
@@ -261,7 +261,7 @@ export default function PublicProposalPage({
             )}
             <div className="flex justify-between border-t border-white/10 pt-3 text-lg font-semibold">
               <dt>Total</dt>
-              <dd className="tabular-nums text-[#F5C518]">{money(proposal.total)}</dd>
+              <dd className="tabular-nums text-[#3B82F6]">{money(proposal.total)}</dd>
             </div>
             {proposal.payment_mode === "deposit" && (
               <div className="flex justify-between text-gray-400">
@@ -326,7 +326,7 @@ export default function PublicProposalPage({
                     type="button"
                     disabled={busy}
                     onClick={() => void pay()}
-                    className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.25)] transition hover:bg-[#ffe044] disabled:opacity-60"
+                    className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.25)] transition hover:bg-[#2F74E8] disabled:opacity-60"
                   >
                     {busy ? <Loader2 size={16} className="animate-spin" /> : <CreditCard size={16} />}
                     Pay {money(proposal.amount_due)} securely
@@ -342,7 +342,7 @@ export default function PublicProposalPage({
             {!signed && proposal.status !== "declined" && !expired && (
               <div className="no-print">
                 <h2 className="flex items-center gap-2 text-lg font-semibold">
-                  <FileSignature size={20} className="text-[#F5C518]" /> Accept and sign
+                  <FileSignature size={20} className="text-[#3B82F6]" /> Accept and sign
                 </h2>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -351,7 +351,7 @@ export default function PublicProposalPage({
                     <input
                       value={name}
                       onChange={(event) => setName(event.target.value)}
-                      className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none focus:border-[#F5C518]/50"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none focus:border-[#3B82F6]/50"
                     />
                   </label>
                   <label>
@@ -360,7 +360,7 @@ export default function PublicProposalPage({
                       type="email"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
-                      className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none focus:border-[#F5C518]/50"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none focus:border-[#3B82F6]/50"
                     />
                   </label>
                 </div>
@@ -374,7 +374,7 @@ export default function PublicProposalPage({
                     type="checkbox"
                     checked={agree}
                     onChange={(event) => setAgree(event.target.checked)}
-                    className="mt-1 accent-[#F5C518]"
+                    className="mt-1 accent-[#3B82F6]"
                   />
                   I agree to this proposal and its terms, and that my electronic signature is legally binding.
                 </label>
@@ -383,7 +383,7 @@ export default function PublicProposalPage({
                   type="button"
                   disabled={busy || !name.trim() || !signature || !agree}
                   onClick={() => void sign()}
-                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.25)] transition hover:bg-[#ffe044] disabled:opacity-50"
+                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.25)] transition hover:bg-[#2F74E8] disabled:opacity-50"
                 >
                   {busy ? <Loader2 size={16} className="animate-spin" /> : <ShieldCheck size={16} />}
                   Sign proposal

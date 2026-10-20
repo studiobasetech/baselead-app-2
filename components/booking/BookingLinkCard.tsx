@@ -154,7 +154,7 @@ export default function BookingLinkCard({
             <button
               type="button"
               onClick={() => void copy()}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5C518] text-black transition hover:bg-[#ffe044]"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6] text-white transition hover:bg-[#2F74E8]"
               aria-label="Copy link"
             >
               {copied ? <Check size={16} /> : <Copy size={16} />}
@@ -215,7 +215,7 @@ export default function BookingLinkCard({
                 <input
                   value={draft.title}
                   onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-                  className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50"
+                  className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50"
                 />
               </label>
 
@@ -233,7 +233,7 @@ export default function BookingLinkCard({
                     type="number"
                     value={draft[key]}
                     onChange={(e) => setDraft({ ...draft, [key]: Number(e.target.value) })}
-                    className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50"
+                    className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50"
                   />
                 </label>
               ))}
@@ -243,7 +243,7 @@ export default function BookingLinkCard({
                 <input
                   value={draft.timezone}
                   onChange={(e) => setDraft({ ...draft, timezone: e.target.value })}
-                  className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50"
+                  className="mt-1.5 h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50"
                 />
               </label>
             </div>
@@ -259,7 +259,7 @@ export default function BookingLinkCard({
                       onClick={() => toggleDay(day)}
                       className={`w-14 rounded-lg border py-2 text-xs font-medium transition ${
                         window
-                          ? "border-[#F5C518]/40 bg-[#F5C518]/10 text-[#F5C518]"
+                          ? "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#3B82F6]"
                           : "border-white/10 text-gray-600"
                       }`}
                     >
@@ -283,7 +283,7 @@ export default function BookingLinkCard({
               type="button"
               disabled={saving}
               onClick={() => void save()}
-              className="mt-6 h-12 w-full rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-60"
+              className="mt-6 h-12 w-full rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-60"
             >
               {saving ? "Saving..." : "Save booking link"}
             </button>

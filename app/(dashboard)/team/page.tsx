@@ -131,7 +131,7 @@ export default function TeamPerformancePage() {
               type="button"
               onClick={() => setDays(value)}
               className={`rounded-lg px-4 py-2 text-xs font-medium transition ${
-                days === value ? "bg-[#F5C518] text-black" : "text-gray-400 hover:text-white"
+                days === value ? "bg-[#3B82F6] text-white" : "text-gray-400 hover:text-white"
               }`}
             >
               {value} days
@@ -196,7 +196,7 @@ export default function TeamPerformancePage() {
                     <tr key={rep.userId} className="border-t border-white/[0.06]">
                       <td className="py-3.5">
                         <div className="flex items-center gap-3">
-                          <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${index === 0 && rep.wonValue > 0 ? "bg-[#F5C518] text-black" : "bg-white/[0.06] text-gray-300"}`}>
+                          <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${index === 0 && rep.wonValue > 0 ? "bg-[#3B82F6] text-white" : "bg-white/[0.06] text-gray-300"}`}>
                             {index === 0 && rep.wonValue > 0 ? <Crown size={14} /> : rep.name.charAt(0).toUpperCase()}
                           </span>
                           <div className="min-w-0">
@@ -234,7 +234,7 @@ export default function TeamPerformancePage() {
                                 <span>{formatMoney(rep.goal)}</span>
                               </div>
                               <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#191919]">
-                                <div className="h-full rounded-full bg-gradient-to-r from-[#F5C518] to-[#84CC16]" style={{ width: `${progress}%` }} />
+                                <div className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#84CC16]" style={{ width: `${progress}%` }} />
                               </div>
                             </>
                           ) : (

@@ -53,7 +53,7 @@ export default function PrivacyPage() {
         <p>
           <strong>
             {LEGAL.product}’s use and transfer to any other app of information received from Google APIs will adhere to the{" "}
-            <a className="text-[#F5C518] hover:underline" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">
+            <a className="text-[#3B82F6] hover:underline" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">
               Google API Services User Data Policy
             </a>
             , including the Limited Use requirements.

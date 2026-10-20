@@ -79,7 +79,7 @@ export default function SetupPage() {
             </span>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-[#F5C518]">Launch checklist</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Launch checklist</p>
             <h1 className="mt-1 text-2xl font-semibold">
               {ready ? "BaseLead is ready to sell" : "Get BaseLead ready"}
             </h1>
@@ -95,7 +95,7 @@ export default function SetupPage() {
           type="button"
           onClick={() => void load()}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#262626] bg-[#0D0D0D] px-4 py-2.5 text-sm text-gray-300 transition hover:border-[#F5C518]/50 hover:text-white disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#262626] bg-[#0D0D0D] px-4 py-2.5 text-sm text-gray-300 transition hover:border-[#3B82F6]/50 hover:text-white disabled:opacity-50"
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
           Check again
@@ -130,7 +130,7 @@ export default function SetupPage() {
                   <div
                     key={check.id}
                     className={`rounded-2xl border p-4 transition ${
-                      check.ok ? "border-[#84CC16]/20 bg-[#0D0D0D]" : "border-[#262626] bg-[#0D0D0D] hover:border-[#F5C518]/30"
+                      check.ok ? "border-[#84CC16]/20 bg-[#0D0D0D]" : "border-[#262626] bg-[#0D0D0D] hover:border-[#3B82F6]/30"
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -153,7 +153,7 @@ export default function SetupPage() {
                             href={check.action.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hidden shrink-0 items-center gap-1 rounded-lg bg-[#F5C518] px-3 py-2 text-xs font-semibold text-black transition hover:bg-[#ffe044] sm:inline-flex"
+                            className="hidden shrink-0 items-center gap-1 rounded-lg bg-[#3B82F6] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#2F74E8] sm:inline-flex"
                           >
                             {check.action.label}
                             <ArrowUpRight size={12} />
@@ -161,7 +161,7 @@ export default function SetupPage() {
                         ) : (
                           <Link
                             href={check.action.href}
-                            className="hidden shrink-0 items-center gap-1 rounded-lg bg-[#F5C518] px-3 py-2 text-xs font-semibold text-black transition hover:bg-[#ffe044] sm:inline-flex"
+                            className="hidden shrink-0 items-center gap-1 rounded-lg bg-[#3B82F6] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#2F74E8] sm:inline-flex"
                           >
                             {check.action.label}
                             <ArrowUpRight size={12} />
@@ -175,7 +175,7 @@ export default function SetupPage() {
                         href={check.action.href}
                         target={check.action.href.startsWith("http") ? "_blank" : undefined}
                         rel="noopener noreferrer"
-                        className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#F5C518] px-3 py-2 text-xs font-semibold text-black sm:hidden"
+                        className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#3B82F6] px-3 py-2 text-xs font-semibold text-white sm:hidden"
                       >
                         {check.action.label}
                         <ArrowUpRight size={12} />

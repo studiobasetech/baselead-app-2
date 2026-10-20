@@ -464,13 +464,13 @@ function Button({
 }) {
   const styles = {
     primary:
-      "bg-[#F5C518] text-black shadow-[0_6px_20px_rgba(245,197,24,0.10)] hover:bg-[#F5C518] hover:shadow-[0_8px_26px_rgba(245,197,24,0.20)] hover:-translate-y-0.5",
+      "bg-[#3B82F6] text-white shadow-[0_6px_20px_rgba(59,130,246,0.10)] hover:bg-[#3B82F6] hover:shadow-[0_8px_26px_rgba(59,130,246,0.20)] hover:-translate-y-0.5",
     secondary:
       "border border-[#202020] bg-[#0D0D0D] text-gray-200 shadow-[0_6px_18px_rgba(0,0,0,0.12)] hover:border-[#2A2A2A] hover:bg-[#171717] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(0,0,0,0.22)]",
     danger:
       "border border-[#F0475C]/30 bg-[#3A1418] text-[#F0475C] hover:border-[#F0475C]/50 hover:bg-[#3A1418] hover:shadow-[0_8px_22px_rgba(240,71,92,0.12)]",
     appstore:
-      "min-w-[104px] rounded-full border border-[#202020] bg-[#101010] px-5 py-2.5 text-[14px] font-semibold text-[#F5C518] shadow-[0_6px_18px_rgba(0,0,0,0.15)] hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518] hover:shadow-[0_8px_24px_rgba(245,197,24,0.12)] hover:-translate-y-0.5",
+      "min-w-[104px] rounded-full border border-[#202020] bg-[#101010] px-5 py-2.5 text-[14px] font-semibold text-[#3B82F6] shadow-[0_6px_18px_rgba(0,0,0,0.15)] hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6] hover:shadow-[0_8px_24px_rgba(59,130,246,0.12)] hover:-translate-y-0.5",
   };
 
   return (
@@ -542,8 +542,8 @@ function AppStoreAction({
         disabled:cursor-not-allowed
         disabled:opacity-40
         ${primary
-          ? "border-[#F5C518] bg-[#F5C518] text-black shadow-[0_6px_18px_rgba(245,197,24,0.18)] hover:border-[#FFD943] hover:bg-[#FFD943] hover:text-black hover:shadow-[0_8px_24px_rgba(245,197,24,0.28)]"
-          : "border-[#202020] bg-[#101010] text-[#F5C518] hover:border-[#F5C518]/40 hover:bg-[#171717] hover:text-[#F5C518] hover:shadow-[0_8px_24px_rgba(245,197,24,0.12)]"}
+          ? "border-[#3B82F6] bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.18)] hover:border-[#2F74E8] hover:bg-[#2F74E8] hover:text-black hover:shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
+          : "border-[#202020] bg-[#101010] text-[#3B82F6] hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6] hover:shadow-[0_8px_24px_rgba(59,130,246,0.12)]"}
         ${className}
       `}
     >
@@ -1861,7 +1861,7 @@ export default function IntegrationsPage() {
               onClick={() =>
                 void loadConnections()
               }
-              className="shrink-0 text-[10px] text-[#F5C518] transition hover:text-white"
+              className="shrink-0 text-[10px] text-[#3B82F6] transition hover:text-white"
             >
               Retry
             </button>
@@ -1917,7 +1917,7 @@ export default function IntegrationsPage() {
 
           {tab === "My Apps" &&
             connectedIntegrations.length > 0 && (
-              <span className="ml-1.5 rounded-full bg-[#F5C518] px-1.5 py-0.5 text-[8px] font-semibold text-black shadow-[0_0_10px_rgba(245,197,24,0.15)]">
+              <span className="ml-1.5 rounded-full bg-[#3B82F6] px-1.5 py-0.5 text-[8px] font-semibold text-white shadow-[0_0_10px_rgba(59,130,246,0.15)]">
                 {connectedIntegrations.length}
               </span>
             )}
@@ -1937,7 +1937,7 @@ export default function IntegrationsPage() {
           <section>
             <div className="mb-3 flex items-end justify-between">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5C518]">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-[#3B82F6]">
                   BaseLead App Store
                 </p>
 
@@ -2019,7 +2019,7 @@ export default function IntegrationsPage() {
                       hover:-translate-y-0.5
                       ${
                         category === item.name
-                          ? "border-[#F5C518]/35 bg-[#332A0C] shadow-[0_10px_26px_rgba(245,197,24,0.08)]"
+                          ? "border-[#3B82F6]/35 bg-[#332A0C] shadow-[0_10px_26px_rgba(59,130,246,0.08)]"
                           : "border-[#202020] bg-[#0D0D0D] hover:border-[#2A2A2A] hover:bg-[#101010] hover:shadow-[0_10px_26px_rgba(0,0,0,0.22)]"
                       }
                     `}
@@ -2087,9 +2087,9 @@ export default function IntegrationsPage() {
                       placeholder:text-[#555555]
                       transition-all
                       duration-200
-                      focus:border-[#F5C518]/50
+                      focus:border-[#3B82F6]/50
                       focus:bg-[#101010]
-                      focus:shadow-[0_0_20px_rgba(245,197,24,0.06)]
+                      focus:shadow-[0_0_20px_rgba(59,130,246,0.06)]
                     "
                   />
                 </div>
@@ -2106,7 +2106,7 @@ export default function IntegrationsPage() {
                       duration-200
                       ${
                         viewMode === "grid"
-                          ? "bg-[#F5C518] text-black shadow-[0_0_14px_rgba(245,197,24,0.16)]"
+                          ? "bg-[#3B82F6] text-white shadow-[0_0_14px_rgba(59,130,246,0.16)]"
                           : "text-[#777777] hover:bg-[#171717] hover:text-white"
                       }
                     `}
@@ -2125,7 +2125,7 @@ export default function IntegrationsPage() {
                       duration-200
                       ${
                         viewMode === "list"
-                          ? "bg-[#F5C518] text-black shadow-[0_0_14px_rgba(245,197,24,0.16)]"
+                          ? "bg-[#3B82F6] text-white shadow-[0_0_14px_rgba(59,130,246,0.16)]"
                           : "text-[#777777] hover:bg-[#171717] hover:text-white"
                       }
                     `}
@@ -2206,7 +2206,7 @@ export default function IntegrationsPage() {
                     setSearch("");
                     setCategory("All");
                   }}
-                  className="mt-2 text-[10px] text-[#F5C518] transition hover:text-white"
+                  className="mt-2 text-[10px] text-[#3B82F6] transition hover:text-white"
                 >
                   Clear filters
                 </button>
@@ -2309,7 +2309,7 @@ export default function IntegrationsPage() {
 
           {loadingConnections ? (
             <Card className="p-12 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#F5C518]" />
+              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6]" />
 
               <p className="mt-4 text-[11px] text-[#555555]">
                 Loading connected apps...
@@ -2425,7 +2425,7 @@ export default function IntegrationsPage() {
                         }
                         className="
                           text-[10px]
-                          text-[#F5C518]
+                          text-[#3B82F6]
                           transition-all
                           duration-200
                           hover:text-white
@@ -2468,7 +2468,7 @@ export default function IntegrationsPage() {
             <div className="flex items-start gap-3">
               <Info
                 size={15}
-                className="mt-0.5 text-[#F5C518]"
+                className="mt-0.5 text-[#3B82F6]"
               />
 
               <div>
@@ -2631,8 +2631,8 @@ export default function IntegrationsPage() {
 
 
             {selectedIntegration.id === "google-maps" ? (
-              <div className={`rounded-xl border p-4 ${placesReady ? "border-[#84CC16]/20 bg-[#18200B]" : "border-[#F5C518]/25 bg-[#F5C518]/[0.05]"}`}>
-                <p className={`text-sm font-semibold ${placesReady ? "text-[#84CC16]" : "text-[#F5C518]"}`}>
+              <div className={`rounded-xl border p-4 ${placesReady ? "border-[#84CC16]/20 bg-[#18200B]" : "border-[#3B82F6]/25 bg-[#3B82F6]/[0.05]"}`}>
+                <p className={`text-sm font-semibold ${placesReady ? "text-[#84CC16]" : "text-[#3B82F6]"}`}>
                   {placesReady ? "Active — built into BaseLead" : "Using free OpenStreetMap data for now"}
                 </p>
                 <p className="mt-2 text-xs leading-relaxed text-gray-400">
@@ -2796,7 +2796,7 @@ export default function IntegrationsPage() {
               >
                 <Upload
                   size={18}
-                  className="text-[#F5C518]"
+                  className="text-[#3B82F6]"
                 />
 
                 <p className="mt-3 text-xs font-medium">
@@ -2834,7 +2834,7 @@ export default function IntegrationsPage() {
               >
                 <Download
                   size={18}
-                  className="text-[#F5C518]"
+                  className="text-[#3B82F6]"
                 />
 
                 <p className="mt-3 text-xs font-medium">
@@ -2888,7 +2888,7 @@ export default function IntegrationsPage() {
                         "Template downloaded."
                       );
                     }}
-                    className="mt-3 text-[10px] text-[#F5C518] transition hover:text-white"
+                    className="mt-3 text-[10px] text-[#3B82F6] transition hover:text-white"
                   >
                     Download template →
                   </button>
@@ -2912,7 +2912,7 @@ export default function IntegrationsPage() {
         >
           <div className="space-y-5">
             <div className="flex items-start gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#332A0C] text-[#F5C518] shadow-[0_0_18px_rgba(245,197,24,0.06)]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#332A0C] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]">
                 <Webhook size={24} />
               </div>
 
@@ -2955,9 +2955,9 @@ export default function IntegrationsPage() {
                   transition-all
                   duration-200
                   placeholder:text-[#555555]
-                  focus:border-[#F5C518]/50
+                  focus:border-[#3B82F6]/50
                   focus:bg-[#171717]
-                  focus:shadow-[0_0_20px_rgba(245,197,24,0.06)]
+                  focus:shadow-[0_0_20px_rgba(59,130,246,0.06)]
                 "
               />
             </div>
@@ -2991,9 +2991,9 @@ export default function IntegrationsPage() {
                     placeholder:text-[#555555]
                     transition-all
                     duration-200
-                    focus:border-[#F5C518]/50
+                    focus:border-[#3B82F6]/50
                     focus:bg-[#171717]
-                    focus:shadow-[0_0_20px_rgba(245,197,24,0.06)]
+                    focus:shadow-[0_0_20px_rgba(59,130,246,0.06)]
                   "
                 />
 
@@ -3102,7 +3102,7 @@ export default function IntegrationsPage() {
                             webhookEvents[
                               key
                             ]
-                              ? "border-[#F5C518] bg-[#F5C518] text-black shadow-[0_0_10px_rgba(245,197,24,0.16)]"
+                              ? "border-[#3B82F6] bg-[#3B82F6] text-white shadow-[0_0_10px_rgba(59,130,246,0.16)]"
                               : "border-[#202020] bg-[#171717] text-transparent"
                           }
                         `}
@@ -3537,7 +3537,7 @@ function WebhookView({
     return (
       <div className="mx-auto max-w-3xl">
         <div className="mb-5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5C518]">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#3B82F6]">
             Developer Tools
           </p>
 
@@ -3552,7 +3552,7 @@ function WebhookView({
         </div>
 
         <Card className="bg-[#0D0D0D] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#332A0C] text-[#F5C518] shadow-[0_0_22px_rgba(245,197,24,0.08)]">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.08)]">
             <Webhook size={28} />
           </div>
 
@@ -3661,7 +3661,7 @@ function WebhookView({
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-5">
-        <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5C518]">
+        <p className="text-[10px] uppercase tracking-[0.16em] text-[#3B82F6]">
           Developer Tools
         </p>
 

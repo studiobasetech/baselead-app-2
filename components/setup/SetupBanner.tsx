@@ -30,9 +30,9 @@ export default function SetupBanner() {
   return (
     <Link
       href="/setup"
-      className="group mt-4 flex items-center gap-3 rounded-2xl border border-[#F5C518]/25 bg-[#F5C518]/[0.05] p-4 transition hover:border-[#F5C518]/50"
+      className="group mt-4 flex items-center gap-3 rounded-2xl border border-[#3B82F6]/25 bg-[#3B82F6]/[0.05] p-4 transition hover:border-[#3B82F6]/50"
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5C518]/15 text-[#F5C518]">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]">
         <ListChecks size={18} />
       </span>
       <span className="min-w-0 flex-1">
@@ -43,7 +43,7 @@ export default function SetupBanner() {
           <span className="block truncate text-xs text-gray-400">Next: {progress.next}</span>
         )}
       </span>
-      <ArrowRight size={16} className="text-[#F5C518] transition group-hover:translate-x-1" />
+      <ArrowRight size={16} className="text-[#3B82F6] transition group-hover:translate-x-1" />
     </Link>
   );
 }

@@ -102,7 +102,7 @@ function kindFromFile(file: File): Kind {
 }
 
 const input =
-  "h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-sm text-white outline-none transition focus:border-[#F5C518]/50";
+  "h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-sm text-white outline-none transition focus:border-[#3B82F6]/50";
 
 export default function ResourcesPage() {
   const { companyId } = usePlan();
@@ -315,14 +315,14 @@ export default function ResourcesPage() {
             <button
               type="button"
               onClick={() => setEditingFolder({ emoji: "📁" })}
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 text-sm text-gray-200 transition hover:border-[#F5C518]/40 hover:text-white"
+              className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 text-sm text-gray-200 transition hover:border-[#3B82F6]/40 hover:text-white"
             >
               <FolderPlus size={15} /> New folder
             </button>
             <button
               type="button"
               onClick={() => setEditingResource({ kind: "document", folder_id: folderId, tags: [] })}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#F5C518] px-4 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#3B82F6] px-4 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
             >
               <Plus size={15} /> Add resource
             </button>
@@ -437,7 +437,7 @@ export default function ResourcesPage() {
                   <span>{stats.completed}/{stats.total} lessons · {pct}%</span>
                 </div>
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5">
-                  <div className="h-full rounded-full bg-gradient-to-r from-[#F5C518] to-[#84CC16] transition-all" style={{ width: `${pct}%` }} />
+                  <div className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#84CC16] transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             );
@@ -456,7 +456,7 @@ export default function ResourcesPage() {
           {/* Empty state */}
           {folders.length === 0 && resources.length === 0 && (
             <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-10 text-center">
-              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F5C518]/25 bg-[#332A0C] text-[#F5C518] shadow-[0_0_24px_rgba(245,197,24,0.12)]">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/25 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_24px_rgba(59,130,246,0.12)]">
                 <BookOpen size={24} strokeWidth={2} />
               </span>
               <h2 className="mt-3 text-lg font-semibold">Build your team&apos;s sales toolkit</h2>
@@ -466,7 +466,7 @@ export default function ResourcesPage() {
                   : "Your manager hasn't added resources yet. Pitches, training and documents will appear here."}
               </p>
               {isManager && (
-                <button type="button" onClick={() => void addStarterKit()} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#ffe044]">
+                <button type="button" onClick={() => void addStarterKit()} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#2F74E8]">
                   <Sparkles size={15} /> Add starter kit (folders + templates)
                 </button>
               )}
@@ -476,7 +476,7 @@ export default function ResourcesPage() {
           {/* Pinned */}
           {pinned.length > 0 && (
             <section className="mt-6">
-              <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#F5C518]"><Star size={14} fill="#F5C518" /> Pinned</h2>
+              <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#3B82F6]"><Star size={14} fill="#F5C518" /> Pinned</h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {pinned.map((resource) => (
                   <ResourceCard key={resource.id} resource={resource} done={done.has(resource.id)} onOpen={() => setViewing(resource)} />
@@ -498,7 +498,7 @@ export default function ResourcesPage() {
                       key={folder.id}
                       type="button"
                       onClick={() => setFolderId(folder.id)}
-                      className="group rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-left transition hover:-translate-y-0.5 hover:border-[#F5C518]/35"
+                      className="group rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-left transition hover:-translate-y-0.5 hover:border-[#3B82F6]/35"
                     >
                       <div className="flex items-start justify-between">
                         <span className="text-3xl">{folder.emoji || "📁"}</span>
@@ -576,7 +576,7 @@ export default function ResourcesPage() {
                   key={emoji}
                   type="button"
                   onClick={() => setEditingFolder({ ...editingFolder, emoji })}
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-xl transition ${editingFolder.emoji === emoji ? "border-[#F5C518] bg-[#F5C518]/10" : "border-[#202020] hover:border-white/20"}`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-xl transition ${editingFolder.emoji === emoji ? "border-[#3B82F6] bg-[#3B82F6]/10" : "border-[#202020] hover:border-white/20"}`}
                 >
                   {emoji}
                 </button>
@@ -588,7 +588,7 @@ export default function ResourcesPage() {
               <input type="checkbox" checked={Boolean(editingFolder.is_course)} onChange={(event) => setEditingFolder({ ...editingFolder, is_course: event.target.checked })} className="h-4 w-4 accent-[#84CC16]" />
               <span>🎓 Training course <span className="block text-xs text-gray-500">Items become numbered lessons and each person&apos;s progress is tracked.</span></span>
             </label>
-            <button type="button" onClick={() => void saveFolder()} disabled={!editingFolder.name?.trim()} className="h-11 w-full rounded-xl bg-[#F5C518] text-sm font-semibold text-black hover:bg-[#ffe044] disabled:opacity-40">
+            <button type="button" onClick={() => void saveFolder()} disabled={!editingFolder.name?.trim()} className="h-11 w-full rounded-xl bg-[#3B82F6] text-sm font-semibold text-white hover:bg-[#2F74E8] disabled:opacity-40">
               Save folder
             </button>
           </div>
@@ -631,14 +631,14 @@ function ResourceCard({ resource, done, lesson, onOpen }: { resource: Resource; 
     <button
       type="button"
       onClick={onOpen}
-      className="group relative flex flex-col rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-left transition hover:-translate-y-0.5 hover:border-[#F5C518]/35"
+      className="group relative flex flex-col rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-left transition hover:-translate-y-0.5 hover:border-[#3B82F6]/35"
     >
       <div className="flex items-start justify-between gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl" style={{ background: `${meta.color}1a`, color: meta.color }}>
           {lesson ? <span className="text-sm font-bold">{lesson}</span> : <Icon size={20} />}
         </span>
         <div className="flex items-center gap-1.5">
-          {resource.pinned && <Star size={14} className="text-[#F5C518]" fill="#F5C518" />}
+          {resource.pinned && <Star size={14} className="text-[#3B82F6]" fill="#F5C518" />}
           {done && <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#84CC16] text-black"><Check size={13} strokeWidth={3} /></span>}
         </div>
       </div>
@@ -781,8 +781,8 @@ function Viewer({
 
         {isManager && (
           <div className="ml-auto flex gap-1">
-            <button type="button" onClick={onPin} className="rounded-lg p-2.5 text-gray-400 hover:bg-white/5 hover:text-[#F5C518]" aria-label="Pin" title={resource.pinned ? "Unpin" : "Pin to top"}>
-              <Star size={16} fill={resource.pinned ? "#F5C518" : "none"} className={resource.pinned ? "text-[#F5C518]" : ""} />
+            <button type="button" onClick={onPin} className="rounded-lg p-2.5 text-gray-400 hover:bg-white/5 hover:text-[#3B82F6]" aria-label="Pin" title={resource.pinned ? "Unpin" : "Pin to top"}>
+              <Star size={16} fill={resource.pinned ? "#F5C518" : "none"} className={resource.pinned ? "text-[#3B82F6]" : ""} />
             </button>
             <button type="button" onClick={onEdit} className="rounded-lg p-2.5 text-gray-400 hover:bg-white/5 hover:text-white" aria-label="Edit"><Pencil size={16} /></button>
             <button type="button" onClick={onDelete} className="rounded-lg p-2.5 text-gray-400 hover:bg-[#F0475C]/10 hover:text-[#F0475C]" aria-label="Delete"><Trash2 size={16} /></button>
@@ -896,7 +896,7 @@ function ResourceEditor({
                 key={tab.id}
                 type="button"
                 onClick={() => setMode(tab.id)}
-                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-xs font-semibold transition ${mode === tab.id ? "border-[#F5C518] bg-[#F5C518]/10 text-[#F5C518]" : "border-[#202020] text-gray-400 hover:border-white/20"}`}
+                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-xs font-semibold transition ${mode === tab.id ? "border-[#3B82F6] bg-[#3B82F6]/10 text-[#3B82F6]" : "border-[#202020] text-gray-400 hover:border-white/20"}`}
               >
                 <Icon size={17} /> {tab.label}
               </button>
@@ -912,7 +912,7 @@ function ResourceEditor({
               pickFile(event.dataTransfer.files?.[0] ?? null);
             }}
             onClick={() => fileInput.current?.click()}
-            className="cursor-pointer rounded-xl border border-dashed border-white/15 p-6 text-center transition hover:border-[#F5C518]/40"
+            className="cursor-pointer rounded-xl border border-dashed border-white/15 p-6 text-center transition hover:border-[#3B82F6]/40"
           >
             <Upload size={22} className="mx-auto text-gray-500" />
             <p className="mt-2 text-sm text-gray-300">{file ? file.name : draft.file_name ? `Current: ${draft.file_name}` : "Drop a file or click to choose"}</p>
@@ -930,7 +930,7 @@ function ResourceEditor({
 
         {mode === "text" && (
           <textarea
-            className="min-h-[200px] w-full rounded-xl border border-[#202020] bg-[#101010] p-3 text-sm leading-6 text-white outline-none focus:border-[#F5C518]/50"
+            className="min-h-[200px] w-full rounded-xl border border-[#202020] bg-[#101010] p-3 text-sm leading-6 text-white outline-none focus:border-[#3B82F6]/50"
             placeholder="Write a sales pitch, call script, objection answers, email template…"
             value={draft.body ?? ""}
             onChange={(event) => setDraft({ ...draft, body: event.target.value })}
@@ -950,7 +950,7 @@ function ResourceEditor({
           <input className={input} placeholder="Tags: pitch, onboarding" value={tagText} onChange={(event) => setTagText(event.target.value)} />
         </div>
 
-        <button type="button" onClick={() => void save()} disabled={saving} className="h-11 w-full rounded-xl bg-[#F5C518] text-sm font-semibold text-black hover:bg-[#ffe044] disabled:opacity-40">
+        <button type="button" onClick={() => void save()} disabled={saving} className="h-11 w-full rounded-xl bg-[#3B82F6] text-sm font-semibold text-white hover:bg-[#2F74E8] disabled:opacity-40">
           {saving ? "Saving…" : "Save resource"}
         </button>
       </div>

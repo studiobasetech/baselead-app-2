@@ -400,7 +400,7 @@ function YellowButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`flex items-center justify-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-[14px] font-semibold text-black transition hover:bg-[#FFD92B] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`flex items-center justify-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-[#2F74E8] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
       {children}
     </button>
@@ -465,7 +465,7 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           className={`h-10 w-full rounded-lg border border-white/10 bg-[#070707] ${
             icon ? "pl-9" : "px-3"
-          } pr-3 text-[16px] text-white outline-none transition placeholder:text-gray-700 focus:border-[#F5C518]/60`}
+          } pr-3 text-[16px] text-white outline-none transition placeholder:text-gray-700 focus:border-[#3B82F6]/60`}
         />
       </div>
     </label>
@@ -495,7 +495,7 @@ function TextArea({
         rows={rows}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full resize-none rounded-lg border border-white/10 bg-[#070707] px-3 py-3 text-[16px] leading-6 text-white outline-none transition placeholder:text-gray-700 focus:border-[#F5C518]/60"
+        className="w-full resize-none rounded-lg border border-white/10 bg-[#070707] px-3 py-3 text-[16px] leading-6 text-white outline-none transition placeholder:text-gray-700 focus:border-[#3B82F6]/60"
       />
     </label>
   );
@@ -521,7 +521,7 @@ function SelectField({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-full appearance-none rounded-lg border border-white/10 bg-[#070707] px-3 pr-8 text-[16px] text-gray-300 outline-none focus:border-[#F5C518]/60"
+          className="h-10 w-full appearance-none rounded-lg border border-white/10 bg-[#070707] px-3 pr-8 text-[16px] text-gray-300 outline-none focus:border-[#3B82F6]/60"
         >
           {options.map((option) => (
             <option
@@ -555,7 +555,7 @@ function Toggle({
       onClick={() => onChange(!enabled)}
       aria-label="Toggle setting"
       className={`relative h-5 w-9 shrink-0 rounded-full transition ${
-        enabled ? "bg-[#F5C518]" : "bg-white/10"
+        enabled ? "bg-[#3B82F6]" : "bg-white/10"
       }`}
     >
       <span
@@ -625,7 +625,7 @@ function Modal({
             ) : (
               <SettingsIcon
                 size={16}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
             )}
 
@@ -801,7 +801,7 @@ function ProfileTab({
             className="h-16 w-16 rounded-full border border-white/10 object-cover"
           />
         ) : (
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#F5C518]/40 bg-[#111] text-center text-[9px] font-semibold tracking-wider text-[#F5C518]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#3B82F6]/40 bg-[#111] text-center text-[9px] font-semibold tracking-wider text-[#3B82F6]">
             BASE
             <br />
             LEAD
@@ -1110,7 +1110,7 @@ function removeLocation(
             className="h-20 w-20 rounded-xl border border-white/10 object-cover"
           />
         ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-white/10 bg-black text-center text-[9px] font-semibold tracking-wider text-[#F5C518]">
+          <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-white/10 bg-black text-center text-[9px] font-semibold tracking-wider text-[#3B82F6]">
             BASE
             <br />
             LEAD
@@ -1268,7 +1268,7 @@ function removeLocation(
       type="button"
       disabled={!canEditCompany}
       onClick={addLocation}
-      className="flex shrink-0 items-center gap-2 rounded-lg border border-[#F5C518]/20 bg-[#F5C518]/[0.04] px-3 py-2 text-[14px] font-medium text-[#F5C518] transition hover:bg-[#F5C518]/10 disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex shrink-0 items-center gap-2 rounded-lg border border-[#3B82F6]/20 bg-[#3B82F6]/[0.04] px-3 py-2 text-[14px] font-medium text-[#3B82F6] transition hover:bg-[#3B82F6]/10 disabled:cursor-not-allowed disabled:opacity-40"
     >
       <Plus size={13} />
       {t("Add Location")}
@@ -1303,7 +1303,7 @@ function removeLocation(
               placeholder={t(
                 "e.g. Miami, FL"
               )}
-              className="h-10 flex-1 rounded-lg border border-white/10 bg-[#070707] px-3 text-[16px] text-white outline-none transition placeholder:text-gray-700 focus:border-[#F5C518]/60 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-10 flex-1 rounded-lg border border-white/10 bg-[#070707] px-3 text-[16px] text-white outline-none transition placeholder:text-gray-700 focus:border-[#3B82F6]/60 disabled:cursor-not-allowed disabled:opacity-60"
             />
 
             <button
@@ -1635,7 +1635,7 @@ function AiServicesTab({
             <div className="flex items-center gap-2">
               <BriefcaseBusiness
                 size={16}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
 
               <h2 className="text-sm font-medium">
@@ -1665,7 +1665,7 @@ function AiServicesTab({
             <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-6 text-center">
               <DollarSign
                 size={22}
-                className="mx-auto text-[#F5C518]"
+                className="mx-auto text-[#3B82F6]"
               />
 
               <p className="mt-3 text-[14px] font-medium text-gray-300">
@@ -1682,7 +1682,7 @@ function AiServicesTab({
                 type="button"
                 onClick={addService}
                 disabled={!canEditCompany}
-                className="mt-4 text-[14px] text-[#F5C518] hover:underline disabled:cursor-not-allowed disabled:opacity-40"
+                className="mt-4 text-[14px] text-[#3B82F6] hover:underline disabled:cursor-not-allowed disabled:opacity-40"
               >
                 +{" "}
                 {t(
@@ -2675,7 +2675,7 @@ function TeamTab({
     role: TeamRole
   ) {
     if (role === "Admin") {
-      return "border-[#F5C518]/20 bg-[#F5C518]/10 text-[#F5C518]";
+      return "border-[#3B82F6]/20 bg-[#3B82F6]/10 text-[#3B82F6]";
     }
 
     if (role === "Manager") {
@@ -3439,7 +3439,7 @@ function TeamTab({
                 <div className="flex gap-3">
                   <Shield
                     size={15}
-                    className="mt-0.5 shrink-0 text-[#F5C518]"
+                    className="mt-0.5 shrink-0 text-[#3B82F6]"
                   />
 
                   <p className="text-[14px] leading-5 text-gray-600">
@@ -3517,7 +3517,7 @@ function TeamTab({
                               </p>
 
                               {owner && (
-                                <span className="rounded-full border border-[#F5C518]/20 bg-[#F5C518]/10 px-2 py-0.5 text-[14px] font-medium text-[#F5C518]">
+                                <span className="rounded-full border border-[#3B82F6]/20 bg-[#3B82F6]/10 px-2 py-0.5 text-[14px] font-medium text-[#3B82F6]">
                                   {t("Owner")}
                                 </span>
                               )}
@@ -3590,7 +3590,7 @@ function TeamTab({
                                         .value as TeamRole
                                     )
                                   }
-                                  className="h-9 w-full appearance-none rounded-lg border border-white/10 bg-[#070707] px-3 pr-8 text-[8px] text-gray-300 outline-none transition focus:border-[#F5C518]/50 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[110px]"
+                                  className="h-9 w-full appearance-none rounded-lg border border-white/10 bg-[#070707] px-3 pr-8 text-[8px] text-gray-300 outline-none transition focus:border-[#3B82F6]/50 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[110px]"
                                 >
                                   <option
                                     value="Member"
@@ -3725,7 +3725,7 @@ function TeamTab({
             <div className="flex items-center gap-2">
               <Mail
                 size={16}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
 
               <h2 className="text-sm font-medium">
@@ -3832,10 +3832,10 @@ function TeamTab({
                                 invitation
                               )
                             }
-                            className="flex items-center justify-center gap-2 rounded-lg border border-[#F5C518]/20 bg-[#F5C518]/[0.04] px-3 py-2 text-[8px] text-[#F5C518] transition hover:bg-[#F5C518]/10 disabled:cursor-not-allowed disabled:opacity-40"
+                            className="flex items-center justify-center gap-2 rounded-lg border border-[#3B82F6]/20 bg-[#3B82F6]/[0.04] px-3 py-2 text-[8px] text-[#3B82F6] transition hover:bg-[#3B82F6]/10 disabled:cursor-not-allowed disabled:opacity-40"
                           >
                             {copying ? (
-                              <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-[#F5C518]" />
+                              <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-[#3B82F6]" />
                             ) : (
                               <Copy
                                 size={12}
@@ -3949,7 +3949,7 @@ function TeamTab({
             <div className="flex items-start gap-3">
               <Shield
                 size={15}
-                className="mt-0.5 shrink-0 text-[#F5C518]"
+                className="mt-0.5 shrink-0 text-[#3B82F6]"
               />
 
               <div>
@@ -3967,7 +3967,7 @@ function TeamTab({
           </div>
         </div>
 
-        <div className="mt-5 rounded-lg border border-[#F5C518]/15 bg-[#F5C518]/[0.03] p-4">
+        <div className="mt-5 rounded-lg border border-[#3B82F6]/15 bg-[#3B82F6]/[0.03] p-4">
           <p className="text-[14px] leading-5 text-gray-500">
             {t(
               "After creating the invitation, you can copy the secure invitation link and send it to the team member."
@@ -4442,7 +4442,7 @@ const teamPercent =
     <div className="space-y-6">
       <Card className="relative overflow-hidden border-white/10 bg-[#0D0D0D] p-5 sm:p-6">
         <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[#A78BFA]/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-40 w-40 rounded-full bg-[#F5C518]/[0.06] blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-40 w-40 rounded-full bg-[#3B82F6]/[0.06] blur-3xl" />
 
         <div className="relative">
           <div className="flex flex-wrap items-center gap-2">
@@ -4611,18 +4611,18 @@ const teamPercent =
         </div>
       </Card>
 
-      <div className="relative overflow-hidden rounded-2xl border border-[#F5C518]/20 bg-gradient-to-r from-[#332A0C] via-[#0D0D0D] to-[#241A38] p-5 sm:p-6 shadow-[0_14px_38px_rgba(0,0,0,0.22)]">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[#F5C518]/10 blur-3xl" />
+      <div className="relative overflow-hidden rounded-2xl border border-[#3B82F6]/20 bg-gradient-to-r from-[#332A0C] via-[#0D0D0D] to-[#241A38] p-5 sm:p-6 shadow-[0_14px_38px_rgba(0,0,0,0.22)]">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <div className="mb-2 flex items-center gap-2">
               <Sparkles
                 size={15}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#F5C518]">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3B82F6]">
                 {t("BaseLead")}
               </span>
             </div>
@@ -4660,7 +4660,7 @@ const teamPercent =
               }
               className={`rounded-lg px-4 py-2.5 text-[12px] font-semibold transition ${
                 cycle === "yearly"
-                  ? "bg-[#F5C518] text-black shadow-[0_6px_18px_rgba(245,197,24,0.18)]"
+                  ? "bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.18)]"
                   : "text-gray-600 hover:text-gray-300"
               }`}
             >
@@ -4772,9 +4772,9 @@ const teamPercent =
               : plan.name === "Pro"
               ? {
                   surface: "bg-[#332A0C]",
-                  text: "text-[#F5C518]",
-                  border: "border-[#F5C518]/40",
-                  glow: "bg-[#F5C518]/[0.08]",
+                  text: "text-[#3B82F6]",
+                  border: "border-[#3B82F6]/40",
+                  glow: "bg-[#3B82F6]/[0.08]",
                 }
               : {
                   surface: "bg-[#241A38]",
@@ -4788,7 +4788,7 @@ const teamPercent =
               key={plan.name}
               className={`relative flex flex-col overflow-hidden p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(0,0,0,0.32)] ${
                 plan.popular
-                  ? "border-[#F5C518]/60 shadow-[0_12px_34px_rgba(245,197,24,0.08)]"
+                  ? "border-[#3B82F6]/60 shadow-[0_12px_34px_rgba(59,130,246,0.08)]"
                   : ""
               }`}
             >
@@ -4797,7 +4797,7 @@ const teamPercent =
               />
 
               {plan.popular && (
-                <div className="absolute right-4 top-4 rounded-full bg-[#F5C518] px-3 py-1.5 text-[8px] font-bold tracking-[0.08em] text-black shadow-[0_6px_18px_rgba(245,197,24,0.16)]">
+                <div className="absolute right-4 top-4 rounded-full bg-[#3B82F6] px-3 py-1.5 text-[8px] font-bold tracking-[0.08em] text-white shadow-[0_6px_18px_rgba(59,130,246,0.16)]">
                   {t("MOST POPULAR")}
                 </div>
               )}
@@ -4943,7 +4943,7 @@ const teamPercent =
                       : promo?.type === "free"
                       ? "bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.25)] hover:-translate-y-0.5 hover:bg-[#4F8FF7]"
                       : plan.popular
-                      ? "bg-[#F5C518] text-black shadow-[0_6px_18px_rgba(245,197,24,0.12)] hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(245,197,24,0.2)]"
+                      ? "bg-[#3B82F6] text-white shadow-[0_6px_18px_rgba(59,130,246,0.12)] hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(59,130,246,0.2)]"
                       : "border border-white/10 bg-[#101010] text-gray-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-[#171717]"
                   }`}
                 >
@@ -5471,7 +5471,7 @@ function SecurityTab({
                     e.target.value
                   )
                 }
-                className="h-11 w-full rounded-lg border border-white/10 bg-black px-3 pr-10 text-xs text-white outline-none focus:border-[#F5C518]/60"
+                className="h-11 w-full rounded-lg border border-white/10 bg-black px-3 pr-10 text-xs text-white outline-none focus:border-[#3B82F6]/60"
                 placeholder={t(
                   "Enter new password"
                 )}
@@ -5514,7 +5514,7 @@ function SecurityTab({
                   e.target.value
                 )
               }
-              className="h-11 w-full rounded-lg border border-white/10 bg-black px-3 text-xs text-white outline-none focus:border-[#F5C518]/60"
+              className="h-11 w-full rounded-lg border border-white/10 bg-black px-3 text-xs text-white outline-none focus:border-[#3B82F6]/60"
               placeholder={t(
                 "Confirm new password"
               )}
@@ -7440,7 +7440,7 @@ phone:
           <div className="flex items-center gap-2">
             <SettingsIcon
               size={20}
-              className="text-[#F5C518]"
+              className="text-[#3B82F6]"
             />
 
             <h1 className="text-2xl font-semibold tracking-tight lg:text-[28px]">
@@ -7485,7 +7485,7 @@ phone:
           {companyLoading ? (
             <div className="flex min-h-[400px] items-center justify-center">
               <div className="text-center">
-                <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-[#F5C518]" />
+                <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]" />
 
                 <p className="mt-4 text-[14px] text-gray-600">
                   {t(

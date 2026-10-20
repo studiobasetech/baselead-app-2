@@ -249,7 +249,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
   }
 
   const input =
-    "h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none transition focus:border-[#F5C518]/50";
+    "h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm outline-none transition focus:border-[#3B82F6]/50";
 
   return (
     <section className={embedded ? "text-white" : "min-h-screen bg-[#050505] px-4 pb-28 pt-6 text-white sm:px-6 lg:px-8 lg:pb-10"}>
@@ -277,7 +277,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
           <button
             type="button"
             onClick={() => setDraft(emptyDraft())}
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.2)] transition hover:-translate-y-0.5 hover:bg-[#ffe044]"
+            className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-[#3B82F6] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.2)] transition hover:-translate-y-0.5 hover:bg-[#2F74E8]"
           >
             <Plus size={16} /> New proposal
           </button>
@@ -303,7 +303,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
       <div className="mt-6 space-y-2">
         {!loading && proposals.length === 0 && (
           <div className="rounded-2xl border border-dashed border-[#2A2A2A] p-10 text-center">
-            <FileText className="mx-auto text-[#F5C518]" />
+            <FileText className="mx-auto text-[#3B82F6]" />
             <p className="mt-3 text-sm text-gray-400">No proposals yet. Create one from a lead in a couple of minutes.</p>
           </div>
         )}
@@ -345,7 +345,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                       <Copy size={14} />
                     </button>
                   ) : (
-                    <button type="button" onClick={() => edit(proposal)} className="rounded-lg border border-[#202020] px-3 py-1.5 text-xs text-gray-300 transition hover:border-[#F5C518]/40 hover:text-[#F5C518]">
+                    <button type="button" onClick={() => edit(proposal)} className="rounded-lg border border-[#202020] px-3 py-1.5 text-xs text-gray-300 transition hover:border-[#3B82F6]/40 hover:text-[#3B82F6]">
                       Edit
                     </button>
                   )}
@@ -415,7 +415,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                   rows={3}
                   value={draft.intro}
                   onChange={(e) => setDraft({ ...draft, intro: e.target.value })}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none focus:border-[#F5C518]/50"
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none focus:border-[#3B82F6]/50"
                 />
               </label>
             </div>
@@ -425,7 +425,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
               {draft.line_items.map((item, index) => (
                 <div key={index} className="rounded-xl border border-[#202020] bg-[#0A0A0A] p-3">
                   <div className="grid gap-2 sm:grid-cols-[1fr_80px_120px_32px]">
-                    <input value={item.name} onChange={(e) => setItem(index, { name: e.target.value })} placeholder="Service (e.g. Website redesign)" className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#F5C518]/50" />
+                    <input value={item.name} onChange={(e) => setItem(index, { name: e.target.value })} placeholder="Service (e.g. Website redesign)" className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50" />
                     <input type="number" min={0} value={item.quantity} onChange={(e) => setItem(index, { quantity: Number(e.target.value) })} className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none" aria-label="Quantity" />
                     <input type="number" min={0} value={item.price} onChange={(e) => setItem(index, { price: Number(e.target.value) })} className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none" aria-label="Price" />
                     <button type="button" onClick={() => setDraft({ ...draft, line_items: draft.line_items.filter((_, i) => i !== index) })} className="flex h-10 items-center justify-center text-gray-600 hover:text-[#F0475C]" aria-label="Remove">
@@ -439,7 +439,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
             <button
               type="button"
               onClick={() => setDraft({ ...draft, line_items: [...draft.line_items, { name: "", description: "", quantity: 1, price: 0 }] })}
-              className="mt-2 w-full rounded-xl border border-dashed border-[#2A2A2A] py-2.5 text-sm text-gray-400 transition hover:border-[#F5C518]/40 hover:text-[#F5C518]"
+              className="mt-2 w-full rounded-xl border border-dashed border-[#2A2A2A] py-2.5 text-sm text-gray-400 transition hover:border-[#3B82F6]/40 hover:text-[#3B82F6]"
             >
               + Add item
             </button>
@@ -483,7 +483,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                     onClick={() => setDraft({ ...draft, payment_mode: value })}
                     className={`rounded-lg border px-3 py-2 text-xs transition ${
                       draft.payment_mode === value
-                        ? "border-[#F5C518]/50 bg-[#F5C518]/10 text-[#F5C518]"
+                        ? "border-[#3B82F6]/50 bg-[#3B82F6]/10 text-[#3B82F6]"
                         : "border-white/10 text-gray-400 hover:text-white"
                     }`}
                   >
@@ -497,19 +497,19 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                 )}
               </div>
               {draft.payment_mode !== "none" && !payments?.connected && (
-                <p className="mt-2 text-xs text-[#F5C518]">Connect your Stripe account (“Connect payments”) so clients can pay online.</p>
+                <p className="mt-2 text-xs text-[#3B82F6]">Connect your Stripe account (“Connect payments”) so clients can pay online.</p>
               )}
             </div>
 
             <label className="mt-4 block">
               <span className="text-xs text-gray-500">Terms</span>
-              <textarea rows={3} value={draft.terms} onChange={(e) => setDraft({ ...draft, terms: e.target.value })} className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none focus:border-[#F5C518]/50" />
+              <textarea rows={3} value={draft.terms} onChange={(e) => setDraft({ ...draft, terms: e.target.value })} className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 text-sm outline-none focus:border-[#3B82F6]/50" />
             </label>
 
             {totals && (
-              <div className="mt-5 flex items-center justify-between rounded-xl border border-[#F5C518]/20 bg-[#F5C518]/[0.05] px-4 py-3">
+              <div className="mt-5 flex items-center justify-between rounded-xl border border-[#3B82F6]/20 bg-[#3B82F6]/[0.05] px-4 py-3">
                 <span className="text-sm text-gray-400">Total</span>
-                <span className="text-xl font-semibold tabular-nums text-[#F5C518]">{formatMoney(totals.total, draft.currency)}</span>
+                <span className="text-xl font-semibold tabular-nums text-[#3B82F6]">{formatMoney(totals.total, draft.currency)}</span>
               </div>
             )}
 
@@ -517,10 +517,10 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
               <button type="button" disabled={busy} onClick={() => void save().then((p) => p && (setDraft(null), showToast("Proposal saved.")))} className="h-12 rounded-xl border border-[#202020] text-sm text-gray-300 transition hover:bg-[#171717] disabled:opacity-50">
                 Save draft
               </button>
-              <button type="button" disabled={busy} onClick={() => void saveAndSend(false)} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#F5C518]/40 text-sm text-[#F5C518] transition hover:bg-[#F5C518]/10 disabled:opacity-50">
+              <button type="button" disabled={busy} onClick={() => void saveAndSend(false)} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#3B82F6]/40 text-sm text-[#3B82F6] transition hover:bg-[#3B82F6]/10 disabled:opacity-50">
                 <Copy size={15} /> Copy link & mark sent
               </button>
-              <button type="button" disabled={busy || !draft.client_email} onClick={() => void saveAndSend(true)} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-50">
+              <button type="button" disabled={busy || !draft.client_email} onClick={() => void saveAndSend(true)} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50">
                 <Mail size={15} /> Send by email
               </button>
             </div>
@@ -553,7 +553,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                   Paste your Stripe <b>secret key</b> (Stripe → Developers → API keys). It is encrypted and only used to create payment links for your proposals. Money goes straight to your Stripe account.
                 </p>
                 <input value={stripeKey} onChange={(e) => setStripeKey(e.target.value.trim())} placeholder="sk_live_..." className={`${input} mt-4 font-mono`} />
-                <button type="button" disabled={busy || !stripeKey} onClick={() => void savePayments()} className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-50">
+                <button type="button" disabled={busy || !stripeKey} onClick={() => void savePayments()} className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50">
                   <Send size={15} /> Connect Stripe
                 </button>
               </>

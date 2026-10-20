@@ -59,7 +59,7 @@ export default function ResetPasswordPage() {
     <main className="flex min-h-screen items-center justify-center bg-[#020204] px-4 text-white">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute left-[20%] top-[-15%] h-[500px] w-[500px] rounded-full bg-purple-600/[0.1] blur-[150px]" />
-        <div className="absolute bottom-[-20%] right-[10%] h-[450px] w-[450px] rounded-full bg-yellow-400/[0.04] blur-[150px]" />
+        <div className="absolute bottom-[-20%] right-[10%] h-[450px] w-[450px] rounded-full bg-blue-400/[0.04] blur-[150px]" />
       </div>
 
       <div className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#0B0B0F]/90 p-7 shadow-[0_25px_100px_rgba(124,58,237,0.18)] backdrop-blur-xl sm:p-9">
@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
 
             <a
               href="/login"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-[#ffe044]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
             >
               Back to login
               <ArrowRight size={16} />
@@ -145,7 +145,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-60"
             >
               {loading ? "Saving..." : "Save new password"}
               {!loading && <ArrowRight size={16} />}

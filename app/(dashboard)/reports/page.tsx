@@ -1904,7 +1904,7 @@ export default function ReportsPage() {
         "--report-icon-hover-shadow":
           isLightMode
             ? "0 8px 20px rgba(18,18,24,0.10)"
-            : "0 0 18px rgba(245,197,24,0.08)",
+            : "0 0 18px rgba(59,130,246,0.08)",
 
         "--report-modal-shadow":
           isLightMode

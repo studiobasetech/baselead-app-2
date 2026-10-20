@@ -347,12 +347,12 @@ export default function TodayPage() {
     <main className="min-h-screen bg-[#050505] px-4 pb-28 pt-6 text-white sm:px-6 lg:px-8 lg:pb-10">
       {/* HERO */}
       <section className="bl-hero relative overflow-hidden rounded-3xl border border-[#202020] bg-[#0A0A0A] p-6 sm:p-8">
-        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#F5C518]/[0.07] blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#3B82F6]/[0.07] blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#A78BFA]/[0.08] blur-3xl" />
 
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#F5C518]/25 bg-[#F5C518]/[0.06] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#F5C518]">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#3B82F6]/25 bg-[#3B82F6]/[0.06] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#3B82F6]">
               <Sparkles size={12} /> Today
             </p>
             <h1 className="mt-4 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
@@ -369,7 +369,7 @@ export default function TodayPage() {
             type="button"
             onClick={() => void sync()}
             disabled={syncing}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3 text-sm font-semibold text-black shadow-[0_8px_30px_rgba(245,197,24,0.25)] transition hover:-translate-y-0.5 hover:bg-[#ffe044] disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.25)] transition hover:-translate-y-0.5 hover:bg-[#2F74E8] disabled:opacity-60"
           >
             <RefreshCw size={16} className={syncing ? "animate-spin" : ""} />
             {syncing ? "Checking inbox…" : "Check replies & run follow-ups"}
@@ -467,7 +467,7 @@ export default function TodayPage() {
                 </span>
                 <h2 className="text-base font-semibold">Meetings</h2>
               </div>
-              <Link href="/calendar" className="text-xs text-gray-500 hover:text-[#F5C518]">Calendar</Link>
+              <Link href="/calendar" className="text-xs text-gray-500 hover:text-[#3B82F6]">Calendar</Link>
             </div>
 
             <div className="mt-4 space-y-2">
@@ -491,7 +491,7 @@ export default function TodayPage() {
                       </p>
                     </div>
                     {link && (
-                      <a href={link} target="_blank" rel="noreferrer" className="rounded-lg bg-[#F5C518] px-3 py-1.5 text-xs font-semibold text-black">
+                      <a href={link} target="_blank" rel="noreferrer" className="rounded-lg bg-[#3B82F6] px-3 py-1.5 text-xs font-semibold text-white">
                         Join
                       </a>
                     )}

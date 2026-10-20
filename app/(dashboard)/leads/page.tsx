@@ -222,7 +222,7 @@ function getScoreClass(
     return "text-[#84CC16]";
   }
 
-  return "text-[#F5C518]";
+  return "text-[#3B82F6]";
 }
 
 function getOpportunity(
@@ -1176,7 +1176,7 @@ function LeadLogo({
       : lead.score >= 80
         ? "bg-[#18200B] text-white"
         : lead.score >= 70
-          ? "bg-[#332A0C] text-[#F5C518]"
+          ? "bg-[#332A0C] text-[#3B82F6]"
           : "bg-[#10243A] text-white";
 
   return (
@@ -1330,7 +1330,7 @@ function LeadCard({
       }}
       className={`lead-discovery-row baselead-lead-card group w-full cursor-pointer rounded-xl border bg-[#0D0D0D] text-left transition ${
         selected
-          ? "border-[#F5C518]/70"
+          ? "border-[#3B82F6]/70"
           : "border-white/10 hover:border-white/20"
       }`}
     >
@@ -1344,7 +1344,7 @@ function LeadCard({
               onKeyDown={(event) => event.stopPropagation()}
               onChange={onToggleCheck}
               aria-label={`Select ${lead.company || lead.name}`}
-              className="h-4 w-4 shrink-0 cursor-pointer accent-[#F5C518]"
+              className="h-4 w-4 shrink-0 cursor-pointer accent-[#3B82F6]"
             />
           )}
           <LeadLogo lead={lead} />
@@ -1425,7 +1425,7 @@ function LeadCard({
               lead.opportunity ===
               "High Opportunity"
                 ? "text-[#84CC16]"
-                : "text-[#F5C518]"
+                : "text-[#3B82F6]"
             }`}
           >
             {lead.opportunity}
@@ -1444,7 +1444,7 @@ function LeadCard({
                 (service) => (
                   <span
                     key={service}
-                    className="rounded-md bg-[#F5C518] px-2 py-1 text-xs font-medium text-black"
+                    className="rounded-md bg-[#3B82F6] px-2 py-1 text-xs font-medium text-white"
                   >
                     {service}
                   </span>
@@ -1890,7 +1890,7 @@ function LeadDetailPanel({
               (service) => (
                 <span
                   key={service}
-                  className="rounded-md bg-[#F5C518] px-2.5 py-1.5 text-xs font-medium text-black"
+                  className="rounded-md bg-[#3B82F6] px-2.5 py-1.5 text-xs font-medium text-white"
                 >
                   {service}
                 </span>
@@ -1951,7 +1951,7 @@ function LeadDetailPanel({
         <button
           type="button"
           onClick={onGenerateOutreach}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#F5C518] py-3 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#3B82F6] py-3 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
         >
           <Sparkles size={16} />
           Generate Outreach
@@ -1996,7 +1996,7 @@ function LeadDetailPanel({
             className={`border-b-2 pb-3 text-sm ${
               activeDetailTab ===
               "info"
-                ? "border-[#F5C518] text-white"
+                ? "border-[#3B82F6] text-white"
                 : "border-transparent text-gray-600"
             }`}
           >
@@ -2013,7 +2013,7 @@ function LeadDetailPanel({
             className={`border-b-2 pb-3 text-sm ${
               activeDetailTab ===
               "notes"
-                ? "border-[#F5C518] text-white"
+                ? "border-[#3B82F6] text-white"
                 : "border-transparent text-gray-600"
             }`}
           >
@@ -2108,7 +2108,7 @@ function LeadDetailPanel({
                 )
               }
               placeholder="Add notes about this lead..."
-              className="min-h-[150px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0A] p-3 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-[#F5C518]/40"
+              className="min-h-[150px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0A] p-3 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-[#3B82F6]/40"
             />
 
             <div className="mt-3 flex items-center justify-between gap-3">
@@ -2122,7 +2122,7 @@ function LeadDetailPanel({
                 type="button"
                 onClick={saveNotes}
                 disabled={savingNotes}
-                className="rounded-lg bg-[#F5C518] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#ffd629] disabled:opacity-50"
+                className="rounded-lg bg-[#3B82F6] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50"
               >
                 {savingNotes
                   ? "Saving..."
@@ -2187,21 +2187,21 @@ function getRadarColor(
   const colors = [
     {
       border:
-        "border-[#F5C518]",
+        "border-[#3B82F6]",
       softBorder:
-        "border-[#F5C518]/50",
+        "border-[#3B82F6]/50",
       bg:
-        "bg-[#F5C518]/15",
+        "bg-[#3B82F6]/15",
       text:
-        "text-[#F5C518]",
+        "text-[#3B82F6]",
       glow:
-        "shadow-[0_0_25px_rgba(245,197,24,0.35)]",
+        "shadow-[0_0_25px_rgba(59,130,246,0.35)]",
       pulse:
-        "border-[#F5C518]/20",
+        "border-[#3B82F6]/20",
       selected:
-        "bg-[#F5C518] text-black border-[#F5C518]",
+        "bg-[#3B82F6] text-white border-[#3B82F6]",
       dot:
-        "bg-[#F5C518]",
+        "bg-[#3B82F6]",
     },
     {
       border:
@@ -2485,10 +2485,10 @@ function OpportunityRadar({
         <div className="relative flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
             <div className="flex items-center gap-2">
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#F5C518]/10">
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#3B82F6]/10">
                 <Target
                   size={19}
-                  className="text-[#F5C518]"
+                  className="text-[#3B82F6]"
                 />
 
                 <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#A78BFA]" />
@@ -2527,12 +2527,12 @@ function OpportunityRadar({
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#F5C518]/10 bg-[#F5C518]/[0.03] px-4 py-2.5">
+            <div className="rounded-xl border border-[#3B82F6]/10 bg-[#3B82F6]/[0.03] px-4 py-2.5">
               <p className="text-[10px] uppercase tracking-wider text-gray-600">
                 Est. Value
               </p>
 
-              <p className="mt-0.5 text-lg font-medium text-[#F5C518]">
+              <p className="mt-0.5 text-lg font-medium text-[#3B82F6]">
                 {estimatedValueFormatted}
               </p>
             </div>
@@ -2549,7 +2549,7 @@ function OpportunityRadar({
           <div className="pointer-events-none absolute left-5 right-5 top-5 z-20 flex items-start justify-between gap-4">
             <div className="pointer-events-auto rounded-xl border border-white/10 bg-black/75 px-4 py-3 backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#F5C518] shadow-[0_0_8px_rgba(255,208,0,0.8)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
 
                 <p className="text-xs uppercase tracking-[0.18em] text-gray-600">
                   Opportunity Map
@@ -2578,7 +2578,7 @@ function OpportunityRadar({
                 <div className="mx-auto flex h-14 w-14 items-center justify-center lead-discovery-surface rounded-2xl border border-white/10 bg-[#0D0D0D]">
                   <Target
                     size={24}
-                    className="text-[#F5C518]"
+                    className="text-[#3B82F6]"
                   />
                 </div>
 
@@ -2594,7 +2594,7 @@ function OpportunityRadar({
 
                 <a
                   href="/search"
-                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
+                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
                 >
                   <Search size={16} />
                   Start a Search
@@ -2608,10 +2608,10 @@ function OpportunityRadar({
               0 && (
               <div className="absolute inset-0 z-20 flex items-center justify-center">
                 <div className="max-w-sm rounded-2xl border border-white/10 bg-black/75 p-7 text-center shadow-2xl backdrop-blur-md">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5C518]/10">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#3B82F6]/10">
                     <MapPin
                       size={21}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   </div>
 
@@ -2654,7 +2654,7 @@ function OpportunityRadar({
                 <button
                   type="button"
                   onClick={() => onLocationChange("All locations")}
-                  className="rounded-md border border-white/10 px-2 py-0.5 text-[11px] text-gray-400 hover:border-[#F5C518]/40 hover:text-[#F5C518]"
+                  className="rounded-md border border-white/10 px-2 py-0.5 text-[11px] text-gray-400 hover:border-[#3B82F6]/40 hover:text-[#3B82F6]"
                 >
                   Show all
                 </button>
@@ -2663,7 +2663,7 @@ function OpportunityRadar({
 
             <div className="pointer-events-auto flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 px-4 py-2.5 backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#F5C518]" />
+                <span className="h-2 w-2 rounded-full bg-[#3B82F6]" />
                 <span className="text-[11px] text-gray-500">
                   High 80+
                 </span>
@@ -2698,10 +2698,10 @@ function OpportunityRadar({
               </p>
             </div>
 
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-[#F5C518]/10">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-[#3B82F6]/10">
               <Sparkles
                 size={17}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
             </div>
           </div>
@@ -2725,7 +2725,7 @@ function OpportunityRadar({
                           lead.id,
                         )
                       }
-                      className="group w-full rounded-xl border border-white/10 bg-[#0A0A0A] p-3 text-left transition hover:border-[#F5C518]/30 hover:bg-[#101010]"
+                      className="group w-full rounded-xl border border-white/10 bg-[#0A0A0A] p-3 text-left transition hover:border-[#3B82F6]/30 hover:bg-[#101010]"
                     >
                       <div className="flex items-center gap-3">
                         <span
@@ -2912,10 +2912,10 @@ function OpportunityRadar({
 
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0D0D0D] p-4">
         <div className="relative flex items-start gap-3">
-          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F5C518]/10">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#3B82F6]/10">
             <Sparkles
               size={17}
-              className="text-[#F5C518]"
+              className="text-[#3B82F6]"
             />
           </div>
 
@@ -4512,7 +4512,7 @@ ${companyName}`;
               }
               className={`flex items-center gap-2 rounded-xl border bg-[#0D0D0D] px-4 py-2.5 text-sm transition ${
                 targetLocationMenuOpen
-                  ? "border-[#F5C518]/40 text-white"
+                  ? "border-[#3B82F6]/40 text-white"
                   : "border-white/10 text-gray-300 hover:border-white/20"
               }`}
             >
@@ -4521,7 +4521,7 @@ ${companyName}`;
                 className={
                   selectedTargetLocation !==
                   "All locations"
-                    ? "text-[#F5C518]"
+                    ? "text-[#3B82F6]"
                     : "text-gray-500"
                 }
               />
@@ -4558,10 +4558,10 @@ ${companyName}`;
                 <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-[270px] overflow-hidden rounded-2xl border border-white/10 bg-[#101010] p-1.5 shadow-2xl shadow-black/50">
                   <div className="border-b border-white/10 px-3 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F5C518]/10">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#3B82F6]/10">
                         <MapPin
                           size={14}
-                          className="text-[#F5C518]"
+                          className="text-[#3B82F6]"
                         />
                       </div>
 
@@ -4589,7 +4589,7 @@ ${companyName}`;
                       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
                         selectedTargetLocation ===
                         "All locations"
-                          ? "bg-[#F5C518]/10"
+                          ? "bg-[#3B82F6]/10"
                           : "hover:bg-white/5"
                       }`}
                     >
@@ -4597,7 +4597,7 @@ ${companyName}`;
                         className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                           selectedTargetLocation ===
                           "All locations"
-                            ? "bg-[#F5C518] text-black"
+                            ? "bg-[#3B82F6] text-white"
                             : "bg-white/5 text-gray-500"
                         }`}
                       >
@@ -4609,7 +4609,7 @@ ${companyName}`;
                           className={`text-sm ${
                             selectedTargetLocation ===
                             "All locations"
-                              ? "text-[#F5C518]"
+                              ? "text-[#3B82F6]"
                               : "text-gray-300"
                           }`}
                         >
@@ -4623,7 +4623,7 @@ ${companyName}`;
 
                       {selectedTargetLocation ===
                         "All locations" && (
-                        <span className="text-[#F5C518]">
+                        <span className="text-[#3B82F6]">
                           ✓
                         </span>
                       )}
@@ -4747,7 +4747,7 @@ ${companyName}`;
               }
               className={`flex items-center gap-2 rounded-xl border bg-[#0D0D0D] px-4 py-2.5 text-sm transition ${
                 recentRange !== "all"
-                  ? "border-[#F5C518]/40 text-white"
+                  ? "border-[#3B82F6]/40 text-white"
                   : "border-white/10 text-gray-300 hover:border-white/20"
               }`}
             >
@@ -4756,7 +4756,7 @@ ${companyName}`;
                 className={
                   recentRange !==
                   "all"
-                    ? "text-[#F5C518]"
+                    ? "text-[#3B82F6]"
                     : "text-gray-500"
                 }
               />
@@ -4781,7 +4781,7 @@ ${companyName}`;
 
               {recentRange !==
                 "all" && (
-                <span className="rounded-full bg-[#F5C518]/10 px-1.5 py-0.5 text-[10px] text-[#F5C518]">
+                <span className="rounded-full bg-[#3B82F6]/10 px-1.5 py-0.5 text-[10px] text-[#3B82F6]">
                   {filteredLeads.length}
                 </span>
               )}
@@ -4860,7 +4860,7 @@ ${companyName}`;
                         className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition ${
                           recentRange ===
                           value
-                            ? "bg-[#F5C518]/10"
+                            ? "bg-[#3B82F6]/10"
                             : "hover:bg-white/5"
                         }`}
                       >
@@ -4869,7 +4869,7 @@ ${companyName}`;
                             className={`text-sm ${
                               recentRange ===
                               value
-                                ? "text-[#F5C518]"
+                                ? "text-[#3B82F6]"
                                 : "text-gray-300"
                             }`}
                           >
@@ -4883,7 +4883,7 @@ ${companyName}`;
 
                         {recentRange ===
                           value && (
-                          <span className="text-[#F5C518]">
+                          <span className="text-[#3B82F6]">
                             ✓
                           </span>
                         )}
@@ -4908,7 +4908,7 @@ ${companyName}`;
                   Leads
                 </h1>
 
-                <span className="hidden h-7 items-center rounded-full border border-[#F5C518]/20 bg-[#F5C518]/10 px-3 text-xs font-medium text-[#F5C518] sm:flex">
+                <span className="hidden h-7 items-center rounded-full border border-[#3B82F6]/20 bg-[#3B82F6]/10 px-3 text-xs font-medium text-[#3B82F6] sm:flex">
                   AI POWERED
                 </span>
               </div>
@@ -4923,7 +4923,7 @@ ${companyName}`;
 
             <a
               href="/search"
-              className="flex shrink-0 items-center gap-2 rounded-xl bg-[#F5C518] px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
+              className="flex shrink-0 items-center gap-2 rounded-xl bg-[#3B82F6] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
             >
               <Search size={16} />
               <span className="hidden sm:inline">New search</span>
@@ -5008,10 +5008,10 @@ ${companyName}`;
                   icon={
                     <Users
                       size={20}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   }
-                  iconClassName="bg-[#F5C518]/10"
+                  iconClassName="bg-[#3B82F6]/10"
                 />
 
                 <StatCard
@@ -5048,10 +5048,10 @@ ${companyName}`;
                   icon={
                     <DollarSign
                       size={20}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   }
-                  iconClassName="bg-[#F5C518]/10"
+                  iconClassName="bg-[#3B82F6]/10"
                 />
 
                 <StatCard
@@ -5119,7 +5119,7 @@ ${companyName}`;
 
                   <a
                     href="/search"
-                    className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0A0A0A] px-5 py-3 text-sm font-medium text-[#F5C518] transition hover:bg-white/5"
+                    className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0A0A0A] px-5 py-3 text-sm font-medium text-[#3B82F6] transition hover:bg-white/5"
                   >
                     <SlidersHorizontal
                       size={16}
@@ -5133,7 +5133,7 @@ ${companyName}`;
                   <div className="mt-3 flex items-center gap-2 border-t border-white/[0.06] pt-3">
                     <MapPin
                       size={14}
-                      className="shrink-0 text-[#F5C518]"
+                      className="shrink-0 text-[#3B82F6]"
                     />
 
                     <span className="text-xs text-gray-600">
@@ -5164,7 +5164,7 @@ ${companyName}`;
                                 getLocationKey(
                                   location,
                                 )
-                                  ? "border-[#F5C518]/30 bg-[#F5C518]/10 text-[#F5C518]"
+                                  ? "border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#3B82F6]"
                                   : "border-white/10 bg-white/[0.03] text-gray-400 hover:text-white"
                               }`}
                             >
@@ -5235,7 +5235,7 @@ ${companyName}`;
                       }
                       aria-label="Select all leads"
                       title="Select all"
-                      className="h-4 w-4 cursor-pointer accent-[#F5C518]"
+                      className="h-4 w-4 cursor-pointer accent-[#3B82F6]"
                     />
                   )}
                   <p className="text-sm text-gray-400">
@@ -5254,7 +5254,7 @@ ${companyName}`;
                       onClick={
                         clearAllFilters
                       }
-                      className="flex items-center gap-1.5 rounded-full border border-[#F5C518]/20 bg-[#F5C518]/5 px-2.5 py-1 text-[11px] text-[#F5C518] transition hover:bg-[#F5C518]/10"
+                      className="flex items-center gap-1.5 rounded-full border border-[#3B82F6]/20 bg-[#3B82F6]/5 px-2.5 py-1 text-[11px] text-[#3B82F6] transition hover:bg-[#3B82F6]/10"
                     >
                       <X size={11} />
                       Clear filters
@@ -5279,7 +5279,7 @@ ${companyName}`;
                         title={label}
                         className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
                           layout === value
-                            ? "bg-[#F5C518]/15 text-[#F5C518]"
+                            ? "bg-[#3B82F6]/15 text-[#3B82F6]"
                             : "text-gray-500 hover:text-white"
                         }`}
                       >
@@ -5361,7 +5361,7 @@ ${companyName}`;
                       filtersOpen ||
                       activeFilterCount >
                         0
-                        ? "border-[#F5C518]/30 bg-[#F5C518]/5 text-[#F5C518]"
+                        ? "border-[#3B82F6]/30 bg-[#3B82F6]/5 text-[#3B82F6]"
                         : "border-white/10 bg-[#0D0D0D] text-gray-300 hover:border-white/20"
                     }`}
                   >
@@ -5370,7 +5370,7 @@ ${companyName}`;
 
                     {activeFilterCount >
                       0 && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#F5C518] px-1 text-[10px] font-bold text-black">
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#3B82F6] px-1 text-[10px] font-bold text-white">
                         {activeFilterCount}
                       </span>
                     )}
@@ -5817,7 +5817,7 @@ ${companyName}`;
               )}
 
               {checkedIds.size > 0 && (
-                <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-[#F5C518]/30 bg-[#F5C518]/5 px-4 py-2.5">
+                <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/5 px-4 py-2.5">
                   <span className="text-sm font-medium text-white">
                     {checkedIds.size} selected
                   </span>
@@ -5834,7 +5834,7 @@ ${companyName}`;
                     type="button"
                     onClick={() => void addCheckedToPipeline()}
                     disabled={bulkBusy}
-                    className="flex items-center gap-1.5 rounded-lg bg-[#F5C518] px-3 py-1.5 text-xs font-semibold text-black transition hover:bg-[#ffd629] disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg bg-[#3B82F6] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-50"
                   >
                     <GitBranch size={13} />
                     {bulkBusy ? "Adding..." : "Add to pipeline"}
@@ -5862,7 +5862,7 @@ ${companyName}`;
                 <div className="min-w-0">
                   {loading && (
                     <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-8 text-center">
-                      <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-white/10 border-t-[#F5C518]" />
+                      <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]" />
 
                       <p className="mt-4 text-base text-gray-400">
                         Loading your
@@ -5897,10 +5897,10 @@ ${companyName}`;
                     filteredLeads.length ===
                       0 && (
                       <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-10 text-center">
-                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F5C518]/10">
+                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#3B82F6]/10">
                           <Search
                             size={21}
-                            className="text-[#F5C518]"
+                            className="text-[#3B82F6]"
                           />
                         </div>
 
@@ -5922,7 +5922,7 @@ ${companyName}`;
                           0 && (
                           <a
                             href="/search"
-                            className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629]"
+                            className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
                           >
                             <Search
                               size={16}
@@ -6148,10 +6148,10 @@ ${companyName}`;
           >
             <div className="flex items-start justify-between border-b border-white/10 px-5 py-5">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5C518]/10">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/10">
                   <Sparkles
                     size={19}
-                    className="text-[#F5C518]"
+                    className="text-[#3B82F6]"
                   />
                 </div>
 
@@ -6188,7 +6188,7 @@ ${companyName}`;
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5">
                       <Mail
                         size={16}
-                        className="text-[#F5C518]"
+                        className="text-[#3B82F6]"
                       />
                     </div>
 
@@ -6229,12 +6229,12 @@ ${companyName}`;
                   Sending channel
                 </p>
 
-                <div className="rounded-xl border border-[#F5C518]/30 bg-[#F5C518]/5 p-3">
+                <div className="rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/5 p-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#F5C518]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#3B82F6]">
                       <Mail
                         size={17}
-                        className="text-black"
+                        className="text-white"
                       />
                     </div>
 
@@ -6248,7 +6248,7 @@ ${companyName}`;
                       </p>
                     </div>
 
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#F5C518] text-[11px] font-bold text-black">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3B82F6] text-[11px] font-bold text-white">
                       ✓
                     </span>
                   </div>
@@ -6275,7 +6275,7 @@ ${companyName}`;
                     )
                   }
                   placeholder="e.g. Lead Discovery"
-                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-200 outline-none transition placeholder:text-gray-700 focus:border-[#F5C518]/40"
+                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-200 outline-none transition placeholder:text-gray-700 focus:border-[#3B82F6]/40"
                 />
               </div>
 
@@ -6293,7 +6293,7 @@ ${companyName}`;
                     )
                   }
                   placeholder="Outreach subject"
-                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-200 outline-none transition placeholder:text-gray-700 focus:border-[#F5C518]/40"
+                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-200 outline-none transition placeholder:text-gray-700 focus:border-[#3B82F6]/40"
                 />
               </div>
 
@@ -6315,7 +6315,7 @@ ${companyName}`;
                       event.target.value,
                     )
                   }
-                  className="min-h-[240px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0A] p-4 text-sm leading-6 text-gray-200 outline-none transition focus:border-[#F5C518]/40"
+                  className="min-h-[240px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0A] p-4 text-sm leading-6 text-gray-200 outline-none transition focus:border-[#3B82F6]/40"
                 />
               </div>
 
@@ -6335,7 +6335,7 @@ ${companyName}`;
                   min={new Date()
                     .toISOString()
                     .slice(0, 16)}
-                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-300 outline-none transition focus:border-[#F5C518]/40"
+                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A] px-3.5 py-3 text-sm text-gray-300 outline-none transition focus:border-[#3B82F6]/40"
                 />
 
                 <p className="mt-1.5 text-[10px] text-gray-700">
@@ -6423,7 +6423,7 @@ ${companyName}`;
                     !outreachText.trim() ||
                     !outreachScheduledAt
                   }
-                  className="flex items-center gap-2 rounded-lg border border-[#F5C518]/30 bg-[#F5C518]/10 px-4 py-2.5 text-sm font-medium text-[#F5C518] transition hover:bg-[#F5C518]/15 disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-lg border border-[#3B82F6]/30 bg-[#3B82F6]/10 px-4 py-2.5 text-sm font-medium text-[#3B82F6] transition hover:bg-[#3B82F6]/15 disabled:opacity-40"
                 >
                   <CalendarDays size={14} />
                   Schedule
@@ -6439,7 +6439,7 @@ ${companyName}`;
                     !outreachText.trim() ||
                     selectedLead.emailAddresses.length === 0
                   }
-                  className="flex items-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-[#ffd629] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-lg bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <Mail size={15} />
                   {outreachSaving
@@ -6569,7 +6569,7 @@ ${companyName}`;
           <div className="flex items-start gap-3">
             <Clipboard
               size={16}
-              className="mt-0.5 shrink-0 text-[#F5C518]"
+              className="mt-0.5 shrink-0 text-[#3B82F6]"
             />
 
             <p className="text-sm text-gray-200">

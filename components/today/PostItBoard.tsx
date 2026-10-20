@@ -181,7 +181,7 @@ export default function PostItBoard({
       </div>
 
       {/* New note — above the columns */}
-      <div className="relative mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-4 transition focus-within:border-[#F5C518]/40">
+      <div className="relative mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-4 transition focus-within:border-[#3B82F6]/40">
         <div className="flex flex-col gap-3 md:flex-row md:items-end">
           <div className="flex-1 space-y-2">
             <input
@@ -222,7 +222,7 @@ export default function PostItBoard({
               type="button"
               onClick={() => void add()}
               disabled={!draft.trim()}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#F5C518] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#ffe044] disabled:opacity-30"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#3B82F6] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#2F74E8] disabled:opacity-30"
             >
               <Plus size={13} /> Stick it
             </button>

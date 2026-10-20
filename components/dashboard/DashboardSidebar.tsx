@@ -35,6 +35,7 @@ import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const GOLD = "#F5C518";
+const BRAND = "#3B82F6";
 const GREEN = "#84CC16";
 const BORDER = "#262626";
 const MUTED = "#8C8C8C";
@@ -402,7 +403,7 @@ export default function DashboardSidebar() {
 
   function getNotificationIcon(type: Notification["type"]) {
     const map = {
-      lead: { bg: "bg-[#F5C518]/10", icon: <Target size={17} style={{ color: GOLD }} /> },
+      lead: { bg: "bg-[#3B82F6]/10", icon: <Target size={17} style={{ color: GOLD }} /> },
       outreach: { bg: "bg-blue-500/10", icon: <Mail size={17} className="text-blue-400" /> },
       meeting: { bg: "bg-purple-500/10", icon: <CalendarIcon size={17} className="text-purple-400" /> },
       system: { bg: "bg-green-500/10", icon: <CheckCircle2 size={17} className="text-green-400" /> },
@@ -418,7 +419,7 @@ export default function DashboardSidebar() {
   const badge = notificationCount > 0 && (
     <span
       className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold"
-      style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
+      style={{ backgroundColor: BRAND, color: "#FFFFFF" }}
     >
       {notificationCount > 9 ? "9+" : notificationCount}
     </span>
@@ -459,7 +460,7 @@ export default function DashboardSidebar() {
           <Link
             href="/search"
             className="flex w-full items-center justify-center rounded-xl py-3 text-base font-bold transition-opacity hover:opacity-90"
-            style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
+            style={{ backgroundColor: BRAND, color: "#FFFFFF" }}
           >
             + {t("New Search")}
           </Link>
@@ -589,7 +590,7 @@ export default function DashboardSidebar() {
                           {!read && (
                             <span
                               className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
-                              style={{ backgroundColor: GOLD }}
+                              style={{ backgroundColor: BRAND }}
                             />
                           )}
                         </div>
@@ -645,7 +646,7 @@ export default function DashboardSidebar() {
             ) : (
               <div
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold"
-                style={{ backgroundColor: GOLD, color: "#0A0A0A" }}
+                style={{ backgroundColor: BRAND, color: "#FFFFFF" }}
               >
                 {getInitials()}
               </div>

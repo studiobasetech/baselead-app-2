@@ -786,7 +786,7 @@ function LeadAvatar({
         large
           ? "h-12 w-12 text-[10px]"
           : "h-9 w-9 text-[10px]"
-      } font-semibold tracking-wide transition-all duration-200 group-hover:shadow-[0_0_18px_rgba(245,197,24,0.10)] ${
+      } font-semibold tracking-wide transition-all duration-200 group-hover:shadow-[0_0_18px_rgba(59,130,246,0.10)] ${
         dark
           ? "text-white"
           : "text-black"
@@ -971,7 +971,7 @@ function OutreachIntelligence({ outreach, onOpen }: { outreach: Outreach[]; onOp
         </div>
         {primary ? (
           <button type="button" onClick={()=>onOpen(primary.id)} className="group/action mt-4 flex w-full items-center gap-3 rounded-xl border border-[#2A2A2A] bg-[#101010] p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-[#A78BFA]/35 hover:bg-[#171717] hover:shadow-[0_12px_28px_rgba(167,139,250,0.08)]">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38]">{replied.length?<Reply size={16} className="text-[#84CC16]"/>:interested.length?<Star size={16} className="text-[#F5C518]"/>:<Mail size={16} className="text-[#A78BFA]"/>}</div>
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38]">{replied.length?<Reply size={16} className="text-[#84CC16]"/>:interested.length?<Star size={16} className="text-[#3B82F6]"/>:<Mail size={16} className="text-[#A78BFA]"/>}</div>
             <div className="min-w-0 flex-1"><p className="text-[10px] uppercase tracking-[0.14em] text-[#777]">{label}</p><p className="mt-1 truncate text-[12px] font-semibold text-white">{primary.lead}</p><p className="mt-1 truncate text-[10px] text-[#666]">{primary.subject||primary.campaign}</p></div>
             <ChevronRight size={14} className="text-[#555] transition-all group-hover/action:translate-x-1 group-hover/action:text-[#A78BFA]"/>
           </button>
@@ -1183,14 +1183,14 @@ function NewOutreachModal({
       }}
     >
       <div className="relative flex max-h-[94vh] w-full max-w-[820px] flex-col overflow-hidden rounded-[24px] border border-[#2A2A2A] bg-[#0D0D0D] shadow-[0_30px_110px_rgba(0,0,0,0.72)]">
-        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#F5C518]/[0.06] blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#3B82F6]/[0.06] blur-3xl" />
         <div className="pointer-events-none absolute -left-24 bottom-20 h-56 w-56 rounded-full bg-[#A78BFA]/[0.05] blur-3xl" />
         <div className="flex shrink-0 items-center justify-between border-b border-[#202020] bg-[#101010] px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(245,197,24,0.06)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(59,130,246,0.06)]">
               <Send
                 size={17}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
             </div>
 
@@ -1200,7 +1200,7 @@ function NewOutreachModal({
                   New Outreach
                 </h2>
 
-                <span className="rounded-full border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#F5C518]">
+                <span className="rounded-full border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">
                   Email
                 </span>
               </div>
@@ -1294,7 +1294,7 @@ function NewOutreachModal({
                           .value
                       )
                     }
-                    className="h-9 w-full rounded-lg border border-[#202020] bg-[#101010] px-2 text-[10px] text-gray-300 outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(245,197,24,0.06)] sm:w-[190px]"
+                    className="h-9 w-full rounded-lg border border-[#202020] bg-[#101010] px-2 text-[10px] text-gray-300 outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(59,130,246,0.06)] sm:w-[190px]"
                   >
                     <option value="">
                       Select lead
@@ -1343,11 +1343,11 @@ function NewOutreachModal({
             </section>
 
             <div className="relative overflow-hidden rounded-2xl border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38]/70 p-4 shadow-[0_12px_30px_rgba(167,139,250,0.06)] transition-all duration-300 hover:border-[#A78BFA]/35 hover:shadow-[0_18px_40px_rgba(167,139,250,0.10)]">
-              <div className="pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full bg-[#F5C518]/[0.10] blur-3xl" />
+              <div className="pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full bg-[#3B82F6]/[0.10] blur-3xl" />
               <div className="relative flex items-start gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38] shadow-[0_0_18px_rgba(167,139,250,0.10)]"><Zap size={15} className="text-[#A78BFA]" /></div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2"><p className="text-[12px] font-semibold text-white">AI Outreach Workspace</p><span className="rounded-full border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#F5C518]">Smart Draft</span></div>
+                  <div className="flex flex-wrap items-center gap-2"><p className="text-[12px] font-semibold text-white">AI Outreach Workspace</p><span className="rounded-full border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">Smart Draft</span></div>
                   <p className="mt-1 text-[10px] leading-4 text-[#777]">Select a lead, generate a personalized message, then choose whether to save or schedule it.</p>
                 </div>
               </div>
@@ -1369,7 +1369,7 @@ function NewOutreachModal({
                   )
                 }
                 placeholder="Website Redesign"
-                className="h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(245,197,24,0.05)]"
+                className="h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(59,130,246,0.05)]"
               />
             </section>
 
@@ -1378,12 +1378,12 @@ function NewOutreachModal({
                 Sending Channel
               </p>
 
-              <div className="group rounded-xl border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:border-[#F5C518]/35 hover:shadow-[0_12px_28px_rgba(245,197,24,0.07)]">
+              <div className="group rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_12px_28px_rgba(59,130,246,0.07)]">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F5C518]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
                     <Mail
                       size={17}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   </div>
 
@@ -1399,7 +1399,7 @@ function NewOutreachModal({
 
                   <Check
                     size={15}
-                    className="ml-auto text-[#F5C518]"
+                    className="ml-auto text-[#3B82F6]"
                   />
                 </div>
               </div>
@@ -1409,13 +1409,13 @@ function NewOutreachModal({
               </p>
             </section>
 
-            <section className="rounded-xl border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+            <section className="rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F5C518]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
                     <Sparkles
                       size={16}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   </div>
 
@@ -1438,7 +1438,7 @@ function NewOutreachModal({
                     saving ||
                     generating
                   }
-                  className="flex items-center justify-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-[10px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(245,197,24,0.18)] disabled:opacity-40 disabled:hover:translate-y-0"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-[10px] font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(59,130,246,0.18)] disabled:opacity-40 disabled:hover:translate-y-0"
                 >
                   <Sparkles size={12} />
 
@@ -1474,7 +1474,7 @@ function NewOutreachModal({
                   )
                 }
                 placeholder="A quick idea for your business"
-                className="h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(245,197,24,0.05)]"
+                className="h-11 w-full rounded-xl border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(59,130,246,0.05)]"
               />
             </section>
 
@@ -1502,7 +1502,7 @@ function NewOutreachModal({
                 }
                 rows={10}
                 placeholder="Write your email or generate a personalized draft..."
-                className="w-full resize-none rounded-xl border border-[#202020] bg-[#101010] px-3 py-3 text-[12px] leading-5 text-gray-200 outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(245,197,24,0.05)]"
+                className="w-full resize-none rounded-xl border border-[#202020] bg-[#101010] px-3 py-3 text-[12px] leading-5 text-gray-200 outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_18px_rgba(59,130,246,0.05)]"
               />
             </section>
 
@@ -1525,7 +1525,7 @@ function NewOutreachModal({
                   className={`group rounded-xl border p-3 text-left transition-all duration-200 ${
                     status ===
                     "Draft"
-                      ? "border-[#F5C518]/30 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(245,197,24,0.06)]"
+                      ? "border-[#3B82F6]/30 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(59,130,246,0.06)]"
                       : "border-[#202020] bg-[#101010] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#171717] hover:shadow-[0_12px_28px_rgba(0,0,0,0.24)]"
                   }`}
                 >
@@ -1534,7 +1534,7 @@ function NewOutreachModal({
                     className={
                       status ===
                       "Draft"
-                        ? "text-[#F5C518]"
+                        ? "text-[#3B82F6]"
                         : "text-[#777]"
                     }
                   />
@@ -1706,7 +1706,7 @@ function NewOutreachModal({
                   sendNow: true,
                 })
               }
-              className="flex items-center justify-center gap-2 rounded-lg bg-[#F5C518] px-5 py-2.5 text-[12px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(245,197,24,0.20)] disabled:opacity-40 disabled:hover:translate-y-0"
+              className="flex items-center justify-center gap-2 rounded-lg bg-[#3B82F6] px-5 py-2.5 text-[12px] font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(59,130,246,0.20)] disabled:opacity-40 disabled:hover:translate-y-0"
             >
               <Send size={13} />
               Send Outreach
@@ -1813,7 +1813,7 @@ function EditOutreachModal({
                     .value
                 )
               }
-              className="h-10 w-full rounded-lg border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(245,197,24,0.05)]"
+              className="h-10 w-full rounded-lg border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(59,130,246,0.05)]"
             />
           </div>
 
@@ -1822,11 +1822,11 @@ function EditOutreachModal({
               Sending Channel
             </label>
 
-            <div className="group flex items-center gap-3 rounded-xl border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-3 transition-all duration-200 hover:border-[#F5C518]/35 hover:shadow-[0_10px_24px_rgba(245,197,24,0.06)]">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#F5C518]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+            <div className="group flex items-center gap-3 rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-3 transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.06)]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
                 <Mail
                   size={15}
-                  className="text-[#F5C518]"
+                  className="text-[#3B82F6]"
                 />
               </div>
 
@@ -1842,7 +1842,7 @@ function EditOutreachModal({
 
               <Check
                 size={14}
-                className="ml-auto text-[#F5C518]"
+                className="ml-auto text-[#3B82F6]"
               />
             </div>
           </div>
@@ -1862,7 +1862,7 @@ function EditOutreachModal({
                     .value
                 )
               }
-              className="h-10 w-full rounded-lg border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(245,197,24,0.05)]"
+              className="h-10 w-full rounded-lg border border-[#202020] bg-[#101010] px-3 text-xs text-white outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(59,130,246,0.05)]"
             />
           </div>
 
@@ -1882,7 +1882,7 @@ function EditOutreachModal({
                 )
               }
               rows={12}
-              className="w-full resize-none rounded-lg border border-[#202020] bg-[#101010] px-3 py-3 text-xs leading-5 text-gray-200 outline-none transition-all focus:border-[#F5C518]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(245,197,24,0.05)]"
+              className="w-full resize-none rounded-lg border border-[#202020] bg-[#101010] px-3 py-3 text-xs leading-5 text-gray-200 outline-none transition-all focus:border-[#3B82F6]/40 focus:bg-[#171717] focus:shadow-[0_0_16px_rgba(59,130,246,0.05)]"
             />
           </div>
 
@@ -1909,7 +1909,7 @@ function EditOutreachModal({
                   channel,
                 })
               }
-              className="flex items-center gap-2 rounded-lg bg-[#F5C518] px-4 py-2.5 text-xs font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(245,197,24,0.18)] disabled:opacity-50 disabled:hover:translate-y-0"
+              className="flex items-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(59,130,246,0.18)] disabled:opacity-50 disabled:hover:translate-y-0"
             >
               {saving ? (
                 <span className="h-3 w-3 animate-spin rounded-full border-2 border-black/20 border-t-black" />
@@ -2038,7 +2038,7 @@ function OutreachDetail({
             Score
           </p>
 
-          <p className="mt-1 text-lg font-semibold text-[#F5C518]">
+          <p className="mt-1 text-lg font-semibold text-[#3B82F6]">
             {outreach.score || "—"}
           </p>
         </div>
@@ -2155,7 +2155,7 @@ function OutreachDetail({
           type="button"
           disabled={saving}
           onClick={onFollowUp}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] py-3 text-[12px] font-semibold text-black shadow-[0_8px_22px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(245,197,24,0.18)] disabled:opacity-50 disabled:hover:translate-y-0"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] py-3 text-[12px] font-semibold text-white shadow-[0_8px_22px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(59,130,246,0.18)] disabled:opacity-50 disabled:hover:translate-y-0"
         >
           <Sparkles size={13} />
           Generate Follow-up
@@ -2196,7 +2196,7 @@ function OutreachDetail({
                 ? "Send from your connected Gmail"
                 : "This lead has no email address"
             }
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C518] py-2.5 text-[11px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.12)] transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#3B82F6] py-2.5 text-[11px] font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.12)] transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-40 disabled:hover:translate-y-0"
           >
             <Send size={13} />
             Send email now
@@ -2214,7 +2214,7 @@ function OutreachDetail({
               "Sent"
             );
           }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#F5C518]/25 bg-[#FFF7D6] dark:bg-[#332A0C] py-2.5 text-[10px] text-[#F5C518] shadow-[0_6px_18px_rgba(245,197,24,0.05)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#F5C518]/35 hover:shadow-[0_10px_24px_rgba(245,197,24,0.10)] disabled:opacity-40 disabled:hover:translate-y-0"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] py-2.5 text-[10px] text-[#3B82F6] shadow-[0_6px_18px_rgba(59,130,246,0.05)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.10)] disabled:opacity-40 disabled:hover:translate-y-0"
         >
           <Send size={13} />
           Mark as Sent
@@ -2282,7 +2282,7 @@ function OutreachDetail({
                     status && (
                     <Check
                       size={12}
-                      className="text-[#F5C518]"
+                      className="text-[#3B82F6]"
                     />
                   )}
                 </button>
@@ -2411,14 +2411,14 @@ function OutreachRow({
       onClick={onClick}
       className={`group grid w-full grid-cols-[32px_minmax(220px,1.25fr)_minmax(150px,1fr)_110px_110px_90px_90px_100px_145px_30px] items-center gap-2 border-b border-[#202020] border-l-2 px-4 py-3 text-left transition-all duration-200 ease-out ${
         selected
-          ? "border-l-[#F5C518] bg-[#332A0C]/60 shadow-[inset_0_0_30px_rgba(245,197,24,0.025)]"
-          : "border-l-transparent hover:-translate-y-[1px] hover:border-l-[#F5C518]/30 hover:bg-[#101010] hover:shadow-[0_8px_22px_rgba(0,0,0,0.22)]"
+          ? "border-l-[#3B82F6] bg-[#332A0C]/60 shadow-[inset_0_0_30px_rgba(59,130,246,0.025)]"
+          : "border-l-transparent hover:-translate-y-[1px] hover:border-l-[#3B82F6]/30 hover:bg-[#101010] hover:shadow-[0_8px_22px_rgba(0,0,0,0.22)]"
       }`}
     >
       <span
         className={`flex h-3.5 w-3.5 rounded border transition-all duration-200 ${
           selected
-            ? "border-[#F5C518]/60 bg-[#F5C518]/10 shadow-[0_0_10px_rgba(245,197,24,0.10)]"
+            ? "border-[#3B82F6]/60 bg-[#3B82F6]/10 shadow-[0_0_10px_rgba(59,130,246,0.10)]"
             : "border-[#555] bg-transparent group-hover:border-[#777]"
         }`}
       />
@@ -4617,9 +4617,9 @@ StudioBase`;
         <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
             <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#F5C518] shadow-[0_0_10px_rgba(245,197,24,0.25)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_10px_rgba(59,130,246,0.25)]" />
 
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#F5C518]">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#3B82F6]">
                 Sales Engagement
               </span>
             </div>
@@ -4642,7 +4642,7 @@ StudioBase`;
             onClick={() =>
               setNewOpen(true)
             }
-            className="flex items-center justify-center gap-2 rounded-xl bg-[#F5C518] px-5 py-3 text-xs font-semibold text-black shadow-[0_8px_22px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(245,197,24,0.18)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
+            className="flex items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 py-3 text-xs font-semibold text-white shadow-[0_8px_22px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(59,130,246,0.18)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
           >
             <Plus size={15} />
             New Outreach
@@ -4718,7 +4718,7 @@ StudioBase`;
             icon={
               <Star
                 size={17}
-                className="text-[#F5C518]"
+                className="text-[#3B82F6]"
               />
             }
             label="Interested"
@@ -4831,7 +4831,7 @@ StudioBase`;
             }
             className={`flex h-10 items-center justify-center gap-2 rounded-xl border px-4 text-[12px] shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 ${
               filtersOpen
-                ? "border-[#F5C518]/40 bg-[#332A0C] text-[#F5C518] shadow-[0_0_18px_rgba(245,197,24,0.06)]"
+                ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]"
                 : "border-[#202020] bg-[#0D0D0D] text-[#777] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#101010] hover:text-white hover:shadow-[0_10px_24px_rgba(0,0,0,0.24)]"
             }`}
           >
@@ -4863,7 +4863,7 @@ StudioBase`;
             className="flex h-10 items-center justify-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 text-[12px] text-[#777] shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#101010] hover:text-white hover:shadow-[0_10px_24px_rgba(0,0,0,0.24)] disabled:opacity-40 disabled:hover:translate-y-0"
           >
             {loading ? (
-              <span className="h-3 w-3 animate-spin rounded-full border-2 border-[#202020] border-t-[#F5C518]" />
+              <span className="h-3 w-3 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6]" />
             ) : (
               "↻"
             )}
@@ -4976,7 +4976,7 @@ StudioBase`;
 
         {loading && (
           <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0A0A0A] py-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-            <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#F5C518] shadow-[0_0_16px_rgba(245,197,24,0.08)]" />
+            <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6] shadow-[0_0_16px_rgba(59,130,246,0.08)]" />
 
             <p className="mt-3 text-[10px] uppercase tracking-wider text-[#666]">
               Loading outreach
@@ -4989,10 +4989,10 @@ StudioBase`;
           filteredOutreach.length ===
             0 && (
             <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0A0A0A] px-5 py-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#F5C518]/20 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_24px_rgba(245,197,24,0.06)]">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_24px_rgba(59,130,246,0.06)]">
                 <Send
                   size={21}
-                  className="text-[#F5C518]"
+                  className="text-[#3B82F6]"
                 />
               </div>
 
@@ -5033,7 +5033,7 @@ StudioBase`;
                       true
                     )
                   }
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#F5C518] px-4 py-2.5 text-[10px] font-semibold text-black shadow-[0_6px_18px_rgba(245,197,24,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(245,197,24,0.18)]"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-4 py-2.5 text-[10px] font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(59,130,246,0.18)]"
                 >
                   <Plus size={13} />
                   Create Outreach
@@ -5070,8 +5070,8 @@ StudioBase`;
                       className={`group flex w-full items-center gap-3 border-b border-[#202020] border-l-2 px-4 py-3.5 text-left transition-all duration-200 ${
                         item.id ===
                         selectedId
-                          ? "border-l-[#F5C518] bg-[#332A0C]/50"
-                          : "border-l-transparent hover:border-l-[#F5C518]/30 hover:bg-[#101010] hover:shadow-[0_8px_22px_rgba(0,0,0,0.22)]"
+                          ? "border-l-[#3B82F6] bg-[#332A0C]/50"
+                          : "border-l-transparent hover:border-l-[#3B82F6]/30 hover:bg-[#101010] hover:shadow-[0_8px_22px_rgba(0,0,0,0.22)]"
                       }`}
                     >
                       <LeadAvatar
@@ -5364,7 +5364,7 @@ StudioBase`;
           <div className="flex items-center gap-2 rounded-xl border border-[#2A2A2A] bg-[#101010] px-4 py-3 shadow-[0_16px_40px_rgba(0,0,0,0.42)]">
             <Check
               size={12}
-              className="text-[#F5C518]"
+              className="text-[#3B82F6]"
             />
 
             <span className="text-[10px] text-gray-200">
