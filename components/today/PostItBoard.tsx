@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Caveat } from "next/font/google";
-import { Check, ChevronLeft, ChevronRight, Clock3, Plus, Sparkles } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Clock3, Plus, Sparkles, StickyNote, Target, Trophy, Zap } from "lucide-react";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["500", "700"], display: "swap" });
 
@@ -29,10 +29,10 @@ export function columnOf(task: BoardTask): BoardColumn {
   return "todo";
 }
 
-const COLUMNS: { id: BoardColumn; emoji: string; title: string; hint: string; accent: string }[] = [
-  { id: "todo", emoji: "🎯", title: "Up next", hint: "Ready to start", accent: "#F5C518" },
-  { id: "doing", emoji: "⚡", title: "In progress", hint: "What you're working on", accent: "#60A5FA" },
-  { id: "done", emoji: "🏆", title: "Done", hint: "Wins from the last 7 days", accent: "#84CC16" },
+const COLUMNS: { id: BoardColumn; icon: typeof Target; title: string; hint: string; accent: string }[] = [
+  { id: "todo", icon: Target, title: "Up next", hint: "Ready to start", accent: "#F5C518" },
+  { id: "doing", icon: Zap, title: "In progress", hint: "What you're working on", accent: "#60A5FA" },
+  { id: "done", icon: Trophy, title: "Done", hint: "Wins from the last 7 days", accent: "#84CC16" },
 ];
 
 // Note colors are just colors — the user writes their own title/label.
@@ -161,9 +161,14 @@ export default function PostItBoard({
       />
 
       <div className="relative flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-3">
+          <span className="bl-icon-tile" style={{ "--tab": "#F5C518" } as CSSProperties} aria-hidden>
+            <StickyNote size={17} strokeWidth={2.2} />
+          </span>
+          <div>
           <h2 className="text-base font-semibold">Your tasks</h2>
           <p className="mt-0.5 text-xs text-gray-500">Drag the notes between columns as you work (on phones, use the arrows).</p>
+          </div>
         </div>
         <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-400">
           {openCount} open
@@ -237,7 +242,9 @@ export default function PostItBoard({
             >
               <div className="mb-3 flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl leading-none" aria-hidden>{column.emoji}</span>
+                  <span className="bl-icon-tile" style={{ "--tab": column.accent } as CSSProperties} aria-hidden>
+                    <column.icon size={16} strokeWidth={2.2} />
+                  </span>
                   <div>
                     <h3 className="text-sm font-semibold" style={{ color: column.accent }}>{column.title}</h3>
                     <p className="text-[11px] text-gray-500">{column.hint}</p>

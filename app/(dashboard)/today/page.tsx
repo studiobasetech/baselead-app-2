@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import SetupBanner from "@/components/setup/SetupBanner";
-import { useCallback, useEffect, useMemo, useState , type CSSProperties } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   Activity,
   ArrowRight,
