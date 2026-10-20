@@ -911,7 +911,7 @@ export default function DashboardPage() {
 
   function goToDiscovery() {
     router.push(
-      "/lead-discovery",
+      "/leads",
     );
   }
 

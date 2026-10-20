@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { AlertTriangle, Crown, Mail, MessageSquareReply, Target, Trophy, Video, FileSignature } from "lucide-react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { AlertTriangle, Crown, Filter, Mail, Medal, MessageSquareReply, Target, Trophy, Video, FileSignature } from "lucide-react";
 
 import PlanGate from "@/components/plans/PlanGate";
 import { formatMoney } from "@/lib/proposals";
@@ -152,10 +152,12 @@ export default function TeamPerformancePage() {
           { label: "Proposals", value: totals.proposals, icon: FileSignature, color: "#A78BFA" },
           { label: "Revenue won", value: formatMoney(totals.wonValue), icon: Trophy, color: "#84CC16" },
         ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4">
+          <div key={label} className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] uppercase tracking-wider text-gray-500">{label}</span>
-              <Icon size={15} style={{ color }} />
+              <span className="bl-icon-tile" style={{ "--tab": color } as CSSProperties}>
+                <Icon size={16} strokeWidth={2.2} />
+              </span>
             </div>
             <p className="mt-2 text-2xl font-semibold tabular-nums">{loading ? "–" : value}</p>
           </div>
@@ -165,7 +167,12 @@ export default function TeamPerformancePage() {
       <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
         {/* Leaderboard */}
         <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-          <h2 className="text-base font-semibold">Leaderboard</h2>
+          <div className="flex items-center gap-3">
+            <span className="bl-icon-tile" style={{ "--tab": "#F5C518" } as CSSProperties}>
+              <Medal size={17} strokeWidth={2.2} />
+            </span>
+            <h2 className="text-base font-semibold">Leaderboard</h2>
+          </div>
 
           <div className="mt-4 overflow-x-auto">
             <table className="w-full min-w-[720px] text-sm">
@@ -247,7 +254,12 @@ export default function TeamPerformancePage() {
 
         {/* Funnel */}
         <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-          <h2 className="text-base font-semibold">Pipeline funnel</h2>
+          <div className="flex items-center gap-3">
+            <span className="bl-icon-tile" style={{ "--tab": "#22D3EE" } as CSSProperties}>
+              <Filter size={17} strokeWidth={2.2} />
+            </span>
+            <h2 className="text-base font-semibold">Pipeline funnel</h2>
+          </div>
           <p className="mt-0.5 text-xs text-gray-500">Where every lead in the workspace is right now.</p>
 
           <div className="mt-5 space-y-3">

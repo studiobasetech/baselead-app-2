@@ -42,8 +42,7 @@ const MUTED = "#8C8C8C";
 const NAV = [
   { icon: Sun, label: "Today", href: "/today", color: "#F5C518" },
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", color: "#60A5FA" },
-  { icon: Search, label: "Lead Discovery", href: "/lead-discovery", color: "#22D3EE" },
-  { icon: Users, label: "Leads", href: "/leads", color: "#A78BFA" },
+  { icon: Users, label: "Leads", href: "/leads", color: "#22D3EE" },
   { icon: GitBranch, label: "Pipeline", href: "/pipeline", color: "#2DD4BF" },
   { icon: Send, label: "Outreach", href: "/outreach", color: "#F97316" },
   { icon: Workflow, label: "Sequences", href: "/sequences", color: "#F472B6" },
@@ -58,7 +57,7 @@ const NAV = [
 ];
 
 // The four most-used pages shown in the mobile bottom bar.
-const MOBILE_NAV = ["/today", "/lead-discovery", "/pipeline", "/outreach"].map(
+const MOBILE_NAV = ["/today", "/leads", "/pipeline", "/outreach"].map(
   (href) => NAV.find((item) => item.href === href)!
 );
 
@@ -437,7 +436,12 @@ export default function DashboardSidebar() {
           <img
             src="/logo.png"
             alt="BaseLead"
-            className="h-auto w-[175px] rounded-xl shadow-sm"
+            className="bl-logo-dark h-auto w-[175px] rounded-xl shadow-sm"
+          />
+          <img
+            src="/logo-light.png"
+            alt="BaseLead"
+            className="bl-logo-light h-auto w-[175px] rounded-xl"
           />
         </Link>
 
@@ -700,7 +704,8 @@ export default function DashboardSidebar() {
         </button>
 
         <Link href="/dashboard">
-          <img src="/logo.png" alt="BaseLead" className="h-8 w-auto rounded-lg" />
+          <img src="/logo.png" alt="BaseLead" className="bl-logo-dark h-8 w-auto rounded-lg" />
+          <img src="/logo-light.png" alt="BaseLead" className="bl-logo-light h-8 w-auto rounded-lg" />
         </Link>
 
         <button
