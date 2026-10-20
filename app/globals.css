@@ -2076,3 +2076,49 @@ html.baselead-light .bl-tab[data-active="true"] .bl-tab-count {
   color: color-mix(in srgb, var(--tab) 58%, #000000) !important;
 }
 
+
+/* =========================================================
+   LIGHT MODE: no harsh black lines, charts or panels.
+   Only text stays dark.
+========================================================= */
+html.baselead-light [class*="border-[#1D1D1D]"],
+html.baselead-light [class*="border-[#1d1d1d]"],
+html.baselead-light [class*="border-[#262626]"],
+html.baselead-light [class*="border-[#3a3a3a]"],
+html.baselead-light [class*="border-[#3A3A3A]"],
+html.baselead-light [class*="border-black"]:not([class*="border-black/"]) {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Chart tracks and rings drawn with dark strokes */
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#1f1f1f"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#1F1F1F"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#202020"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#191919"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#222"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#222222"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#2A2A2A"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#2a2a2a"] {
+  stroke: #e8e8ed !important;
+}
+html.baselead-light .recharts-cartesian-grid line {
+  stroke: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Chart tooltips */
+html.baselead-light .recharts-default-tooltip {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.18);
+}
+html.baselead-light .recharts-default-tooltip .recharts-tooltip-label {
+  color: #6e6e73 !important;
+}
+
+/* Floating labels on maps and charts (bg-black/xx) become frosted white */
+html.baselead-light .baselead-main [class*="bg-black/"]:not(.fixed):not([class*="inset-0"]) {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.18);
+}
