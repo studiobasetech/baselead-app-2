@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import PlanGate from "@/components/plans/PlanGate";
@@ -1352,28 +1352,14 @@ function SearchResultsView({
     value: ResultTab;
     label: string;
     count: number;
+    emoji: string;
+    color: string;
   }[] = [
-    { value: "all", label: "All Leads", count: counts.all },
-    {
-      value: "highIntent",
-      label: "High-Intent",
-      count: counts.highIntent,
-    },
-    {
-      value: "contacted",
-      label: "Contacted",
-      count: counts.contacted,
-    },
-    {
-      value: "responded",
-      label: "Responded",
-      count: counts.responded,
-    },
-    {
-      value: "client",
-      label: "Client",
-      count: counts.client,
-    },
+    { value: "all", label: "All Leads", count: counts.all, emoji: "📋", color: "#F5C518" },
+    { value: "highIntent", label: "High-Intent", count: counts.highIntent, emoji: "🔥", color: "#F97316" },
+    { value: "contacted", label: "Contacted", count: counts.contacted, emoji: "📨", color: "#60A5FA" },
+    { value: "responded", label: "Responded", count: counts.responded, emoji: "💬", color: "#A78BFA" },
+    { value: "client", label: "Client", count: counts.client, emoji: "🤝", color: "#84CC16" },
   ];
 
   useEffect(() => {
@@ -1421,26 +1407,21 @@ function SearchResultsView({
                 key={tab.value}
                 type="button"
                 onClick={() => setActiveResultTab(tab.value)}
-                className={`relative mr-8 flex shrink-0 items-center gap-2 px-1 pb-4 pt-5 text-sm font-medium transition ${
-                  active
-                    ? "text-white"
-                    : "text-gray-500 hover:text-white"
+                data-active={active}
+                style={{ "--tab": tab.color } as CSSProperties}
+                className={`bl-tab relative mr-3 my-2 flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium ${
+                  active ? "text-white" : "text-gray-500"
                 }`}
               >
+                <span className="bl-tab-emoji" aria-hidden>{tab.emoji}</span>
                 {tab.label}
 
-                <span
-                  className={`rounded-full px-2 py-0.5 text-[11px] ${
-                    active
-                      ? "bg-[#FFD000]/10 text-[#FFD000]"
-                      : "bg-white/5 text-gray-600"
-                  }`}
-                >
+                <span className="bl-tab-count rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-gray-600">
                   {tab.count}
                 </span>
 
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FFD000] shadow-[0_0_12px_rgba(255,208,0,0.8)]" />
+                  <span className="absolute -bottom-2 left-3 right-3 h-0.5 rounded-full" style={{ background: tab.color, boxShadow: `0 0 12px ${tab.color}` }} />
                 )}
               </button>
             );

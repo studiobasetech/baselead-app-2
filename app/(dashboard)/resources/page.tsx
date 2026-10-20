@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   BookOpen,
   Check,
@@ -62,13 +62,13 @@ const BUCKET = "sales-resources";
 const MAX_BYTES = 50 * 1024 * 1024;
 const EMOJIS = ["📁", "🎤", "🛡️", "🎓", "🏆", "💰", "✉️", "📊", "🎯", "🧠", "📞", "🤝", "📈", "🎬"];
 
-const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string }[] = [
-  { id: "all", label: "All", icon: BookOpen, color: "#F5C518" },
-  { id: "document", label: "Documents", icon: FileText, color: "#60A5FA" },
-  { id: "video", label: "Videos", icon: PlayCircle, color: "#F0475C" },
-  { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA" },
-  { id: "link", label: "Links", icon: Link2, color: "#22D3EE" },
-  { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16" },
+const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string; emoji: string }[] = [
+  { id: "all", label: "All", icon: BookOpen, color: "#F5C518", emoji: "🧰" },
+  { id: "document", label: "Documents", icon: FileText, color: "#60A5FA", emoji: "📄" },
+  { id: "video", label: "Videos", icon: PlayCircle, color: "#F0475C", emoji: "🎬" },
+  { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA", emoji: "🖼️" },
+  { id: "link", label: "Links", icon: Link2, color: "#22D3EE", emoji: "🔗" },
+  { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16", emoji: "📝" },
 ];
 
 const kindMeta = (kind: Kind) => KINDS.find((item) => item.id === kind) ?? KINDS[1];
@@ -334,21 +334,17 @@ export default function ResourcesPage() {
         </label>
         <div className="flex gap-2 overflow-x-auto pb-1">
           {KINDS.map((item) => {
-            const Icon = item.icon;
             const active = kind === item.id;
             return (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => setKind(item.id)}
-                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition"
-                style={{
-                  borderColor: active ? `${item.color}88` : "#202020",
-                  background: active ? `${item.color}1a` : "transparent",
-                  color: active ? item.color : "#9a9a9a",
-                }}
+                data-active={active}
+                className="bl-tab inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-[#202020] px-3 text-xs font-semibold text-[#9a9a9a]"
+                style={{ "--tab": item.color } as CSSProperties}
               >
-                <Icon size={13} /> {item.label}
+                <span className="bl-tab-emoji" aria-hidden>{item.emoji}</span> {item.label}
               </button>
             );
           })}

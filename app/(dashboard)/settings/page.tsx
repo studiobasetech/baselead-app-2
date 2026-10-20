@@ -4,7 +4,7 @@ import { getTeamLimit } from "@/lib/plans";
 import TwoFactorCard from "@/components/security/TwoFactorCard";
 import DeleteAllLeadsCard from "@/components/leads/DeleteAllLeadsCard";
 import { usePlan } from "@/components/plans/PlanProvider";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   Check,
   ChevronDown,
@@ -7228,6 +7228,18 @@ phone:
     "API & Webhooks",
   ];
 
+  const tabStyle: Record<string, { emoji: string; color: string }> = {
+    "My Profile": { emoji: "👤", color: "#F5C518" },
+    Company: { emoji: "🏢", color: "#60A5FA" },
+    "AI & Services": { emoji: "✨", color: "#A78BFA" },
+    Preferences: { emoji: "🎨", color: "#F472B6" },
+    Team: { emoji: "👥", color: "#22D3EE" },
+    "Billing & Plan": { emoji: "💳", color: "#84CC16" },
+    Notifications: { emoji: "🔔", color: "#F97316" },
+    Security: { emoji: "🔒", color: "#F0475C" },
+    "API & Webhooks": { emoji: "🔌", color: "#2DD4BF" },
+  };
+
   return (
     <main
       className={`baselead-settings-shell min-h-screen ${
@@ -7428,18 +7440,16 @@ phone:
                   onClick={() =>
                     setActiveTab(tab)
                   }
-                  className={`relative px-4 py-3 text-[14px] transition ${
+                  data-active={activeTab === tab}
+                  style={{ "--tab": tabStyle[tab]?.color ?? "#F5C518" } as CSSProperties}
+                  className={`bl-tab relative mb-2 flex items-center gap-2 rounded-xl border border-transparent px-3.5 py-2.5 text-[14px] ${
                     activeTab === tab
-                      ? "font-medium text-[#F5C518]"
-                      : "text-gray-500 hover:text-gray-300"
+                      ? "font-medium"
+                      : "text-gray-500"
                   }`}
                 >
+                  <span className="bl-tab-emoji" aria-hidden>{tabStyle[tab]?.emoji}</span>
                   {t(tab)}
-
-                  {activeTab ===
-                    tab && (
-                    <span className="absolute bottom-0 left-1/2 h-[2px] w-10 -translate-x-1/2 bg-[#F5C518]" />
-                  )}
                 </button>
               )
             )}

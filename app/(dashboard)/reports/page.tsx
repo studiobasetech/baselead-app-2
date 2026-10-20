@@ -161,6 +161,15 @@ const tabs: ReportTab[] = [
   "Custom Reports",
 ];
 
+const TAB_STYLE: Record<string, { emoji: string; color: string }> = {
+  Overview: { emoji: "🧭", color: "#F5C518" },
+  Leads: { emoji: "👥", color: "#60A5FA" },
+  Outreach: { emoji: "📨", color: "#A78BFA" },
+  Pipeline: { emoji: "📊", color: "#22D3EE" },
+  Revenue: { emoji: "💰", color: "#84CC16" },
+  "Custom Reports": { emoji: "🛠️", color: "#F472B6" },
+};
+
 const THEME = {
   background: "var(--report-page-bg)",
   hero: "var(--report-hero-bg)",
@@ -3773,7 +3782,7 @@ export default function ReportsPage() {
               }}
               className="mt-6 overflow-x-auto border-b"
             >
-              <div className="flex min-w-max items-center gap-5">
+              <div className="flex min-w-max items-center gap-1">
                 {tabs.map((tab) => {
                   const active =
                     activeTab === tab;
@@ -3787,26 +3796,16 @@ export default function ReportsPage() {
                           tab,
                         )
                       }
+                      data-active={active}
                       style={{
-                        ...accentStyle(
-                          GOLD,
-                        ),
+                        "--tab": TAB_STYLE[tab]?.color ?? GOLD,
                         color: active
-                          ? GOLD
+                          ? TAB_STYLE[tab]?.color ?? GOLD
                           : THEME.muted,
-                        borderColor:
-                          active
-                            ? GOLD
-                            : "transparent",
-                      }}
-                      className={[
-                        "relative border-b-2 pb-3 text-xs font-medium transition-all duration-200",
-                        "hover:-translate-y-[1px]",
-                        !active
-                          ? "hover:text-[var(--report-foreground)] hover:border-[var(--report-item-border)]"
-                          : "",
-                      ].join(" ")}
+                      } as CSSProperties}
+                      className="bl-tab relative mb-2 flex items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-xs font-medium"
                     >
+                      <span className="bl-tab-emoji" aria-hidden>{TAB_STYLE[tab]?.emoji}</span>
                       {tab}
                     </button>
                   );

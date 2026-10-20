@@ -221,6 +221,17 @@ const STATUSES = [
   "Interested",
 ] as const;
 
+const STATUS_STYLE: Record<(typeof STATUSES)[number], { emoji: string; color: string }> = {
+  All: { emoji: "📋", color: "#F5C518" },
+  Drafts: { emoji: "📝", color: "#9CA3AF" },
+  Scheduled: { emoji: "⏰", color: "#22D3EE" },
+  Sent: { emoji: "📤", color: "#60A5FA" },
+  Opened: { emoji: "👀", color: "#A78BFA" },
+  Replied: { emoji: "💬", color: "#84CC16" },
+  "Follow-ups": { emoji: "🔁", color: "#F97316" },
+  Interested: { emoji: "⭐", color: "#F472B6" },
+};
+
 const AVAILABLE_CHANNELS: OutreachChannel[] = ["Email"];
 
 const AVATAR_CLASSES = [
@@ -4790,28 +4801,20 @@ StudioBase`;
                       status
                     )
                   }
-                  className={`relative flex items-center gap-2 px-3 pb-3 pt-1 text-[10px] transition-colors ${
+                  data-active={activeStatus === status}
+                  style={{ "--tab": STATUS_STYLE[status].color } as CSSProperties}
+                  className={`bl-tab relative mb-2 flex items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-xs font-medium ${
                     activeStatus ===
                     status
                       ? "text-white"
-                      : "text-[#666] hover:text-gray-300"
+                      : "text-[#888]"
                   }`}
                 >
-                  {activeStatus ===
-                    status && (
-                    <span className="absolute bottom-0 left-1/2 h-[2px] w-5 -translate-x-1/2 rounded-full bg-[#F5C518] shadow-[0_0_10px_rgba(245,197,24,0.30)]" />
-                  )}
+                  <span className="bl-tab-emoji" aria-hidden>{STATUS_STYLE[status].emoji}</span>
 
                   {status}
 
-                  <span
-                    className={`rounded-full px-1.5 py-0.5 text-[10px] ${
-                      activeStatus ===
-                      status
-                        ? "border border-[#F5C518]/20 bg-[#FFF7D6] dark:bg-[#332A0C] text-[#F5C518]"
-                        : "bg-[#171717] text-[#666]"
-                    }`}
-                  >
+                  <span className="bl-tab-count rounded-full bg-[#171717] px-1.5 py-0.5 text-[11px] text-[#666]">
                     {
                       statusCounts[
                         status

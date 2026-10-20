@@ -1533,3 +1533,36 @@ html.baselead-light [class*="bg-[#202020]"],
 html.baselead-light [class*="bg-[#2A2A2A]"] {
   background-color: #f2f2f7 !important;
 }
+
+/* =========================================================
+   COLORED TABS — each tab has its own color (--tab) on hover/active
+========================================================= */
+.bl-tab {
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.bl-tab:hover {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--tab) 45%, transparent) !important;
+}
+.bl-tab[data-active="true"] {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--tab) 55%, transparent) !important;
+  box-shadow: 0 0 22px -8px var(--tab);
+}
+.bl-tab .bl-tab-count {
+  transition: inherit;
+}
+.bl-tab:hover .bl-tab-count,
+.bl-tab[data-active="true"] .bl-tab-count {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 16%, transparent) !important;
+}
+.bl-tab .bl-tab-emoji {
+  display: inline-block;
+  transition: transform 160ms ease;
+}
+.bl-tab:hover .bl-tab-emoji {
+  transform: scale(1.18) rotate(-6deg);
+}
