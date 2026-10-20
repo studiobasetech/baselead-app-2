@@ -6,9 +6,9 @@ import { Loader2, MessageSquare, Phone, PhoneCall, Send, X } from "lucide-react"
 import { supabase } from "@/components/lib/supabase";
 
 const OUTCOMES = [
-  { value: "connected", label: "Talked", color: "#60A5FA" },
+  { value: "connected", label: "Talked", color: "#3B82F6" },
   { value: "interested", label: "Interested", color: "#84CC16" },
-  { value: "meeting_booked", label: "Meeting booked", color: "#F0475C" },
+  { value: "meeting_booked", label: "Meeting booked", color: "#F22F46" },
   { value: "voicemail", label: "Voicemail", color: "#A78BFA" },
   { value: "no_answer", label: "No answer", color: "#8C8C8C" },
   { value: "not_interested", label: "Not interested", color: "#F97316" },
@@ -136,7 +136,7 @@ export default function LeadPhoneActions({
         <button
           type="button"
           onClick={() => setMode(mode === "log" ? "none" : "log")}
-          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/10 text-[11px] text-gray-300 transition hover:border-[#60A5FA]/40 hover:text-[#60A5FA]"
+          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/10 text-[11px] text-gray-300 transition hover:border-[#3B82F6]/40 hover:text-[#3B82F6]"
         >
           <PhoneCall size={12} /> Log call
         </button>
@@ -144,7 +144,7 @@ export default function LeadPhoneActions({
           type="button"
           disabled={!phone}
           onClick={() => setMode(mode === "sms" ? "none" : "sms")}
-          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/10 text-[11px] text-gray-300 transition hover:border-[#22D3EE]/40 hover:text-[#22D3EE] disabled:opacity-40"
+          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/10 text-[11px] text-gray-300 transition hover:border-[#2DD4BF]/40 hover:text-[#2DD4BF] disabled:opacity-40"
         >
           <MessageSquare size={12} /> Text
         </button>
@@ -180,7 +180,7 @@ export default function LeadPhoneActions({
             onChange={(event) => setNotes(event.target.value)}
             rows={3}
             placeholder="Call notes: needs, budget, objections, next step…"
-            className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs outline-none focus:border-[#60A5FA]/40"
+            className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs outline-none focus:border-[#3B82F6]/40"
           />
           <div className="grid grid-cols-2 gap-1.5">
             <input
@@ -207,7 +207,7 @@ export default function LeadPhoneActions({
             type="button"
             disabled={busy}
             onClick={() => void logCall()}
-            className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-[#60A5FA] text-xs font-semibold text-black transition hover:brightness-110 disabled:opacity-50"
+            className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-[#3B82F6] text-xs font-semibold text-black transition hover:brightness-110 disabled:opacity-50"
           >
             {busy ? <Loader2 size={12} className="animate-spin" /> : <PhoneCall size={12} />} Save call
           </button>
@@ -234,7 +234,7 @@ export default function LeadPhoneActions({
             rows={3}
             maxLength={1000}
             placeholder={`Text to ${phone}`}
-            className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs outline-none focus:border-[#22D3EE]/40"
+            className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs outline-none focus:border-[#2DD4BF]/40"
           />
           <div className="flex items-center justify-between">
             <span className="text-[10px] text-gray-600">{sms.length}/160 · {Math.max(1, Math.ceil(sms.length / 160))} SMS</span>
@@ -242,7 +242,7 @@ export default function LeadPhoneActions({
               type="button"
               disabled={busy || !sms.trim()}
               onClick={() => void sendText()}
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#22D3EE] px-4 text-xs font-semibold text-black transition hover:brightness-110 disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-4 text-xs font-semibold text-black transition hover:brightness-110 disabled:opacity-50"
             >
               {busy ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />} Send text
             </button>

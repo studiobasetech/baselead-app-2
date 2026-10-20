@@ -241,7 +241,7 @@ function getOpportunityClass(lead: SearchResultLead) {
   }
 
   if (score >= 80) {
-    return "border-lime-400/20 bg-lime-400/10 text-lime-400";
+    return "border-[#84CC16]/20 bg-[#84CC16]/10 text-[#84CC16]";
   }
 
   if (score >= 60) {
@@ -255,7 +255,7 @@ function getScoreClass(lead: SearchResultLead) {
   const score = getScore(lead);
 
   if (score === null) return "text-gray-500";
-  if (score >= 80) return "text-lime-400";
+  if (score >= 80) return "text-[#84CC16]";
   if (score >= 60) return "text-[#3B82F6]";
 
   return "text-gray-400";
@@ -503,8 +503,8 @@ function InputBox({
 }) {
   const accentClasses = {
     yellow: "text-[#3B82F6] bg-[#3B82F6]/10",
-    purple: "text-violet-400 bg-violet-400/10",
-    blue: "text-sky-400 bg-sky-400/10",
+    purple: "text-[#A78BFA] bg-[#A78BFA]/10",
+    blue: "text-[#3B82F6] bg-[#3B82F6]/10",
   };
 
   return (
@@ -601,9 +601,9 @@ function ToggleCard({
 }) {
   const iconClasses = {
     yellow: "bg-[#3B82F6]/10 text-[#3B82F6]",
-    purple: "bg-violet-400/10 text-violet-400",
-    blue: "bg-sky-400/10 text-sky-400",
-    green: "bg-emerald-400/10 text-emerald-400",
+    purple: "bg-[#A78BFA]/10 text-[#A78BFA]",
+    blue: "bg-[#3B82F6]/10 text-[#3B82F6]",
+    green: "bg-[#84CC16]/10 text-[#84CC16]",
   };
 
   return (
@@ -617,7 +617,7 @@ function ToggleCard({
       <div
         className={`absolute right-0 top-0 h-24 w-24 rounded-full blur-3xl transition-opacity ${
           enabled ? "opacity-20" : "opacity-0"
-        } ${accent === "yellow" ? "bg-[#3B82F6]" : accent === "purple" ? "bg-violet-500" : accent === "blue" ? "bg-sky-500" : "bg-emerald-500"}`}
+        } ${accent === "yellow" ? "bg-[#3B82F6]" : accent === "purple" ? "bg-[#A78BFA]" : accent === "blue" ? "bg-[#3B82F6]" : "bg-[#84CC16]"}`}
       />
 
       <div className="relative flex items-start justify-between gap-4">
@@ -663,9 +663,9 @@ function PreviewItem({
   color?: "green" | "yellow" | "purple";
 }) {
   const colors = {
-    green: "bg-emerald-400/10 text-emerald-400",
+    green: "bg-[#84CC16]/10 text-[#84CC16]",
     yellow: "bg-[#3B82F6]/10 text-[#3B82F6]",
-    purple: "bg-violet-400/10 text-violet-400",
+    purple: "bg-[#A78BFA]/10 text-[#A78BFA]",
   };
 
   return (
@@ -691,7 +691,7 @@ function Tip({ text }: { text: string }) {
 
 function InstagramIcon() {
   return (
-    <span className="text-pink-500">
+    <span className="text-[#F472B6]">
       <svg
         width="17"
         height="17"
@@ -716,7 +716,7 @@ function InstagramIcon() {
 
 function FacebookIcon() {
   return (
-    <span className="text-blue-500">
+    <span className="text-[#3B82F6]">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
         <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v4h4v-4h3l1-4h-4V9c0-.7.3-1 1-1Z" />
       </svg>
@@ -769,7 +769,7 @@ function SearchLeadCard({
                 <h3 className="truncate text-[17px] font-semibold text-white">
                   {lead.company || "Unknown Company"}
                 </h3>
-                <span className="h-2 w-2 shrink-0 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
+                <span className="h-2 w-2 shrink-0 rounded-full bg-[#3B82F6] shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
               </div>
 
               <p className="mt-1 truncate text-sm text-gray-500">
@@ -779,7 +779,7 @@ function SearchLeadCard({
 
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 {lead.website ? (
-                  <span className="max-w-[180px] truncate text-sm text-sky-400">
+                  <span className="max-w-[180px] truncate text-sm text-[#3B82F6]">
                     {getWebsiteLabel(lead.website)}
                   </span>
                 ) : (
@@ -820,7 +820,7 @@ function SearchLeadCard({
               score === null
                 ? "text-gray-600"
                 : score >= 80
-                  ? "text-lime-400"
+                  ? "text-[#84CC16]"
                   : score >= 60
                     ? "text-[#3B82F6]"
                     : "text-gray-500"
@@ -931,7 +931,7 @@ function LeadDetailPanel({
   return (
     <aside className="sticky top-5 max-h-[calc(100vh-40px)] overflow-y-auto rounded-3xl border border-white/10 bg-[#070707] shadow-2xl">
       <div className="relative overflow-hidden border-b border-white/10 p-5">
-        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#A78BFA]/10 blur-3xl" />
         <div className="absolute right-20 top-10 h-24 w-24 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
         <div className="relative flex items-start justify-between gap-4">
@@ -945,7 +945,7 @@ function LeadDetailPanel({
                 <h2 className="truncate text-xl font-semibold">
                   {lead.company || "Unknown Company"}
                 </h2>
-                <span className="h-2 w-2 shrink-0 rounded-full bg-blue-500" />
+                <span className="h-2 w-2 shrink-0 rounded-full bg-[#3B82F6]" />
               </div>
 
               <p className="mt-1 text-sm text-gray-500">
@@ -958,7 +958,7 @@ function LeadDetailPanel({
                   href={getWebsiteUrl(lead.website)}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 block truncate text-sm text-sky-400 hover:underline"
+                  className="mt-3 block truncate text-sm text-[#3B82F6] hover:underline"
                 >
                   {getWebsiteLabel(lead.website)}
                 </a>
@@ -1013,7 +1013,7 @@ function LeadDetailPanel({
                 <span
                   className={`text-4xl font-semibold ${
                     score !== null && score >= 80
-                      ? "text-lime-400"
+                      ? "text-[#84CC16]"
                       : score !== null && score >= 60
                         ? "text-[#3B82F6]"
                         : "text-gray-500"
@@ -1042,7 +1042,7 @@ function LeadDetailPanel({
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-full border-4 ${
                   score !== null && score >= 80
-                    ? "border-lime-400"
+                    ? "border-[#84CC16]"
                     : score !== null && score >= 60
                       ? "border-[#3B82F6]"
                       : "border-gray-600"
@@ -1065,7 +1065,7 @@ function LeadDetailPanel({
                 key={`${reason}-${index}`}
                 className="flex gap-3"
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/15 text-green-400">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#84CC16]/15 text-[#84CC16]">
                   <Check size={12} />
                 </span>
 
@@ -1363,7 +1363,7 @@ function SearchResultsView({
   }[] = [
     { value: "all", label: "All Leads", count: counts.all, icon: List, color: "#F5C518" },
     { value: "highIntent", label: "High-Intent", count: counts.highIntent, icon: Flame, color: "#F97316" },
-    { value: "contacted", label: "Contacted", count: counts.contacted, icon: Send, color: "#60A5FA" },
+    { value: "contacted", label: "Contacted", count: counts.contacted, icon: Send, color: "#3B82F6" },
     { value: "responded", label: "Responded", count: counts.responded, icon: MessageCircle, color: "#A78BFA" },
     { value: "client", label: "Client", count: counts.client, icon: Handshake, color: "#84CC16" },
   ];
@@ -1401,7 +1401,7 @@ function SearchResultsView({
       </div>
 
       <div className="relative overflow-hidden border-b border-white/10 bg-[#060606]">
-        <div className="pointer-events-none absolute left-1/4 top-0 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute left-1/4 top-0 h-48 w-48 rounded-full bg-[#A78BFA]/10 blur-3xl" />
         <div className="pointer-events-none absolute right-1/4 top-0 h-48 w-48 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
         <div className="relative flex overflow-x-auto px-5 lg:px-9">
@@ -1436,7 +1436,7 @@ function SearchResultsView({
       </div>
 
       <div className="relative px-5 pb-5 pt-6 lg:px-9">
-        <div className="absolute right-10 top-0 h-40 w-40 rounded-full bg-violet-500/5 blur-3xl" />
+        <div className="absolute right-10 top-0 h-40 w-40 rounded-full bg-[#A78BFA]/5 blur-3xl" />
 
         <div className="relative flex flex-col justify-between gap-5 xl:flex-row xl:items-center">
           <div>
@@ -1452,7 +1452,7 @@ function SearchResultsView({
                 </h1>
               </div>
 
-              <span className="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+              <span className="rounded-full border border-[#84CC16]/20 bg-[#84CC16]/10 px-3 py-1 text-xs font-medium text-[#84CC16]">
                 Search complete
               </span>
             </div>
@@ -1569,7 +1569,7 @@ function SearchResultsView({
       <div className="px-5 pb-20 lg:px-9">
         {filteredResults.length === 0 ? (
           <div className="rounded-3xl border border-white/10 bg-[#090909] px-6 py-20 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-400/10 text-violet-400">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#A78BFA]/10 text-[#A78BFA]">
               <Search size={28} />
             </div>
 
@@ -2230,9 +2230,9 @@ export default function NewSearchPage() {
 
       <section className="min-w-0">
         <div className="relative overflow-hidden border-b border-white/10 bg-[#070707] px-5 pb-0 pt-6 lg:px-9 lg:pt-8">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full bg-[#A78BFA]/10 blur-3xl" />
           <div className="pointer-events-none absolute right-1/3 top-0 h-64 w-64 rounded-full bg-[#3B82F6]/5 blur-3xl" />
-          <div className="pointer-events-none absolute left-1/4 top-20 h-48 w-48 rounded-full bg-sky-500/5 blur-3xl" />
+          <div className="pointer-events-none absolute left-1/4 top-20 h-48 w-48 rounded-full bg-[#3B82F6]/5 blur-3xl" />
 
           <div className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
@@ -2246,7 +2246,7 @@ export default function NewSearchPage() {
 
               <h1 className="text-3xl font-semibold tracking-tight lg:text-[38px]">
                 Find your next{" "}
-                <span className="bg-gradient-to-r from-[#3B82F6] via-[#2F74E8] to-violet-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#3B82F6] via-[#2F74E8] to-[#A78BFA] bg-clip-text text-transparent">
                   best client.
                 </span>
               </h1>
@@ -2309,12 +2309,12 @@ export default function NewSearchPage() {
 
         {activeTab === "prompt" && (
           <div className="px-5 pb-10 pt-6 lg:px-9">
-            <div className="relative max-w-5xl overflow-hidden rounded-3xl border border-violet-400/25 bg-white p-5 text-gray-900 shadow-[0_0_45px_rgba(139,92,246,0.16),0_0_90px_rgba(139,92,246,0.07)] dark:bg-black dark:text-white dark:shadow-[0_0_45px_rgba(139,92,246,0.2),0_0_90px_rgba(139,92,246,0.1)] lg:p-7">
-              <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-violet-500/15 blur-3xl dark:bg-violet-500/20" />
+            <div className="relative max-w-5xl overflow-hidden rounded-3xl border border-[#A78BFA]/25 bg-white p-5 text-gray-900 shadow-[0_0_45px_rgba(167,139,250,0.16),0_0_90px_rgba(167,139,250,0.07)] dark:bg-black dark:text-white dark:shadow-[0_0_45px_rgba(167,139,250,0.2),0_0_90px_rgba(167,139,250,0.1)] lg:p-7">
+              <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-[#A78BFA]/15 blur-3xl dark:bg-[#A78BFA]/20" />
 
               <div className="relative">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-400/10 text-violet-400">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A78BFA]/10 text-[#A78BFA]">
                     <WandSparkles size={20} />
                   </span>
 
@@ -2335,7 +2335,7 @@ export default function NewSearchPage() {
                   onChange={(e) =>
                     setPrompt(e.target.value)
                   }
-                  className="mt-6 h-48 w-full resize-none rounded-2xl border border-white/10 bg-[#070707]/90 p-5 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-violet-400/40"
+                  className="mt-6 h-48 w-full resize-none rounded-2xl border border-white/10 bg-[#070707]/90 p-5 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-[#A78BFA]/40"
                   placeholder="Describe your ideal client, target location, service and what makes a lead valuable..."
                 />
 
@@ -2380,7 +2380,7 @@ export default function NewSearchPage() {
               <div className="flex justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-400/10 text-sky-400">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6]">
                       <History size={17} />
                     </span>
 
@@ -2406,7 +2406,7 @@ export default function NewSearchPage() {
 
               {savedSearches.length === 0 ? (
                 <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-12 text-center">
-                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-400/10 text-sky-400">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3B82F6]/10 text-[#3B82F6]">
                     <Save size={25} />
                   </div>
 
@@ -2501,7 +2501,7 @@ export default function NewSearchPage() {
             <div className="space-y-5">
               <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#3B82F6]/5 blur-3xl" />
-                <div className="absolute right-32 top-0 h-40 w-40 rounded-full bg-violet-500/5 blur-3xl" />
+                <div className="absolute right-32 top-0 h-40 w-40 rounded-full bg-[#A78BFA]/5 blur-3xl" />
 
                 <div className="relative">
                   <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
@@ -2529,10 +2529,10 @@ export default function NewSearchPage() {
                         type="button"
                         onClick={() => setMode("simple")}
                         data-active={mode === "simple"}
-                        style={{ "--tab": "#60A5FA" } as CSSProperties}
+                        style={{ "--tab": "#3B82F6" } as CSSProperties}
                         className="bl-tab flex items-center gap-1.5 rounded-lg border border-transparent px-4 py-2 text-sm text-gray-500"
                       >
-                        <Wand2 size={14} className="bl-tab-emoji" style={{ color: "#60A5FA" }} />
+                        <Wand2 size={14} className="bl-tab-emoji" style={{ color: "#3B82F6" }} />
                         Simple
                       </button>
 
@@ -2623,11 +2623,11 @@ export default function NewSearchPage() {
 
               <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#3B82F6]/5 blur-3xl" />
-                <div className="absolute right-32 top-0 h-40 w-40 rounded-full bg-violet-500/5 blur-3xl" />
+                <div className="absolute right-32 top-0 h-40 w-40 rounded-full bg-[#A78BFA]/5 blur-3xl" />
 
                 <div className="relative">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/10 text-sky-400">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6]">
                       <Globe2 size={19} />
                     </span>
 
@@ -2675,7 +2675,7 @@ export default function NewSearchPage() {
 
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-400/10 text-violet-400">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A78BFA]/10 text-[#A78BFA]">
                     <SlidersHorizontal size={19} />
                   </span>
 
@@ -2758,7 +2758,7 @@ export default function NewSearchPage() {
 
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 lg:p-7">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#84CC16]/10 text-[#84CC16]">
                     <Brain size={19} />
                   </span>
 
@@ -2864,8 +2864,8 @@ export default function NewSearchPage() {
                 </button>
 
                 {searchMessage && (
-                  <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
-                    <div className="flex items-center gap-2 text-sm font-medium text-red-400">
+                  <div className="mt-4 rounded-xl border border-[#F22F46]/20 bg-[#F22F46]/5 p-4">
+                    <div className="flex items-center gap-2 text-sm font-medium text-[#F22F46]">
                       <X size={17} />
                       Search failed
                     </div>
@@ -2879,13 +2879,13 @@ export default function NewSearchPage() {
             </div>
 
             <aside className="space-y-5">
-              <div className="relative overflow-hidden rounded-3xl border border-violet-400/25 bg-white p-5 text-gray-900 shadow-[0_0_45px_rgba(139,92,246,0.16),0_0_90px_rgba(139,92,246,0.07)] dark:bg-black dark:text-white dark:shadow-[0_0_45px_rgba(139,92,246,0.2),0_0_90px_rgba(139,92,246,0.1)]">
-                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-violet-500/15 blur-3xl dark:bg-violet-500/20" />
+              <div className="relative overflow-hidden rounded-3xl border border-[#A78BFA]/25 bg-white p-5 text-gray-900 shadow-[0_0_45px_rgba(167,139,250,0.16),0_0_90px_rgba(167,139,250,0.07)] dark:bg-black dark:text-white dark:shadow-[0_0_45px_rgba(167,139,250,0.2),0_0_90px_rgba(167,139,250,0.1)]">
+                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#A78BFA]/15 blur-3xl dark:bg-[#A78BFA]/20" />
                 <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-[#3B82F6]/5 blur-3xl" />
 
                 <div className="relative">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-400/10 text-violet-400">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#A78BFA]/10 text-[#A78BFA]">
                       <Sparkles size={18} />
                     </span>
 
@@ -2893,7 +2893,7 @@ export default function NewSearchPage() {
                       AI Search Assistant
                     </h2>
 
-                    <span className="rounded bg-violet-400/10 px-2 py-0.5 text-[10px] font-bold text-violet-400">
+                    <span className="rounded bg-[#A78BFA]/10 px-2 py-0.5 text-[10px] font-bold text-[#A78BFA]">
                       BETA
                     </span>
                   </div>
@@ -2908,7 +2908,7 @@ export default function NewSearchPage() {
                     onChange={(e) =>
                       setPrompt(e.target.value)
                     }
-                    className="mt-4 h-32 w-full resize-none rounded-2xl border border-white/10 bg-[#070707]/80 p-4 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-violet-400/40"
+                    className="mt-4 h-32 w-full resize-none rounded-2xl border border-white/10 bg-[#070707]/80 p-4 text-sm leading-6 text-white outline-none placeholder:text-gray-700 focus:border-[#A78BFA]/40"
                     placeholder="Example: Find med spas in my target locations that are actively investing in their online presence..."
                   />
 
@@ -2924,7 +2924,7 @@ export default function NewSearchPage() {
               </div>
 
               <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5">
-                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-sky-500/5 blur-3xl" />
+                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-[#3B82F6]/5 blur-3xl" />
 
                 <div className="relative">
                   <div className="flex items-center justify-between">
@@ -2938,7 +2938,7 @@ export default function NewSearchPage() {
                       </p>
                     </div>
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-400/10 text-sky-400">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6]">
                       <Radar size={17} />
                     </div>
                   </div>
@@ -2988,7 +2988,7 @@ export default function NewSearchPage() {
                   <div className="mt-6 flex items-center gap-2 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs text-gray-600">
                     <CheckCircle2
                       size={14}
-                      className="text-emerald-400"
+                      className="text-[#84CC16]"
                     />
                     Ready to search
                   </div>

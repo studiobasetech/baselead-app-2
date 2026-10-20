@@ -96,7 +96,7 @@ export default function LeadContacts({
                     <Star size={12} />
                   </button>
                 )}
-                <button type="button" onClick={() => void call({ action: "delete", contactId: contact.id })} className="rounded-md p-1 text-gray-600 hover:text-[#F0475C]" aria-label="Remove">
+                <button type="button" onClick={() => void call({ action: "delete", contactId: contact.id })} className="rounded-md p-1 text-gray-600 hover:text-[#F22F46]" aria-label="Remove">
                   <Trash2 size={12} />
                 </button>
               </div>
@@ -119,7 +119,7 @@ export default function LeadContacts({
                 </a>
               )}
               {contact.linkedin_url && (
-                <a href={contact.linkedin_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md bg-[#60A5FA]/10 px-2 py-1 text-[11px] text-[#60A5FA]">
+                <a href={contact.linkedin_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md bg-[#3B82F6]/10 px-2 py-1 text-[11px] text-[#3B82F6]">
                   <Briefcase size={11} /> LinkedIn
                 </a>
               )}

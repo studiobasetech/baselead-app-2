@@ -122,9 +122,9 @@ const stages: PipelineStage[] = [
 const stageColors: Record<PipelineStage, string> = {
   "New Lead": "#E5E7EB",
   Contacted: GOLD,
-  Responded: "#22D3EE",
-  Meeting: "#F0475C",
-  Qualified: "#60A5FA",
+  Responded: "#2DD4BF",
+  Meeting: "#F22F46",
+  Qualified: "#3B82F6",
   Proposal: "#A78BFA",
   Negotiation: "#F97316",
   Won: "#84CC16",
@@ -421,11 +421,11 @@ function LeadAvatar({
 }) {
   const palette = [
     "#F5C518",
-    "#22D3EE",
+    "#2DD4BF",
     "#A78BFA",
     "#84CC16",
     "#F472B6",
-    "#60A5FA",
+    "#3B82F6",
     "#F97316",
     "#2DD4BF",
   ];
@@ -479,7 +479,7 @@ function socialIcon(
   }
 
   return (
-    <span className="flex h-5 w-5 items-center justify-center rounded-md bg-blue-600 text-[10px] font-bold text-white shadow-[0_4px_12px_rgba(37,99,235,0.20)]">
+    <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#3B82F6] text-[10px] font-bold text-white shadow-[0_4px_12px_rgba(59,130,246,0.20)]">
       f
     </span>
   );
@@ -735,7 +735,7 @@ function LeadDetailPanel({
                 {lead.name}
               </h2>
 
-              <span className="text-blue-500">
+              <span className="text-[#3B82F6]">
                 ●
               </span>
             </div>
@@ -755,7 +755,7 @@ function LeadDetailPanel({
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-2 flex items-center gap-2 text-[10px] text-[#60A5FA] transition-colors hover:text-[#93C5FD]"
+                className="mt-2 flex items-center gap-2 text-[10px] text-[#3B82F6] transition-colors hover:text-[#3B82F6]"
               >
                 <span className="truncate">
                   {lead.website}
@@ -947,7 +947,7 @@ function LeadDetailPanel({
             >
               <Globe
                 size={12}
-                className="transition-colors group-hover:text-[#60A5FA]"
+                className="transition-colors group-hover:text-[#3B82F6]"
               />
 
               <span className="truncate">
@@ -1048,10 +1048,10 @@ function LeadDetailPanel({
 
         <div className="mt-4 space-y-4">
           <div className="group flex gap-3 rounded-lg border border-transparent p-2 transition-all hover:border-[#202020] hover:bg-[#101010]">
-            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#60A5FA]/10 bg-[#10243A] shadow-[0_0_14px_rgba(96,165,250,0.08)]">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#3B82F6]/10 bg-[#10243A] shadow-[0_0_14px_rgba(59,130,246,0.08)]">
               <Search
                 size={12}
-                className="text-[#60A5FA]"
+                className="text-[#3B82F6]"
               />
             </div>
 
@@ -1069,10 +1069,10 @@ function LeadDetailPanel({
           </div>
 
           <div className="group flex gap-3 rounded-lg border border-transparent p-2 transition-all hover:border-[#202020] hover:bg-[#101010]">
-            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#60A5FA]/10 bg-[#10243A] shadow-[0_0_14px_rgba(96,165,250,0.08)]">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#3B82F6]/10 bg-[#10243A] shadow-[0_0_14px_rgba(59,130,246,0.08)]">
               <Plus
                 size={12}
-                className="text-[#60A5FA]"
+                className="text-[#3B82F6]"
               />
             </div>
 
@@ -1142,7 +1142,7 @@ function LeadDetailPanel({
             onClick={() =>
               onDelete(lead)
             }
-            className="group flex items-center justify-center gap-2 rounded-lg border border-[#F0475C]/20 bg-[#0D0D0D] py-2.5 text-[10px] text-[#F0475C] shadow-[0_5px_16px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-0.5 hover:border-[#F0475C]/30 hover:bg-[#3A1418] hover:shadow-[0_10px_24px_rgba(240,71,92,0.10)]"
+            className="group flex items-center justify-center gap-2 rounded-lg border border-[#F22F46]/20 bg-[#0D0D0D] py-2.5 text-[10px] text-[#F22F46] shadow-[0_5px_16px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-0.5 hover:border-[#F22F46]/30 hover:bg-[#3A1418] hover:shadow-[0_10px_24px_rgba(242,47,70,0.10)]"
           >
             <Trash2 size={12} />
             Delete
@@ -2878,39 +2878,39 @@ export default function PipelinePage() {
             icon={
               <BarChart3
                 size={18}
-                className="text-orange-400"
+                className="text-[#F97316]"
               />
             }
             label="Conversion Rate"
             value={`${conversionRate}%`}
             change="Won / all leads"
-            iconClass="border border-orange-500/10 bg-orange-500/10"
+            iconClass="border border-[#F97316]/10 bg-[#F97316]/10"
           />
 
           <KpiCard
             icon={
               <Target
                 size={18}
-                className="text-[#60A5FA]"
+                className="text-[#3B82F6]"
               />
             }
             label="Avg. Score"
             value={`${averageScore}/100`}
             change={`${highOpportunityCount} high opportunity`}
-            iconClass="border border-[#60A5FA]/10 bg-[#10243A]"
+            iconClass="border border-[#3B82F6]/10 bg-[#10243A]"
           />
 
           <KpiCard
             icon={
               <Clock3
                 size={18}
-                className="text-cyan-400"
+                className="text-[#2DD4BF]"
               />
             }
             label="Sales Cycle"
             value="—"
             change="Not tracked yet"
-            iconClass="border border-cyan-500/10 bg-cyan-500/10"
+            iconClass="border border-[#2DD4BF]/10 bg-[#2DD4BF]/10"
           />
         </div>
 
@@ -3135,7 +3135,7 @@ export default function PipelinePage() {
         )}
 
         {error && (
-          <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-[#F0475C]/20 bg-[#3A1418] px-4 py-3 text-xs text-[#F0475C] shadow-[0_10px_28px_rgba(240,71,92,0.08)]">
+          <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-[#F22F46]/20 bg-[#3A1418] px-4 py-3 text-xs text-[#F22F46] shadow-[0_10px_28px_rgba(242,47,70,0.08)]">
             <span>{error}</span>
 
             <button
@@ -3143,7 +3143,7 @@ export default function PipelinePage() {
               onClick={() =>
                 setError(null)
               }
-              className="text-[#F0475C]/60 transition-colors hover:text-[#F0475C]"
+              className="text-[#F22F46]/60 transition-colors hover:text-[#F22F46]"
             >
               <X size={14} />
             </button>
@@ -3166,7 +3166,7 @@ export default function PipelinePage() {
             <div className="max-w-sm px-6 text-center">
               <Users
                 size={30}
-                className="mx-auto text-[#60A5FA]"
+                className="mx-auto text-[#3B82F6]"
               />
 
               <p className="mt-4 text-sm text-gray-300">

@@ -31,7 +31,7 @@ export function columnOf(task: BoardTask): BoardColumn {
 
 const COLUMNS: { id: BoardColumn; icon: typeof Target; title: string; hint: string; accent: string }[] = [
   { id: "todo", icon: Target, title: "Up next", hint: "Ready to start", accent: "#F5C518" },
-  { id: "doing", icon: Zap, title: "In progress", hint: "What you're working on", accent: "#60A5FA" },
+  { id: "doing", icon: Zap, title: "In progress", hint: "What you're working on", accent: "#3B82F6" },
   { id: "done", icon: Trophy, title: "Done", hint: "Wins from the last 7 days", accent: "#84CC16" },
 ];
 
@@ -434,7 +434,7 @@ export default function PostItBoard({
                       {task.notes && editing?.id !== task.id && <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 opacity-70">{task.notes}</p>}
 
                       <div className={`mt-3 flex items-center justify-between gap-2 ${editing?.id === task.id ? "hidden" : ""}`}>
-                        <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${overdue ? "rounded-full bg-[#F0475C] px-2 py-0.5 text-white" : "opacity-70"}`}>
+                        <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${overdue ? "rounded-full bg-[#F22F46] px-2 py-0.5 text-white" : "opacity-70"}`}>
                           <Clock3 size={11} />
                           {done ? "Done" : overdue ? "Overdue" : when(task.due_at)}
                         </span>

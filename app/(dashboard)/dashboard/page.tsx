@@ -57,9 +57,9 @@ import { usePreferences } from "@/components/preferences/PreferencesProvider";
 const GOLD = "#F5C518";
 const BRAND = "#3B82F6";
 const PURPLE = "#A78BFA";
-const RED = "#F0475C";
+const RED = "#F22F46";
 const GREEN = "#84CC16";
-const BLUE = "#60A5FA";
+const BLUE = "#3B82F6";
 
 /* =========================================================
    DARK SURFACE COLORS
@@ -1795,8 +1795,8 @@ export default function DashboardPage() {
           PURPLE,
         Referrals:
           GREEN,
-        Test: "#22D3EE",
-        OpenStreetMap: "#60A5FA",
+        Test: "#2DD4BF",
+        OpenStreetMap: "#3B82F6",
         "Google Maps": GOLD,
         Other: "#F472B6",
       };
@@ -1823,7 +1823,7 @@ export default function DashboardPage() {
               sourceColors[
                 name
               ] ||
-              ["#2DD4BF", "#F97316", "#F472B6", "#38BDF8", "#C084FC"][name.length % 5],
+              ["#2DD4BF", "#F97316", "#F472B6", "#3B82F6", "#A78BFA"][name.length % 5],
           }),
         )
         .sort(
@@ -2779,15 +2779,15 @@ export default function DashboardPage() {
 
       {loadError && (
         <section
-          className={`${sectionGap} rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-4`}
+          className={`${sectionGap} rounded-2xl border border-[#F22F46]/20 bg-[#F22F46]/[0.04] p-4`}
         >
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-red-300">
+              <p className="text-sm font-medium text-[#F22F46]">
                 Dashboard data unavailable
               </p>
 
-              <p className="mt-1 text-[10px] text-red-400/70">
+              <p className="mt-1 text-[10px] text-[#F22F46]/70">
                 {loadError}
               </p>
             </div>
@@ -2797,7 +2797,7 @@ export default function DashboardPage() {
               onClick={() =>
                 window.location.reload()
               }
-              className="rounded-lg border border-red-500/20 bg-red-500/[0.06] px-3 py-2 text-[10px] font-medium text-red-300 transition hover:bg-red-500/10"
+              className="rounded-lg border border-[#F22F46]/20 bg-[#F22F46]/[0.06] px-3 py-2 text-[10px] font-medium text-[#F22F46] transition hover:bg-[#F22F46]/10"
             >
               Retry
             </button>
@@ -2909,7 +2909,7 @@ export default function DashboardPage() {
             onClick={
               goToLeads
             }
-            className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0D0D0D] ${cardPadding} text-left transition duration-300 hover:-translate-y-1 hover:border-[#F0475C]/30`}
+            className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0D0D0D] ${cardPadding} text-left transition duration-300 hover:-translate-y-1 hover:border-[#F22F46]/30`}
           >
             <div
               className="absolute -right-10 -top-10 h-28 w-28 rounded-full blur-2xl transition"
@@ -2980,7 +2980,7 @@ export default function DashboardPage() {
 
             <ArrowUpRight
               size={15}
-              className="absolute bottom-5 right-5 text-[#333] transition group-hover:text-[#F0475C]"
+              className="absolute bottom-5 right-5 text-[#333] transition group-hover:text-[#F22F46]"
             />
           </button>
         )}

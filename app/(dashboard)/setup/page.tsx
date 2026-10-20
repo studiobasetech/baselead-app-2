@@ -103,11 +103,11 @@ export default function SetupPage() {
       </header>
 
       {error && (
-        <p className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300">{error}</p>
+        <p className="mt-6 rounded-xl border border-[#F22F46]/30 bg-[#F22F46]/10 p-4 text-sm text-[#F22F46]">{error}</p>
       )}
 
       {ready && (
-        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-[#84CC16]/30 bg-[#18200B] p-4 text-sm text-[#bef264]">
+        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-[#84CC16]/30 bg-[#18200B] p-4 text-sm text-[#84CC16]">
           <Rocket size={18} />
           Everything required is set up. Start in Lead Discovery to find your first real leads.
         </div>

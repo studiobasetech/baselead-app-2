@@ -41,9 +41,9 @@ export default function PlanGate({
   }
 
   return (
-    <div className="rounded-2xl border border-violet-400/20 bg-violet-400/[0.06] p-5">
+    <div className="rounded-2xl border border-[#A78BFA]/20 bg-[#A78BFA]/[0.06] p-5">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-400/15 text-violet-300">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#A78BFA]/15 text-[#A78BFA]">
           <Lock size={18} />
         </div>
 

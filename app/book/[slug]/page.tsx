@@ -114,7 +114,7 @@ export default function BookingPage({
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] px-4 py-10 text-white sm:py-16">
-      <div className="pointer-events-none absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-violet-600/[0.12] blur-[140px]" />
+      <div className="pointer-events-none absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-[#A78BFA]/[0.12] blur-[140px]" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full bg-[#3B82F6]/[0.06] blur-[140px]" />
 
       <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0B0B0D]/90 shadow-[0_40px_120px_rgba(0,0,0,0.6)] backdrop-blur-xl">
@@ -145,7 +145,7 @@ export default function BookingPage({
                 Video call (link sent by email)
               </p>
               <p className="flex items-center gap-2">
-                <Globe2 size={16} className="text-[#60A5FA]" />
+                <Globe2 size={16} className="text-[#3B82F6]" />
                 Times in your time zone ({visitorZone.replace("_", " ")})
               </p>
             </div>
@@ -305,7 +305,7 @@ export default function BookingPage({
                 </label>
 
                 {error && (
-                  <p className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                  <p className="mt-3 rounded-xl border border-[#F22F46]/30 bg-[#F22F46]/10 px-4 py-3 text-sm text-[#F22F46]">
                     {error}
                   </p>
                 )}

@@ -86,7 +86,7 @@ export default function TwilioConnectCard({
             onClick={() => (state.connected ? void save(true) : setOpen(!open))}
             className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
               state.connected
-                ? "border border-[#202020] text-gray-400 hover:text-[#F0475C]"
+                ? "border border-[#202020] text-gray-400 hover:text-[#F22F46]"
                 : "bg-[#3B82F6] text-white hover:bg-[#2F74E8]"
             }`}
           >
@@ -144,7 +144,7 @@ export default function TwilioConnectCard({
           >
             {busy ? "Connecting…" : "Save & verify"}
           </button>
-          {error && <p className="text-xs text-[#F0475C] sm:col-span-3">{error}</p>}
+          {error && <p className="text-xs text-[#F22F46] sm:col-span-3">{error}</p>}
         </div>
       )}
 

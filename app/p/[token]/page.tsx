@@ -163,7 +163,7 @@ export default function PublicProposalPage({
 
   return (
     <main className="proposal-page relative min-h-screen overflow-hidden bg-[#050505] px-4 py-8 text-white sm:py-14">
-      <div className="no-print pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-violet-600/[0.14] blur-[150px]" />
+      <div className="no-print pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#A78BFA]/[0.14] blur-[150px]" />
       <div className="no-print pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full bg-[#3B82F6]/[0.07] blur-[150px]" />
 
       <article className="proposal-doc relative mx-auto w-full max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0B0B0D]/80 shadow-[0_40px_120px_rgba(0,0,0,0.6)] backdrop-blur-xl">
@@ -193,7 +193,7 @@ export default function PublicProposalPage({
               {new Date(proposal.created_at).toLocaleDateString([], { year: "numeric", month: "long", day: "numeric" })}
             </p>
             {proposal.valid_until && (
-              <p className={`text-sm ${expired ? "text-[#F0475C]" : "text-gray-500"}`}>
+              <p className={`text-sm ${expired ? "text-[#F22F46]" : "text-gray-500"}`}>
                 Valid until {new Date(`${proposal.valid_until}T12:00:00`).toLocaleDateString()}
               </p>
             )}
@@ -281,14 +281,14 @@ export default function PublicProposalPage({
           {/* Status / actions */}
           <section className="mt-10 border-t border-white/10 pt-8">
             {notice && (
-              <p className="no-print mb-5 rounded-xl border border-[#60A5FA]/30 bg-[#60A5FA]/10 px-4 py-3 text-sm text-[#BFDBFE]">
+              <p className="no-print mb-5 rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/10 px-4 py-3 text-sm text-[#BFDBFE]">
                 {notice}
               </p>
             )}
 
             {proposal.status === "declined" && (
               <p className="flex items-center gap-2 text-sm text-gray-400">
-                <XCircle size={18} className="text-[#F0475C]" /> This proposal was declined.
+                <XCircle size={18} className="text-[#F22F46]" /> This proposal was declined.
               </p>
             )}
 
@@ -393,7 +393,7 @@ export default function PublicProposalPage({
                 <button
                   type="button"
                   onClick={() => void decline()}
-                  className="mt-3 w-full text-center text-xs text-gray-500 transition hover:text-[#F0475C]"
+                  className="mt-3 w-full text-center text-xs text-gray-500 transition hover:text-[#F22F46]"
                 >
                   Decline proposal
                 </button>
@@ -401,7 +401,7 @@ export default function PublicProposalPage({
             )}
 
             {expired && (
-              <p className="text-sm text-[#F0475C]">This proposal has expired. Please contact us for an updated version.</p>
+              <p className="text-sm text-[#F22F46]">This proposal has expired. Please contact us for an updated version.</p>
             )}
           </section>
         </div>

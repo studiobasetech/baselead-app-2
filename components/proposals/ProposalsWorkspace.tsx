@@ -41,11 +41,11 @@ type Draft = {
 
 const STATUS_STYLE: Record<string, { label: string; color: string }> = {
   draft: { label: "Draft", color: "#8C8C8C" },
-  sent: { label: "Sent", color: "#60A5FA" },
-  viewed: { label: "Viewed", color: "#22D3EE" },
+  sent: { label: "Sent", color: "#3B82F6" },
+  viewed: { label: "Viewed", color: "#2DD4BF" },
   signed: { label: "Signed", color: "#A78BFA" },
   paid: { label: "Paid", color: "#84CC16" },
-  declined: { label: "Declined", color: "#F0475C" },
+  declined: { label: "Declined", color: "#F22F46" },
 };
 
 function emptyDraft(): Draft {
@@ -286,7 +286,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
 
       <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
-          { label: "Open pipeline", value: formatMoney(stats.openValue), color: "#60A5FA" },
+          { label: "Open pipeline", value: formatMoney(stats.openValue), color: "#3B82F6" },
           { label: "Won (signed)", value: formatMoney(stats.wonValue), color: "#A78BFA" },
           { label: "Collected", value: formatMoney(stats.collected), color: "#84CC16" },
           { label: "Win rate", value: `${stats.winRate}%`, color: "#F5C518" },
@@ -349,7 +349,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                       Edit
                     </button>
                   )}
-                  <button type="button" onClick={() => void remove(proposal)} className="rounded-lg border border-[#202020] p-2 text-gray-500 transition hover:text-[#F0475C]" aria-label="Delete">
+                  <button type="button" onClick={() => void remove(proposal)} className="rounded-lg border border-[#202020] p-2 text-gray-500 transition hover:text-[#F22F46]" aria-label="Delete">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -428,7 +428,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                     <input value={item.name} onChange={(e) => setItem(index, { name: e.target.value })} placeholder="Service (e.g. Website redesign)" className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-[#3B82F6]/50" />
                     <input type="number" min={0} value={item.quantity} onChange={(e) => setItem(index, { quantity: Number(e.target.value) })} className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none" aria-label="Quantity" />
                     <input type="number" min={0} value={item.price} onChange={(e) => setItem(index, { price: Number(e.target.value) })} className="h-10 rounded-lg border border-white/10 bg-white/[0.03] px-3 text-sm outline-none" aria-label="Price" />
-                    <button type="button" onClick={() => setDraft({ ...draft, line_items: draft.line_items.filter((_, i) => i !== index) })} className="flex h-10 items-center justify-center text-gray-600 hover:text-[#F0475C]" aria-label="Remove">
+                    <button type="button" onClick={() => setDraft({ ...draft, line_items: draft.line_items.filter((_, i) => i !== index) })} className="flex h-10 items-center justify-center text-gray-600 hover:text-[#F22F46]" aria-label="Remove">
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -542,7 +542,7 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
                 <p className="mt-4 flex items-center gap-2 text-sm text-[#84CC16]"><Check size={16} /> Connected: {payments.account}</p>
                 <p className="mt-2 text-xs text-gray-500">Clients pay your Stripe account directly when they sign.</p>
                 {payments.isOwner && (
-                  <button type="button" onClick={() => void savePayments(true)} className="mt-5 h-11 w-full rounded-xl border border-[#202020] text-sm text-gray-400 hover:text-[#F0475C]">
+                  <button type="button" onClick={() => void savePayments(true)} className="mt-5 h-11 w-full rounded-xl border border-[#202020] text-sm text-gray-400 hover:text-[#F22F46]">
                     Disconnect
                   </button>
                 )}

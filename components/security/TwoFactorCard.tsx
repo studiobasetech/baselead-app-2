@@ -188,7 +188,7 @@ export default function TwoFactorCard({
               onClick={() => void (factor ? disable() : startEnroll())}
               className={`mt-4 rounded-lg border px-4 py-2 text-[13px] font-medium transition disabled:opacity-50 ${
                 factor
-                  ? "border-red-500/30 text-red-400 hover:bg-red-500/10"
+                  ? "border-[#F22F46]/30 text-[#F22F46] hover:bg-[#F22F46]/10"
                   : "border-[#3B82F6]/40 text-[#3B82F6] hover:bg-[#3B82F6]/10"
               }`}
             >

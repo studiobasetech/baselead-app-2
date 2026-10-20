@@ -39,9 +39,9 @@ const STAGE_LABEL: Record<string, string> = {
 const STAGE_COLOR: Record<string, string> = {
   new: "#E5E7EB",
   contacted: "#F5C518",
-  responded: "#22D3EE",
-  meeting: "#F0475C",
-  qualified: "#60A5FA",
+  responded: "#2DD4BF",
+  meeting: "#F22F46",
+  qualified: "#3B82F6",
   proposal: "#A78BFA",
   negotiation: "#F97316",
   won: "#84CC16",
@@ -141,14 +141,14 @@ export default function TeamPerformancePage() {
       </div>
 
       {error && !error.plan && (
-        <p className="mt-6 rounded-2xl border border-[#F0475C]/30 bg-[#F0475C]/10 p-4 text-sm text-[#F0475C]">{error.message}</p>
+        <p className="mt-6 rounded-2xl border border-[#F22F46]/30 bg-[#F22F46]/10 p-4 text-sm text-[#F22F46]">{error.message}</p>
       )}
 
       <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
         {[
           { label: "Emails sent", value: totals.emails, icon: Mail, color: "#F5C518" },
-          { label: "Replies", value: totals.replies, icon: MessageSquareReply, color: "#22D3EE" },
-          { label: "Meetings", value: totals.meetings, icon: Video, color: "#F0475C" },
+          { label: "Replies", value: totals.replies, icon: MessageSquareReply, color: "#2DD4BF" },
+          { label: "Meetings", value: totals.meetings, icon: Video, color: "#F22F46" },
           { label: "Proposals", value: totals.proposals, icon: FileSignature, color: "#A78BFA" },
           { label: "Revenue won", value: formatMoney(totals.wonValue), icon: Trophy, color: "#84CC16" },
         ].map(({ label, value, icon: Icon, color }) => (
@@ -204,7 +204,7 @@ export default function TeamPerformancePage() {
                             <p className="flex items-center gap-1.5 text-[11px] text-gray-500">
                               {rep.role}
                               {rep.overdueTasks > 0 && (
-                                <span className="inline-flex items-center gap-1 text-[#F0475C]">
+                                <span className="inline-flex items-center gap-1 text-[#F22F46]">
                                   <AlertTriangle size={10} /> {rep.overdueTasks} overdue
                                 </span>
                               )}
@@ -214,7 +214,7 @@ export default function TeamPerformancePage() {
                       </td>
                       <td className="text-right tabular-nums text-gray-300">{rep.leads}</td>
                       <td className="text-right tabular-nums text-gray-300">{rep.emails}</td>
-                      <td className="text-right tabular-nums text-[#22D3EE]">{replyRate}%</td>
+                      <td className="text-right tabular-nums text-[#2DD4BF]">{replyRate}%</td>
                       <td className="text-right tabular-nums text-gray-300">{rep.meetings}</td>
                       <td className="text-right tabular-nums">
                         <span className="text-[#84CC16]">{formatMoney(rep.wonValue)}</span>
@@ -255,7 +255,7 @@ export default function TeamPerformancePage() {
         {/* Funnel */}
         <section className="min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center gap-3">
-            <span className="bl-icon-tile" style={{ "--tab": "#22D3EE" } as CSSProperties}>
+            <span className="bl-icon-tile" style={{ "--tab": "#2DD4BF" } as CSSProperties}>
               <Filter size={17} strokeWidth={2.2} />
             </span>
             <h2 className="text-base font-semibold">Pipeline funnel</h2>

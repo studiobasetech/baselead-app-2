@@ -49,9 +49,9 @@ import { usePlan } from "@/components/plans/PlanProvider";
 
 const GOLD = "#F5C518";
 const PURPLE = "#A78BFA";
-const RED = "#F0475C";
+const RED = "#F22F46";
 const GREEN = "#84CC16";
-const BLUE = "#60A5FA";
+const BLUE = "#3B82F6";
 
 const PAGE_BG = "#050505";
 const HERO_BG = "#0A0A0A";
@@ -276,7 +276,7 @@ const integrations: Integration[] = [
     description:
       "Import real lead lists into BaseLead or export your actual BaseLead data.",
     category: "Data",
-    color: "#22C55E",
+    color: "#84CC16",
     icon: <FileSpreadsheet size={21} />,
     popular: true,
     builtIn: true,
@@ -468,7 +468,7 @@ function Button({
     secondary:
       "border border-[#202020] bg-[#0D0D0D] text-gray-200 shadow-[0_6px_18px_rgba(0,0,0,0.12)] hover:border-[#2A2A2A] hover:bg-[#171717] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(0,0,0,0.22)]",
     danger:
-      "border border-[#F0475C]/30 bg-[#3A1418] text-[#F0475C] hover:border-[#F0475C]/50 hover:bg-[#3A1418] hover:shadow-[0_8px_22px_rgba(240,71,92,0.12)]",
+      "border border-[#F22F46]/30 bg-[#3A1418] text-[#F22F46] hover:border-[#F22F46]/50 hover:bg-[#3A1418] hover:shadow-[0_8px_22px_rgba(242,47,70,0.12)]",
     appstore:
       "min-w-[104px] rounded-full border border-[#202020] bg-[#101010] px-5 py-2.5 text-[14px] font-semibold text-[#3B82F6] shadow-[0_6px_18px_rgba(0,0,0,0.15)] hover:border-[#3B82F6]/40 hover:bg-[#171717] hover:text-[#3B82F6] hover:shadow-[0_8px_24px_rgba(59,130,246,0.12)] hover:-translate-y-0.5",
   };
@@ -1845,14 +1845,14 @@ export default function IntegrationsPage() {
               gap-3
               rounded-xl
               border
-              border-[#F0475C]/25
+              border-[#F22F46]/25
               bg-[#3A1418]
               px-4
               py-3
-              shadow-[0_8px_22px_rgba(240,71,92,0.08)]
+              shadow-[0_8px_22px_rgba(242,47,70,0.08)]
             "
           >
-            <p className="text-[10px] text-[#F0475C]">
+            <p className="text-[10px] text-[#F22F46]">
               {connectionError}
             </p>
 

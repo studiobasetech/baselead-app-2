@@ -65,11 +65,11 @@ type HotLead = {
 
 
 const ACTIVITY_COLOR: Record<string, string> = {
-  reply: "#22D3EE",
-  meeting_booked: "#F0475C",
+  reply: "#2DD4BF",
+  meeting_booked: "#F22F46",
   email_sent: "#F5C518",
   stage_change: "#A78BFA",
-  note: "#60A5FA",
+  note: "#3B82F6",
 };
 
 function relative(iso: string) {
@@ -338,8 +338,8 @@ export default function TodayPage() {
 
   const kpis = [
     { label: "Tasks due", value: dueToday.length, icon: Check, color: "#F5C518" },
-    { label: "Replies this week", value: replies, icon: MessageSquareReply, color: "#22D3EE" },
-    { label: "Meetings today", value: todaysMeetings.length, icon: Video, color: "#F0475C" },
+    { label: "Replies this week", value: replies, icon: MessageSquareReply, color: "#2DD4BF" },
+    { label: "Meetings today", value: todaysMeetings.length, icon: Video, color: "#F22F46" },
     { label: "Hot leads waiting", value: hotLeads.length, icon: Flame, color: "#84CC16" },
   ];
 
@@ -394,7 +394,7 @@ export default function TodayPage() {
       <SetupBanner />
 
       {setupNeeded && (
-        <div className="mt-4 rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4 text-sm text-amber-200">
+        <div className="mt-4 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-amber-200">
           {/permission denied/i.test(setupNeeded) ? (
             <>Supabase is blocking the app from the new tables. Run <code>supabase/FIX_PERMISSIONS.sql</code> in Supabase → SQL Editor.</>
           ) : (
@@ -462,7 +462,7 @@ export default function TodayPage() {
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="bl-icon-tile" style={{ "--tab": "#F0475C" } as CSSProperties}>
+                <span className="bl-icon-tile" style={{ "--tab": "#F22F46" } as CSSProperties}>
                   <Video size={17} strokeWidth={2.2} />
                 </span>
                 <h2 className="text-base font-semibold">Meetings</h2>
@@ -478,7 +478,7 @@ export default function TodayPage() {
                 const link = meeting.meet_url || meeting.location?.match(/https?:\/\/\S+/)?.[0];
                 return (
                   <div key={meeting.id} className="flex items-center gap-3 rounded-xl border border-[#202020] bg-[#0A0A0A] p-3">
-                    <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg bg-[#F0475C]/10 text-[#F0475C]">
+                    <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg bg-[#F22F46]/10 text-[#F22F46]">
                       <CalendarDays size={14} />
                       <span className="mt-0.5 text-[10px] font-semibold">
                         {new Date(meeting.starts_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}

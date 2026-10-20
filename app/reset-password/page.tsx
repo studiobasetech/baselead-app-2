@@ -58,18 +58,18 @@ export default function ResetPasswordPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#020204] px-4 text-white">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[20%] top-[-15%] h-[500px] w-[500px] rounded-full bg-purple-600/[0.1] blur-[150px]" />
-        <div className="absolute bottom-[-20%] right-[10%] h-[450px] w-[450px] rounded-full bg-blue-400/[0.04] blur-[150px]" />
+        <div className="absolute left-[20%] top-[-15%] h-[500px] w-[500px] rounded-full bg-[#A78BFA]/[0.1] blur-[150px]" />
+        <div className="absolute bottom-[-20%] right-[10%] h-[450px] w-[450px] rounded-full bg-[#3B82F6]/[0.04] blur-[150px]" />
       </div>
 
-      <div className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#0B0B0F]/90 p-7 shadow-[0_25px_100px_rgba(124,58,237,0.18)] backdrop-blur-xl sm:p-9">
+      <div className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#0B0B0F]/90 p-7 shadow-[0_25px_100px_rgba(167,139,250,0.18)] backdrop-blur-xl sm:p-9">
         <img
           src="/baselead-logo.png"
           alt="BaseLead"
           className="h-auto w-[170px] object-contain"
         />
 
-        <div className="mt-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
+        <div className="mt-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#A78BFA]/15 text-[#A78BFA]">
           <LockKeyhole size={22} />
         </div>
 
@@ -98,7 +98,7 @@ export default function ResetPasswordPage() {
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <label className="block">
               <span className="text-sm text-gray-400">New password</span>
-              <div className="mt-2 flex items-center rounded-xl border border-white/10 bg-white/[0.03] px-4 focus-within:border-violet-400/60">
+              <div className="mt-2 flex items-center rounded-xl border border-white/10 bg-white/[0.03] px-4 focus-within:border-[#A78BFA]/60">
                 <input
                   type={show ? "text" : "password"}
                   value={password}
@@ -125,19 +125,19 @@ export default function ResetPasswordPage() {
                 value={confirm}
                 onChange={(event) => setConfirm(event.target.value)}
                 autoComplete="new-password"
-                className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none placeholder:text-gray-600 focus:border-violet-400/60"
+                className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm outline-none placeholder:text-gray-600 focus:border-[#A78BFA]/60"
                 placeholder="Repeat your new password"
               />
             </label>
 
             {error && (
-              <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              <p className="rounded-xl border border-[#F22F46]/30 bg-[#F22F46]/10 px-4 py-3 text-sm text-[#F22F46]">
                 {error}
               </p>
             )}
 
             {success && (
-              <p className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+              <p className="rounded-xl border border-[#84CC16]/30 bg-[#84CC16]/10 px-4 py-3 text-sm text-[#84CC16]">
                 {success}
               </p>
             )}

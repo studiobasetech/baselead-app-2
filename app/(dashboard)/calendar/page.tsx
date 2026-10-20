@@ -89,10 +89,10 @@ type EventFilter =
 const GOLD = "#F5C518";
 const BRAND = "#3B82F6";
 const PURPLE = "#A78BFA";
-const BLUE = "#60A5FA";
+const BLUE = "#3B82F6";
 const GREEN = "#84CC16";
-const RED = "#F0475C";
-const CYAN = "#22D3EE";
+const RED = "#F22F46";
+const CYAN = "#2DD4BF";
 
 const supabase = createClient();
 
@@ -5169,9 +5169,9 @@ export default function CalendarPage() {
               {(
                 [
                   ["Day", Sun, "#F5C518"],
-                  ["Week", Rows3, "#60A5FA"],
+                  ["Week", Rows3, "#3B82F6"],
                   ["Month", CalendarDays, "#A78BFA"],
-                  ["Year", CalendarRange, "#22D3EE"],
+                  ["Year", CalendarRange, "#2DD4BF"],
                   ["Focus", Crosshair, "#F472B6"],
                 ] as const
               ).map(([item, Icon, color]) => (

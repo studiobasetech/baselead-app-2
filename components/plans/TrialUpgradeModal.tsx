@@ -18,7 +18,7 @@ import { PLAN_DEFINITIONS, type PlanName } from "@/lib/plans";
 type Reason = "welcome" | "ending" | "expired";
 
 const PLAN_STYLE: Record<PlanName, { color: string; tagline: string }> = {
-  Starter: { color: "#60A5FA", tagline: "For solo sellers" },
+  Starter: { color: "#3B82F6", tagline: "For solo sellers" },
   Pro: { color: "#F5C518", tagline: "Most popular · automation" },
   Scale: { color: "#A78BFA", tagline: "Teams & API" },
 };
@@ -178,14 +178,14 @@ export default function TrialUpgradeModal() {
         <div
           className="pointer-events-none absolute -inset-[60%]"
           style={{
-            background: "conic-gradient(from 0deg, #F5C518, #A78BFA, #22D3EE, #84CC16, #F5C518)",
+            background: "conic-gradient(from 0deg, #F5C518, #A78BFA, #2DD4BF, #84CC16, #F5C518)",
             animation: "blSpin 8s linear infinite",
             opacity: 0.75,
           }}
         />
 
         <div className="bl-journey-panel relative max-h-[90vh] overflow-y-auto rounded-[calc(2rem-1.5px)] bg-[#0A0A0C]/95 p-6 sm:p-8">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#A78BFA]/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
           <button
@@ -206,7 +206,7 @@ export default function TrialUpgradeModal() {
                   className="pointer-events-none absolute top-0 h-2.5 w-1.5 rounded-sm"
                   style={{
                     left: `${(index * 37) % 100}%`,
-                    background: ["#F5C518", "#A78BFA", "#22D3EE", "#84CC16", "#F472B6"][index % 5],
+                    background: ["#F5C518", "#A78BFA", "#2DD4BF", "#84CC16", "#F472B6"][index % 5],
                     animation: `blConfetti ${1.6 + (index % 5) * 0.25}s ease-out ${(index % 7) * 0.08}s forwards`,
                   }}
                 />
@@ -217,7 +217,7 @@ export default function TrialUpgradeModal() {
               >
                 <Crown size={30} strokeWidth={2} />
               </span>
-              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-violet-300">Code applied</p>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-[#A78BFA]">Code applied</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">You&apos;re on {activated} 🎉</h2>
               <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-gray-400">
                 Every {activated} feature is unlocked for your whole workspace. Your leads and pipeline are exactly where you left them.
@@ -241,7 +241,7 @@ export default function TrialUpgradeModal() {
                   <Rocket size={26} strokeWidth={2} />
                 </span>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-violet-300">{copy.eyebrow}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#A78BFA]">{copy.eyebrow}</p>
                   <h2 className="mt-1.5 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{copy.title}</h2>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export default function TrialUpgradeModal() {
                 <div className="relative">
                   <div className="absolute left-0 right-0 top-[11px] h-[3px] rounded-full bg-white/10" />
                   <div
-                    className="absolute left-0 top-[11px] h-[3px] rounded-full bg-gradient-to-r from-[#A78BFA] via-[#22D3EE] to-[#3B82F6] transition-all duration-700"
+                    className="absolute left-0 top-[11px] h-[3px] rounded-full bg-gradient-to-r from-[#A78BFA] via-[#2DD4BF] to-[#3B82F6] transition-all duration-700"
                     style={{ width: `${reason === "expired" ? 100 : ((dayOfTrial - 1) / 6) * 100}%` }}
                   />
                   <div className="relative flex justify-between">
@@ -283,7 +283,7 @@ export default function TrialUpgradeModal() {
                       {trialLeadsUsed.toLocaleString()}<span className="text-sm text-gray-500"> / {trialLeadLimit.toLocaleString()}</span>
                     </p>
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#22D3EE] to-[#A78BFA]" style={{ width: `${usedPct}%` }} />
+                      <div className="h-full rounded-full bg-gradient-to-r from-[#2DD4BF] to-[#A78BFA]" style={{ width: `${usedPct}%` }} />
                     </div>
                   </div>
                   <div className="rounded-xl bg-black/30 p-3">
@@ -330,8 +330,8 @@ export default function TrialUpgradeModal() {
               </div>
 
               {/* code */}
-              <div className="mt-4 rounded-2xl border border-[#60A5FA]/25 bg-[#60A5FA]/[0.06] p-4">
-                <div className="flex items-center gap-2 text-sm font-semibold text-[#93C5FD]">
+              <div className="mt-4 rounded-2xl border border-[#3B82F6]/25 bg-[#3B82F6]/[0.06] p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-[#3B82F6]">
                   <Gift size={15} /> Have a code?
                 </div>
                 <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -343,19 +343,19 @@ export default function TrialUpgradeModal() {
                     }}
                     onKeyDown={(event) => event.key === "Enter" && code.trim() && void redeem()}
                     placeholder="Enter code"
-                    className="h-11 flex-1 rounded-xl border border-[#60A5FA]/25 bg-black/30 px-3 text-sm font-semibold tracking-widest text-white outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-gray-600 focus:border-[#60A5FA]/60"
+                    className="h-11 flex-1 rounded-xl border border-[#3B82F6]/25 bg-black/30 px-3 text-sm font-semibold tracking-widest text-white outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-gray-600 focus:border-[#3B82F6]/60"
                   />
                   <button
                     type="button"
                     onClick={() => void redeem()}
                     disabled={!code.trim() || busy}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#60A5FA] px-5 text-sm font-semibold text-black transition hover:bg-[#93C5FD] disabled:opacity-40"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-5 text-sm font-semibold text-black transition hover:bg-[#3B82F6] disabled:opacity-40"
                   >
                     {busy ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />}
                     Activate {plan}
                   </button>
                 </div>
-                {error && <p className="mt-2 text-xs text-[#F0475C]">{error}</p>}
+                {error && <p className="mt-2 text-xs text-[#F22F46]">{error}</p>}
               </div>
 
               {/* actions */}

@@ -145,36 +145,36 @@ export default function AcceptInvitationPage() {
     <main className="min-h-screen overflow-hidden bg-[#020204] text-white">
       {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
+        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
 
-        <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-cyan-500/[0.06] blur-[160px]" />
+        <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-[#2DD4BF]/[0.06] blur-[160px]" />
 
-        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-blue-400/[0.025] blur-[130px]" />
+        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-[#3B82F6]/[0.025] blur-[130px]" />
 
-        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
+        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
 
-        <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-cyan-500/[0.07] blur-[150px]" />
+        <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-[#2DD4BF]/[0.07] blur-[150px]" />
 
         <div className="absolute inset-0 opacity-50">
-          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-purple-500/40 to-transparent" />
+          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-[#A78BFA]/40 to-transparent" />
 
-          <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent" />
+          <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-[#2DD4BF]/30 to-transparent" />
 
-          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-blue-400/30 to-transparent" />
+          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-[#3B82F6]/30 to-transparent" />
 
-          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/50 to-transparent" />
 
-          <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
+          <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/40 to-transparent" />
 
-          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/40 to-transparent" />
 
-          <div className="absolute left-[27%] top-[57%] h-px w-[400px] rotate-[-20deg] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
+          <div className="absolute left-[27%] top-[57%] h-px w-[400px] rotate-[-20deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/30 to-transparent" />
         </div>
       </div>
 
       {/* PAGE */}
       <div className="relative z-10 flex min-h-screen items-center justify-center p-5">
-        <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-blue-400/60 p-[1.5px]">
+        <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-[#A78BFA]/70 via-[#2DD4BF]/20 to-[#3B82F6]/60 p-[1.5px]">
           <section className="rounded-2xl bg-[#050506]/95 p-8 text-center sm:p-12">
             {/* LOGO */}
             <div className="mb-10 flex justify-center">
@@ -190,7 +190,7 @@ export default function AcceptInvitationPage() {
               <div className="flex flex-col items-center">
                 <Loader2
                   size={42}
-                  className="animate-spin text-purple-400"
+                  className="animate-spin text-[#A78BFA]"
                 />
 
                 <h1 className="mt-7 text-3xl font-bold">
@@ -206,10 +206,10 @@ export default function AcceptInvitationPage() {
             {/* NEEDS LOGIN */}
             {status === "needs-login" && (
               <div>
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-purple-500/40 bg-purple-500/[0.06]">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-[#A78BFA]/40 bg-[#A78BFA]/[0.06]">
                   <Users
                     size={38}
-                    className="text-purple-400"
+                    className="text-[#A78BFA]"
                   />
                 </div>
 
@@ -227,7 +227,7 @@ export default function AcceptInvitationPage() {
                   <button
                     type="button"
                     onClick={handleLogin}
-                    className="relative flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
+                    className="relative flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
                   >
                     Log in
 
@@ -253,7 +253,7 @@ export default function AcceptInvitationPage() {
               <div className="flex flex-col items-center">
                 <Loader2
                   size={42}
-                  className="animate-spin text-blue-400"
+                  className="animate-spin text-[#3B82F6]"
                 />
 
                 <h1 className="mt-7 text-3xl font-bold">
@@ -270,10 +270,10 @@ export default function AcceptInvitationPage() {
             {/* SUCCESS */}
             {status === "success" && (
               <div>
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/[0.06]">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#84CC16]/30 bg-[#84CC16]/[0.06]">
                   <CheckCircle2
                     size={42}
-                    className="text-emerald-400"
+                    className="text-[#84CC16]"
                   />
                 </div>
 
@@ -291,7 +291,7 @@ export default function AcceptInvitationPage() {
                     Your role
                   </p>
 
-                  <p className="mt-1 text-lg font-semibold text-blue-400">
+                  <p className="mt-1 text-lg font-semibold text-[#3B82F6]">
                     {role}
                   </p>
                 </div>
@@ -299,7 +299,7 @@ export default function AcceptInvitationPage() {
                 <button
                   type="button"
                   onClick={handleDashboard}
-                  className="relative mt-8 flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
+                  className="relative mt-8 flex h-[62px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6]"
                 >
                   Go to Dashboard
 
@@ -314,10 +314,10 @@ export default function AcceptInvitationPage() {
             {/* ERROR */}
             {status === "error" && (
               <div>
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-red-400/30 bg-red-400/[0.06]">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#F22F46]/30 bg-[#F22F46]/[0.06]">
                   <XCircle
                     size={42}
-                    className="text-red-400"
+                    className="text-[#F22F46]"
                   />
                 </div>
 
@@ -345,7 +345,7 @@ export default function AcceptInvitationPage() {
             <div className="mt-10 flex items-center justify-center gap-3 text-sm text-gray-500">
               <ShieldCheck
                 size={21}
-                className="text-purple-500"
+                className="text-[#A78BFA]"
               />
 
               <span>

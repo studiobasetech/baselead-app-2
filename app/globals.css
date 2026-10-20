@@ -19,7 +19,7 @@
   --baselead-blue: #3b82f6;
   --baselead-yellow-hover: #ffd629;
 
-  --baselead-red: #ff3b4f;
+  --baselead-red: #F22F46;
   --baselead-purple: #a78bfa;
   --baselead-green: #84cc16;
   --baselead-blue: #3b82f6;
@@ -152,7 +152,7 @@ html.baselead-light {
   --baselead-blue: #3b82f6;
   --baselead-yellow-hover: #ffd629;
 
-  --baselead-red: #ff3b4f;
+  --baselead-red: #F22F46;
   --baselead-purple: #a78bfa;
   --baselead-green: #84cc16;
   --baselead-blue: #3b82f6;
@@ -505,22 +505,22 @@ html
 }
 
 html
-  [class~="text-[#60A5FA]"],
+  [class~="text-[#3B82F6]"],
 html
-  [class~="text-[#60a5fa]"] {
-  color: #60a5fa !important;
+  [class~="text-[#3B82F6]"] {
+  color: #3B82F6 !important;
 }
 
 html
-  [class~="text-[#F0475C]"],
+  [class~="text-[#F22F46]"],
 html
-  [class~="text-[#f0475c]"] {
-  color: #f0475c !important;
+  [class~="text-[#F22F46]"] {
+  color: #F22F46 !important;
 }
 
 html
-  [class~="text-[#ff3b4f]"] {
-  color: #ff3b4f !important;
+  [class~="text-[#F22F46]"] {
+  color: #F22F46 !important;
 }
 
 /* =========================================================
@@ -568,30 +568,30 @@ html.baselead-light
 
 /* Blue */
 html.baselead-light
-  [class*="hover:border-[#60A5FA]"]:hover,
+  [class*="hover:border-[#3B82F6]"]:hover,
 html.baselead-light
-  [class*="hover:border-[#60a5fa]"]:hover {
-  border-color: rgba(96, 165, 250, 0.55) !important;
+  [class*="hover:border-[#3B82F6]"]:hover {
+  border-color: rgba(59, 130, 246, 0.55) !important;
 
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.045),
-    0 0 0 1px rgba(96, 165, 250, 0.16),
-    0 0 20px rgba(96, 165, 250, 0.08) !important;
+    0 0 0 1px rgba(59, 130, 246, 0.16),
+    0 0 20px rgba(59, 130, 246, 0.08) !important;
 }
 
 /* Red */
 html.baselead-light
-  [class*="hover:border-[#F0475C]"]:hover,
+  [class*="hover:border-[#F22F46]"]:hover,
 html.baselead-light
-  [class*="hover:border-[#f0475c]"]:hover,
+  [class*="hover:border-[#F22F46]"]:hover,
 html.baselead-light
-  [class*="hover:border-[#ff3b4f]"]:hover {
-  border-color: rgba(240, 71, 92, 0.55) !important;
+  [class*="hover:border-[#F22F46]"]:hover {
+  border-color: rgba(242, 47, 70, 0.55) !important;
 
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.045),
-    0 0 0 1px rgba(240, 71, 92, 0.16),
-    0 0 20px rgba(240, 71, 92, 0.08) !important;
+    0 0 0 1px rgba(242, 47, 70, 0.16),
+    0 0 20px rgba(242, 47, 70, 0.08) !important;
 }
 
 /* =========================================================
@@ -1269,8 +1269,8 @@ html:not(.baselead-light) .baselead-main {
   background-image:
     radial-gradient(1000px 560px at 92% -6%, rgba(167, 139, 250, 0.2), transparent 60%),
     radial-gradient(820px 520px at 4% -2%, rgba(59, 130, 246, 0.1), transparent 58%),
-    radial-gradient(1000px 700px at 55% 112%, rgba(96, 165, 250, 0.12), transparent 60%),
-    radial-gradient(700px 500px at 75% 55%, rgba(34, 211, 238, 0.045), transparent 70%),
+    radial-gradient(1000px 700px at 55% 112%, rgba(59, 130, 246, 0.12), transparent 60%),
+    radial-gradient(700px 500px at 75% 55%, rgba(45, 212, 191, 0.045), transparent 70%),
     radial-gradient(600px 420px at 22% 60%, rgba(167, 139, 250, 0.06), transparent 70%),
     linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%);
   background-attachment: fixed;
@@ -1823,31 +1823,31 @@ html.baselead-light .baselead-main [style*="color: #f5c518"]:not([style*="backgr
 html.baselead-light .baselead-main [style*="color: rgb(245, 197, 24)"]:not([style*="background-color: rgb(245, 197, 24)"]):not([style*="border-color: rgb(245, 197, 24)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #946F00 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#FFD000]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#FFD000"]:not([style*="background-color:#FFD000"]):not([style*="border-color:#FFD000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #FFD000"]:not([style*="background-color: #FFD000"]):not([style*="border-color: #FFD000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#ffd000]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#ffd000"]:not([style*="background-color:#ffd000"]):not([style*="border-color:#ffd000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #ffd000"]:not([style*="background-color: #ffd000"]):not([style*="border-color: #ffd000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(255, 208, 0)"]:not([style*="background-color: rgb(255, 208, 0)"]):not([style*="border-color: rgb(255, 208, 0)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(245, 197, 24)"]:not([style*="background-color: rgb(245, 197, 24)"]):not([style*="border-color: rgb(245, 197, 24)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #946F00 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#FACC15]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#FACC15"]:not([style*="background-color:#FACC15"]):not([style*="border-color:#FACC15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #FACC15"]:not([style*="background-color: #FACC15"]):not([style*="border-color: #FACC15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#facc15]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#facc15"]:not([style*="background-color:#facc15"]):not([style*="border-color:#facc15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #facc15"]:not([style*="background-color: #facc15"]):not([style*="border-color: #facc15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(250, 204, 21)"]:not([style*="background-color: rgb(250, 204, 21)"]):not([style*="border-color: rgb(250, 204, 21)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(245, 197, 24)"]:not([style*="background-color: rgb(245, 197, 24)"]):not([style*="border-color: rgb(245, 197, 24)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #946F00 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#FBBF24]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#FBBF24"]:not([style*="background-color:#FBBF24"]):not([style*="border-color:#FBBF24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #FBBF24"]:not([style*="background-color: #FBBF24"]):not([style*="border-color: #FBBF24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#fbbf24]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#fbbf24"]:not([style*="background-color:#fbbf24"]):not([style*="border-color:#fbbf24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #fbbf24"]:not([style*="background-color: #fbbf24"]):not([style*="border-color: #fbbf24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(251, 191, 36)"]:not([style*="background-color: rgb(251, 191, 36)"]):not([style*="border-color: rgb(251, 191, 36)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(245, 197, 24)"]:not([style*="background-color: rgb(245, 197, 24)"]):not([style*="border-color: rgb(245, 197, 24)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #92400E !important;
 }
 html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -1859,22 +1859,22 @@ html.baselead-light .baselead-main [style*="color: #84cc16"]:not([style*="backgr
 html.baselead-light .baselead-main [style*="color: rgb(132, 204, 22)"]:not([style*="background-color: rgb(132, 204, 22)"]):not([style*="border-color: rgb(132, 204, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #4D7C0F !important;
 }
-html.baselead-light .baselead-main [class~="text-[#BEF264]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#BEF264"]:not([style*="background-color:#BEF264"]):not([style*="border-color:#BEF264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #BEF264"]:not([style*="background-color: #BEF264"]):not([style*="border-color: #BEF264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#bef264]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#bef264"]:not([style*="background-color:#bef264"]):not([style*="border-color:#bef264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #bef264"]:not([style*="background-color: #bef264"]):not([style*="border-color: #bef264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(190, 242, 100)"]:not([style*="background-color: rgb(190, 242, 100)"]):not([style*="border-color: rgb(190, 242, 100)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(132, 204, 22)"]:not([style*="background-color: rgb(132, 204, 22)"]):not([style*="border-color: rgb(132, 204, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #4D7C0F !important;
 }
-html.baselead-light .baselead-main [class~="text-[#A3E635]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#A3E635"]:not([style*="background-color:#A3E635"]):not([style*="border-color:#A3E635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #A3E635"]:not([style*="background-color: #A3E635"]):not([style*="border-color: #A3E635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#a3e635]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#a3e635"]:not([style*="background-color:#a3e635"]):not([style*="border-color:#a3e635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #a3e635"]:not([style*="background-color: #a3e635"]):not([style*="border-color: #a3e635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(163, 230, 53)"]:not([style*="background-color: rgb(163, 230, 53)"]):not([style*="border-color: rgb(163, 230, 53)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(132, 204, 22)"]:not([style*="background-color: rgb(132, 204, 22)"]):not([style*="border-color: rgb(132, 204, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #4D7C0F !important;
 }
 html.baselead-light .baselead-main [class~="text-[#A78BFA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -1884,34 +1884,34 @@ html.baselead-light .baselead-main [class~="text-[#a78bfa]"]:not(svg):not(.bl-ta
 html.baselead-light .baselead-main [style*="color:#a78bfa"]:not([style*="background-color:#a78bfa"]):not([style*="border-color:#a78bfa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: #a78bfa"]:not([style*="background-color: #a78bfa"]):not([style*="border-color: #a78bfa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: rgb(167, 139, 250)"]:not([style*="background-color: rgb(167, 139, 250)"]):not([style*="border-color: rgb(167, 139, 250)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #7C3AED !important;
+  color: #A78BFA !important;
 }
-html.baselead-light .baselead-main [class~="text-[#C084FC]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#C084FC"]:not([style*="background-color:#C084FC"]):not([style*="border-color:#C084FC"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #C084FC"]:not([style*="background-color: #C084FC"]):not([style*="border-color: #C084FC"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#c084fc]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#c084fc"]:not([style*="background-color:#c084fc"]):not([style*="border-color:#c084fc"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #c084fc"]:not([style*="background-color: #c084fc"]):not([style*="border-color: #c084fc"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(192, 132, 252)"]:not([style*="background-color: rgb(192, 132, 252)"]):not([style*="border-color: rgb(192, 132, 252)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #9333EA !important;
+html.baselead-light .baselead-main [class~="text-[#A78BFA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#A78BFA"]:not([style*="background-color:#A78BFA"]):not([style*="border-color:#A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #A78BFA"]:not([style*="background-color: #A78BFA"]):not([style*="border-color: #A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#A78BFA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#A78BFA"]:not([style*="background-color:#A78BFA"]):not([style*="border-color:#A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #A78BFA"]:not([style*="background-color: #A78BFA"]):not([style*="border-color: #A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(167, 139, 250)"]:not([style*="background-color: rgb(167, 139, 250)"]):not([style*="border-color: rgb(167, 139, 250)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #A78BFA !important;
 }
-html.baselead-light .baselead-main [class~="text-[#60A5FA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#60A5FA"]:not([style*="background-color:#60A5FA"]):not([style*="border-color:#60A5FA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #60A5FA"]:not([style*="background-color: #60A5FA"]):not([style*="border-color: #60A5FA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#60a5fa]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#60a5fa"]:not([style*="background-color:#60a5fa"]):not([style*="border-color:#60a5fa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #60a5fa"]:not([style*="background-color: #60a5fa"]):not([style*="border-color: #60a5fa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(96, 165, 250)"]:not([style*="background-color: rgb(96, 165, 250)"]):not([style*="border-color: rgb(96, 165, 250)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #2563EB !important;
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(59, 130, 246)"]:not([style*="background-color: rgb(59, 130, 246)"]):not([style*="border-color: rgb(59, 130, 246)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #3B82F6 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#93C5FD]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#93C5FD"]:not([style*="background-color:#93C5FD"]):not([style*="border-color:#93C5FD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #93C5FD"]:not([style*="background-color: #93C5FD"]):not([style*="border-color: #93C5FD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#93c5fd]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#93c5fd"]:not([style*="background-color:#93c5fd"]):not([style*="border-color:#93c5fd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #93c5fd"]:not([style*="background-color: #93c5fd"]):not([style*="border-color: #93c5fd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(147, 197, 253)"]:not([style*="background-color: rgb(147, 197, 253)"]):not([style*="border-color: rgb(147, 197, 253)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #1D4ED8 !important;
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(59, 130, 246)"]:not([style*="background-color: rgb(59, 130, 246)"]):not([style*="border-color: rgb(59, 130, 246)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #3B82F6 !important;
 }
 html.baselead-light .baselead-main [class~="text-[#BFDBFE]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color:#BFDBFE"]:not([style*="background-color:#BFDBFE"]):not([style*="border-color:#BFDBFE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -1920,24 +1920,24 @@ html.baselead-light .baselead-main [class~="text-[#bfdbfe]"]:not(svg):not(.bl-ta
 html.baselead-light .baselead-main [style*="color:#bfdbfe"]:not([style*="background-color:#bfdbfe"]):not([style*="border-color:#bfdbfe"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: #bfdbfe"]:not([style*="background-color: #bfdbfe"]):not([style*="border-color: #bfdbfe"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: rgb(191, 219, 254)"]:not([style*="background-color: rgb(191, 219, 254)"]):not([style*="border-color: rgb(191, 219, 254)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #1D4ED8 !important;
+  color: #3B82F6 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#38BDF8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#38BDF8"]:not([style*="background-color:#38BDF8"]):not([style*="border-color:#38BDF8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #38BDF8"]:not([style*="background-color: #38BDF8"]):not([style*="border-color: #38BDF8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#38bdf8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#38bdf8"]:not([style*="background-color:#38bdf8"]):not([style*="border-color:#38bdf8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #38bdf8"]:not([style*="background-color: #38bdf8"]):not([style*="border-color: #38bdf8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(56, 189, 248)"]:not([style*="background-color: rgb(56, 189, 248)"]):not([style*="border-color: rgb(56, 189, 248)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#3B82F6"]:not([style*="background-color:#3B82F6"]):not([style*="border-color:#3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #3B82F6"]:not([style*="background-color: #3B82F6"]):not([style*="border-color: #3B82F6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(59, 130, 246)"]:not([style*="background-color: rgb(59, 130, 246)"]):not([style*="border-color: rgb(59, 130, 246)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #0369A1 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#22D3EE]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#22D3EE"]:not([style*="background-color:#22D3EE"]):not([style*="border-color:#22D3EE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #22D3EE"]:not([style*="background-color: #22D3EE"]):not([style*="border-color: #22D3EE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#22d3ee]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#22d3ee"]:not([style*="background-color:#22d3ee"]):not([style*="border-color:#22d3ee"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #22d3ee"]:not([style*="background-color: #22d3ee"]):not([style*="border-color: #22d3ee"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(34, 211, 238)"]:not([style*="background-color: rgb(34, 211, 238)"]):not([style*="border-color: rgb(34, 211, 238)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#2DD4BF]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#2DD4BF"]:not([style*="background-color:#2DD4BF"]):not([style*="border-color:#2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #2DD4BF"]:not([style*="background-color: #2DD4BF"]):not([style*="border-color: #2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#2DD4BF]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#2DD4BF"]:not([style*="background-color:#2DD4BF"]):not([style*="border-color:#2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #2DD4BF"]:not([style*="background-color: #2DD4BF"]):not([style*="border-color: #2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(45, 212, 191)"]:not([style*="background-color: rgb(45, 212, 191)"]):not([style*="border-color: rgb(45, 212, 191)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #0E7490 !important;
 }
 html.baselead-light .baselead-main [class~="text-[#2DD4BF]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -1949,22 +1949,22 @@ html.baselead-light .baselead-main [style*="color: #2dd4bf"]:not([style*="backgr
 html.baselead-light .baselead-main [style*="color: rgb(45, 212, 191)"]:not([style*="background-color: rgb(45, 212, 191)"]):not([style*="border-color: rgb(45, 212, 191)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #0F766E !important;
 }
-html.baselead-light .baselead-main [class~="text-[#34D399]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#34D399"]:not([style*="background-color:#34D399"]):not([style*="border-color:#34D399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #34D399"]:not([style*="background-color: #34D399"]):not([style*="border-color: #34D399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#34d399]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#34d399"]:not([style*="background-color:#34d399"]):not([style*="border-color:#34d399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #34d399"]:not([style*="background-color: #34d399"]):not([style*="border-color: #34d399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(52, 211, 153)"]:not([style*="background-color: rgb(52, 211, 153)"]):not([style*="border-color: rgb(52, 211, 153)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(132, 204, 22)"]:not([style*="background-color: rgb(132, 204, 22)"]):not([style*="border-color: rgb(132, 204, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #047857 !important;
 }
-html.baselead-light .baselead-main [class~="text-[#F0475C]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#F0475C"]:not([style*="background-color:#F0475C"]):not([style*="border-color:#F0475C"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #F0475C"]:not([style*="background-color: #F0475C"]):not([style*="border-color: #F0475C"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [class~="text-[#f0475c]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color:#f0475c"]:not([style*="background-color:#f0475c"]):not([style*="border-color:#f0475c"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: #f0475c"]:not([style*="background-color: #f0475c"]):not([style*="border-color: #f0475c"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
-html.baselead-light .baselead-main [style*="color: rgb(240, 71, 92)"]:not([style*="background-color: rgb(240, 71, 92)"]):not([style*="border-color: rgb(240, 71, 92)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+html.baselead-light .baselead-main [class~="text-[#F22F46]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F22F46"]:not([style*="background-color:#F22F46"]):not([style*="border-color:#F22F46"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F22F46"]:not([style*="background-color: #F22F46"]):not([style*="border-color: #F22F46"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#F22F46]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F22F46"]:not([style*="background-color:#F22F46"]):not([style*="border-color:#F22F46"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F22F46"]:not([style*="background-color: #F22F46"]):not([style*="border-color: #F22F46"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(242, 47, 70)"]:not([style*="background-color: rgb(242, 47, 70)"]):not([style*="border-color: rgb(242, 47, 70)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
   color: #D92D43 !important;
 }
 html.baselead-light .baselead-main [class~="text-[#F97316]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -1983,7 +1983,7 @@ html.baselead-light .baselead-main [class~="text-[#f472b6]"]:not(svg):not(.bl-ta
 html.baselead-light .baselead-main [style*="color:#f472b6"]:not([style*="background-color:#f472b6"]):not([style*="border-color:#f472b6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: #f472b6"]:not([style*="background-color: #f472b6"]):not([style*="border-color: #f472b6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color: rgb(244, 114, 182)"]:not([style*="background-color: rgb(244, 114, 182)"]):not([style*="border-color: rgb(244, 114, 182)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
-  color: #DB2777 !important;
+  color: #F472B6 !important;
 }
 html.baselead-light .baselead-main [class~="text-[#BDBDBD]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [style*="color:#BDBDBD"]:not([style*="background-color:#BDBDBD"]):not([style*="border-color:#BDBDBD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
@@ -2037,8 +2037,8 @@ html.baselead-light .baselead-main [class~="hover:text-[#F5C518]"]:hover:not(svg
 html.baselead-light .baselead-main [class~="hover:text-[#f5c518]"]:hover:not(svg) {
   color: #946F00 !important;
 }
-html.baselead-light .baselead-main [class~="hover:text-[#FFD000]"]:hover:not(svg),
-html.baselead-light .baselead-main [class~="hover:text-[#ffd000]"]:hover:not(svg) {
+html.baselead-light .baselead-main [class~="hover:text-[#F5C518]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#F5C518]"]:hover:not(svg) {
   color: #946F00 !important;
 }
 html.baselead-light .baselead-main [class~="hover:text-[#84CC16]"]:hover:not(svg),
@@ -2047,18 +2047,18 @@ html.baselead-light .baselead-main [class~="hover:text-[#84cc16]"]:hover:not(svg
 }
 html.baselead-light .baselead-main [class~="hover:text-[#A78BFA]"]:hover:not(svg),
 html.baselead-light .baselead-main [class~="hover:text-[#a78bfa]"]:hover:not(svg) {
-  color: #7C3AED !important;
+  color: #A78BFA !important;
 }
-html.baselead-light .baselead-main [class~="hover:text-[#60A5FA]"]:hover:not(svg),
-html.baselead-light .baselead-main [class~="hover:text-[#60a5fa]"]:hover:not(svg) {
-  color: #2563EB !important;
+html.baselead-light .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
+  color: #3B82F6 !important;
 }
-html.baselead-light .baselead-main [class~="hover:text-[#22D3EE]"]:hover:not(svg),
-html.baselead-light .baselead-main [class~="hover:text-[#22d3ee]"]:hover:not(svg) {
+html.baselead-light .baselead-main [class~="hover:text-[#2DD4BF]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#2DD4BF]"]:hover:not(svg) {
   color: #0E7490 !important;
 }
-html.baselead-light .baselead-main [class~="hover:text-[#F0475C]"]:hover:not(svg),
-html.baselead-light .baselead-main [class~="hover:text-[#f0475c]"]:hover:not(svg) {
+html.baselead-light .baselead-main [class~="hover:text-[#F22F46]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#F22F46]"]:hover:not(svg) {
   color: #D92D43 !important;
 }
 html.baselead-light .baselead-main [class~="hover:text-[#F97316]"]:hover:not(svg),
@@ -2067,7 +2067,7 @@ html.baselead-light .baselead-main [class~="hover:text-[#f97316]"]:hover:not(svg
 }
 html.baselead-light .baselead-main [class~="hover:text-[#F472B6]"]:hover:not(svg),
 html.baselead-light .baselead-main [class~="hover:text-[#f472b6]"]:hover:not(svg) {
-  color: #DB2777 !important;
+  color: #F472B6 !important;
 }
 
 /* Light mode: active/hover tab text uses a deeper shade of its color */
@@ -2132,11 +2132,11 @@ html.baselead-light .baselead-main [class*="bg-black/"]:not(.fixed):not([class*=
 ::selection { background: rgba(59, 130, 246, 0.28); }
 html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
 html.baselead-light .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
-  color: #2563EB !important;
+  color: #3B82F6 !important;
 }
 html:not(.baselead-light) .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji),
 html:not(.baselead-light) .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
-  color: #60A5FA !important;
+  color: #3B82F6 !important;
 }
 
 /* Solid blue buttons and badges: always white text and icons (light + dark) */

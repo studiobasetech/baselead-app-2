@@ -36,14 +36,14 @@ export default function DeleteAllLeadsCard({
   }
 
   return (
-    <div className="rounded-2xl border border-red-500/20 bg-[#0D0D0D] p-4 sm:p-5">
+    <div className="rounded-2xl border border-[#F22F46]/20 bg-[#0D0D0D] p-4 sm:p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
-            <Trash2 size={16} className="text-red-400" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F22F46]/10">
+            <Trash2 size={16} className="text-[#F22F46]" />
           </div>
           <div>
-            <h2 className="text-sm font-medium text-red-400">Delete all leads</h2>
+            <h2 className="text-sm font-medium text-[#F22F46]">Delete all leads</h2>
             <p className="mt-1 text-[14px] text-gray-500">
               Removes every lead in this workspace, with its search history, outreach, notes, contacts and lead tasks. Your account, team, settings and plan stay.
             </p>
@@ -54,7 +54,7 @@ export default function DeleteAllLeadsCard({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="shrink-0 rounded-lg border border-red-500/50 px-4 py-2.5 text-[14px] text-red-400 transition hover:bg-red-500/10"
+            className="shrink-0 rounded-lg border border-[#F22F46]/50 px-4 py-2.5 text-[14px] text-[#F22F46] transition hover:bg-[#F22F46]/10"
           >
             Delete all leads
           </button>
@@ -62,15 +62,15 @@ export default function DeleteAllLeadsCard({
       </div>
 
       {open && (
-        <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/[0.04] p-4">
+        <div className="mt-4 rounded-xl border border-[#F22F46]/20 bg-[#F22F46]/[0.04] p-4">
           <p className="text-sm text-gray-300">
-            This can&apos;t be undone. Type <b className="text-red-400">DELETE ALL LEADS</b> to confirm.
+            This can&apos;t be undone. Type <b className="text-[#F22F46]">DELETE ALL LEADS</b> to confirm.
           </p>
           <input
             value={text}
             onChange={(event) => setText(event.target.value.toUpperCase())}
             placeholder="DELETE ALL LEADS"
-            className="mt-3 h-11 w-full rounded-lg border border-red-500/30 bg-black px-3 text-sm text-white outline-none focus:border-red-500"
+            className="mt-3 h-11 w-full rounded-lg border border-[#F22F46]/30 bg-black px-3 text-sm text-white outline-none focus:border-[#F22F46]"
           />
           <div className="mt-3 flex justify-end gap-2">
             <button
@@ -87,7 +87,7 @@ export default function DeleteAllLeadsCard({
               type="button"
               disabled={busy || text !== "DELETE ALL LEADS"}
               onClick={() => void run()}
-              className="inline-flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-600 disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#F22F46] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#F22F46] disabled:opacity-40"
             >
               {busy ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
               Delete everything

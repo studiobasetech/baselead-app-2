@@ -133,34 +133,34 @@ export default function SignupPage() {
     <main className="min-h-screen overflow-hidden bg-[#020204] text-white">
       {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
-        <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-cyan-500/[0.06] blur-[160px]" />
-        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-blue-400/[0.025] blur-[130px]" />
-        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-purple-600/[0.08] blur-[150px]" />
-        <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-cyan-500/[0.07] blur-[150px]" />
+        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
+        <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-[#2DD4BF]/[0.06] blur-[160px]" />
+        <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-[#3B82F6]/[0.025] blur-[130px]" />
+        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
+        <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-[#2DD4BF]/[0.07] blur-[150px]" />
 
         <div className="absolute inset-0 opacity-50">
-          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-purple-500/40 to-transparent" />
-          <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent" />
-          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-blue-400/30 to-transparent" />
+          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-[#A78BFA]/40 to-transparent" />
+          <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-[#2DD4BF]/30 to-transparent" />
+          <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-[#3B82F6]/30 to-transparent" />
 
-          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
-          <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
-          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
-          <div className="absolute left-[27%] top-[57%] h-px w-[400px] rotate-[-20deg] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
+          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/50 to-transparent" />
+          <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/40 to-transparent" />
+          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/40 to-transparent" />
+          <div className="absolute left-[27%] top-[57%] h-px w-[400px] rotate-[-20deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/30 to-transparent" />
 
-          <div className="absolute left-[39%] top-[16%] h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
-          <div className="absolute left-[45%] top-[25%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
-          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa]" />
-          <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
-          <div className="absolute left-[32%] top-[65%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
+          <div className="absolute left-[39%] top-[16%] h-2 w-2 rounded-full bg-[#A78BFA] shadow-[0_0_12px_#A78BFA]" />
+          <div className="absolute left-[45%] top-[25%] h-2 w-2 rounded-full bg-[#2DD4BF] shadow-[0_0_12px_#2DD4BF]" />
+          <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_10px_#3B82F6]" />
+          <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-[#A78BFA] shadow-[0_0_12px_#A78BFA]" />
+          <div className="absolute left-[32%] top-[65%] h-2 w-2 rounded-full bg-[#2DD4BF] shadow-[0_0_12px_#2DD4BF]" />
         </div>
       </div>
 
       {/* PAGE */}
       <div className="relative z-10 min-h-screen p-3 sm:p-5 lg:p-6">
         <div className="mx-auto flex min-h-[calc(100vh-24px)] max-w-[1600px] items-center justify-center">
-          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-purple-500/70 via-cyan-400/20 to-blue-400/60 p-[1.5px]">
+          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-[#A78BFA]/70 via-[#2DD4BF]/20 to-[#3B82F6]/60 p-[1.5px]">
             <section className="rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
 
               {/* TOP NAV */}
@@ -177,7 +177,7 @@ export default function SignupPage() {
                   Already have an account?
                   <a
                     href="/login"
-                    className="ml-2 font-medium text-blue-400 transition hover:text-blue-300"
+                    className="ml-2 font-medium text-[#3B82F6] transition hover:text-[#3B82F6]"
                   >
                     Log in
                   </a>
@@ -210,7 +210,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <User
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-purple-500"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#A78BFA]"
                     />
 
                     <input
@@ -220,7 +220,7 @@ export default function SignupPage() {
                       placeholder="Enter your name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="h-[64px] w-full rounded-xl border border-purple-500/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-purple-400 focus:ring-1 focus:ring-purple-500/30"
+                      className="h-[64px] w-full rounded-xl border border-[#A78BFA]/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/30"
                     />
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <Mail
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-purple-500"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#A78BFA]"
                     />
 
                     <input
@@ -247,7 +247,7 @@ export default function SignupPage() {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-[64px] w-full rounded-xl border border-purple-500/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-purple-400 focus:ring-1 focus:ring-purple-500/30"
+                      className="h-[64px] w-full rounded-xl border border-[#A78BFA]/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/30"
                     />
                   </div>
                 </div>
@@ -264,7 +264,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <LockKeyhole
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-400"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#84CC16]"
                     />
 
                     <input
@@ -274,7 +274,7 @@ export default function SignupPage() {
                       placeholder="Create a password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-400/70 focus:ring-1 focus:ring-emerald-400/20"
+                      className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#84CC16]/70 focus:ring-1 focus:ring-[#84CC16]/20"
                     />
 
                     <button
@@ -310,7 +310,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <LockKeyhole
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-400"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#84CC16]"
                     />
 
                     <input
@@ -326,7 +326,7 @@ export default function SignupPage() {
                       onChange={(e) =>
                         setConfirmPassword(e.target.value)
                       }
-                      className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-400/70 focus:ring-1 focus:ring-emerald-400/20"
+                      className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#84CC16]/70 focus:ring-1 focus:ring-[#84CC16]/20"
                     />
 
                     <button
@@ -354,14 +354,14 @@ export default function SignupPage() {
 
                 {/* ERROR */}
                 {error && (
-                  <div className="mt-5 rounded-xl border border-red-500/30 bg-red-500/[0.06] px-4 py-3 text-sm text-red-300">
+                  <div className="mt-5 rounded-xl border border-[#F22F46]/30 bg-[#F22F46]/[0.06] px-4 py-3 text-sm text-[#F22F46]">
                     {error}
                   </div>
                 )}
 
                 {/* SUCCESS */}
                 {success && (
-                  <div className="mt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.06] px-4 py-3 text-sm text-emerald-300">
+                  <div className="mt-5 rounded-xl border border-[#84CC16]/30 bg-[#84CC16]/[0.06] px-4 py-3 text-sm text-[#84CC16]">
                     {success}
                   </div>
                 )}
@@ -370,7 +370,7 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="relative mt-6 flex h-[64px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] text-lg font-bold text-white shadow-[0_8px_30px_rgba(59,130,246,0.18)] transition hover:scale-[1.01] hover:from-[#5B9BFF] hover:to-[#3B82F6] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Creating account..." : "Create account"}
 
@@ -430,7 +430,7 @@ export default function SignupPage() {
               <div className="mt-10 flex items-center justify-center gap-3 text-sm text-gray-500">
                 <ShieldCheck
                   size={22}
-                  className="text-purple-500"
+                  className="text-[#A78BFA]"
                 />
 
                 <span>

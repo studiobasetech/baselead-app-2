@@ -620,7 +620,7 @@ function Modal({
             {danger ? (
               <AlertTriangle
                 size={16}
-                className="text-red-400"
+                className="text-[#F22F46]"
               />
             ) : (
               <SettingsIcon
@@ -1167,7 +1167,7 @@ function removeLocation(
           </p>
 
           {!canEditCompany && (
-            <p className="mt-1 text-[8px] text-yellow-500/70">
+            <p className="mt-1 text-[8px] text-[#F5C518]/70">
               {t(
                 "Only the workspace owner can edit company information."
               )}
@@ -1312,7 +1312,7 @@ function removeLocation(
               onClick={() =>
                 removeLocation(index)
               }
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 text-gray-600 transition hover:border-red-500/20 hover:bg-red-500/5 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 text-gray-600 transition hover:border-[#F22F46]/20 hover:bg-[#F22F46]/5 hover:text-[#F22F46] disabled:cursor-not-allowed disabled:opacity-40"
               aria-label={t(
                 "Remove location"
               )}
@@ -1715,7 +1715,7 @@ function AiServicesTab({
                           service.id
                         )
                       }
-                      className="rounded-md p-1.5 text-gray-600 hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="rounded-md p-1.5 text-gray-600 hover:bg-[#F22F46]/10 hover:text-[#F22F46] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <Trash2 size={13} />
                     </button>
@@ -1825,7 +1825,7 @@ function AiServicesTab({
         <div className="flex items-center gap-2">
           <Globe
             size={16}
-            className="text-[#60A5FA]"
+            className="text-[#3B82F6]"
           />
 
           <h2 className="text-sm font-medium">
@@ -3407,7 +3407,7 @@ function TeamTab({
               <div className="flex items-center gap-2">
                 <Users
                   size={16}
-                  className="text-[#60A5FA]"
+                  className="text-[#3B82F6]"
                 />
 
                 <h2 className="text-sm font-medium">
@@ -3435,7 +3435,7 @@ function TeamTab({
 
           {!isWorkspaceOwner &&
             !loading && (
-              <div className="mt-5 rounded-lg border border-yellow-500/15 bg-yellow-500/[0.03] p-4">
+              <div className="mt-5 rounded-lg border border-[#F5C518]/15 bg-[#F5C518]/[0.03] p-4">
                 <div className="flex gap-3">
                   <Shield
                     size={15}
@@ -3544,8 +3544,8 @@ function TeamTab({
                                 className={`inline-flex items-center rounded-full px-2 py-0.5 text-[7px] ${
                                   member.status ===
                                   "active"
-                                    ? "bg-green-500/10 text-green-400"
-                                    : "bg-yellow-500/10 text-yellow-400"
+                                    ? "bg-[#84CC16]/10 text-[#84CC16]"
+                                    : "bg-[#F5C518]/10 text-[#F5C518]"
                                 }`}
                               >
                                 {member.status ===
@@ -3637,13 +3637,13 @@ function TeamTab({
                                     member
                                   )
                                 }
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-600 transition hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
+                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-600 transition hover:bg-[#F22F46]/10 hover:text-[#F22F46] disabled:cursor-not-allowed disabled:opacity-40"
                                 aria-label={t(
                                   "Remove team member"
                                 )}
                               >
                                 {removing ? (
-                                  <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-red-400" />
+                                  <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-[#F22F46]" />
                                 ) : (
                                   <Trash2
                                     size={13}
@@ -3670,7 +3670,7 @@ function TeamTab({
           <div className="flex items-center gap-2">
             <Shield
               size={16}
-              className="text-green-400"
+              className="text-[#84CC16]"
             />
 
             <h2 className="text-sm font-medium">
@@ -3791,7 +3791,7 @@ function TeamTab({
                               }
                             </p>
 
-                            <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[7px] font-medium text-yellow-400">
+                            <span className="rounded-full bg-[#F5C518]/10 px-2 py-0.5 text-[7px] font-medium text-[#F5C518]">
                               {t(
                                 "Pending"
                               )}
@@ -3861,10 +3861,10 @@ function TeamTab({
                                 invitation
                               )
                             }
-                            className="flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[8px] text-gray-500 transition hover:border-red-500/20 hover:bg-red-500/5 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40"
+                            className="flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[8px] text-gray-500 transition hover:border-[#F22F46]/20 hover:bg-[#F22F46]/5 hover:text-[#F22F46] disabled:cursor-not-allowed disabled:opacity-40"
                           >
                             {cancelling ? (
-                              <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-red-400" />
+                              <div className="h-3 w-3 animate-spin rounded-full border border-white/10 border-t-[#F22F46]" />
                             ) : (
                               <X size={12} />
                             )}
@@ -3881,11 +3881,11 @@ function TeamTab({
               </div>
             )}
 
-            <div className="mt-5 rounded-lg border border-[#60A5FA]/15 bg-[#60A5FA]/[0.03] p-4">
+            <div className="mt-5 rounded-lg border border-[#3B82F6]/15 bg-[#3B82F6]/[0.03] p-4">
               <div className="flex gap-3">
                 <Mail
                   size={15}
-                  className="mt-0.5 shrink-0 text-[#60A5FA]"
+                  className="mt-0.5 shrink-0 text-[#3B82F6]"
                 />
 
                 <p className="text-[14px] leading-5 text-gray-600">
@@ -4465,7 +4465,7 @@ const teamPercent =
                 <span
   className={`rounded-full px-2 py-1 text-[9px] font-semibold tracking-wide ${
     isTrial
-      ? "border border-violet-400/25 bg-violet-400/10 text-violet-300"
+      ? "border border-[#A78BFA]/25 bg-[#A78BFA]/10 text-[#A78BFA]"
       : "border border-[#84CC16]/20 bg-[#18200B] text-[#84CC16]"
   }`}
 >
@@ -4481,9 +4481,9 @@ const teamPercent =
             )}
           </p>
 {isTrial && (
-  <div className="mt-5 rounded-2xl border border-violet-400/25 bg-violet-400/[0.08] p-4">
+  <div className="mt-5 rounded-2xl border border-[#A78BFA]/25 bg-[#A78BFA]/[0.08] p-4">
     <div className="flex items-start gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-400/15 text-violet-300">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#A78BFA]/15 text-[#A78BFA]">
         <Sparkles size={17} />
       </div>
 
@@ -4501,7 +4501,7 @@ const teamPercent =
         </p>
 
         {!trialExpired && trialEndsAt && (
-          <p className="mt-2 text-xs text-violet-300">
+          <p className="mt-2 text-xs text-[#A78BFA]">
             Trial ends on{" "}
             {new Date(trialEndsAt).toLocaleDateString()}
           </p>
@@ -4524,7 +4524,7 @@ const teamPercent =
             )}
 
             {process.env.NODE_ENV !== "production" && (
-              <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-dashed border-amber-400/30 bg-amber-400/[0.05] px-3 py-2 text-[11px] text-amber-200">
+              <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-dashed border-[#F5C518]/30 bg-[#F5C518]/[0.05] px-3 py-2 text-[11px] text-amber-200">
                 <span className="mr-1 font-semibold">Test mode (no charge):</span>
                 {(["trial", "Starter", "Pro", "Scale"] as const).map((name) => (
                   <button
@@ -4532,7 +4532,7 @@ const teamPercent =
                     type="button"
                     disabled={savingPlan}
                     onClick={() => void switchTestPlan(name)}
-                    className="rounded-md border border-amber-400/30 px-2 py-1 font-medium hover:bg-amber-400/10 disabled:opacity-50"
+                    className="rounded-md border border-[#F5C518]/30 px-2 py-1 font-medium hover:bg-[#F5C518]/10 disabled:opacity-50"
                   >
                     {name === "trial" ? "Trial" : name}
                   </button>
@@ -4558,14 +4558,14 @@ const teamPercent =
                   </p>
                 </div>
 
-                <span className="text-[14px] font-semibold text-[#60A5FA]">
+                <span className="text-[14px] font-semibold text-[#3B82F6]">
                   {displayedLeadLimit.toLocaleString()}
                 </span>
               </div>
 
               <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#191919]">
                 <div
-                  className="h-full rounded-full bg-[#60A5FA] transition-all duration-500"
+                  className="h-full rounded-full bg-[#3B82F6] transition-all duration-500"
                   style={{
                     width: `${leadPercent}%`,
                   }}
@@ -4675,12 +4675,12 @@ const teamPercent =
       </div>
 
       {/* DISCOUNT CODE */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#60A5FA]/25 bg-[#0B1524] p-5 shadow-[0_10px_30px_rgba(59,130,246,0.08)]">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#60A5FA]/10 blur-3xl" />
+      <div className="relative overflow-hidden rounded-2xl border border-[#3B82F6]/25 bg-[#0B1524] p-5 shadow-[0_10px_30px_rgba(59,130,246,0.08)]">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#3B82F6]/10 blur-3xl" />
 
         <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#60A5FA]/15 text-[#60A5FA]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/15 text-[#3B82F6]">
               <Sparkles size={18} />
             </div>
             <div>
@@ -4697,7 +4697,7 @@ const teamPercent =
 
           {promo ? (
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#60A5FA]/40 bg-[#60A5FA]/15 px-3 py-1.5 text-xs font-semibold text-[#93C5FD]">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#3B82F6]/40 bg-[#3B82F6]/15 px-3 py-1.5 text-xs font-semibold text-[#3B82F6]">
                 <Check size={13} />
                 {t("Code applied")}
               </span>
@@ -4724,7 +4724,7 @@ const teamPercent =
                 autoCapitalize="characters"
                 autoCorrect="off"
                 spellCheck={false}
-                className="h-11 min-w-0 flex-1 rounded-xl border border-[#60A5FA]/25 bg-[#07101C] px-4 text-sm uppercase tracking-wider text-white outline-none transition placeholder:normal-case placeholder:tracking-normal placeholder:text-[#4F6B8E] focus:border-[#60A5FA]/60 lg:w-56"
+                className="h-11 min-w-0 flex-1 rounded-xl border border-[#3B82F6]/25 bg-[#07101C] px-4 text-sm uppercase tracking-wider text-white outline-none transition placeholder:normal-case placeholder:tracking-normal placeholder:text-[#4F6B8E] focus:border-[#3B82F6]/60 lg:w-56"
               />
               <button
                 type="button"
@@ -4739,7 +4739,7 @@ const teamPercent =
         </div>
 
         {promoError && (
-          <p className="relative mt-3 text-xs text-[#F0475C]">{promoError}</p>
+          <p className="relative mt-3 text-xs text-[#F22F46]">{promoError}</p>
         )}
       </div>
 
@@ -4765,9 +4765,9 @@ const teamPercent =
             plan.name === "Starter"
               ? {
                   surface: "bg-[#10243A]",
-                  text: "text-[#60A5FA]",
-                  border: "border-[#60A5FA]/25",
-                  glow: "bg-[#60A5FA]/[0.06]",
+                  text: "text-[#3B82F6]",
+                  border: "border-[#3B82F6]/25",
+                  glow: "bg-[#3B82F6]/[0.06]",
                 }
               : plan.name === "Pro"
               ? {
@@ -5288,7 +5288,7 @@ function NotificationsTab({
               type="button"
               onClick={sendTestNotification}
               disabled={testing}
-              className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs font-semibold text-gray-200 transition hover:border-[#a3e635]/60 hover:text-white disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs font-semibold text-gray-200 transition hover:border-[#84CC16]/60 hover:text-white disabled:opacity-50"
             >
               <Mail size={13} />
               {testing
@@ -5380,10 +5380,10 @@ function SecurityTab({
     <div className="space-y-4">
       <Card className="p-4 sm:p-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#84CC16]/10">
             <Shield
               size={18}
-              className="text-green-400"
+              className="text-[#84CC16]"
             />
           </div>
 
@@ -5423,7 +5423,7 @@ function SecurityTab({
           <div className="flex items-center gap-3">
             <Lock
               size={15}
-              className="text-green-400"
+              className="text-[#84CC16]"
             />
 
             <div>
@@ -5439,7 +5439,7 @@ function SecurityTab({
             </div>
           </div>
 
-          <span className="text-[14px] text-green-400">
+          <span className="text-[14px] text-[#84CC16]">
             {t("Active")}
           </span>
         </div>
@@ -5955,10 +5955,10 @@ function ApiTab({
       <div className="space-y-4">
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#3B82F6]/10">
               <KeyRound
                 size={17}
-                className="text-blue-400"
+                className="text-[#3B82F6]"
               />
             </div>
 
@@ -6109,7 +6109,7 @@ function ApiTab({
                           }
                           className={`rounded-md px-2 py-1 text-[8px] ${
                             webhook.active
-                              ? "bg-green-500/10 text-green-400"
+                              ? "bg-[#84CC16]/10 text-[#84CC16]"
                               : "bg-white/5 text-gray-500"
                           }`}
                         >
@@ -6141,7 +6141,7 @@ function ApiTab({
                               webhook
                             )
                           }
-                          className="rounded-md p-1.5 text-gray-600 hover:bg-red-500/10 hover:text-red-400"
+                          className="rounded-md p-1.5 text-gray-600 hover:bg-[#F22F46]/10 hover:text-[#F22F46]"
                         >
                           <Trash2
                             size={13}
@@ -6238,17 +6238,17 @@ function DangerZone({
 
   return (
     <>
-      <Card className="border-red-500/20 p-4 sm:p-5">
+      <Card className="border-[#F22F46]/20 p-4 sm:p-5">
         <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F22F46]/10">
             <Trash2
               size={16}
-              className="text-red-400"
+              className="text-[#F22F46]"
             />
           </div>
 
           <div>
-            <h2 className="text-sm font-medium text-red-400">
+            <h2 className="text-sm font-medium text-[#F22F46]">
               {t("Danger Zone")}
             </h2>
 
@@ -6263,7 +6263,7 @@ function DangerZone({
         <button
           type="button"
           onClick={() => setStep(1)}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-red-500/50 px-4 py-2.5 text-[14px] text-red-400 transition hover:bg-red-500/10"
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-[#F22F46]/50 px-4 py-2.5 text-[14px] text-[#F22F46] transition hover:bg-[#F22F46]/10"
         >
           <Trash2 size={13} />
           {t("Delete Account")}
@@ -6276,7 +6276,7 @@ function DangerZone({
         onClose={closeDangerModal}
         danger
       >
-        <div className="rounded-lg border border-red-500/20 bg-red-500/[0.04] p-4">
+        <div className="rounded-lg border border-[#F22F46]/20 bg-[#F22F46]/[0.04] p-4">
           <p className="text-[14px] leading-5 text-gray-400">
             {t(
               "This permanently deletes your account, your workspace, all leads, outreach and calendar events, and cancels your subscription. This cannot be undone."
@@ -6294,7 +6294,7 @@ function DangerZone({
           <button
             type="button"
             onClick={() => setStep(2)}
-            className="rounded-lg bg-red-500 px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-red-600"
+            className="rounded-lg bg-[#F22F46] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[#F22F46]"
           >
             {t("Continue")}
           </button>
@@ -6309,7 +6309,7 @@ function DangerZone({
       >
         <p className="text-[14px] leading-5 text-gray-400">
           {t("Type")}{" "}
-          <strong className="text-red-400">
+          <strong className="text-[#F22F46]">
             DELETE
           </strong>{" "}
           {t("to confirm.")}
@@ -6325,10 +6325,10 @@ function DangerZone({
           placeholder={t(
             "Type DELETE"
           )}
-          className="mt-5 h-11 w-full rounded-lg border border-red-500/30 bg-black px-3 text-xs text-white outline-none focus:border-red-500"
+          className="mt-5 h-11 w-full rounded-lg border border-[#F22F46]/30 bg-black px-3 text-xs text-white outline-none focus:border-[#F22F46]"
         />
 
-        <div className="mt-5 rounded-lg border border-yellow-500/15 bg-yellow-500/[0.03] p-4">
+        <div className="mt-5 rounded-lg border border-[#F5C518]/15 bg-[#F5C518]/[0.03] p-4">
           <p className="text-[13px] leading-5 text-gray-500">
             {t(
               "After confirming, you will be signed out and your data will be erased."
@@ -6352,7 +6352,7 @@ function DangerZone({
               closeDangerModal();
               onDeleted();
             }}
-            className="flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center gap-2 rounded-lg bg-[#F22F46] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-[#F22F46] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Trash2 size={13} />
             {t("Confirm")}
@@ -7255,13 +7255,13 @@ phone:
 
   const tabStyle: Record<string, { icon: typeof UserRound; color: string }> = {
     "My Profile": { icon: UserRound, color: "#F5C518" },
-    Company: { icon: Building2, color: "#60A5FA" },
+    Company: { icon: Building2, color: "#3B82F6" },
     "AI & Services": { icon: Sparkles, color: "#A78BFA" },
     Preferences: { icon: Palette, color: "#F472B6" },
-    Team: { icon: Users, color: "#22D3EE" },
+    Team: { icon: Users, color: "#2DD4BF" },
     "Billing & Plan": { icon: CreditCard, color: "#84CC16" },
     Notifications: { icon: Bell, color: "#F97316" },
-    Security: { icon: Lock, color: "#F0475C" },
+    Security: { icon: Lock, color: "#F22F46" },
     "API & Webhooks": { icon: Webhook, color: "#2DD4BF" },
   };
 
@@ -7568,7 +7568,7 @@ phone:
         <div className="fixed bottom-5 left-1/2 z-[300] flex max-w-[90vw] -translate-x-1/2 items-center gap-3 rounded-lg border border-white/10 bg-[#111] px-4 py-3 shadow-2xl">
           <CheckCircle2
             size={14}
-            className="shrink-0 text-green-400"
+            className="shrink-0 text-[#84CC16]"
           />
 
           <span className="text-[14px] text-gray-200">

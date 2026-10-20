@@ -116,9 +116,9 @@ type ModalType =
 
 const GOLD = "#F5C518";
 const PURPLE = "#A78BFA";
-const RED = "#F0475C";
+const RED = "#F22F46";
 const GREEN = "#84CC16";
-const BLUE = "#60A5FA";
+const BLUE = "#3B82F6";
 
 const PAGE_BG = "#050505";
 const HERO_BG = "#0A0A0A";
@@ -167,9 +167,9 @@ const tabs: ReportTab[] = [
 
 const TAB_STYLE: Record<string, { icon: typeof Compass; color: string }> = {
   Overview: { icon: Compass, color: "#F5C518" },
-  Leads: { icon: Users, color: "#60A5FA" },
+  Leads: { icon: Users, color: "#3B82F6" },
   Outreach: { icon: Send, color: "#A78BFA" },
-  Pipeline: { icon: GitBranch, color: "#22D3EE" },
+  Pipeline: { icon: GitBranch, color: "#2DD4BF" },
   Revenue: { icon: DollarSign, color: "#84CC16" },
   "Custom Reports": { icon: SlidersHorizontal, color: "#F472B6" },
 };

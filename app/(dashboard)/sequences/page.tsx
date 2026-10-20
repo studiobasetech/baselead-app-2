@@ -64,9 +64,9 @@ type Draft = { id?: string; name: string; steps: Step[] };
 const MAX_STEPS = 10;
 
 const STEP_TYPES: Record<StepType, { label: string; hint: string; icon: typeof Mail; color: string }> = {
-  email: { label: "Email", hint: "Sent automatically", icon: Mail, color: "#60A5FA" },
+  email: { label: "Email", hint: "Sent automatically", icon: Mail, color: "#3B82F6" },
   call: { label: "Call", hint: "Creates a call task", icon: Phone, color: "#84CC16" },
-  linkedin: { label: "LinkedIn", hint: "Creates a LinkedIn task", icon: Briefcase, color: "#22D3EE" },
+  linkedin: { label: "LinkedIn", hint: "Creates a LinkedIn task", icon: Briefcase, color: "#2DD4BF" },
   task: { label: "Task", hint: "Creates a to-do", icon: CheckCircle2, color: "#A78BFA" },
 };
 
@@ -492,8 +492,8 @@ export default function SequencesPage() {
         <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {[
             { label: "Running", value: totals.running, icon: Play, color: "#84CC16" },
-            { label: "Leads in progress", value: totals.inProgress, icon: Users, color: "#60A5FA" },
-            { label: "Replied", value: totals.replied, icon: MessageSquareReply, color: "#22D3EE" },
+            { label: "Leads in progress", value: totals.inProgress, icon: Users, color: "#3B82F6" },
+            { label: "Replied", value: totals.replied, icon: MessageSquareReply, color: "#2DD4BF" },
             { label: "Finished", value: totals.finished, icon: CheckCircle2, color: "#A78BFA" },
           ].map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="bl-card flex items-center gap-3 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4">
@@ -599,7 +599,7 @@ export default function SequencesPage() {
                     <span>{replyRate}%</span>
                   </div>
                   <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#191919]">
-                    <div className="h-full rounded-full bg-[#22D3EE]" style={{ width: `${replyRate}%` }} />
+                    <div className="h-full rounded-full bg-[#2DD4BF]" style={{ width: `${replyRate}%` }} />
                   </div>
                 </div>
               )}
@@ -647,7 +647,7 @@ export default function SequencesPage() {
                   <button
                     type="button"
                     onClick={() => void remove(sequence)}
-                    className="inline-flex items-center justify-center rounded-xl border border-[#202020] px-3 py-2 text-gray-400 transition hover:border-[#F0475C]/40 hover:text-[#F0475C]"
+                    className="inline-flex items-center justify-center rounded-xl border border-[#202020] px-3 py-2 text-gray-400 transition hover:border-[#F22F46]/40 hover:text-[#F22F46]"
                     aria-label="Delete sequence"
                     title="Delete"
                   >
@@ -948,13 +948,13 @@ export default function SequencesPage() {
                   type="button"
                   disabled={busy}
                   onClick={() => void findPeople()}
-                  className="mt-3 flex w-full items-center gap-3 rounded-xl border border-[#60A5FA]/25 bg-[#60A5FA]/[0.06] px-3 py-2.5 text-left transition hover:bg-[#60A5FA]/10 disabled:opacity-50"
+                  className="mt-3 flex w-full items-center gap-3 rounded-xl border border-[#3B82F6]/25 bg-[#3B82F6]/[0.06] px-3 py-2.5 text-left transition hover:bg-[#3B82F6]/10 disabled:opacity-50"
                 >
-                  <span className="bl-icon-tile !h-7 !w-7 !rounded-lg" style={tile("#60A5FA")}>
+                  <span className="bl-icon-tile !h-7 !w-7 !rounded-lg" style={tile("#3B82F6")}>
                     <Sparkles size={13} strokeWidth={2.2} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-xs font-medium text-[#93C5FD]">Find decision makers&apos; emails</span>
+                    <span className="block text-xs font-medium text-[#3B82F6]">Find decision makers&apos; emails</span>
                     <span className="block text-[11px] text-gray-500">
                       {withoutEmail} lead{withoutEmail === 1 ? " has" : "s have"} no email. We&apos;ll look for the owner or manager ({picked.length ? `${Math.min(picked.length, 25)} selected` : "up to 25"}).
                     </span>
@@ -1098,7 +1098,7 @@ function IconButton({
       disabled={disabled}
       aria-label={label}
       title={label}
-      className={`rounded-lg p-1.5 text-gray-500 transition disabled:opacity-30 ${danger ? "hover:text-[#F0475C]" : "hover:text-white"}`}
+      className={`rounded-lg p-1.5 text-gray-500 transition disabled:opacity-30 ${danger ? "hover:text-[#F22F46]" : "hover:text-white"}`}
     >
       {children}
     </button>

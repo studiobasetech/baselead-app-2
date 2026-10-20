@@ -37,9 +37,9 @@ const ICON: Record<string, typeof Mail> = {
 
 const COLOR: Record<string, string> = {
   email_sent: "#F5C518",
-  reply: "#22D3EE",
-  meeting_booked: "#F0475C",
-  note: "#60A5FA",
+  reply: "#2DD4BF",
+  meeting_booked: "#F22F46",
+  note: "#3B82F6",
   stage_change: "#A78BFA",
 };
 
@@ -347,8 +347,8 @@ export default function LeadDealPanel({
         }
         className={`flex w-full items-center justify-center gap-1.5 rounded-lg border py-2 text-[11px] transition ${
           doNotContact
-            ? "border-[#F0475C]/40 bg-[#F0475C]/10 text-[#F0475C]"
-            : "border-[#202020] text-gray-500 hover:border-[#F0475C]/30 hover:text-[#F0475C]"
+            ? "border-[#F22F46]/40 bg-[#F22F46]/10 text-[#F22F46]"
+            : "border-[#202020] text-gray-500 hover:border-[#F22F46]/30 hover:text-[#F22F46]"
         }`}
       >
         {doNotContact ? "Do not contact (unsubscribed) · undo" : "Mark as do not contact"}
@@ -357,7 +357,7 @@ export default function LeadDealPanel({
       <button
         type="button"
         onClick={() => void markLost()}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#202020] py-2 text-[11px] text-gray-500 transition hover:border-[#F0475C]/30 hover:text-[#F0475C]"
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#202020] py-2 text-[11px] text-gray-500 transition hover:border-[#F22F46]/30 hover:text-[#F22F46]"
       >
         <XCircle size={12} /> Mark as lost
       </button>

@@ -66,10 +66,10 @@ const EMOJIS = ["📁", "🎤", "🛡️", "🎓", "🏆", "💰", "✉️", "�
 
 const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string }[] = [
   { id: "all", label: "All", icon: BookOpen, color: "#F5C518" },
-  { id: "document", label: "Documents", icon: FileText, color: "#60A5FA" },
-  { id: "video", label: "Videos", icon: PlayCircle, color: "#F0475C" },
+  { id: "document", label: "Documents", icon: FileText, color: "#3B82F6" },
+  { id: "video", label: "Videos", icon: PlayCircle, color: "#F22F46" },
   { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA" },
-  { id: "link", label: "Links", icon: Link2, color: "#22D3EE" },
+  { id: "link", label: "Links", icon: Link2, color: "#2DD4BF" },
   { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16" },
 ];
 
@@ -332,7 +332,7 @@ export default function ResourcesPage() {
 
       <div className="mt-5 flex gap-1 overflow-x-auto rounded-xl border border-[#202020] bg-[#0D0D0D] p-1 sm:w-fit">
         {([
-          { id: "resources", label: "Resources", icon: BookOpen, color: "#FBBF24" },
+          { id: "resources", label: "Resources", icon: BookOpen, color: "#F5C518" },
           { id: "proposals", label: "Proposals", icon: FileSignature, color: "#84CC16" },
         ] as const).map((item) => (
           <button
@@ -357,7 +357,7 @@ export default function ResourcesPage() {
       <>
 
       {setupError && (
-        <div className="mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4 text-sm text-amber-200">
+        <div className="mt-6 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-amber-200">
           Run <code>supabase/UPDATE_4_RUN_THIS.sql</code> in Supabase → SQL Editor to turn on the Sales Toolkit.
           <span className="mt-1 block text-xs text-amber-200/60">Supabase says: {setupError}</span>
         </div>
@@ -423,7 +423,7 @@ export default function ResourcesPage() {
             {isManager && (
               <div className="flex gap-1">
                 <button type="button" onClick={() => setEditingFolder(currentFolder)} className="rounded-lg p-2 text-gray-500 hover:bg-white/5 hover:text-white" aria-label="Edit folder"><Pencil size={15} /></button>
-                <button type="button" onClick={() => void deleteFolder(currentFolder)} className="rounded-lg p-2 text-gray-500 hover:bg-[#F0475C]/10 hover:text-[#F0475C]" aria-label="Delete folder"><Trash2 size={15} /></button>
+                <button type="button" onClick={() => void deleteFolder(currentFolder)} className="rounded-lg p-2 text-gray-500 hover:bg-[#F22F46]/10 hover:text-[#F22F46]" aria-label="Delete folder"><Trash2 size={15} /></button>
               </div>
             )}
           </div>
@@ -735,14 +735,14 @@ function Viewer({
           <iframe src={embed} className="h-[60vh] w-full bg-white" title={resource.title} />
         ) : (
           <div className="p-8 text-center text-sm text-gray-400">
-            <FileText size={32} className="mx-auto mb-3 text-[#60A5FA]" />
+            <FileText size={32} className="mx-auto mb-3 text-[#3B82F6]" />
             {resource.file_name || "Document"} {resource.size_bytes ? `· ${formatSize(resource.size_bytes)}` : ""}
             <p className="mt-1 text-xs text-gray-600">Preview isn&apos;t available for this file type — open or download it below.</p>
           </div>
         ))}
         {resource.kind === "link" && (
           <div className="p-8 text-center">
-            <Link2 size={30} className="mx-auto mb-3 text-[#22D3EE]" />
+            <Link2 size={30} className="mx-auto mb-3 text-[#2DD4BF]" />
             <p className="break-all text-sm text-gray-300">{resource.url}</p>
           </div>
         )}
@@ -785,7 +785,7 @@ function Viewer({
               <Star size={16} fill={resource.pinned ? "#F5C518" : "none"} className={resource.pinned ? "text-[#3B82F6]" : ""} />
             </button>
             <button type="button" onClick={onEdit} className="rounded-lg p-2.5 text-gray-400 hover:bg-white/5 hover:text-white" aria-label="Edit"><Pencil size={16} /></button>
-            <button type="button" onClick={onDelete} className="rounded-lg p-2.5 text-gray-400 hover:bg-[#F0475C]/10 hover:text-[#F0475C]" aria-label="Delete"><Trash2 size={16} /></button>
+            <button type="button" onClick={onDelete} className="rounded-lg p-2.5 text-gray-400 hover:bg-[#F22F46]/10 hover:text-[#F22F46]" aria-label="Delete"><Trash2 size={16} /></button>
           </div>
         )}
       </div>

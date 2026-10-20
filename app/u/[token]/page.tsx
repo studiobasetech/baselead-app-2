@@ -35,7 +35,7 @@ export default function UnsubscribePage({ params }: { params: Promise<{ token: s
               {state === "busy" ? "Unsubscribing…" : "Unsubscribe"}
             </button>
             {state === "error" && (
-              <p className="mt-3 text-sm text-[#F0475C]">This link isn&apos;t valid anymore. Reply to the email with “unsubscribe” instead.</p>
+              <p className="mt-3 text-sm text-[#F22F46]">This link isn&apos;t valid anymore. Reply to the email with “unsubscribe” instead.</p>
             )}
           </>
         )}

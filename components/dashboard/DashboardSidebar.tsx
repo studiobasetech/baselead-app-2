@@ -42,16 +42,16 @@ const MUTED = "#8C8C8C";
 
 const NAV = [
   { icon: Sun, label: "Today", href: "/today", color: "#F5C518" },
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", color: "#60A5FA" },
-  { icon: Users, label: "Leads", href: "/leads", color: "#22D3EE" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", color: "#3B82F6" },
+  { icon: Users, label: "Leads", href: "/leads", color: "#2DD4BF" },
   { icon: GitBranch, label: "Pipeline", href: "/pipeline", color: "#2DD4BF" },
   { icon: Send, label: "Outreach", href: "/outreach", color: "#F97316" },
   { icon: Workflow, label: "Sequences", href: "/sequences", color: "#F472B6" },
-  { icon: BookOpen, label: "Sales Toolkit", href: "/resources", color: "#FBBF24" },
-  { icon: CalendarIcon, label: "Calendar", href: "/calendar", color: "#38BDF8" },
-  { icon: BarChart3, label: "Reports", href: "/reports", color: "#C084FC" },
-  { icon: Trophy, label: "Team Performance", href: "/team", color: "#FACC15" },
-  { icon: Plug, label: "Integrations", href: "/integrations", color: "#34D399" },
+  { icon: BookOpen, label: "Sales Toolkit", href: "/resources", color: "#F5C518" },
+  { icon: CalendarIcon, label: "Calendar", href: "/calendar", color: "#3B82F6" },
+  { icon: BarChart3, label: "Reports", href: "/reports", color: "#A78BFA" },
+  { icon: Trophy, label: "Team Performance", href: "/team", color: "#F5C518" },
+  { icon: Plug, label: "Integrations", href: "/integrations", color: "#84CC16" },
   { icon: Settings, label: "Settings", href: "/settings", color: "#9CA3AF" },
   { icon: ListChecks, label: "Setup", href: "/setup", color: "#F5C518" },
 ];
@@ -404,9 +404,9 @@ export default function DashboardSidebar() {
   function getNotificationIcon(type: Notification["type"]) {
     const map = {
       lead: { bg: "bg-[#3B82F6]/10", icon: <Target size={17} style={{ color: GOLD }} /> },
-      outreach: { bg: "bg-blue-500/10", icon: <Mail size={17} className="text-blue-400" /> },
-      meeting: { bg: "bg-purple-500/10", icon: <CalendarIcon size={17} className="text-purple-400" /> },
-      system: { bg: "bg-green-500/10", icon: <CheckCircle2 size={17} className="text-green-400" /> },
+      outreach: { bg: "bg-[#3B82F6]/10", icon: <Mail size={17} className="text-[#3B82F6]" /> },
+      meeting: { bg: "bg-[#A78BFA]/10", icon: <CalendarIcon size={17} className="text-[#A78BFA]" /> },
+      system: { bg: "bg-[#84CC16]/10", icon: <CheckCircle2 size={17} className="text-[#84CC16]" /> },
     }[type];
 
     return (
@@ -667,7 +667,7 @@ export default function DashboardSidebar() {
               type="button"
               onClick={handleLogout}
               disabled={loggingOut}
-              className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-red-500/[0.06] hover:text-red-400 disabled:opacity-60"
+              className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-[#F22F46]/[0.06] hover:text-[#F22F46] disabled:opacity-60"
               style={{ color: MUTED }}
             >
               <LogOut size={22} strokeWidth={1.8} />

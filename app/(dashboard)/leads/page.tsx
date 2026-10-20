@@ -1210,21 +1210,21 @@ function SocialIcons({
       url: lead.instagramUrl,
       content: "◎",
       className:
-        "rounded-[6px] border border-pink-500 font-bold text-pink-500",
+        "rounded-[6px] border border-[#F472B6] font-bold text-[#F472B6]",
     },
     {
       label: "Facebook",
       url: lead.facebookUrl,
       content: "f",
       className:
-        "rounded-full bg-blue-500 font-bold text-white",
+        "rounded-full bg-[#3B82F6] font-bold text-white",
     },
     {
       label: "LinkedIn",
       url: lead.linkedinUrl,
       content: "in",
       className:
-        "rounded-[4px] bg-blue-600 font-bold text-white",
+        "rounded-[4px] bg-[#3B82F6] font-bold text-white",
     },
     {
       label: "X",
@@ -1245,14 +1245,14 @@ function SocialIcons({
       url: lead.pinterestUrl,
       content: "P",
       className:
-        "rounded-full bg-red-500 font-bold text-white",
+        "rounded-full bg-[#F22F46] font-bold text-white",
     },
     {
       label: "Google Maps",
       url: lead.googleMapsUrl,
       content: "↗",
       className:
-        "rounded-full border border-green-500/40 font-bold text-green-400",
+        "rounded-full border border-[#84CC16]/40 font-bold text-[#84CC16]",
     },
   ].filter(
     (item) => item.url,
@@ -1355,7 +1355,7 @@ function LeadCard({
                 {lead.name}
               </h3>
 
-              <span className="text-blue-500">
+              <span className="text-[#3B82F6]">
                 ●
               </span>
             </div>
@@ -1381,7 +1381,7 @@ function LeadCard({
                   onClick={(event) =>
                     event.stopPropagation()
                   }
-                  className="flex min-w-0 items-center gap-1 truncate text-sm text-blue-400 hover:text-blue-300"
+                  className="flex min-w-0 items-center gap-1 truncate text-sm text-[#3B82F6] hover:text-[#3B82F6]"
                 >
                   <span className="truncate">
                     {lead.website}
@@ -1661,7 +1661,7 @@ function LeadDetailPanel({
                 {lead.name}
               </h2>
 
-              <span className="text-blue-500">
+              <span className="text-[#3B82F6]">
                 ●
               </span>
             </div>
@@ -1683,7 +1683,7 @@ function LeadDetailPanel({
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-2 flex items-center gap-1.5 truncate text-sm text-blue-400 hover:text-blue-300"
+                className="mt-2 flex items-center gap-1.5 truncate text-sm text-[#3B82F6] hover:text-[#3B82F6]"
               >
                 <span className="truncate">
                   {lead.website}
@@ -1765,7 +1765,7 @@ function LeadDetailPanel({
                       <a
                         key={email}
                         href={`mailto:${email}`}
-                        className="flex items-start gap-2 break-all text-sm text-blue-400 hover:text-blue-300"
+                        className="flex items-start gap-2 break-all text-sm text-[#3B82F6] hover:text-[#3B82F6]"
                       >
                         <Mail
                           size={13}
@@ -1821,7 +1821,7 @@ function LeadDetailPanel({
               </span>
             </div>
 
-            <span className="mt-2 inline-flex rounded-md bg-green-500/10 px-2.5 py-1 text-sm text-[#84CC16]">
+            <span className="mt-2 inline-flex rounded-md bg-[#84CC16]/10 px-2.5 py-1 text-sm text-[#84CC16]">
               {lead.opportunity}
             </span>
           </div>
@@ -1865,7 +1865,7 @@ function LeadDetailPanel({
                 key={reason}
                 className="flex items-start gap-2.5"
               >
-                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-[10px] text-green-400">
+                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#84CC16]/20 text-[10px] text-[#84CC16]">
                   ✓
                 </span>
 
@@ -1966,7 +1966,7 @@ function LeadDetailPanel({
           }
           className={`flex w-full items-center justify-center gap-2 rounded-lg border py-3 text-sm transition ${
             isAlreadyPipeline
-              ? "border-lime-500/20 bg-lime-500/5 text-[#84CC16]"
+              ? "border-[#84CC16]/20 bg-[#84CC16]/5 text-[#84CC16]"
               : "border-white/10 text-gray-300 hover:bg-white/5"
           }`}
         >
@@ -2241,57 +2241,57 @@ function getRadarColor(
     },
     {
       border:
-        "border-blue-400",
+        "border-[#3B82F6]",
       softBorder:
-        "border-blue-400/50",
+        "border-[#3B82F6]/50",
       bg:
-        "bg-blue-400/15",
+        "bg-[#3B82F6]/15",
       text:
-        "text-blue-400",
+        "text-[#3B82F6]",
       glow:
-        "shadow-[0_0_25px_rgba(96,165,250,0.3)]",
+        "shadow-[0_0_25px_rgba(59,130,246,0.3)]",
       pulse:
-        "border-blue-400/20",
+        "border-[#3B82F6]/20",
       selected:
-        "bg-blue-400 text-black border-blue-400",
+        "bg-[#3B82F6] text-black border-[#3B82F6]",
       dot:
-        "bg-blue-400",
+        "bg-[#3B82F6]",
     },
     {
       border:
-        "border-[#60A5FA]",
+        "border-[#3B82F6]",
       softBorder:
-        "border-[#60A5FA]/50",
+        "border-[#3B82F6]/50",
       bg:
-        "bg-[#60A5FA]/15",
+        "bg-[#3B82F6]/15",
       text:
-        "text-[#60A5FA]",
+        "text-[#3B82F6]",
       glow:
-        "shadow-[0_0_25px_rgba(96,165,250,0.3)]",
+        "shadow-[0_0_25px_rgba(59,130,246,0.3)]",
       pulse:
-        "border-[#60A5FA]/20",
+        "border-[#3B82F6]/20",
       selected:
-        "bg-orange-400 text-black border-[#60A5FA]",
+        "bg-[#F97316] text-black border-[#3B82F6]",
       dot:
-        "bg-orange-400",
+        "bg-[#F97316]",
     },
     {
       border:
-        "border-[#F0475C]",
+        "border-[#F22F46]",
       softBorder:
-        "border-[#F0475C]/50",
+        "border-[#F22F46]/50",
       bg:
-        "bg-[#F0475C]/15",
+        "bg-[#F22F46]/15",
       text:
-        "text-[#F0475C]",
+        "text-[#F22F46]",
       glow:
-        "shadow-[0_0_25px_rgba(240,71,92,0.3)]",
+        "shadow-[0_0_25px_rgba(242,47,70,0.3)]",
       pulse:
-        "border-[#F0475C]/20",
+        "border-[#F22F46]/20",
       selected:
-        "bg-red-400 text-black border-[#F0475C]",
+        "bg-[#F22F46] text-black border-[#F22F46]",
       dot:
-        "bg-red-400",
+        "bg-[#F22F46]",
     },
   ];
 
@@ -2480,7 +2480,7 @@ function OpportunityRadar({
   return (
     <div className="mt-5 space-y-4">
       <div className="relative overflow-hidden lead-discovery-surface rounded-2xl border border-white/10 bg-[#0D0D0D] p-5 lg:p-6">
-        <div className="pointer-events-none absolute -right-10 -top-20 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 -top-20 h-40 w-40 rounded-full bg-[#A78BFA]/10 blur-3xl" />
 
         <div className="relative flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
@@ -2542,9 +2542,9 @@ function OpportunityRadar({
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_365px]">
         <div className="relative min-h-[540px] overflow-hidden lead-discovery-surface rounded-2xl border border-white/10 bg-[#0A0A0A]">
-          <div className="pointer-events-none absolute -left-24 top-20 h-64 w-64 rounded-full bg-blue-500/[0.04] blur-3xl" />
+          <div className="pointer-events-none absolute -left-24 top-20 h-64 w-64 rounded-full bg-[#3B82F6]/[0.04] blur-3xl" />
 
-          <div className="pointer-events-none absolute -right-20 bottom-20 h-64 w-64 rounded-full bg-purple-500/[0.05] blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 bottom-20 h-64 w-64 rounded-full bg-[#A78BFA]/[0.05] blur-3xl" />
 
           <div className="pointer-events-none absolute left-5 right-5 top-5 z-20 flex items-start justify-between gap-4">
             <div className="pointer-events-auto rounded-xl border border-white/10 bg-black/75 px-4 py-3 backdrop-blur-md">
@@ -4465,7 +4465,7 @@ ${companyName}`;
   const LEAD_TAB_STYLE: Record<string, { icon: typeof Users; color: string }> = {
     "All Leads": { icon: List, color: "#3B82F6" },
     "High-Intent": { icon: Flame, color: "#F97316" },
-    Contacted: { icon: Send, color: "#60A5FA" },
+    Contacted: { icon: Send, color: "#3B82F6" },
     Responded: { icon: MessageCircle, color: "#A78BFA" },
     Client: { icon: Handshake, color: "#84CC16" },
   };
@@ -4960,10 +4960,10 @@ ${companyName}`;
                 )
               }
               data-active={discoveryView === "Opportunity Radar"}
-              style={{ "--tab": "#22D3EE" } as CSSProperties}
+              style={{ "--tab": "#2DD4BF" } as CSSProperties}
               className="bl-tab flex items-center gap-2 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium text-gray-500"
             >
-              <Target size={16} className="bl-tab-emoji" style={{ color: "#22D3EE" }} />
+              <Target size={16} className="bl-tab-emoji" style={{ color: "#2DD4BF" }} />
               Opportunity Radar
             </button>
           </div>
@@ -5028,10 +5028,10 @@ ${companyName}`;
                   icon={
                     <Flame
                       size={20}
-                      className="text-red-500"
+                      className="text-[#F22F46]"
                     />
                   }
-                  iconClassName="bg-red-500/10"
+                  iconClassName="bg-[#F22F46]/10"
                 />
 
                 <StatCard
@@ -5069,7 +5069,7 @@ ${companyName}`;
                       className="text-[#A78BFA]"
                     />
                   }
-                  iconClassName="bg-purple-500/10"
+                  iconClassName="bg-[#A78BFA]/10"
                 />
               </div>
 
@@ -5880,7 +5880,7 @@ ${companyName}`;
 
                   {!loading &&
                     error && (
-                      <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-6">
+                      <div className="rounded-xl border border-[#F22F46]/20 bg-[#F22F46]/5 p-6">
                         <p className="text-base font-medium text-white">
                           Unable to load
                           leads
@@ -6210,13 +6210,13 @@ ${companyName}`;
                         Email
                       </p>
 
-                      <p className="mt-1 break-all text-sm text-blue-400">
+                      <p className="mt-1 break-all text-sm text-[#3B82F6]">
                         {selectedLead.emailAddresses[0]}
                       </p>
                     </div>
                   ) : (
-                    <div className="mt-3 rounded-lg border border-orange-500/10 bg-orange-500/[0.03] px-3 py-2.5">
-                      <p className="text-xs text-[#60A5FA]">
+                    <div className="mt-3 rounded-lg border border-[#F97316]/10 bg-[#F97316]/[0.03] px-3 py-2.5">
+                      <p className="text-xs text-[#3B82F6]">
                         This lead does not have an email address.
                       </p>
                     </div>
