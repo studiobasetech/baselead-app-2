@@ -29,7 +29,7 @@ import {
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useState, type MouseEvent, type CSSProperties } from "react";
 
 import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
@@ -40,21 +40,21 @@ const BORDER = "#262626";
 const MUTED = "#8C8C8C";
 
 const NAV = [
-  { icon: Sun, label: "Today", href: "/today" },
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: Search, label: "Lead Discovery", href: "/lead-discovery" },
-  { icon: Users, label: "Leads", href: "/leads" },
-  { icon: GitBranch, label: "Pipeline", href: "/pipeline" },
-  { icon: Send, label: "Outreach", href: "/outreach" },
-  { icon: Workflow, label: "Sequences", href: "/sequences" },
-  { icon: FileSignature, label: "Proposals", href: "/proposals" },
-  { icon: BookOpen, label: "Sales Toolkit", href: "/resources" },
-  { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
-  { icon: BarChart3, label: "Reports", href: "/reports" },
-  { icon: Trophy, label: "Team Performance", href: "/team" },
-  { icon: Plug, label: "Integrations", href: "/integrations" },
-  { icon: Settings, label: "Settings", href: "/settings" },
-  { icon: ListChecks, label: "Setup", href: "/setup" },
+  { icon: Sun, label: "Today", href: "/today", color: "#F5C518" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", color: "#60A5FA" },
+  { icon: Search, label: "Lead Discovery", href: "/lead-discovery", color: "#22D3EE" },
+  { icon: Users, label: "Leads", href: "/leads", color: "#A78BFA" },
+  { icon: GitBranch, label: "Pipeline", href: "/pipeline", color: "#2DD4BF" },
+  { icon: Send, label: "Outreach", href: "/outreach", color: "#F97316" },
+  { icon: Workflow, label: "Sequences", href: "/sequences", color: "#F472B6" },
+  { icon: FileSignature, label: "Proposals", href: "/proposals", color: "#84CC16" },
+  { icon: BookOpen, label: "Sales Toolkit", href: "/resources", color: "#FBBF24" },
+  { icon: CalendarIcon, label: "Calendar", href: "/calendar", color: "#38BDF8" },
+  { icon: BarChart3, label: "Reports", href: "/reports", color: "#C084FC" },
+  { icon: Trophy, label: "Team Performance", href: "/team", color: "#FACC15" },
+  { icon: Plug, label: "Integrations", href: "/integrations", color: "#34D399" },
+  { icon: Settings, label: "Settings", href: "/settings", color: "#9CA3AF" },
+  { icon: ListChecks, label: "Setup", href: "/setup", color: "#F5C518" },
 ];
 
 // The four most-used pages shown in the mobile bottom bar.
@@ -458,7 +458,7 @@ export default function DashboardSidebar() {
       <div className="flex min-h-0 flex-1 flex-col">
         {!notificationsOpen ? (
           <nav className="flex-1 space-y-1 overflow-y-auto px-3">
-            {NAV.map(({ icon: Icon, label, href }) => {
+            {NAV.map(({ icon: Icon, label, href, color }) => {
               const active = isActive(href);
 
               return (
@@ -466,24 +466,26 @@ export default function DashboardSidebar() {
                   key={href}
                   href={href}
                   data-active={active ? "true" : "false"}
-                  className={`baselead-sidebar-nav-item flex items-center gap-4 rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.04] hover:text-white ${
+                  className={`baselead-sidebar-nav-item bl-nav relative flex items-center gap-4 rounded-xl px-4 py-3 text-base font-medium ${
                     active ? "baselead-sidebar-nav-active" : ""
                   }`}
                   style={
-                    active
+                    (active
                       ? {
+                          "--nav": color,
                           backgroundColor: "rgba(255, 255, 255, 0.07)",
                           color: "white",
                           boxShadow:
                             "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 24px -12px rgba(0,0,0,0.8)",
                         }
-                      : { color: MUTED }
+                      : { "--nav": color, color: MUTED }) as CSSProperties
                   }
                 >
                   <Icon
                     size={22}
                     strokeWidth={1.8}
-                    style={active ? { color: GOLD } : undefined}
+                    className="bl-nav-icon"
+                    style={active ? { color } : undefined}
                   />
                   <span>{t(label)}</span>
                 </Link>

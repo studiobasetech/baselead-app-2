@@ -1567,3 +1567,105 @@ html.baselead-light [class*="bg-[#2A2A2A]"] {
 .bl-tab:hover .bl-tab-emoji {
   transform: scale(1.18) rotate(-6deg);
 }
+
+/* =========================================================
+   HIGH-END COLOR HOVERS
+========================================================= */
+
+/* Sidebar: each page has its own color */
+.bl-nav {
+  transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+.bl-nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--nav);
+  box-shadow: 0 0 12px var(--nav);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.bl-nav:hover::before,
+.bl-nav[data-active="true"]::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.bl-nav:hover {
+  color: #fff !important;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--nav) 14%, transparent), transparent 85%) !important;
+}
+.bl-nav .bl-nav-icon {
+  transition: color 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+.bl-nav:hover .bl-nav-icon {
+  color: var(--nav);
+  transform: translateX(2px) scale(1.06);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--nav) 60%, transparent));
+}
+
+/* Cards: soft gold edge-light on hover */
+.bl-card,
+.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"] {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.bl-card:hover,
+.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
+  border-color: rgba(245, 197, 24, 0.22) !important;
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 24, 0.06),
+    0 18px 40px -22px rgba(245, 197, 24, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Gold buttons: light sweep on hover */
+.baselead-main button[class*="bg-[#F5C518]"],
+.baselead-main a[class*="bg-[#F5C518]"] {
+  position: relative;
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 200ms ease, background-color 160ms ease;
+}
+.baselead-main button[class*="bg-[#F5C518]"]::after,
+.baselead-main a[class*="bg-[#F5C518]"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 600ms ease;
+  pointer-events: none;
+}
+.baselead-main button[class*="bg-[#F5C518]"]:hover::after,
+.baselead-main a[class*="bg-[#F5C518]"]:hover::after {
+  transform: translateX(120%);
+}
+.baselead-main button[class*="bg-[#F5C518]"]:hover:not(:disabled),
+.baselead-main a[class*="bg-[#F5C518]"]:hover {
+  box-shadow: 0 10px 28px -10px rgba(245, 197, 24, 0.65);
+  transform: translateY(-1px);
+}
+
+/* Table rows: subtle gold tint */
+.baselead-main tbody tr {
+  transition: background-color 160ms ease;
+}
+.baselead-main tbody tr:hover {
+  background-color: rgba(245, 197, 24, 0.035);
+}
+
+html.baselead-light .bl-card:hover,
+html.baselead-light .baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
+  border-color: rgba(245, 197, 24, 0.45) !important;
+  box-shadow: 0 14px 34px -18px rgba(180, 140, 0, 0.35) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-nav .bl-nav-icon,
+  .baselead-main button[class*="bg-[#F5C518]"]::after {
+    transition: none;
+  }
+}
