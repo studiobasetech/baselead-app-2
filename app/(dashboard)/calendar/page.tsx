@@ -2791,12 +2791,12 @@ function EventDetail({
           <button
             type="button"
             onClick={onJoin}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-[10px] font-semibold text-black transition-all hover:-translate-y-0.5"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-[10px] font-semibold text-white transition-all hover:-translate-y-0.5"
             style={{
               backgroundColor:
-                GOLD,
+                BRAND,
               boxShadow: `0 7px 20px ${hexToRgba(
-                GOLD,
+                BRAND,
                 0.12
               )}`,
             }}
@@ -3653,12 +3653,12 @@ function EventModal({
 
             <button
               type="submit"
-              className="rounded-xl px-5 py-2.5 text-xs font-semibold text-black transition-all hover:-translate-y-0.5"
+              className="rounded-xl px-5 py-2.5 text-xs font-semibold text-white transition-all hover:-translate-y-0.5"
               style={{
                 backgroundColor:
-                  GOLD,
+                  BRAND,
                 boxShadow: `0 8px 22px ${hexToRgba(
-                  GOLD,
+                  BRAND,
                   0.15
                 )}`,
               }}
@@ -5294,12 +5294,12 @@ export default function CalendarPage() {
               onClick={() =>
                 openCreateModal()
               }
-              className="flex h-10 items-center gap-2 rounded-xl px-4 text-xs font-semibold text-black transition-all hover:-translate-y-0.5"
+              className="flex h-10 items-center gap-2 rounded-xl px-4 text-xs font-semibold text-white transition-all hover:-translate-y-0.5"
               style={{
                 backgroundColor:
-                  GOLD,
+                  BRAND,
                 boxShadow: `0 7px 20px ${hexToRgba(
-                  GOLD,
+                  BRAND,
                   0.12
                 )}`,
               }}
