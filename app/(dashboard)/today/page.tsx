@@ -235,6 +235,30 @@ export default function TodayPage() {
     }
   }
 
+  async function editNote(task: { id: string }, changes: { title: string; label: string; color: string }) {
+    setTasks((current) =>
+      current.map((item) => (item.id === task.id ? { ...item, title: changes.title, label: changes.label || null, color: changes.color } : item))
+    );
+
+    let { error } = await supabase
+      .from("tasks")
+      .update({ title: changes.title, label: changes.label || null, color: changes.color })
+      .eq("id", task.id);
+
+    if (error && /color|label|column/i.test(error.message)) {
+      ({ error } = await supabase.from("tasks").update({ title: changes.title }).eq("id", task.id));
+      if (!error) showToast("Run supabase/UPDATE_3_RUN_THIS.sql in Supabase to keep note colors and titles.");
+    }
+
+    if (error) showToast(`Could not save the note: ${error.message}`);
+  }
+
+  async function deleteNote(task: { id: string }) {
+    setTasks((current) => current.filter((item) => item.id !== task.id));
+    const { error } = await supabase.from("tasks").delete().eq("id", task.id);
+    if (error) showToast(`Could not delete the note: ${error.message}`);
+  }
+
   async function addNote(title: string, color: string, label: string) {
     if (!title || !userId) return;
 
@@ -367,6 +391,8 @@ export default function TodayPage() {
           loading={loading}
           onMove={moveTask}
           onAdd={addNote}
+          onEdit={editNote}
+          onDelete={deleteNote}
         />
       </div>
 

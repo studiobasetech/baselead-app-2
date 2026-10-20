@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Caveat } from "next/font/google";
-import { Check, ChevronLeft, ChevronRight, Clock3, Plus, Sparkles, StickyNote, Target, Trophy, Zap } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Clock3, Pencil, Plus, Sparkles, StickyNote, Target, Trash2, Trophy, Zap } from "lucide-react";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["500", "700"], display: "swap" });
 
@@ -82,12 +82,17 @@ export default function PostItBoard({
   loading,
   onMove,
   onAdd,
+  onEdit,
+  onDelete,
 }: {
   tasks: BoardTask[];
   loading: boolean;
   onMove: (task: BoardTask, column: BoardColumn) => Promise<void> | void;
   onAdd: (title: string, color: string, label: string) => Promise<void> | void;
+  onEdit: (task: BoardTask, changes: { title: string; label: string; color: string }) => Promise<void> | void;
+  onDelete: (task: BoardTask) => Promise<void> | void;
 }) {
+  const [editing, setEditing] = useState<{ id: string; title: string; label: string; color: string } | null>(null);
   const [draft, setDraft] = useState("");
   const [draftLabel, setDraftLabel] = useState("");
   const [draftColor, setDraftColor] = useState("yellow");
@@ -167,7 +172,7 @@ export default function PostItBoard({
           </span>
           <div>
           <h2 className="text-base font-semibold">Your tasks</h2>
-          <p className="mt-0.5 text-xs text-gray-500">Drag the notes between columns as you work (on phones, use the arrows).</p>
+          <p className="mt-0.5 text-xs text-gray-500">Drag notes between columns · double-click a note to edit it.</p>
           </div>
         </div>
         <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-400">
@@ -274,7 +279,8 @@ export default function PostItBoard({
                       key={task.id}
                       onPointerDown={(event) => {
                         if (event.pointerType === "touch" || event.button !== 0) return;
-                        if ((event.target as HTMLElement).closest("button,a")) return;
+                        if (editing?.id === task.id) return;
+                        if ((event.target as HTMLElement).closest("button,a,input,textarea")) return;
                         event.preventDefault();
                         const rect = event.currentTarget.getBoundingClientRect();
                         pending.current = {
@@ -310,22 +316,124 @@ export default function PostItBoard({
                         style={{ background: "linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.18) 50%)", borderTopLeftRadius: 4 }}
                       />
 
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{label}</span>
-                        {task.source !== "manual" && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
-                            <Sparkles size={9} /> auto
-                          </span>
-                        )}
-                      </div>
+                      {editing?.id === task.id ? (
+                        <div className="space-y-2" onPointerDown={(event) => event.stopPropagation()}>
+                          <input
+                            value={editing.label}
+                            onChange={(event) => setEditing({ ...editing, label: event.target.value.slice(0, 40) })}
+                            placeholder="Title (optional)"
+                            className="w-full rounded-md bg-black/10 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] outline-none placeholder:normal-case placeholder:tracking-normal placeholder:opacity-50"
+                          />
+                          <textarea
+                            autoFocus
+                            value={editing.title}
+                            onChange={(event) => setEditing({ ...editing, title: event.target.value })}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" && !event.shiftKey) {
+                                event.preventDefault();
+                                if (editing.title.trim()) {
+                                  void onEdit(task, { title: editing.title.trim(), label: editing.label.trim(), color: editing.color });
+                                  setEditing(null);
+                                }
+                              }
+                              if (event.key === "Escape") setEditing(null);
+                            }}
+                            rows={3}
+                            className={`${handwriting.className} w-full resize-none rounded-md bg-black/10 px-2 py-1 text-[20px] font-bold leading-[1.15] outline-none`}
+                          />
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex gap-1">
+                              {Object.entries(NOTE).map(([color, swatch]) => (
+                                <button
+                                  key={color}
+                                  type="button"
+                                  onClick={() => setEditing({ ...editing, color })}
+                                  aria-label={swatch.name}
+                                  className={`h-5 w-5 rounded-full border-2 ${editing.color === color ? "border-black/60" : "border-black/10"}`}
+                                  style={{ background: swatch.paper }}
+                                />
+                              ))}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm("Delete this note?")) {
+                                  void onDelete(task);
+                                  setEditing(null);
+                                }
+                              }}
+                              className="rounded-md p-1 opacity-60 transition hover:bg-black/10 hover:opacity-100"
+                              aria-label="Delete note"
+                              title="Delete note"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                          <div className="flex justify-end gap-1.5 pt-1">
+                            <button type="button" onClick={() => setEditing(null)} className="rounded-md px-2.5 py-1 text-[11px] font-semibold opacity-70 hover:bg-black/10 hover:opacity-100">
+                              Cancel
+                            </button>
+                            <button
+                              type="button"
+                              disabled={!editing.title.trim()}
+                              onClick={() => {
+                                void onEdit(task, { title: editing.title.trim(), label: editing.label.trim(), color: editing.color });
+                                setEditing(null);
+                              }}
+                              className="rounded-md bg-black/80 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-black disabled:opacity-40"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] opacity-60">{label}</span>
+                            <div className="flex items-center gap-1">
+                              {task.source !== "manual" && (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
+                                  <Sparkles size={9} /> auto
+                                </span>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setEditing({
+                                    id: task.id,
+                                    title: task.title,
+                                    label: label,
+                                    color: task.color || Object.entries(NOTE).find(([, value]) => value === note)?.[0] || "yellow",
+                                  })
+                                }
+                                className="rounded-md p-1 opacity-0 transition group-hover:opacity-70 hover:!opacity-100 hover:bg-black/10 focus:opacity-100 max-lg:opacity-60"
+                                aria-label="Edit note"
+                                title="Edit note"
+                              >
+                                <Pencil size={13} />
+                              </button>
+                            </div>
+                          </div>
 
-                      <p className={`${handwriting.className} mt-2 line-clamp-4 text-[22px] font-bold leading-[1.15] ${done ? "line-through decoration-2" : ""}`}>
-                        {task.title}
-                      </p>
+                          <p
+                            onDoubleClick={() =>
+                              setEditing({
+                                id: task.id,
+                                title: task.title,
+                                label: label,
+                                color: task.color || Object.entries(NOTE).find(([, value]) => value === note)?.[0] || "yellow",
+                              })
+                            }
+                            className={`${handwriting.className} mt-2 line-clamp-4 text-[22px] font-bold leading-[1.15] ${done ? "line-through decoration-2" : ""}`}
+                          >
+                            {task.title}
+                          </p>
+                        </>
+                      )}
 
-                      {task.notes && <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 opacity-70">{task.notes}</p>}
+                      {task.notes && editing?.id !== task.id && <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 opacity-70">{task.notes}</p>}
 
-                      <div className="mt-3 flex items-center justify-between gap-2">
+                      <div className={`mt-3 flex items-center justify-between gap-2 ${editing?.id === task.id ? "hidden" : ""}`}>
                         <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${overdue ? "rounded-full bg-[#F0475C] px-2 py-0.5 text-white" : "opacity-70"}`}>
                           <Clock3 size={11} />
                           {done ? "Done" : overdue ? "Overdue" : when(task.due_at)}
