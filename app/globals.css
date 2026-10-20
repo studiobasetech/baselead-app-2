@@ -1749,3 +1749,44 @@ html.baselead-light [class*="bg-[#0a0a0c]"] {
 html.baselead-light .fixed.inset-0[class*="bg-black/"] {
   background-color: rgba(17, 17, 20, 0.38) !important;
 }
+
+/* Light mode — mobile bars, drawer and inline dark borders written by the
+   server as hex (e.g. style="border-color:#262626"). */
+html.baselead-light .baselead-mobile-topbar,
+html.baselead-light .baselead-mobile-bottombar {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="border-color:#262626"],
+html.baselead-light [style*="border-color:#202020"],
+html.baselead-light [style*="border-color:#2A2A2A"],
+html.baselead-light [style*="border-color:#2a2a2a"],
+html.baselead-light [style*="border-color:#1A1A1A"],
+html.baselead-light [style*="border-color:#171717"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="background-color:rgba(8, 8, 10"],
+html.baselead-light [style*="background-color:rgba(8,8,10"] {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+}
+html.baselead-light .fixed.inset-0 > button[class*="bg-black/"] {
+  background-color: rgba(17, 17, 20, 0.35) !important;
+}
+
+/* Light mode scrollbars */
+html.baselead-light * {
+  scrollbar-color: #d1d1d6 transparent;
+}
+html.baselead-light *::-webkit-scrollbar-thumb {
+  background: #d1d1d6;
+}
+
+/* Phones: horizontal tab rows scroll without a visible scrollbar */
+@media (max-width: 1023px) {
+  .overflow-x-auto {
+    scrollbar-width: none;
+  }
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -82,7 +82,10 @@ export async function POST(request: Request) {
     }
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      const message = /permission denied/i.test(error.message)
+        ? "Supabase is blocking the server key. Run supabase/UPDATE_5_RUN_THIS.sql in Supabase → SQL Editor, then try the code again."
+        : error.message;
+      return NextResponse.json({ error: message }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, type: "free", plan: body.plan });

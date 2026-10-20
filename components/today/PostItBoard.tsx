@@ -175,7 +175,7 @@ export default function PostItBoard({
           <p className="mt-0.5 text-xs text-gray-500">Drag notes between columns · double-click a note to edit it.</p>
           </div>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-400">
+        <span className="shrink-0 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-400">
           {openCount} open
         </span>
       </div>
@@ -187,7 +187,7 @@ export default function PostItBoard({
             <input
               value={draftLabel}
               onChange={(event) => setDraftLabel(event.target.value.slice(0, 40))}
-              placeholder="Title (optional) — e.g. Urgent, Client call, Ideas"
+              placeholder="Title (optional) — e.g. Urgent, Ideas"
               className="w-full bg-transparent text-xs font-semibold uppercase tracking-[0.12em] text-gray-300 outline-none placeholder:normal-case placeholder:tracking-normal placeholder:text-gray-600"
             />
             <textarea
@@ -239,7 +239,7 @@ export default function PostItBoard({
             <div
               key={column.id}
               data-column={column.id}
-              className="flex min-h-[260px] flex-col rounded-2xl border p-3 transition-colors duration-200"
+              className="flex min-h-[120px] flex-col rounded-2xl border p-3 transition-colors duration-200 lg:min-h-[260px]"
               style={{
                 borderColor: isOver ? `${column.accent}88` : "rgba(255,255,255,0.07)",
                 background: isOver ? `${column.accent}12` : "rgba(255,255,255,0.015)",

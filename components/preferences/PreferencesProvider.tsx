@@ -352,6 +352,9 @@ function applyPreferencesToDocument(
   root.style.colorScheme =
     isDark ? "dark" : "light";
 
+  root.style.backgroundColor =
+    isDark ? "#050505" : "#f5f5f7";
+
   // Remembered for the next page load so the right theme paints instantly
   // (read by the inline script in app/layout.tsx before React loads).
   try {

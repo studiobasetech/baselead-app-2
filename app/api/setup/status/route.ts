@@ -90,7 +90,9 @@ export async function GET() {
     detail: adminOk
       ? "Automation, notifications, bookings, proposals and SMS can run on the server."
       : hasAdminClient()
-        ? `The key in .env.local was rejected: ${adminError}. Copy the secret key again from Supabase → Project Settings → API Keys.`
+        ? /permission denied/i.test(adminError)
+          ? "The key is correct, but Supabase hasn't given it access to your tables. Run supabase/UPDATE_5_RUN_THIS.sql in Supabase → SQL Editor."
+          : `The key in .env.local was rejected: ${adminError}. Copy the secret key again from Supabase → Project Settings → API Keys.`
         : "Add SUPABASE_SERVICE_ROLE_KEY (Supabase → Project Settings → API Keys → secret key) to .env.local and restart npm run dev.",
   });
 

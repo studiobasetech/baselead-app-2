@@ -360,7 +360,7 @@ export default function TodayPage() {
           {kpis.map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D]/80 p-4 backdrop-blur">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] uppercase tracking-wider text-gray-500">{label}</span>
+                <span className="text-[11px] uppercase tracking-wide text-gray-500 sm:tracking-wider">{label}</span>
                 <span className="bl-icon-tile" style={{ "--tab": color } as CSSProperties}>
                   <Icon size={16} strokeWidth={2.2} />
                 </span>

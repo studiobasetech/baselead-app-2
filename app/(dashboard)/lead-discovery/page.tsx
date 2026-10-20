@@ -1131,7 +1131,7 @@ function StatCard({
 }) {
   return (
     <div className="min-w-0 rounded-xl border border-white/10 bg-[#0D0D0D] p-4 lg:p-5">
-      <div className="flex items-start gap-3">
+      <div className="flex flex-col items-start gap-3 sm:flex-row">
         <div
           className={`baselead-icon-badge flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
             iconClassName ?? ""
@@ -1141,7 +1141,7 @@ function StatCard({
         </div>
 
         <div className="min-w-0">
-          <p className="truncate text-sm text-gray-400">
+          <p className="text-sm leading-tight text-gray-400 sm:truncate">
             {title}
           </p>
 
