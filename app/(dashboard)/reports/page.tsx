@@ -566,41 +566,26 @@ function KpiCard({
   return (
     <div
       style={{
-        ...accentStyle(accentColor),
+        "--kpi": accentColor,
         backgroundColor:
           THEME.panel,
-      }}
+      } as CSSProperties}
       className={[
         "group relative min-w-0 overflow-hidden rounded-2xl border",
         "border-[var(--report-border)]",
-        "shadow-[var(--report-card-shadow)]",
-        "transition-all duration-300 ease-out",
-        "hover:-translate-y-[4px]",
-        "hover:border-[var(--report-item-border)]",
-        "hover:shadow-[var(--report-item-shadow)]",
+        "transition duration-300 ease-out",
+        "hover:-translate-y-1",
+        "hover:border-[color-mix(in_srgb,var(--kpi)_30%,transparent)]",
+        "hover:shadow-[0_14px_34px_-18px_var(--kpi)]",
       ].join(" ")}
     >
-      {/* Accent beam */}
+      {/* Soft color glow in the corner (same as the Dashboard cards) */}
       <div
         style={{
           backgroundColor:
-            accentColor,
-          boxShadow: `0 0 18px ${softGlow(
-            accentColor,
-          )}`,
+            hexToRgba(accentColor, 0.09),
         }}
-        className="absolute inset-x-0 top-0 h-[2px] opacity-70 transition-all duration-300 group-hover:h-[3px] group-hover:opacity-100"
-      />
-
-      {/* Ambient glow */}
-      <div
-        style={{
-          background:
-            `radial-gradient(circle at 88% 5%, ${softGlow(
-              accentColor,
-            )} 0%, transparent 42%)`,
-        }}
-        className="pointer-events-none absolute inset-0 opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full blur-2xl transition-opacity duration-300 group-hover:opacity-100"
       />
 
       <div className="relative p-4">
@@ -716,32 +701,13 @@ function KpiCard({
               style={{
                 width: `${safeProgress}%`,
                 backgroundColor:
-                  accentColor,
-                boxShadow: `0 0 10px ${softGlow(
-                  accentColor,
-                )}`,
+                  hexToRgba(accentColor, 0.75),
               }}
               className="h-full rounded-full transition-all duration-700"
             />
           </div>
         </div>
 
-        {/* Decorative micro-bars */}
-        <div className="absolute bottom-4 right-4 flex h-8 items-end gap-[3px] opacity-35 transition-opacity duration-300 group-hover:opacity-70">
-          {[35, 52, 42, 70, 58, 82, 66].map(
-            (height, index) => (
-              <span
-                key={index}
-                style={{
-                  height: `${height}%`,
-                  backgroundColor:
-                    accentColor,
-                }}
-                className="w-[3px] rounded-full"
-              />
-            ),
-          )}
-        </div>
       </div>
     </div>
   );
