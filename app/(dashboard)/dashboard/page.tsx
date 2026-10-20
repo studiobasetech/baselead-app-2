@@ -55,6 +55,7 @@ import { usePreferences } from "@/components/preferences/PreferencesProvider";
 ========================================================= */
 
 const GOLD = "#F5C518";
+const BRAND = "#3B82F6";
 const PURPLE = "#A78BFA";
 const RED = "#F0475C";
 const GREEN = "#84CC16";
@@ -2295,14 +2296,14 @@ export default function DashboardPage() {
             : "p-5 sm:p-6 lg:p-7"
         }`}
       >
-        {/* GOLD GLOW */}
+        {/* BRAND GLOW */}
 
         <div
           className="pointer-events-none absolute -right-20 -top-28 h-72 w-72 rounded-full blur-3xl"
           style={{
             backgroundColor:
               hexToRgba(
-                GOLD,
+                BRAND,
                 0.1,
               ),
           }}
@@ -2343,12 +2344,12 @@ export default function DashboardPage() {
                 className="flex h-8 w-8 items-center justify-center rounded-xl shadow-[0_0_25px_rgba(59,130,246,0.18)]"
                 style={{
                   backgroundColor:
-                    GOLD,
+                    BRAND,
                 }}
               >
                 <Sparkles
                   size={15}
-                  className="text-black"
+                  className="text-white"
                 />
               </div>
 
@@ -2359,15 +2360,15 @@ export default function DashboardPage() {
                 style={{
                   border:
                     `1px solid ${hexToRgba(
-                      GOLD,
+                      BRAND,
                       0.2,
                     )}`,
                   backgroundColor:
                     hexToRgba(
-                      GOLD,
+                      BRAND,
                       0.06,
                     ),
-                  color: GOLD,
+                  color: BRAND,
                 }}
               >
                 AI-Powered Intelligence
