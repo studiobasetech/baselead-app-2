@@ -1727,3 +1727,20 @@ html.baselead-light [style*="background-color: rgba(8, 8, 10"] {
 html.baselead-light:not(.bl-ready) .baselead-main > * {
   opacity: 0 !important;
 }
+
+/* Journey pop-up colors for both themes */
+.bl-journey-panel {
+  --j-bg: #0a0a0c;
+  --j-line: rgba(255, 255, 255, 0.1);
+  --j-soft: rgba(255, 255, 255, 0.02);
+}
+html.baselead-light .bl-journey-panel {
+  --j-bg: #ffffff;
+  --j-line: rgba(0, 0, 0, 0.09);
+  --j-soft: rgba(0, 0, 0, 0.015);
+  background-color: rgba(255, 255, 255, 0.97) !important;
+}
+html.baselead-light [class*="bg-[#0A0A0C]"],
+html.baselead-light [class*="bg-[#0a0a0c]"] {
+  background-color: #ffffff !important;
+}

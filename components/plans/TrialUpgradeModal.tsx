@@ -184,7 +184,7 @@ export default function TrialUpgradeModal() {
           }}
         />
 
-        <div className="relative max-h-[90vh] overflow-y-auto rounded-[calc(2rem-1.5px)] bg-[#0A0A0C]/95 p-6 sm:p-8">
+        <div className="bl-journey-panel relative max-h-[90vh] overflow-y-auto rounded-[calc(2rem-1.5px)] bg-[#0A0A0C]/95 p-6 sm:p-8">
           <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#F5C518]/10 blur-3xl" />
 
@@ -262,7 +262,7 @@ export default function TrialUpgradeModal() {
                         <div key={step.day} className="flex w-16 flex-col items-center text-center first:items-start first:text-left last:items-end last:text-right">
                           <span
                             className={`flex h-6 w-6 items-center justify-center rounded-full border-2 text-[10px] font-bold ${
-                              reached ? "border-[#F5C518] bg-[#F5C518] text-black" : "border-white/20 bg-[#0A0A0C] text-gray-500"
+                              reached ? "border-[#F5C518] bg-[#F5C518] text-black" : "border-white/20 bg-[var(--j-bg)] text-gray-500"
                             }`}
                             style={dayOfTrial === step.day && reason !== "expired" ? { animation: "blPulse 1.8s ease-in-out infinite" } : undefined}
                           >
@@ -310,8 +310,8 @@ export default function TrialUpgradeModal() {
                       onClick={() => setPlan(name)}
                       className="rounded-2xl border p-4 text-left transition hover:-translate-y-0.5"
                       style={{
-                        borderColor: selected ? `${style.color}aa` : "rgba(255,255,255,0.1)",
-                        background: selected ? `${style.color}14` : "rgba(255,255,255,0.02)",
+                        borderColor: selected ? `${style.color}aa` : "var(--j-line)",
+                        background: selected ? `${style.color}14` : "var(--j-soft)",
                         boxShadow: selected ? `0 0 28px -10px ${style.color}` : "none",
                       }}
                     >
