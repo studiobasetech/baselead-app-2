@@ -5048,10 +5048,10 @@ ${companyName}`;
                   icon={
                     <DollarSign
                       size={20}
-                      className="text-[#3B82F6]"
+                      className="text-[#F5C518]"
                     />
                   }
-                  iconClassName="bg-[#3B82F6]/10"
+                  iconClassName="bg-[#F5C518]/10"
                 />
 
                 <StatCard
