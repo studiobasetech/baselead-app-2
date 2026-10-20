@@ -46,7 +46,6 @@ const NAV = [
   { icon: GitBranch, label: "Pipeline", href: "/pipeline", color: "#2DD4BF" },
   { icon: Send, label: "Outreach", href: "/outreach", color: "#F97316" },
   { icon: Workflow, label: "Sequences", href: "/sequences", color: "#F472B6" },
-  { icon: FileSignature, label: "Proposals", href: "/proposals", color: "#84CC16" },
   { icon: BookOpen, label: "Sales Toolkit", href: "/resources", color: "#FBBF24" },
   { icon: CalendarIcon, label: "Calendar", href: "/calendar", color: "#38BDF8" },
   { icon: BarChart3, label: "Reports", href: "/reports", color: "#C084FC" },

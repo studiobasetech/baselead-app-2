@@ -224,7 +224,7 @@ export default function LeadDealPanel({
       />
 
       <a
-        href={`/proposals?lead=${leadId}`}
+        href={`/resources?tab=proposals&lead=${leadId}`}
         className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#A78BFA]/30 bg-[#A78BFA]/[0.06] text-xs font-medium text-[#A78BFA] transition hover:bg-[#A78BFA]/15"
       >
         <FileSignature size={13} /> Create proposal

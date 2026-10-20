@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   BookOpen,
+  FileSignature,
   Check,
   ChevronRight,
   Copy,
@@ -25,6 +26,7 @@ import {
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { STARTER_KIT } from "@/components/resources/starter-kit";
+import ProposalsWorkspace from "@/components/proposals/ProposalsWorkspace";
 
 type Kind = "document" | "video" | "image" | "link" | "text";
 
@@ -106,6 +108,20 @@ export default function ResourcesPage() {
   const { companyId } = usePlan();
   const [userId, setUserId] = useState<string | null>(null);
   const [isManager, setIsManager] = useState(false);
+  const [section, setSection] = useState<"resources" | "proposals">("resources");
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (new URLSearchParams(window.location.search).get("tab") === "proposals") setSection("proposals");
+  }, []);
+
+  function changeSection(next: "resources" | "proposals") {
+    setSection(next);
+    const url = new URL(window.location.href);
+    if (next === "proposals") url.searchParams.set("tab", "proposals");
+    else url.searchParams.delete("tab");
+    window.history.replaceState(null, "", url.pathname + url.search);
+  }
   const [folders, setFolders] = useState<Folder[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
   const [done, setDone] = useState<Set<string>>(new Set());
@@ -290,11 +306,11 @@ export default function ResourcesPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Sales Toolkit</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Pitches, scripts, training videos and documents your team needs to sell.
+            Pitches, scripts, training, documents and proposals: everything your team needs to sell and close.
           </p>
         </div>
 
-        {isManager && !setupError && (
+        {section === "resources" && isManager && !setupError && (
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -313,6 +329,32 @@ export default function ResourcesPage() {
           </div>
         )}
       </header>
+
+      <div className="mt-5 flex gap-1 overflow-x-auto rounded-xl border border-[#202020] bg-[#0D0D0D] p-1 sm:w-fit">
+        {([
+          { id: "resources", label: "Resources", icon: BookOpen, color: "#FBBF24" },
+          { id: "proposals", label: "Proposals", icon: FileSignature, color: "#84CC16" },
+        ] as const).map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => changeSection(item.id)}
+            data-active={section === item.id}
+            style={{ "--tab": item.color } as CSSProperties}
+            className="bl-tab flex flex-1 items-center justify-center gap-2 rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-gray-500 sm:flex-none"
+          >
+            <item.icon size={15} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: item.color }} aria-hidden />
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {section === "proposals" ? (
+        <div className="mt-6">
+          <ProposalsWorkspace embedded />
+        </div>
+      ) : (
+      <>
 
       {setupError && (
         <div className="mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4 text-sm text-amber-200">
@@ -566,6 +608,9 @@ export default function ResourcesPage() {
           }}
           flash={flash}
         />
+      )}
+
+      </>
       )}
 
       {toast && (
