@@ -348,15 +348,19 @@ export default function TodayPage() {
         </div>
       )}
 
+      <div className="mt-5">
+        {/* TASKS — post-it board */}
+        <PostItBoard
+          tasks={[...dueToday, ...upcoming, ...finished]}
+          loading={loading}
+          onMove={moveTask}
+          onAdd={addNote}
+        />
+      </div>
+
       <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
         <div className="space-y-5">
-          {/* TASKS — post-it board */}
-          <PostItBoard
-            tasks={[...dueToday, ...upcoming, ...finished]}
-            loading={loading}
-            onMove={moveTask}
-            onAdd={addNote}
-          />
+
 
           {/* HOT LEADS */}
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">

@@ -88,27 +88,34 @@ export default function PostItBoard({
     return (element?.dataset.column as BoardColumn | undefined) ?? null;
   }
 
+  const active = useRef(false);
+  const latest = useRef({ tasks, onMove });
+  useEffect(() => {
+    latest.current = { tasks, onMove };
+  }, [tasks, onMove]);
+
   useEffect(() => {
     function move(event: PointerEvent) {
       const start = pending.current;
       if (!start) return;
       const moved = Math.abs(event.clientX - start.startX) + Math.abs(event.clientY - start.startY);
-      if (!drag && moved < 6) return;
+      if (!active.current && moved < 6) return;
+      active.current = true;
       setDrag({ id: start.id, x: event.clientX, y: event.clientY, dx: start.dx, dy: start.dy, width: start.width });
       setOver(columnAt(event.clientX, event.clientY));
     }
 
     function up(event: PointerEvent) {
       const start = pending.current;
+      const wasDragging = active.current;
       pending.current = null;
-      if (!start) return;
-      if (drag) {
-        const column = columnAt(event.clientX, event.clientY);
-        const task = tasks.find((item) => item.id === start.id);
-        if (column && task && columnOf(task) !== column) void onMove(task, column);
-      }
+      active.current = false;
       setDrag(null);
       setOver(null);
+      if (!start || !wasDragging) return;
+      const column = columnAt(event.clientX, event.clientY);
+      const task = latest.current.tasks.find((item) => item.id === start.id);
+      if (column && task && columnOf(task) !== column) void latest.current.onMove(task, column);
     }
 
     window.addEventListener("pointermove", move);
@@ -119,7 +126,7 @@ export default function PostItBoard({
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
     };
-  }, [drag, tasks, onMove]);
+  }, []);
 
   const openCount = tasks.filter((task) => columnOf(task) !== "done").length;
 
