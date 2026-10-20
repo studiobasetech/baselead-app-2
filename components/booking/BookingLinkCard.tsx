@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { CalendarClock, Check, Copy, ExternalLink, Settings2, X } from "lucide-react";
 
 type BookingPage = {
@@ -122,9 +122,9 @@ export default function BookingLinkCard({
 
       <div className="relative flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A78BFA]/10 text-[#A78BFA]">
-            <CalendarClock size={19} />
-          </div>
+          <span className="bl-icon-tile" style={{ "--tab": "#A78BFA" } as CSSProperties}>
+            <CalendarClock size={17} strokeWidth={2.2} />
+          </span>
           <div>
             <h3 className="text-sm font-semibold text-white">Your booking link</h3>
             <p className="mt-0.5 text-xs text-gray-500">

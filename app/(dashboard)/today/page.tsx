@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import SetupBanner from "@/components/setup/SetupBanner";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState , type CSSProperties } from "react";
 import {
   Activity,
   ArrowRight,
@@ -334,10 +334,12 @@ export default function TodayPage() {
 
         <div className="relative mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {kpis.map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="rounded-2xl border border-[#202020] bg-[#0D0D0D]/80 p-4 backdrop-blur">
-              <div className="flex items-center justify-between">
+            <div key={label} className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D]/80 p-4 backdrop-blur">
+              <div className="flex items-center justify-between gap-2">
                 <span className="text-[11px] uppercase tracking-wider text-gray-500">{label}</span>
-                <Icon size={15} style={{ color }} />
+                <span className="bl-icon-tile" style={{ "--tab": color } as CSSProperties}>
+                  <Icon size={16} strokeWidth={2.2} />
+                </span>
               </div>
               <p className="mt-2 text-2xl font-semibold tabular-nums">{loading ? "–" : value}</p>
             </div>
@@ -379,7 +381,9 @@ export default function TodayPage() {
                 <h2 className="text-base font-semibold">Hot leads going cold</h2>
                 <p className="mt-0.5 text-xs text-gray-500">Score 75+ with no activity in 5 days.</p>
               </div>
-              <Flame size={18} className="text-[#84CC16]" />
+              <span className="bl-icon-tile" style={{ "--tab": "#84CC16" } as CSSProperties}>
+                <Flame size={17} strokeWidth={2.2} />
+              </span>
             </div>
 
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -411,7 +415,12 @@ export default function TodayPage() {
           {/* MEETINGS */}
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold">Meetings</h2>
+              <div className="flex items-center gap-3">
+                <span className="bl-icon-tile" style={{ "--tab": "#F0475C" } as CSSProperties}>
+                  <Video size={17} strokeWidth={2.2} />
+                </span>
+                <h2 className="text-base font-semibold">Meetings</h2>
+              </div>
               <Link href="/calendar" className="text-xs text-gray-500 hover:text-[#F5C518]">Calendar</Link>
             </div>
 
@@ -450,7 +459,9 @@ export default function TodayPage() {
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold">Live activity</h2>
-              <Activity size={16} className="text-[#A78BFA]" />
+              <span className="bl-icon-tile" style={{ "--tab": "#A78BFA" } as CSSProperties}>
+                <Activity size={17} strokeWidth={2.2} />
+              </span>
             </div>
 
             <ol className="relative mt-4 space-y-4 border-l border-[#202020] pl-4">
