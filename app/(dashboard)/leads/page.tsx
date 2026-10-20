@@ -1176,7 +1176,7 @@ function LeadLogo({
       : lead.score >= 80
         ? "bg-[#18200B] text-white"
         : lead.score >= 70
-          ? "bg-[#332A0C] text-[#3B82F6]"
+          ? "bg-[#10243A] text-[#3B82F6]"
           : "bg-[#10243A] text-white";
 
   return (

@@ -2019,7 +2019,7 @@ export default function IntegrationsPage() {
                       hover:-translate-y-0.5
                       ${
                         category === item.name
-                          ? "border-[#3B82F6]/35 bg-[#332A0C] shadow-[0_10px_26px_rgba(59,130,246,0.08)]"
+                          ? "border-[#3B82F6]/35 bg-[#10243A] shadow-[0_10px_26px_rgba(59,130,246,0.08)]"
                           : "border-[#202020] bg-[#0D0D0D] hover:border-[#2A2A2A] hover:bg-[#101010] hover:shadow-[0_10px_26px_rgba(0,0,0,0.22)]"
                       }
                     `}
@@ -2912,7 +2912,7 @@ export default function IntegrationsPage() {
         >
           <div className="space-y-5">
             <div className="flex items-start gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#332A0C] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#10243A] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]">
                 <Webhook size={24} />
               </div>
 
@@ -3552,7 +3552,7 @@ function WebhookView({
         </div>
 
         <Card className="bg-[#0D0D0D] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.08)]">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#10243A] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.08)]">
             <Webhook size={28} />
           </div>
 

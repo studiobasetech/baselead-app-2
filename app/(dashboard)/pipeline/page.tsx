@@ -578,7 +578,7 @@ function PipelineCard({
             .map((service) => (
               <span
                 key={service}
-                className="truncate rounded-md border border-[#3B82F6]/10 bg-[#332A0C] px-1.5 py-1 text-[8px] font-medium text-[#3B82F6] transition-all duration-200 group-hover:border-[#3B82F6]/20 group-hover:shadow-[0_0_16px_rgba(59,130,246,0.08)]"
+                className="truncate rounded-md border border-[#3B82F6]/10 bg-[#10243A] px-1.5 py-1 text-[8px] font-medium text-[#3B82F6] transition-all duration-200 group-hover:border-[#3B82F6]/20 group-hover:shadow-[0_0_16px_rgba(59,130,246,0.08)]"
               >
                 {service}
               </span>
@@ -2843,7 +2843,7 @@ export default function PipelinePage() {
               leads.length
             )}
             change="Real leads"
-            iconClass="border border-[#3B82F6]/10 bg-[#332A0C]"
+            iconClass="border border-[#3B82F6]/10 bg-[#10243A]"
           />
 
           <KpiCard
@@ -2926,7 +2926,7 @@ export default function PipelinePage() {
               className={`group flex h-10 w-10 items-center justify-center rounded-xl border shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
                 viewMode ===
                 "kanban"
-                  ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                  ? "border-[#3B82F6]/40 bg-[#10243A] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
                   : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
               }`}
               aria-label="Kanban view"
@@ -2943,7 +2943,7 @@ export default function PipelinePage() {
               }
               className={`group flex h-10 w-10 items-center justify-center rounded-xl border shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
                 viewMode === "list"
-                  ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                  ? "border-[#3B82F6]/40 bg-[#10243A] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
                   : "border-[#202020] bg-[#0D0D0D] text-gray-400 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
               }`}
               aria-label="List view"
@@ -2972,7 +2972,7 @@ export default function PipelinePage() {
             }}
             className={`flex h-10 items-center justify-center gap-2 rounded-xl border px-4 text-xs shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 ${
               filterOpen
-                ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
+                ? "border-[#3B82F6]/40 bg-[#10243A] text-[#3B82F6] shadow-[0_0_22px_rgba(59,130,246,0.07)]"
                 : "border-[#202020] bg-[#0D0D0D] text-gray-300 hover:-translate-y-0.5 hover:border-[#3B82F6]/45 hover:bg-[#101010] hover:text-[#3B82F6] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(59,130,246,0.06)]"
             }`}
           >

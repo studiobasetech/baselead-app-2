@@ -1189,7 +1189,7 @@ function NewOutreachModal({
         <div className="pointer-events-none absolute -left-24 bottom-20 h-56 w-56 rounded-full bg-[#A78BFA]/[0.05] blur-3xl" />
         <div className="flex shrink-0 items-center justify-between border-b border-[#202020] bg-[#101010] px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(59,130,246,0.06)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] shadow-[0_0_20px_rgba(59,130,246,0.06)]">
               <Send
                 size={17}
                 className="text-[#3B82F6]"
@@ -1202,7 +1202,7 @@ function NewOutreachModal({
                   New Outreach
                 </h2>
 
-                <span className="rounded-full border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">
+                <span className="rounded-full border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">
                   Email
                 </span>
               </div>
@@ -1349,7 +1349,7 @@ function NewOutreachModal({
               <div className="relative flex items-start gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#A78BFA]/25 bg-[#F0EAFF] dark:bg-[#241A38] shadow-[0_0_18px_rgba(167,139,250,0.10)]"><Zap size={15} className="text-[#A78BFA]" /></div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2"><p className="text-[12px] font-semibold text-white">AI Outreach Workspace</p><span className="rounded-full border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">Smart Draft</span></div>
+                  <div className="flex flex-wrap items-center gap-2"><p className="text-[12px] font-semibold text-white">AI Outreach Workspace</p><span className="rounded-full border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[#3B82F6]">Smart Draft</span></div>
                   <p className="mt-1 text-[10px] leading-4 text-[#777]">Select a lead, generate a personalized message, then choose whether to save or schedule it.</p>
                 </div>
               </div>
@@ -1380,9 +1380,9 @@ function NewOutreachModal({
                 Sending Channel
               </p>
 
-              <div className="group rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_12px_28px_rgba(59,130,246,0.07)]">
+              <div className="group rounded-xl border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_12px_28px_rgba(59,130,246,0.07)]">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3B82F6]/20 bg-[#EAF3FF] dark:bg-[#10243A]">
                     <Mail
                       size={17}
                       className="text-[#3B82F6]"
@@ -1411,10 +1411,10 @@ function NewOutreachModal({
               </p>
             </section>
 
-            <section className="rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+            <section className="rounded-xl border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#EAF3FF] dark:bg-[#10243A]">
                     <Sparkles
                       size={16}
                       className="text-[#3B82F6]"
@@ -1527,7 +1527,7 @@ function NewOutreachModal({
                   className={`group rounded-xl border p-3 text-left transition-all duration-200 ${
                     status ===
                     "Draft"
-                      ? "border-[#3B82F6]/30 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_20px_rgba(59,130,246,0.06)]"
+                      ? "border-[#3B82F6]/30 bg-[#EAF3FF] dark:bg-[#10243A] shadow-[0_0_20px_rgba(59,130,246,0.06)]"
                       : "border-[#202020] bg-[#101010] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#171717] hover:shadow-[0_12px_28px_rgba(0,0,0,0.24)]"
                   }`}
                 >
@@ -1824,8 +1824,8 @@ function EditOutreachModal({
               Sending Channel
             </label>
 
-            <div className="group flex items-center gap-3 rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] p-3 transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.06)]">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C]">
+            <div className="group flex items-center gap-3 rounded-xl border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] p-3 transition-all duration-200 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.06)]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#3B82F6]/20 bg-[#EAF3FF] dark:bg-[#10243A]">
                 <Mail
                   size={15}
                   className="text-[#3B82F6]"
@@ -2216,7 +2216,7 @@ function OutreachDetail({
               "Sent"
             );
           }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#3B82F6]/25 bg-[#FFF7D6] dark:bg-[#332A0C] py-2.5 text-[10px] text-[#3B82F6] shadow-[0_6px_18px_rgba(59,130,246,0.05)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.10)] disabled:opacity-40 disabled:hover:translate-y-0"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A] py-2.5 text-[10px] text-[#3B82F6] shadow-[0_6px_18px_rgba(59,130,246,0.05)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#3B82F6]/35 hover:shadow-[0_10px_24px_rgba(59,130,246,0.10)] disabled:opacity-40 disabled:hover:translate-y-0"
         >
           <Send size={13} />
           Mark as Sent
@@ -4833,7 +4833,7 @@ StudioBase`;
             }
             className={`flex h-10 items-center justify-center gap-2 rounded-xl border px-4 text-[12px] shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 ${
               filtersOpen
-                ? "border-[#3B82F6]/40 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]"
+                ? "border-[#3B82F6]/40 bg-[#10243A] text-[#3B82F6] shadow-[0_0_18px_rgba(59,130,246,0.06)]"
                 : "border-[#202020] bg-[#0D0D0D] text-[#777] hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#101010] hover:text-white hover:shadow-[0_10px_24px_rgba(0,0,0,0.24)]"
             }`}
           >
@@ -4991,7 +4991,7 @@ StudioBase`;
           filteredOutreach.length ===
             0 && (
             <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0A0A0A] px-5 py-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/20 bg-[#FFF7D6] dark:bg-[#332A0C] shadow-[0_0_24px_rgba(59,130,246,0.06)]">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/20 bg-[#EAF3FF] dark:bg-[#10243A] shadow-[0_0_24px_rgba(59,130,246,0.06)]">
                 <Send
                   size={21}
                   className="text-[#3B82F6]"

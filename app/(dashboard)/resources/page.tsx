@@ -456,7 +456,7 @@ export default function ResourcesPage() {
           {/* Empty state */}
           {folders.length === 0 && resources.length === 0 && (
             <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-10 text-center">
-              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/25 bg-[#332A0C] text-[#3B82F6] shadow-[0_0_24px_rgba(59,130,246,0.12)]">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/25 bg-[#10243A] text-[#3B82F6] shadow-[0_0_24px_rgba(59,130,246,0.12)]">
                 <BookOpen size={24} strokeWidth={2} />
               </span>
               <h2 className="mt-3 text-lg font-semibold">Build your team&apos;s sales toolkit</h2>
