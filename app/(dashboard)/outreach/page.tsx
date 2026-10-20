@@ -162,7 +162,7 @@ const LIGHT_ICON_SURFACES = {
   red: "#FFEBEE",
   green: "#EFFBDC",
   blue: "#EAF3FF",
-  cyan: "#E6FAFF",
+  cyan: "#DDF8F3",
   neutral: "#F1F1F4",
 } as const;
 
@@ -172,7 +172,7 @@ const DARK_ICON_SURFACES = {
   red: "#3A1418",
   green: "#18200B",
   blue: "#10243A",
-  cyan: "#102A31",
+  cyan: "#0F2E2B",
   neutral: "#171717",
 } as const;
 

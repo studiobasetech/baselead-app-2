@@ -563,27 +563,14 @@ function IntegrationLogo({
   integration: Integration;
   large?: boolean;
 }) {
+  // Pastel tile in the same color as the icon (like every other icon tile).
   return (
     <div
-      className={`
-        flex
-        shrink-0
-        items-center
-        justify-center
-        rounded-2xl
-        border
-        border-[#202020]
-        bg-[#171717]
-        shadow-[0_8px_20px_rgba(0,0,0,0.18)]
-        transition-all
-        duration-200
-        group-hover:border-[#2A2A2A]
-        group-hover:shadow-[0_10px_25px_rgba(0,0,0,0.24)]
-        ${large ? "h-14 w-14" : "h-11 w-11"}
-      `}
+      className={`bl-logo-tile flex shrink-0 items-center justify-center rounded-2xl border transition-all duration-200 ${large ? "h-14 w-14" : "h-11 w-11"}`}
       style={{
         color: integration.color,
-      }}
+        "--tab": integration.color,
+      } as CSSProperties}
     >
       {integration.icon}
     </div>
