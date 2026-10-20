@@ -16,6 +16,7 @@
   --baselead-muted: #71717a;
 
   --baselead-yellow: #f5c518;
+  --baselead-blue: #3b82f6;
   --baselead-yellow-hover: #ffd629;
 
   --baselead-red: #ff3b4f;
@@ -148,6 +149,7 @@ html.baselead-light {
   --baselead-muted: #6e6e73;
 
   --baselead-yellow: #f5c518;
+  --baselead-blue: #3b82f6;
   --baselead-yellow-hover: #ffd629;
 
   --baselead-red: #ff3b4f;
@@ -527,15 +529,15 @@ html
 
 /* Yellow */
 html.baselead-light
-  [class*="hover:border-[#F5C518]"]:hover,
+  [class*="hover:border-[#3B82F6]"]:hover,
 html.baselead-light
-  [class*="hover:border-[#f5c518]"]:hover {
-  border-color: rgba(245, 197, 24, 0.55) !important;
+  [class*="hover:border-[#3b82f6]"]:hover {
+  border-color: rgba(59, 130, 246, 0.55) !important;
 
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.045),
-    0 0 0 1px rgba(245, 197, 24, 0.16),
-    0 0 20px rgba(245, 197, 24, 0.08) !important;
+    0 0 0 1px rgba(59, 130, 246, 0.16),
+    0 0 20px rgba(59, 130, 246, 0.08) !important;
 }
 
 /* Purple */
@@ -834,11 +836,11 @@ html.baselead-light textarea:focus {
   background-color: #ffffff !important;
 
   border-color:
-    rgba(245, 197, 24, 0.8) !important;
+    rgba(59, 130, 246, 0.8) !important;
 
   box-shadow:
     0 0 0 3px
-    rgba(245, 197, 24, 0.12) !important;
+    rgba(59, 130, 246, 0.12) !important;
 
   outline: none !important;
 }
@@ -1022,7 +1024,7 @@ html.baselead-light
 
 html.baselead-light ::selection {
   background:
-    rgba(245, 197, 24, 0.25);
+    rgba(59, 130, 246, 0.25);
 
   color: #1d1d1f;
 }
@@ -1042,7 +1044,7 @@ html.baselead-light
 html.baselead-light
   a:focus-visible {
   outline:
-    2px solid rgba(245, 197, 24, 0.75);
+    2px solid rgba(59, 130, 246, 0.75);
 
   outline-offset: 2px;
 }
@@ -1075,7 +1077,7 @@ select:focus-visible,
 textarea:focus-visible,
 a:focus-visible {
   outline:
-    2px solid #f5c518;
+    2px solid #3b82f6;
 
   outline-offset: 2px;
 }
@@ -1098,12 +1100,12 @@ h3 {
 }
 
 ::selection {
-  background: rgba(245, 197, 24, 0.28);
+  background: rgba(59, 130, 246, 0.28);
   color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid rgba(245, 197, 24, 0.55);
+  outline: 2px solid rgba(59, 130, 246, 0.55);
   outline-offset: 2px;
 }
 
@@ -1174,7 +1176,7 @@ html:not(.baselead-light) .baselead-sidebar {
   background: linear-gradient(
     180deg,
     transparent,
-    rgba(245, 197, 24, 0.18) 30%,
+    rgba(59, 130, 246, 0.18) 30%,
     rgba(167, 139, 250, 0.16) 70%,
     transparent
   );
@@ -1266,7 +1268,7 @@ html:not(.baselead-light) main[class*="bg-[#050505]"],
 html:not(.baselead-light) .baselead-main {
   background-image:
     radial-gradient(1000px 560px at 92% -6%, rgba(167, 139, 250, 0.2), transparent 60%),
-    radial-gradient(820px 520px at 4% -2%, rgba(245, 197, 24, 0.1), transparent 58%),
+    radial-gradient(820px 520px at 4% -2%, rgba(59, 130, 246, 0.1), transparent 58%),
     radial-gradient(1000px 700px at 55% 112%, rgba(96, 165, 250, 0.12), transparent 60%),
     radial-gradient(700px 500px at 75% 55%, rgba(34, 211, 238, 0.045), transparent 70%),
     radial-gradient(600px 420px at 22% 60%, rgba(167, 139, 250, 0.06), transparent 70%),
@@ -1630,22 +1632,22 @@ html.baselead-light .bl-tab .bl-tab-emoji {
 }
 .bl-card:hover,
 .baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
-  border-color: rgba(245, 197, 24, 0.22) !important;
+  border-color: rgba(59, 130, 246, 0.22) !important;
   box-shadow:
-    0 0 0 1px rgba(245, 197, 24, 0.06),
-    0 18px 40px -22px rgba(245, 197, 24, 0.28),
+    0 0 0 1px rgba(59, 130, 246, 0.06),
+    0 18px 40px -22px rgba(59, 130, 246, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
 }
 
 /* Gold buttons: light sweep on hover */
-.baselead-main button[class*="bg-[#F5C518]"],
-.baselead-main a[class*="bg-[#F5C518]"] {
+.baselead-main button[class*="bg-[#3B82F6]"],
+.baselead-main a[class*="bg-[#3B82F6]"] {
   position: relative;
   overflow: hidden;
   transition: transform 160ms ease, box-shadow 200ms ease, background-color 160ms ease;
 }
-.baselead-main button[class*="bg-[#F5C518]"]::after,
-.baselead-main a[class*="bg-[#F5C518]"]::after {
+.baselead-main button[class*="bg-[#3B82F6]"]::after,
+.baselead-main a[class*="bg-[#3B82F6]"]::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1654,13 +1656,13 @@ html.baselead-light .bl-tab .bl-tab-emoji {
   transition: transform 600ms ease;
   pointer-events: none;
 }
-.baselead-main button[class*="bg-[#F5C518]"]:hover::after,
-.baselead-main a[class*="bg-[#F5C518]"]:hover::after {
+.baselead-main button[class*="bg-[#3B82F6]"]:hover::after,
+.baselead-main a[class*="bg-[#3B82F6]"]:hover::after {
   transform: translateX(120%);
 }
-.baselead-main button[class*="bg-[#F5C518]"]:hover:not(:disabled),
-.baselead-main a[class*="bg-[#F5C518]"]:hover {
-  box-shadow: 0 10px 28px -10px rgba(245, 197, 24, 0.65);
+.baselead-main button[class*="bg-[#3B82F6]"]:hover:not(:disabled),
+.baselead-main a[class*="bg-[#3B82F6]"]:hover {
+  box-shadow: 0 10px 28px -10px rgba(59, 130, 246, 0.65);
   transform: translateY(-1px);
 }
 
@@ -1669,18 +1671,18 @@ html.baselead-light .bl-tab .bl-tab-emoji {
   transition: background-color 160ms ease;
 }
 .baselead-main tbody tr:hover {
-  background-color: rgba(245, 197, 24, 0.035);
+  background-color: rgba(59, 130, 246, 0.035);
 }
 
 html.baselead-light .bl-card:hover,
 html.baselead-light .baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
-  border-color: rgba(245, 197, 24, 0.45) !important;
+  border-color: rgba(59, 130, 246, 0.45) !important;
   box-shadow: 0 14px 34px -18px rgba(180, 140, 0, 0.35) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bl-nav .bl-nav-icon,
-  .baselead-main button[class*="bg-[#F5C518]"]::after {
+  .baselead-main button[class*="bg-[#3B82F6]"]::after {
     transition: none;
   }
 }
@@ -2121,4 +2123,18 @@ html.baselead-light .baselead-main [class*="bg-black/"]:not(.fixed):not([class*=
   background-color: rgba(255, 255, 255, 0.88) !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   BRAND BLUE (Studio Base). Primary color of the app.
+   Yellow stays as a secondary accent.
+========================================================= */
+::selection { background: rgba(59, 130, 246, 0.28); }
+html.baselead-light .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
+  color: #2563EB !important;
+}
+html:not(.baselead-light) .baselead-main [class~="text-[#3B82F6]"]:not(svg):not(.bl-tab-emoji),
+html:not(.baselead-light) .baselead-main [class~="hover:text-[#3B82F6]"]:hover:not(svg) {
+  color: #60A5FA !important;
 }

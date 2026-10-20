@@ -87,6 +87,7 @@ type EventFilter =
 ========================================================= */
 
 const GOLD = "#F5C518";
+const BRAND = "#3B82F6";
 const PURPLE = "#A78BFA";
 const BLUE = "#60A5FA";
 const GREEN = "#84CC16";
@@ -2125,7 +2126,7 @@ function FocusCalendar({
                 <p className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: palette.mutedDark }}>Suggested next step</p>
                 <p className="mt-2 text-[10px] leading-4" style={{ color: palette.secondary }}>{preparedBrief.nextStep}</p>
               </div>
-              <button type="button" onClick={() => onCreateFollowUp(preparedEvent)} className="flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[10px] font-semibold text-black transition-all hover:-translate-y-0.5" style={{ backgroundColor: GOLD }}>
+              <button type="button" onClick={() => onCreateFollowUp(preparedEvent)} className="flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[10px] font-semibold text-white transition-all hover:-translate-y-0.5" style={{ backgroundColor: BRAND }}>
                 <CheckCircle2 size={14} /> Create automatic follow-up
               </button>
             </div>
@@ -2555,10 +2556,9 @@ function EventDetail({
                 />
               ) : (
                 <span
-                  className="flex h-7 w-7 items-center justify-center rounded-full text-[9px] font-bold text-black"
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-[9px] font-bold text-white"
                   style={{
-                    backgroundColor:
-                      GOLD,
+                    backgroundColor: BRAND,
                   }}
                 >
                   SB

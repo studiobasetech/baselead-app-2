@@ -1,0 +1,2124 @@
+@import "tailwindcss";
+
+/* =========================================================
+   BASELEAD DESIGN SYSTEM
+   DARK MODE IS THE VISUAL SOURCE OF TRUTH
+========================================================= */
+
+:root {
+  --background: #050505;
+  --foreground: #ffffff;
+
+  --baselead-panel: #151515;
+  --baselead-panel-dark: #111111;
+
+  --baselead-border: rgba(255, 255, 255, 0.07);
+  --baselead-muted: #71717a;
+
+  --baselead-yellow: #f5c518;
+  --baselead-yellow-hover: #ffd629;
+
+  --baselead-red: #ff3b4f;
+  --baselead-purple: #a78bfa;
+  --baselead-green: #84cc16;
+  --baselead-blue: #3b82f6;
+
+  --baselead-shadow-sm: none;
+  --baselead-shadow: none;
+  --baselead-shadow-md: none;
+  --baselead-shadow-lg: none;
+}
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+html {
+  background: #050505;
+  color-scheme: dark;
+}
+
+body {
+  background: #050505;
+  color: #ffffff;
+
+  font-family:
+    var(--font-inter),
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+/* In a layer so Tailwind text-size classes on buttons still apply */
+@layer base {
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* =========================================================
+   COMPACT LAYOUT
+========================================================= */
+
+html.baselead-compact
+  .baselead-compact-target {
+  --baselead-compact-spacing: 0.75;
+}
+
+html[data-baselead-compact="true"] {
+  --baselead-density: 0.9;
+}
+
+html[data-baselead-compact="false"] {
+  --baselead-density: 1;
+}
+
+html.baselead-compact
+  .space-y-5
+  > :not([hidden])
+  ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+html.baselead-compact
+  .space-y-4
+  > :not([hidden])
+  ~ :not([hidden]) {
+  margin-top: 0.75rem;
+}
+
+html.baselead-compact .p-5 {
+  padding: 1rem;
+}
+
+html.baselead-compact .p-4 {
+  padding: 0.8rem;
+}
+
+html.baselead-compact .py-3 {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+/* =========================================================
+   LIGHT MODE VARIABLES
+========================================================= */
+
+html.baselead-light {
+  color-scheme: light;
+
+  --background: #f5f5f7;
+  --foreground: #1d1d1f;
+
+  --baselead-panel: #ffffff;
+  --baselead-panel-dark: #fafafa;
+
+  --baselead-border: rgba(0, 0, 0, 0.08);
+  --baselead-muted: #6e6e73;
+
+  --baselead-yellow: #f5c518;
+  --baselead-yellow-hover: #ffd629;
+
+  --baselead-red: #ff3b4f;
+  --baselead-purple: #a78bfa;
+  --baselead-green: #84cc16;
+  --baselead-blue: #3b82f6;
+
+  --baselead-shadow-sm:
+    0 1px 3px rgba(0, 0, 0, 0.035);
+
+  --baselead-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.045);
+
+  --baselead-shadow-md:
+    0 8px 25px rgba(0, 0, 0, 0.06);
+
+  --baselead-shadow-lg:
+    0 16px 45px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   LIGHT MODE — APPLICATION FOUNDATION
+========================================================= */
+
+html.baselead-light {
+  background: #f5f5f7 !important;
+}
+
+html.baselead-light body {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+}
+
+html.baselead-light .min-h-screen {
+  background-color: #f5f5f7 !important;
+}
+
+html.baselead-light main {
+  background-color: #f5f5f7 !important;
+}
+
+/* =========================================================
+   LIGHT MODE — NEUTRAL DARK BACKGROUNDS
+========================================================= */
+
+html.baselead-light
+  [class~="bg-[#050505]"],
+html.baselead-light
+  [class*="bg-[#050505]"] {
+  background-color: #f5f5f7 !important;
+}
+
+html.baselead-light
+  [class*="bg-[#0A0A0A]"],
+html.baselead-light
+  [class*="bg-[#0a0a0a]"] {
+  background-color: #f5f5f7 !important;
+}
+
+html.baselead-light
+  [class*="bg-[#070707]"],
+html.baselead-light
+  [class*="bg-[#080808]"],
+html.baselead-light
+  [class*="bg-[#090909]"],
+html.baselead-light
+  [class*="bg-[#0B0B0B]"],
+html.baselead-light
+  [class*="bg-[#0b0b0b]"],
+html.baselead-light
+  [class*="bg-[#0C0C0C]"],
+html.baselead-light
+  [class*="bg-[#0c0c0c]"],
+html.baselead-light
+  [class*="bg-[#0D0D0D]"],
+html.baselead-light
+  [class*="bg-[#0d0d0d]"],
+html.baselead-light
+  [class*="bg-[#0E0E0E]"],
+html.baselead-light
+  [class*="bg-[#0e0e0e]"],
+html.baselead-light
+  [class*="bg-[#0F0F0F]"],
+html.baselead-light
+  [class*="bg-[#0f0f0f]"],
+html.baselead-light
+  [class*="bg-[#101010]"],
+html.baselead-light
+  [class*="bg-[#111111]"],
+html.baselead-light
+  [class*="bg-[#121212]"],
+html.baselead-light
+  [class*="bg-[#131313]"],
+html.baselead-light
+  [class*="bg-[#141414]"],
+html.baselead-light
+  [class*="bg-[#151515]"],
+html.baselead-light
+  [class*="bg-[#161616]"],
+html.baselead-light
+  [class*="bg-[#171717]"] {
+  background-color: #ffffff !important;
+}
+
+html.baselead-light
+  [class*="bg-[#131313]"] {
+  background-color: #fafafa !important;
+}
+
+/* =========================================================
+   LIGHT MODE — GENERIC BLACK SURFACES
+========================================================= */
+
+html.baselead-light .bg-black {
+  background-color: #ffffff !important;
+}
+
+/* =========================================================
+   LIGHT MODE — TRANSLUCENT BLACK
+========================================================= */
+
+html.baselead-light .bg-black\/5 {
+  background-color: rgba(0, 0, 0, 0.015) !important;
+}
+
+html.baselead-light .bg-black\/10 {
+  background-color: rgba(0, 0, 0, 0.025) !important;
+}
+
+html.baselead-light .bg-black\/20 {
+  background-color: rgba(0, 0, 0, 0.035) !important;
+}
+
+html.baselead-light .bg-black\/30 {
+  background-color: rgba(0, 0, 0, 0.045) !important;
+}
+
+html.baselead-light .bg-black\/40 {
+  background-color: rgba(0, 0, 0, 0.055) !important;
+}
+
+html.baselead-light .bg-black\/50 {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html.baselead-light .bg-black\/60 {
+  background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — TRANSLUCENT WHITE
+========================================================= */
+
+html.baselead-light
+  [class*="bg-white/"] {
+  background-color: rgba(0, 0, 0, 0.025) !important;
+}
+
+html.baselead-light .bg-white\/5,
+html.baselead-light .bg-white\/10 {
+  background-color: #f2f2f7 !important;
+}
+
+/* =========================================================
+   LIGHT MODE — SEARCH / FILTER SURFACES
+========================================================= */
+
+html.baselead-light
+  [class*="bg-white/[0.02]"],
+html.baselead-light
+  [class*="bg-white/[0.03]"],
+html.baselead-light
+  [class*="bg-white/[0.04]"],
+html.baselead-light
+  [class*="bg-white/[0.05]"] {
+  background-color: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.065) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — CARDS
+========================================================= */
+
+html.baselead-light
+  [class*="rounded-lg"][class*="bg-[#0"],
+html.baselead-light
+  [class*="rounded-xl"][class*="bg-[#0"],
+html.baselead-light
+  [class*="rounded-2xl"][class*="bg-[#0"],
+html.baselead-light
+  [class*="rounded-lg"][class*="bg-[#1"],
+html.baselead-light
+  [class*="rounded-xl"][class*="bg-[#1"],
+html.baselead-light
+  [class*="rounded-2xl"][class*="bg-[#1"] {
+  background-color: #ffffff !important;
+
+  border-color: rgba(0, 0, 0, 0.065) !important;
+
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.025),
+    0 6px 18px rgba(0, 0, 0, 0.035);
+}
+
+html.baselead-light .bg-white {
+  background-color: #ffffff !important;
+}
+
+html.baselead-light
+  .bg-white.rounded-lg,
+html.baselead-light
+  .bg-white.rounded-xl,
+html.baselead-light
+  .bg-white.rounded-2xl {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.035),
+    0 8px 24px rgba(0, 0, 0, 0.025);
+}
+
+/* =========================================================
+   LIGHT MODE — CARD DEPTH / HOVER
+========================================================= */
+
+html.baselead-light
+  [class*="rounded-lg"],
+html.baselead-light
+  [class*="rounded-xl"],
+html.baselead-light
+  [class*="rounded-2xl"] {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+html.baselead-light
+  [class*="hover:-translate-y-0.5"]:hover {
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.035),
+    0 12px 30px rgba(0, 0, 0, 0.07);
+}
+
+html.baselead-light
+  [class*="hover:border-[#2A2A2A]"]:hover {
+  border-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+/* =========================================================
+   BASELEAD ICON / EMOJI PALETTE
+   Bright icons + pastel surfaces in BOTH themes.
+   The environment changes; the brand colors stay alive.
+========================================================= */
+
+/* Yellow */
+html
+  [class*="bg-[#332A0C]"],
+html
+  [class*="bg-[#332a0c]"] {
+  background-color: #332a0c;
+}
+
+html.baselead-light
+  [class*="bg-[#332A0C]"],
+html.baselead-light
+  [class*="bg-[#332a0c]"] {
+  background-color: #fff7d6 !important;
+}
+
+/* Purple */
+html
+  [class*="bg-[#241A38]"],
+html
+  [class*="bg-[#241a38]"] {
+  background-color: #241a38;
+}
+
+html.baselead-light
+  [class*="bg-[#241A38]"],
+html.baselead-light
+  [class*="bg-[#241a38]"] {
+  background-color: #f0eaff !important;
+}
+
+/* Green */
+html
+  [class*="bg-[#18200B]"],
+html
+  [class*="bg-[#18200b]"] {
+  background-color: #18200b;
+}
+
+html.baselead-light
+  [class*="bg-[#18200B]"],
+html.baselead-light
+  [class*="bg-[#18200b]"] {
+  background-color: #effbdc !important;
+}
+
+/* Blue */
+html
+  [class*="bg-[#10243A]"],
+html
+  [class*="bg-[#10243a]"] {
+  background-color: #10243a;
+}
+
+html.baselead-light
+  [class*="bg-[#10243A]"],
+html.baselead-light
+  [class*="bg-[#10243a]"] {
+  background-color: #eaf3ff !important;
+}
+
+/* Red */
+html
+  [class*="bg-[#3A1418]"],
+html
+  [class*="bg-[#3a1418]"] {
+  background-color: #3a1418;
+}
+
+html.baselead-light
+  [class*="bg-[#3A1418]"],
+html.baselead-light
+  [class*="bg-[#3a1418]"] {
+  background-color: #ffebee !important;
+}
+
+/* =========================================================
+   ICON COLORS — ALWAYS BRIGHT
+========================================================= */
+
+html
+  [class~="text-[#F5C518]"],
+html
+  [class~="text-[#f5c518]"] {
+  color: #f5c518 !important;
+}
+
+html
+  [class~="text-[#A78BFA]"],
+html
+  [class~="text-[#a78bfa]"] {
+  color: #a78bfa !important;
+}
+
+html
+  [class~="text-[#84CC16]"],
+html
+  [class~="text-[#84cc16]"] {
+  color: #84cc16 !important;
+}
+
+html
+  [class~="text-[#60A5FA]"],
+html
+  [class~="text-[#60a5fa]"] {
+  color: #60a5fa !important;
+}
+
+html
+  [class~="text-[#F0475C]"],
+html
+  [class~="text-[#f0475c]"] {
+  color: #f0475c !important;
+}
+
+html
+  [class~="text-[#ff3b4f]"] {
+  color: #ff3b4f !important;
+}
+
+/* =========================================================
+   LIGHT MODE — COLORED HOVER DELINEATION
+========================================================= */
+
+/* Yellow */
+html.baselead-light
+  [class*="hover:border-[#F5C518]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#f5c518]"]:hover {
+  border-color: rgba(245, 197, 24, 0.55) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.045),
+    0 0 0 1px rgba(245, 197, 24, 0.16),
+    0 0 20px rgba(245, 197, 24, 0.08) !important;
+}
+
+/* Purple */
+html.baselead-light
+  [class*="hover:border-[#A78BFA]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#a78bfa]"]:hover {
+  border-color: rgba(167, 139, 250, 0.55) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.045),
+    0 0 0 1px rgba(167, 139, 250, 0.16),
+    0 0 20px rgba(167, 139, 250, 0.08) !important;
+}
+
+/* Green */
+html.baselead-light
+  [class*="hover:border-[#84CC16]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#84cc16]"]:hover {
+  border-color: rgba(132, 204, 22, 0.55) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.045),
+    0 0 0 1px rgba(132, 204, 22, 0.16),
+    0 0 20px rgba(132, 204, 22, 0.08) !important;
+}
+
+/* Blue */
+html.baselead-light
+  [class*="hover:border-[#60A5FA]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#60a5fa]"]:hover {
+  border-color: rgba(96, 165, 250, 0.55) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.045),
+    0 0 0 1px rgba(96, 165, 250, 0.16),
+    0 0 20px rgba(96, 165, 250, 0.08) !important;
+}
+
+/* Red */
+html.baselead-light
+  [class*="hover:border-[#F0475C]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#f0475c]"]:hover,
+html.baselead-light
+  [class*="hover:border-[#ff3b4f]"]:hover {
+  border-color: rgba(240, 71, 92, 0.55) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.045),
+    0 0 0 1px rgba(240, 71, 92, 0.16),
+    0 0 20px rgba(240, 71, 92, 0.08) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — GENERIC INTERACTIVE ELEMENTS
+========================================================= */
+
+html.baselead-light
+  button[class*="hover:border"],
+html.baselead-light
+  a[class*="hover:border"] {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+html.baselead-light
+  button[class*="hover:border"]:hover,
+html.baselead-light
+  a[class*="hover:border"]:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   LIGHT MODE — SIDEBAR
+========================================================= */
+
+html.baselead-light aside {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+
+  border-right:
+    1px solid rgba(0, 0, 0, 0.07) !important;
+
+  box-shadow:
+    2px 0 16px rgba(0, 0, 0, 0.035) !important;
+}
+
+html.baselead-light
+  aside
+  [class*="bg-[#050505]"],
+html.baselead-light
+  aside
+  [class*="bg-[#070707]"],
+html.baselead-light
+  aside
+  [class*="bg-[#090909]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0A0A0A]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0a0a0a]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0B0B0B]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0b0b0b]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0C0C0C]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0c0c0c]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0D0D0D]"],
+html.baselead-light
+  aside
+  [class*="bg-[#0d0d0d]"],
+html.baselead-light
+  aside
+  [class*="bg-[#101010]"],
+html.baselead-light
+  aside
+  [class*="bg-[#111111]"],
+html.baselead-light
+  aside
+  [class*="bg-[#151515]"],
+html.baselead-light
+  aside
+  .bg-black {
+  background-color: #ffffff !important;
+}
+
+html.baselead-light aside .text-white,
+html.baselead-light aside .text-zinc-50,
+html.baselead-light aside .text-zinc-100 {
+  color: #1d1d1f !important;
+}
+
+html.baselead-light aside .text-zinc-200 {
+  color: #2c2c2e !important;
+}
+
+html.baselead-light aside .text-zinc-300,
+html.baselead-light aside .text-zinc-400 {
+  color: #6e6e73 !important;
+}
+
+html.baselead-light aside .text-zinc-500 {
+  color: #86868b !important;
+}
+
+html.baselead-light
+  aside
+  a:hover,
+html.baselead-light
+  aside
+  button:hover {
+  background-color: #f2f2f7 !important;
+}
+
+html.baselead-light
+  aside
+  a[aria-current="page"],
+html.baselead-light
+  aside
+  [data-active="true"] {
+  background-color: #f2f2f7 !important;
+  color: #1d1d1f !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(0, 0, 0, 0.035);
+}
+
+html.baselead-light
+  aside
+  hr,
+html.baselead-light
+  aside
+  [class*="border-t"] {
+  border-color:
+    rgba(0, 0, 0, 0.07) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — HEADER
+========================================================= */
+
+html.baselead-light header {
+  color: #1d1d1f;
+}
+
+html.baselead-light
+  header
+  [class*="bg-[#0"],
+html.baselead-light
+  header
+  [class*="bg-[#1"],
+html.baselead-light
+  header
+  .bg-black {
+  background-color: #ffffff !important;
+}
+
+/* =========================================================
+   LIGHT MODE — NEUTRAL TEXT
+========================================================= */
+
+html.baselead-light .text-white,
+html.baselead-light .text-zinc-50,
+html.baselead-light .text-zinc-100 {
+  color: #1d1d1f !important;
+}
+
+html.baselead-light .text-zinc-200 {
+  color: #2c2c2e !important;
+}
+
+html.baselead-light .text-zinc-300 {
+  color: #3a3a3c !important;
+}
+
+html.baselead-light .text-zinc-400 {
+  color: #6e6e73 !important;
+}
+
+html.baselead-light .text-zinc-500 {
+  color: #86868b !important;
+}
+
+html.baselead-light .text-zinc-600 {
+  color: #6e6e73 !important;
+}
+
+html.baselead-light .text-zinc-700 {
+  color: #3a3a3c !important;
+}
+
+html.baselead-light
+  [class*="text-white/"] {
+  color: #6e6e73 !important;
+}
+
+/* =========================================================
+   LIGHT MODE — NEUTRAL BORDERS
+========================================================= */
+
+html.baselead-light
+  [class*="border-white/"] {
+  border-color:
+    rgba(0, 0, 0, 0.075) !important;
+}
+
+html.baselead-light
+  [class*="border-zinc-"] {
+  border-color:
+    rgba(0, 0, 0, 0.08) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — FORM CONTROLS
+========================================================= */
+
+html.baselead-light input,
+html.baselead-light select,
+html.baselead-light textarea {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+
+  border-color:
+    rgba(0, 0, 0, 0.1) !important;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.025) !important;
+}
+
+html.baselead-light input:hover,
+html.baselead-light select:hover,
+html.baselead-light textarea:hover {
+  border-color:
+    rgba(0, 0, 0, 0.15) !important;
+}
+
+html.baselead-light input:focus,
+html.baselead-light select:focus,
+html.baselead-light textarea:focus {
+  background-color: #ffffff !important;
+
+  border-color:
+    rgba(245, 197, 24, 0.8) !important;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(245, 197, 24, 0.12) !important;
+
+  outline: none !important;
+}
+
+html.baselead-light input::placeholder,
+html.baselead-light textarea::placeholder {
+  color: #a1a1a6 !important;
+}
+
+html.baselead-light select option {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+}
+
+/* =========================================================
+   LIGHT MODE — DROPDOWNS
+========================================================= */
+
+html.baselead-light
+  [role="menu"],
+html.baselead-light
+  [role="listbox"] {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+
+  border:
+    1px solid rgba(0, 0, 0, 0.08) !important;
+
+  box-shadow:
+    0 12px 35px
+    rgba(0, 0, 0, 0.1) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — MODALS
+========================================================= */
+
+html.baselead-light
+  [role="dialog"] {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+
+  border-color:
+    rgba(0, 0, 0, 0.08) !important;
+
+  box-shadow:
+    0 20px 55px
+    rgba(0, 0, 0, 0.12) !important;
+}
+
+html.baselead-light
+  [data-baselead-modal-backdrop] {
+  background-color:
+    rgba(0, 0, 0, 0.28) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — TABLES
+========================================================= */
+
+html.baselead-light table {
+  color: #1d1d1f !important;
+}
+
+html.baselead-light thead,
+html.baselead-light th {
+  color: #6e6e73 !important;
+}
+
+html.baselead-light td {
+  color: #1d1d1f;
+}
+
+html.baselead-light tr {
+  border-color:
+    rgba(0, 0, 0, 0.065) !important;
+}
+
+html.baselead-light
+  [class*="divide-white"] {
+  border-color:
+    rgba(0, 0, 0, 0.065) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — HOVER STATES
+========================================================= */
+
+html.baselead-light
+  [class*="hover:bg-white/"]:hover {
+  background-color: #f2f2f7 !important;
+}
+
+html.baselead-light
+  [class*="hover:bg-black"]:hover {
+  background-color: #f2f2f7 !important;
+}
+
+html.baselead-light
+  [class*="hover:bg-[#050505]"]:hover,
+html.baselead-light
+  [class*="hover:bg-[#0A0A0A]"]:hover,
+html.baselead-light
+  [class*="hover:bg-[#0a0a0a]"]:hover,
+html.baselead-light
+  [class*="hover:bg-[#111111]"]:hover {
+  background-color: #f2f2f7 !important;
+}
+
+html.baselead-light
+  [class*="hover:text-white"]:hover {
+  color: #1d1d1f !important;
+}
+
+/* =========================================================
+   LIGHT MODE — MOBILE NAVIGATION
+========================================================= */
+
+html.baselead-light
+  nav.fixed {
+  background:
+    rgba(255, 255, 255, 0.94) !important;
+
+  color: #1d1d1f !important;
+
+  border-color:
+    rgba(0, 0, 0, 0.075) !important;
+
+  box-shadow:
+    0 -5px 22px
+    rgba(0, 0, 0, 0.05) !important;
+
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+/* =========================================================
+   LIGHT MODE — FOOTER
+========================================================= */
+
+html.baselead-light footer {
+  color: #86868b !important;
+
+  border-color:
+    rgba(0, 0, 0, 0.07) !important;
+}
+
+/* =========================================================
+   LIGHT MODE — SCROLLBAR
+========================================================= */
+
+html.baselead-light
+  ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+html.baselead-light
+  ::-webkit-scrollbar-track {
+  background: #f5f5f7;
+}
+
+html.baselead-light
+  ::-webkit-scrollbar-thumb {
+  background: #c7c7cc;
+
+  border-radius: 999px;
+
+  border:
+    2px solid #f5f5f7;
+}
+
+html.baselead-light
+  ::-webkit-scrollbar-thumb:hover {
+  background: #aeaeb2;
+}
+
+/* =========================================================
+   LIGHT MODE — SELECTION
+========================================================= */
+
+html.baselead-light ::selection {
+  background:
+    rgba(245, 197, 24, 0.25);
+
+  color: #1d1d1f;
+}
+
+/* =========================================================
+   LIGHT MODE — FOCUS
+========================================================= */
+
+html.baselead-light
+  button:focus-visible,
+html.baselead-light
+  input:focus-visible,
+html.baselead-light
+  select:focus-visible,
+html.baselead-light
+  textarea:focus-visible,
+html.baselead-light
+  a:focus-visible {
+  outline:
+    2px solid rgba(245, 197, 24, 0.75);
+
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   LIGHT MODE — THEME TRANSITIONS
+========================================================= */
+
+html.baselead-light body,
+html.baselead-light main,
+html.baselead-light aside,
+html.baselead-light nav,
+html.baselead-light header,
+html.baselead-light footer,
+html.baselead-light section {
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* =========================================================
+   GLOBAL ACCESSIBILITY / FOCUS
+========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline:
+    2px solid #f5c518;
+
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   PREMIUM LAYER (dark mode)
+   Adds depth, light and polish without changing the brand
+   colors or any hover states.
+========================================================= */
+
+body {
+  font-feature-settings: "cv11", "ss01", "ss03";
+  letter-spacing: -0.006em;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.022em;
+}
+
+::selection {
+  background: rgba(245, 197, 24, 0.28);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(245, 197, 24, 0.55);
+  outline-offset: 2px;
+}
+
+/* Tiny labels were hard to read on phones */
+.text-\[7px\] { font-size: 9px; }
+.text-\[8px\] { font-size: 10px; }
+.text-\[9px\] { font-size: 10.5px; }
+
+/* Thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #262626 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #232323;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #333333;
+}
+
+/* Ambient light behind every page (keeps the #050505 base) */
+
+
+/* Film grain for a richer, less flat black */
+html:not(.baselead-light) body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Sidebar: glass with a light edge */
+html:not(.baselead-light) .baselead-sidebar {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.025),
+    rgba(255, 255, 255, 0) 30%,
+    rgba(167, 139, 250, 0.025) 100%
+  );
+}
+
+.baselead-sidebar {
+  position: relative;
+}
+
+.baselead-sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(245, 197, 24, 0.18) 30%,
+    rgba(167, 139, 250, 0.16) 70%,
+    transparent
+  );
+}
+
+/* Gentle entrance for each page */
+/* Opacity only, and no lingering fill: a transform animation would turn
+   the page into the containing block of fixed pop-ups (they'd open far
+   down the page instead of in the middle of the screen). */
+@keyframes blFadeUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.baselead-main > * {
+  animation: blFadeUp 0.3s ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .baselead-main > * {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   MOBILE / INSTALLED APP
+========================================================= */
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 1023px) {
+  .baselead-mobile-topbar {
+    height: calc(3.5rem + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .baselead-mobile-bottombar {
+    height: calc(4rem + env(safe-area-inset-bottom));
+  }
+
+  .baselead-main {
+    padding-top: calc(3.5rem + env(safe-area-inset-top)) !important;
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* iOS zooms into inputs under 16px */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Bigger touch targets in the bottom bar */
+  .baselead-mobile-bottombar a,
+  .baselead-mobile-bottombar button {
+    min-height: 44px;
+  }
+}
+
+/* Installed app (standalone): no rubber-band on the shell */
+@media (display-mode: standalone) {
+  html,
+  body {
+    overscroll-behavior-y: none;
+  }
+}
+
+
+/* =========================================================
+   GLASS LAYER — black, semi-transparent "glass" panels with
+   depth. Generated from the app's own color classes.
+   Brand colors, borders and colored hovers are untouched;
+   hover backgrounds become glass too.
+========================================================= */
+
+/* Page: pure black with soft studio lighting behind the glass */
+html:not(.baselead-light) main[class*="bg-[#050505]"],
+html:not(.baselead-light) .baselead-main {
+  background-image:
+    radial-gradient(1000px 560px at 92% -6%, rgba(167, 139, 250, 0.2), transparent 60%),
+    radial-gradient(820px 520px at 4% -2%, rgba(245, 197, 24, 0.1), transparent 58%),
+    radial-gradient(1000px 700px at 55% 112%, rgba(96, 165, 250, 0.12), transparent 60%),
+    radial-gradient(700px 500px at 75% 55%, rgba(34, 211, 238, 0.045), transparent 70%),
+    radial-gradient(600px 420px at 22% 60%, rgba(167, 139, 250, 0.06), transparent 70%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%);
+  background-attachment: fixed;
+}
+
+/* Translucent backgrounds */
+html:not(.baselead-light) .bg-\[\#060606\] { background-color: rgba(6,6,6,0.42); }
+html:not(.baselead-light) .bg-\[\#070707\] { background-color: rgba(7,7,7,0.42); }
+html:not(.baselead-light) .bg-\[\#07101C\] { background-color: rgba(7,16,28,0.5); }
+html:not(.baselead-light) .bg-\[\#080808\] { background-color: rgba(8,8,8,0.42); }
+html:not(.baselead-light) .bg-\[\#090909\] { background-color: rgba(9,9,9,0.42); }
+html:not(.baselead-light) .bg-\[\#0A0A0A\] { background-color: rgba(10,10,10,0.42); }
+html:not(.baselead-light) .bg-\[\#0B0B0D\] { background-color: rgba(11,11,13,0.42); }
+html:not(.baselead-light) .bg-\[\#0B0B0F\] { background-color: rgba(11,11,15,0.42); }
+html:not(.baselead-light) .bg-\[\#0B1524\] { background-color: rgba(11,21,36,0.5); }
+html:not(.baselead-light) .bg-\[\#0D0D0D\] { background-color: rgba(13,13,13,0.42); }
+html:not(.baselead-light) .bg-\[\#0a0a0a\] { background-color: rgba(10,10,10,0.42); }
+html:not(.baselead-light) .bg-\[\#0b0b08\] { background-color: rgba(11,11,8,0.42); }
+html:not(.baselead-light) .bg-\[\#101010\] { background-color: rgba(16,16,16,0.42); }
+html:not(.baselead-light) .bg-\[\#10243A\] { background-color: rgba(16,36,58,0.5); }
+html:not(.baselead-light) .bg-\[\#102A31\] { background-color: rgba(16,42,49,0.5); }
+html:not(.baselead-light) .bg-\[\#111111\] { background-color: rgba(17,17,17,0.42); }
+html:not(.baselead-light) .bg-\[\#123a1e\] { background-color: rgba(18,58,30,0.5); }
+html:not(.baselead-light) .bg-\[\#123b2c\] { background-color: rgba(18,59,44,0.5); }
+html:not(.baselead-light) .bg-\[\#171717\] { background-color: rgba(23,23,23,0.42); }
+html:not(.baselead-light) .bg-\[\#18200B\] { background-color: rgba(24,32,11,0.5); }
+html:not(.baselead-light) .bg-\[\#191919\] { background-color: rgba(25,25,25,0.42); }
+html:not(.baselead-light) .bg-\[\#19461f\] { background-color: rgba(25,70,31,0.5); }
+html:not(.baselead-light) .bg-\[\#1B1B1B\] { background-color: rgba(27,27,27,0.42); }
+html:not(.baselead-light) .bg-\[\#202020\] { background-color: rgba(32,32,32,0.42); }
+html:not(.baselead-light) .bg-\[\#241A38\] { background-color: rgba(36,26,56,0.5); }
+html:not(.baselead-light) .bg-\[\#2A2A2A\] { background-color: rgba(42,42,42,0.42); }
+html:not(.baselead-light) .bg-\[\#332A0C\] { background-color: rgba(51,42,12,0.5); }
+html:not(.baselead-light) .bg-\[\#3A1418\] { background-color: rgba(58,20,24,0.5); }
+
+/* Glass hovers (keep the color, add transparency) */
+html:not(.baselead-light) .focus\:bg-\[\#101010\]:focus { background-color: rgba(16,16,16,0.7); }
+html:not(.baselead-light) .focus\:bg-\[\#171717\]:focus { background-color: rgba(23,23,23,0.7); }
+html:not(.baselead-light) .group:hover .group-hover\:bg-\[\#171717\] { background-color: rgba(23,23,23,0.68); }
+html:not(.baselead-light) .group:hover .group-hover\:bg-\[\#191919\] { background-color: rgba(25,25,25,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#0D0D0D\]:hover { background-color: rgba(13,13,13,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#0a0a0a\]:hover { background-color: rgba(10,10,10,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#101010\]:hover { background-color: rgba(16,16,16,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#171717\]:hover { background-color: rgba(23,23,23,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#191919\]:hover { background-color: rgba(25,25,25,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#1B1B1B\]:hover { background-color: rgba(27,27,27,0.68); }
+html:not(.baselead-light) .hover\:bg-\[\#3A1418\]:hover { background-color: rgba(58,20,24,0.6); }
+
+/* Depth: glass edge light, inner sheen and layered shadows.
+   var(--tw-shadow) keeps every colored hover glow working. */
+:is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+):where([class*="rounded"]) {
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.015) 30%,
+      rgba(255, 255, 255, 0) 55%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.11),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 18px 50px -22px rgba(0, 0, 0, 0.95),
+    var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Frosted blur on large panels only. Skipped while a panel holds
+   an open dropdown/modal so menus are never trapped or clipped. */
+:is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+):where(.rounded-xl, .rounded-2xl, .rounded-3xl, [class*="rounded-[2rem]"], [class*="rounded-[28px]"]):not(:has(.fixed, [class*="z-"])) {
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+}
+
+/* Inline-styled panels (calendar & sidebar) get the same depth */
+html:not(.baselead-light) [style*="background-color: rgba(13, 13, 15, 0.55)"],
+html:not(.baselead-light) [style*="background-color: rgba(18, 18, 20, 0.6)"],
+html:not(.baselead-light) [style*="background-color: rgba(10, 10, 12, 0.55)"] {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 50%);
+}
+
+/* Text stays crisp on glass */
+html:not(.baselead-light) .baselead-main {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 1023px) {
+  /* Phones: lighter blur for smooth scrolling */
+  :is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+  ):where(.rounded-xl, .rounded-2xl, .rounded-3xl):not(:has(.fixed, [class*="z-"])) {
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+  }
+}
+
+/* =========================================================
+   CONSISTENCY LAYER — one type scale and one theme for every page.
+   (Unlayered, so it wins over Tailwind utilities.)
+   Scale: caption 11px · small 12px · body 14px · card title 15px
+          · section title 18px · page title 24/28px
+========================================================= */
+
+/* Captions & micro labels (were 7–10px on some pages) */
+.text-\[7px\],
+.text-\[8px\],
+.text-\[9px\],
+.text-\[10px\] {
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* Small text = text-xs everywhere */
+.text-\[11px\],
+.text-\[12px\] {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Body text = text-sm everywhere */
+.text-\[13px\],
+.text-\[14px\] {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Page titles: same size on every page */
+.baselead-main h1 {
+  font-size: 24px !important;
+  line-height: 1.2 !important;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 1024px) {
+  .baselead-main h1 {
+    font-size: 28px !important;
+  }
+}
+
+/* Section and card headings */
+.baselead-main h2.text-sm,
+.baselead-main h2.text-base,
+.baselead-main h3.text-sm,
+.baselead-main h3.text-base {
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.baselead-main h2.text-lg,
+.baselead-main h2.text-xl,
+.baselead-main h2.text-2xl {
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+/* Same font everywhere (forms, buttons, tables) */
+.baselead-main,
+.baselead-main button,
+.baselead-main input,
+.baselead-main select,
+.baselead-main textarea {
+  font-family: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------- Light mode: cover the newer pages too ---------- */
+
+html.baselead-light .text-gray-100,
+html.baselead-light .text-gray-200 {
+  color: #1d1d1f !important;
+}
+
+html.baselead-light .text-gray-300 {
+  color: #3a3a3c !important;
+}
+
+html.baselead-light .text-gray-400 {
+  color: #6e6e73 !important;
+}
+
+html.baselead-light .text-gray-500,
+html.baselead-light .text-gray-600 {
+  color: #86868b !important;
+}
+
+html.baselead-light [class*="border-[#1A1A1A]"],
+html.baselead-light [class*="border-[#1a1a1a]"],
+html.baselead-light [class*="border-[#1F1F1F]"],
+html.baselead-light [class*="border-[#1f1f1f]"],
+html.baselead-light [class*="border-[#202020]"],
+html.baselead-light [class*="border-[#222222]"],
+html.baselead-light [class*="border-[#262626]"],
+html.baselead-light [class*="border-[#2A2A2A]"],
+html.baselead-light [class*="border-[#2a2a2a]"],
+html.baselead-light [class*="border-[#333333]"],
+html.baselead-light [class*="border-[#3a3a3a]"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.baselead-light [class*="bg-[#191919]"],
+html.baselead-light [class*="bg-[#1B1B1B]"],
+html.baselead-light [class*="bg-[#1b1b1b]"],
+html.baselead-light [class*="bg-[#1A1A1A]"],
+html.baselead-light [class*="bg-[#1a1a1a]"],
+html.baselead-light [class*="bg-[#1F1F1F]"],
+html.baselead-light [class*="bg-[#202020]"],
+html.baselead-light [class*="bg-[#2A2A2A]"] {
+  background-color: #f2f2f7 !important;
+}
+
+/* =========================================================
+   COLORED TABS — each tab has its own color (--tab) on hover/active
+========================================================= */
+.bl-tab {
+  white-space: nowrap;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.bl-tab:hover {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--tab) 45%, transparent) !important;
+}
+.bl-tab[data-active="true"] {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--tab) 55%, transparent) !important;
+  box-shadow: 0 0 22px -8px var(--tab);
+}
+.bl-tab .bl-tab-count {
+  transition: inherit;
+}
+.bl-tab:hover .bl-tab-count,
+.bl-tab[data-active="true"] .bl-tab-count {
+  color: var(--tab) !important;
+  background-color: color-mix(in srgb, var(--tab) 16%, transparent) !important;
+}
+/* Every tab icon sits on its own pastel tile (same look everywhere) */
+.bl-tab .bl-tab-emoji {
+  display: inline-block;
+  box-sizing: content-box;
+  flex-shrink: 0;
+  padding: 5px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--tab) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 22%, transparent);
+  transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+.bl-tab:hover .bl-tab-emoji,
+.bl-tab[data-active="true"] .bl-tab-emoji {
+  background: color-mix(in srgb, var(--tab) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 40%, transparent), 0 0 14px -4px var(--tab);
+}
+.bl-tab:hover .bl-tab-emoji {
+  transform: scale(1.08) rotate(-6deg);
+}
+html.baselead-light .bl-tab .bl-tab-emoji {
+  background: color-mix(in srgb, var(--tab) 18%, #ffffff);
+}
+
+/* =========================================================
+   HIGH-END COLOR HOVERS
+========================================================= */
+
+/* Sidebar: each page has its own color */
+.bl-nav {
+  transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+.bl-nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--nav);
+  box-shadow: 0 0 12px var(--nav);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.bl-nav:hover::before,
+.bl-nav[data-active="true"]::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.bl-nav:hover {
+  color: #fff !important;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--nav) 14%, transparent), transparent 85%) !important;
+}
+.bl-nav .bl-nav-icon {
+  transition: color 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+.bl-nav:hover .bl-nav-icon {
+  color: var(--nav);
+  transform: translateX(2px) scale(1.06);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--nav) 60%, transparent));
+}
+
+/* Cards: soft gold edge-light on hover */
+.bl-card,
+.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"] {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+.bl-card:hover,
+.baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
+  border-color: rgba(245, 197, 24, 0.22) !important;
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 24, 0.06),
+    0 18px 40px -22px rgba(245, 197, 24, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Gold buttons: light sweep on hover */
+.baselead-main button[class*="bg-[#F5C518]"],
+.baselead-main a[class*="bg-[#F5C518]"] {
+  position: relative;
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 200ms ease, background-color 160ms ease;
+}
+.baselead-main button[class*="bg-[#F5C518]"]::after,
+.baselead-main a[class*="bg-[#F5C518]"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 600ms ease;
+  pointer-events: none;
+}
+.baselead-main button[class*="bg-[#F5C518]"]:hover::after,
+.baselead-main a[class*="bg-[#F5C518]"]:hover::after {
+  transform: translateX(120%);
+}
+.baselead-main button[class*="bg-[#F5C518]"]:hover:not(:disabled),
+.baselead-main a[class*="bg-[#F5C518]"]:hover {
+  box-shadow: 0 10px 28px -10px rgba(245, 197, 24, 0.65);
+  transform: translateY(-1px);
+}
+
+/* Table rows: subtle gold tint */
+.baselead-main tbody tr {
+  transition: background-color 160ms ease;
+}
+.baselead-main tbody tr:hover {
+  background-color: rgba(245, 197, 24, 0.035);
+}
+
+html.baselead-light .bl-card:hover,
+html.baselead-light .baselead-main [class*="rounded-2xl"][class*="border-[#202020]"]:hover {
+  border-color: rgba(245, 197, 24, 0.45) !important;
+  box-shadow: 0 14px 34px -18px rgba(180, 140, 0, 0.35) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-nav .bl-nav-icon,
+  .baselead-main button[class*="bg-[#F5C518]"]::after {
+    transition: none;
+  }
+}
+
+/* Icon tile: icon on a pastel square of its own color (use --tab) */
+.bl-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: var(--tab);
+  background: color-mix(in srgb, var(--tab) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 22%, transparent);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+.bl-card:hover .bl-icon-tile,
+.bl-icon-tile:hover {
+  background: color-mix(in srgb, var(--tab) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 40%, transparent), 0 0 16px -4px var(--tab);
+  transform: rotate(-6deg) scale(1.05);
+}
+html.baselead-light .bl-icon-tile {
+  background: color-mix(in srgb, var(--tab) 18%, #ffffff);
+}
+
+/* Light mode: soften dark borders set inline by components (sidebar,
+   workspace footer, mobile bars, tables) — no harsh black lines. */
+html.baselead-light [style*="border-color: rgb(38, 38, 38)"],
+html.baselead-light [style*="border-color: rgb(32, 32, 32)"],
+html.baselead-light [style*="border-color: rgb(42, 42, 42)"],
+html.baselead-light [style*="border-color: rgb(26, 26, 26)"],
+html.baselead-light [style*="border-color: rgb(23, 23, 23)"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="background-color: rgba(8, 8, 10"] {
+  background-color: rgba(255, 255, 255, 0.86) !important;
+}
+
+/* Light mode: hide page content for the first frames until components have
+   read the theme, so nothing flashes dark while loading. */
+html.baselead-light:not(.bl-ready) .baselead-main > * {
+  opacity: 0 !important;
+}
+
+/* Journey pop-up colors for both themes */
+.bl-journey-panel {
+  --j-bg: #0a0a0c;
+  --j-line: rgba(255, 255, 255, 0.1);
+  --j-soft: rgba(255, 255, 255, 0.02);
+}
+html.baselead-light .bl-journey-panel {
+  --j-bg: #ffffff;
+  --j-line: rgba(0, 0, 0, 0.09);
+  --j-soft: rgba(0, 0, 0, 0.015);
+  background-color: rgba(255, 255, 255, 0.97) !important;
+}
+html.baselead-light [class*="bg-[#0A0A0C]"],
+html.baselead-light [class*="bg-[#0a0a0c]"] {
+  background-color: #ffffff !important;
+}
+
+/* Light mode: pop-up backdrops stay a soft dim, not a white wash */
+html.baselead-light .fixed.inset-0[class*="bg-black/"] {
+  background-color: rgba(17, 17, 20, 0.38) !important;
+}
+
+/* Light mode — mobile bars, drawer and inline dark borders written by the
+   server as hex (e.g. style="border-color:#262626"). */
+html.baselead-light .baselead-mobile-topbar,
+html.baselead-light .baselead-mobile-bottombar {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="border-color:#262626"],
+html.baselead-light [style*="border-color:#202020"],
+html.baselead-light [style*="border-color:#2A2A2A"],
+html.baselead-light [style*="border-color:#2a2a2a"],
+html.baselead-light [style*="border-color:#1A1A1A"],
+html.baselead-light [style*="border-color:#171717"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.baselead-light [style*="background-color:rgba(8, 8, 10"],
+html.baselead-light [style*="background-color:rgba(8,8,10"] {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+}
+html.baselead-light .fixed.inset-0 > button[class*="bg-black/"] {
+  background-color: rgba(17, 17, 20, 0.35) !important;
+}
+
+/* Light mode scrollbars */
+html.baselead-light * {
+  scrollbar-color: #d1d1d6 transparent;
+}
+html.baselead-light *::-webkit-scrollbar-thumb {
+  background: #d1d1d6;
+}
+
+/* Phones: horizontal tab rows scroll without a visible scrollbar */
+@media (max-width: 1023px) {
+  .overflow-x-auto {
+    scrollbar-width: none;
+  }
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* BaseLead logo: black pill in dark mode, light pill in light mode */
+.bl-logo-light {
+  display: none;
+}
+html.baselead-light .bl-logo-dark {
+  display: none !important;
+}
+html.baselead-light .bl-logo-light {
+  display: block;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 6px 18px -8px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   LIGHT MODE: readable accent text on white. Bright brand colors
+   (gold, lime, cyan...) are too pale as text on a white page, so
+   inside the app they switch to a deeper shade of the same hue.
+   Icons and pastel icon tiles keep their original colors.
+========================================================= */
+html.baselead-light .baselead-main [class~="text-[#F5C518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F5C518"]:not([style*="background-color:#F5C518"]):not([style*="border-color:#F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F5C518"]:not([style*="background-color: #F5C518"]):not([style*="border-color: #F5C518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#f5c518]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#f5c518"]:not([style*="background-color:#f5c518"]):not([style*="border-color:#f5c518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #f5c518"]:not([style*="background-color: #f5c518"]):not([style*="border-color: #f5c518"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(245, 197, 24)"]:not([style*="background-color: rgb(245, 197, 24)"]):not([style*="border-color: rgb(245, 197, 24)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #946F00 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#FFD000]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#FFD000"]:not([style*="background-color:#FFD000"]):not([style*="border-color:#FFD000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #FFD000"]:not([style*="background-color: #FFD000"]):not([style*="border-color: #FFD000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#ffd000]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#ffd000"]:not([style*="background-color:#ffd000"]):not([style*="border-color:#ffd000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #ffd000"]:not([style*="background-color: #ffd000"]):not([style*="border-color: #ffd000"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(255, 208, 0)"]:not([style*="background-color: rgb(255, 208, 0)"]):not([style*="border-color: rgb(255, 208, 0)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #946F00 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#FACC15]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#FACC15"]:not([style*="background-color:#FACC15"]):not([style*="border-color:#FACC15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #FACC15"]:not([style*="background-color: #FACC15"]):not([style*="border-color: #FACC15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#facc15]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#facc15"]:not([style*="background-color:#facc15"]):not([style*="border-color:#facc15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #facc15"]:not([style*="background-color: #facc15"]):not([style*="border-color: #facc15"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(250, 204, 21)"]:not([style*="background-color: rgb(250, 204, 21)"]):not([style*="border-color: rgb(250, 204, 21)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #946F00 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#FBBF24]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#FBBF24"]:not([style*="background-color:#FBBF24"]):not([style*="border-color:#FBBF24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #FBBF24"]:not([style*="background-color: #FBBF24"]):not([style*="border-color: #FBBF24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#fbbf24]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#fbbf24"]:not([style*="background-color:#fbbf24"]):not([style*="border-color:#fbbf24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #fbbf24"]:not([style*="background-color: #fbbf24"]):not([style*="border-color: #fbbf24"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(251, 191, 36)"]:not([style*="background-color: rgb(251, 191, 36)"]):not([style*="border-color: rgb(251, 191, 36)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #92400E !important;
+}
+html.baselead-light .baselead-main [class~="text-[#84CC16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84CC16"]:not([style*="background-color:#84CC16"]):not([style*="border-color:#84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84CC16"]:not([style*="background-color: #84CC16"]):not([style*="border-color: #84CC16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#84cc16]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#84cc16"]:not([style*="background-color:#84cc16"]):not([style*="border-color:#84cc16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #84cc16"]:not([style*="background-color: #84cc16"]):not([style*="border-color: #84cc16"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(132, 204, 22)"]:not([style*="background-color: rgb(132, 204, 22)"]):not([style*="border-color: rgb(132, 204, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #4D7C0F !important;
+}
+html.baselead-light .baselead-main [class~="text-[#BEF264]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#BEF264"]:not([style*="background-color:#BEF264"]):not([style*="border-color:#BEF264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #BEF264"]:not([style*="background-color: #BEF264"]):not([style*="border-color: #BEF264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#bef264]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#bef264"]:not([style*="background-color:#bef264"]):not([style*="border-color:#bef264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #bef264"]:not([style*="background-color: #bef264"]):not([style*="border-color: #bef264"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(190, 242, 100)"]:not([style*="background-color: rgb(190, 242, 100)"]):not([style*="border-color: rgb(190, 242, 100)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #4D7C0F !important;
+}
+html.baselead-light .baselead-main [class~="text-[#A3E635]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#A3E635"]:not([style*="background-color:#A3E635"]):not([style*="border-color:#A3E635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #A3E635"]:not([style*="background-color: #A3E635"]):not([style*="border-color: #A3E635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#a3e635]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#a3e635"]:not([style*="background-color:#a3e635"]):not([style*="border-color:#a3e635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #a3e635"]:not([style*="background-color: #a3e635"]):not([style*="border-color: #a3e635"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(163, 230, 53)"]:not([style*="background-color: rgb(163, 230, 53)"]):not([style*="border-color: rgb(163, 230, 53)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #4D7C0F !important;
+}
+html.baselead-light .baselead-main [class~="text-[#A78BFA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#A78BFA"]:not([style*="background-color:#A78BFA"]):not([style*="border-color:#A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #A78BFA"]:not([style*="background-color: #A78BFA"]):not([style*="border-color: #A78BFA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#a78bfa]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#a78bfa"]:not([style*="background-color:#a78bfa"]):not([style*="border-color:#a78bfa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #a78bfa"]:not([style*="background-color: #a78bfa"]):not([style*="border-color: #a78bfa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(167, 139, 250)"]:not([style*="background-color: rgb(167, 139, 250)"]):not([style*="border-color: rgb(167, 139, 250)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #7C3AED !important;
+}
+html.baselead-light .baselead-main [class~="text-[#C084FC]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#C084FC"]:not([style*="background-color:#C084FC"]):not([style*="border-color:#C084FC"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #C084FC"]:not([style*="background-color: #C084FC"]):not([style*="border-color: #C084FC"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#c084fc]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#c084fc"]:not([style*="background-color:#c084fc"]):not([style*="border-color:#c084fc"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #c084fc"]:not([style*="background-color: #c084fc"]):not([style*="border-color: #c084fc"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(192, 132, 252)"]:not([style*="background-color: rgb(192, 132, 252)"]):not([style*="border-color: rgb(192, 132, 252)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #9333EA !important;
+}
+html.baselead-light .baselead-main [class~="text-[#60A5FA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#60A5FA"]:not([style*="background-color:#60A5FA"]):not([style*="border-color:#60A5FA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #60A5FA"]:not([style*="background-color: #60A5FA"]):not([style*="border-color: #60A5FA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#60a5fa]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#60a5fa"]:not([style*="background-color:#60a5fa"]):not([style*="border-color:#60a5fa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #60a5fa"]:not([style*="background-color: #60a5fa"]):not([style*="border-color: #60a5fa"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(96, 165, 250)"]:not([style*="background-color: rgb(96, 165, 250)"]):not([style*="border-color: rgb(96, 165, 250)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #2563EB !important;
+}
+html.baselead-light .baselead-main [class~="text-[#93C5FD]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#93C5FD"]:not([style*="background-color:#93C5FD"]):not([style*="border-color:#93C5FD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #93C5FD"]:not([style*="background-color: #93C5FD"]):not([style*="border-color: #93C5FD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#93c5fd]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#93c5fd"]:not([style*="background-color:#93c5fd"]):not([style*="border-color:#93c5fd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #93c5fd"]:not([style*="background-color: #93c5fd"]):not([style*="border-color: #93c5fd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(147, 197, 253)"]:not([style*="background-color: rgb(147, 197, 253)"]):not([style*="border-color: rgb(147, 197, 253)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #1D4ED8 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#BFDBFE]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#BFDBFE"]:not([style*="background-color:#BFDBFE"]):not([style*="border-color:#BFDBFE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #BFDBFE"]:not([style*="background-color: #BFDBFE"]):not([style*="border-color: #BFDBFE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#bfdbfe]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#bfdbfe"]:not([style*="background-color:#bfdbfe"]):not([style*="border-color:#bfdbfe"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #bfdbfe"]:not([style*="background-color: #bfdbfe"]):not([style*="border-color: #bfdbfe"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(191, 219, 254)"]:not([style*="background-color: rgb(191, 219, 254)"]):not([style*="border-color: rgb(191, 219, 254)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #1D4ED8 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#38BDF8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#38BDF8"]:not([style*="background-color:#38BDF8"]):not([style*="border-color:#38BDF8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #38BDF8"]:not([style*="background-color: #38BDF8"]):not([style*="border-color: #38BDF8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#38bdf8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#38bdf8"]:not([style*="background-color:#38bdf8"]):not([style*="border-color:#38bdf8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #38bdf8"]:not([style*="background-color: #38bdf8"]):not([style*="border-color: #38bdf8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(56, 189, 248)"]:not([style*="background-color: rgb(56, 189, 248)"]):not([style*="border-color: rgb(56, 189, 248)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #0369A1 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#22D3EE]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#22D3EE"]:not([style*="background-color:#22D3EE"]):not([style*="border-color:#22D3EE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #22D3EE"]:not([style*="background-color: #22D3EE"]):not([style*="border-color: #22D3EE"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#22d3ee]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#22d3ee"]:not([style*="background-color:#22d3ee"]):not([style*="border-color:#22d3ee"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #22d3ee"]:not([style*="background-color: #22d3ee"]):not([style*="border-color: #22d3ee"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(34, 211, 238)"]:not([style*="background-color: rgb(34, 211, 238)"]):not([style*="border-color: rgb(34, 211, 238)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #0E7490 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#2DD4BF]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#2DD4BF"]:not([style*="background-color:#2DD4BF"]):not([style*="border-color:#2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #2DD4BF"]:not([style*="background-color: #2DD4BF"]):not([style*="border-color: #2DD4BF"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#2dd4bf]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#2dd4bf"]:not([style*="background-color:#2dd4bf"]):not([style*="border-color:#2dd4bf"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #2dd4bf"]:not([style*="background-color: #2dd4bf"]):not([style*="border-color: #2dd4bf"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(45, 212, 191)"]:not([style*="background-color: rgb(45, 212, 191)"]):not([style*="border-color: rgb(45, 212, 191)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #0F766E !important;
+}
+html.baselead-light .baselead-main [class~="text-[#34D399]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#34D399"]:not([style*="background-color:#34D399"]):not([style*="border-color:#34D399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #34D399"]:not([style*="background-color: #34D399"]):not([style*="border-color: #34D399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#34d399]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#34d399"]:not([style*="background-color:#34d399"]):not([style*="border-color:#34d399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #34d399"]:not([style*="background-color: #34d399"]):not([style*="border-color: #34d399"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(52, 211, 153)"]:not([style*="background-color: rgb(52, 211, 153)"]):not([style*="border-color: rgb(52, 211, 153)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #047857 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#F0475C]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F0475C"]:not([style*="background-color:#F0475C"]):not([style*="border-color:#F0475C"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F0475C"]:not([style*="background-color: #F0475C"]):not([style*="border-color: #F0475C"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#f0475c]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#f0475c"]:not([style*="background-color:#f0475c"]):not([style*="border-color:#f0475c"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #f0475c"]:not([style*="background-color: #f0475c"]):not([style*="border-color: #f0475c"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(240, 71, 92)"]:not([style*="background-color: rgb(240, 71, 92)"]):not([style*="border-color: rgb(240, 71, 92)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #D92D43 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#F97316]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F97316"]:not([style*="background-color:#F97316"]):not([style*="border-color:#F97316"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F97316"]:not([style*="background-color: #F97316"]):not([style*="border-color: #F97316"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#f97316]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#f97316"]:not([style*="background-color:#f97316"]):not([style*="border-color:#f97316"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #f97316"]:not([style*="background-color: #f97316"]):not([style*="border-color: #f97316"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(249, 115, 22)"]:not([style*="background-color: rgb(249, 115, 22)"]):not([style*="border-color: rgb(249, 115, 22)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #C2410C !important;
+}
+html.baselead-light .baselead-main [class~="text-[#F472B6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#F472B6"]:not([style*="background-color:#F472B6"]):not([style*="border-color:#F472B6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #F472B6"]:not([style*="background-color: #F472B6"]):not([style*="border-color: #F472B6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#f472b6]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#f472b6"]:not([style*="background-color:#f472b6"]):not([style*="border-color:#f472b6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #f472b6"]:not([style*="background-color: #f472b6"]):not([style*="border-color: #f472b6"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(244, 114, 182)"]:not([style*="background-color: rgb(244, 114, 182)"]):not([style*="border-color: rgb(244, 114, 182)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #DB2777 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#BDBDBD]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#BDBDBD"]:not([style*="background-color:#BDBDBD"]):not([style*="border-color:#BDBDBD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #BDBDBD"]:not([style*="background-color: #BDBDBD"]):not([style*="border-color: #BDBDBD"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#bdbdbd]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#bdbdbd"]:not([style*="background-color:#bdbdbd"]):not([style*="border-color:#bdbdbd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #bdbdbd"]:not([style*="background-color: #bdbdbd"]):not([style*="border-color: #bdbdbd"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(189, 189, 189)"]:not([style*="background-color: rgb(189, 189, 189)"]):not([style*="border-color: rgb(189, 189, 189)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #3a3a3c !important;
+}
+html.baselead-light .baselead-main [class~="text-[#D8D8D8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#D8D8D8"]:not([style*="background-color:#D8D8D8"]):not([style*="border-color:#D8D8D8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #D8D8D8"]:not([style*="background-color: #D8D8D8"]):not([style*="border-color: #D8D8D8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#d8d8d8]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#d8d8d8"]:not([style*="background-color:#d8d8d8"]):not([style*="border-color:#d8d8d8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #d8d8d8"]:not([style*="background-color: #d8d8d8"]):not([style*="border-color: #d8d8d8"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(216, 216, 216)"]:not([style*="background-color: rgb(216, 216, 216)"]):not([style*="border-color: rgb(216, 216, 216)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #3a3a3c !important;
+}
+html.baselead-light .baselead-main [class~="text-[#9A9A9A]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#9A9A9A"]:not([style*="background-color:#9A9A9A"]):not([style*="border-color:#9A9A9A"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #9A9A9A"]:not([style*="background-color: #9A9A9A"]):not([style*="border-color: #9A9A9A"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#9a9a9a]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#9a9a9a"]:not([style*="background-color:#9a9a9a"]):not([style*="border-color:#9a9a9a"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #9a9a9a"]:not([style*="background-color: #9a9a9a"]):not([style*="border-color: #9a9a9a"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(154, 154, 154)"]:not([style*="background-color: rgb(154, 154, 154)"]):not([style*="border-color: rgb(154, 154, 154)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #6e6e73 !important;
+}
+html.baselead-light .baselead-main [class~="text-[#93B4DA]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#93B4DA"]:not([style*="background-color:#93B4DA"]):not([style*="border-color:#93B4DA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #93B4DA"]:not([style*="background-color: #93B4DA"]):not([style*="border-color: #93B4DA"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [class~="text-[#93b4da]"]:not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color:#93b4da"]:not([style*="background-color:#93b4da"]):not([style*="border-color:#93b4da"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: #93b4da"]:not([style*="background-color: #93b4da"]):not([style*="border-color: #93b4da"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *),
+html.baselead-light .baselead-main [style*="color: rgb(147, 180, 218)"]:not([style*="background-color: rgb(147, 180, 218)"]):not([style*="border-color: rgb(147, 180, 218)"]):not(svg):not(.bl-tab-emoji):not(.bl-icon-tile *) {
+  color: #3B5B85 !important;
+}
+
+/* Pastel avatars (pipeline cards etc.) */
+.bl-avatar {
+  color: var(--tab);
+  background: color-mix(in srgb, var(--tab) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 28%, transparent);
+}
+html.baselead-light .bl-avatar {
+  color: color-mix(in srgb, var(--tab) 55%, #000000);
+  background: color-mix(in srgb, var(--tab) 18%, #ffffff);
+}
+
+html.baselead-light .baselead-main [class~="hover:text-[#F5C518]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#f5c518]"]:hover:not(svg) {
+  color: #946F00 !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#FFD000]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#ffd000]"]:hover:not(svg) {
+  color: #946F00 !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#84CC16]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#84cc16]"]:hover:not(svg) {
+  color: #4D7C0F !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#A78BFA]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#a78bfa]"]:hover:not(svg) {
+  color: #7C3AED !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#60A5FA]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#60a5fa]"]:hover:not(svg) {
+  color: #2563EB !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#22D3EE]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#22d3ee]"]:hover:not(svg) {
+  color: #0E7490 !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#F0475C]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#f0475c]"]:hover:not(svg) {
+  color: #D92D43 !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#F97316]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#f97316]"]:hover:not(svg) {
+  color: #C2410C !important;
+}
+html.baselead-light .baselead-main [class~="hover:text-[#F472B6]"]:hover:not(svg),
+html.baselead-light .baselead-main [class~="hover:text-[#f472b6]"]:hover:not(svg) {
+  color: #DB2777 !important;
+}
+
+/* Light mode: active/hover tab text uses a deeper shade of its color */
+html.baselead-light .bl-tab:hover,
+html.baselead-light .bl-tab[data-active="true"],
+html.baselead-light .bl-tab:hover .bl-tab-count,
+html.baselead-light .bl-tab[data-active="true"] .bl-tab-count {
+  color: color-mix(in srgb, var(--tab) 58%, #000000) !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE: no harsh black lines, charts or panels.
+   Only text stays dark.
+========================================================= */
+html.baselead-light [class*="border-[#1D1D1D]"],
+html.baselead-light [class*="border-[#1d1d1d]"],
+html.baselead-light [class*="border-[#262626]"],
+html.baselead-light [class*="border-[#3a3a3a]"],
+html.baselead-light [class*="border-[#3A3A3A]"],
+html.baselead-light [class*="border-black"]:not([class*="border-black/"]) {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Chart tracks and rings drawn with dark strokes */
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#1f1f1f"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#1F1F1F"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#202020"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#191919"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#222"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#222222"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#2A2A2A"],
+html.baselead-light .baselead-main svg:not(.lucide) [stroke="#2a2a2a"] {
+  stroke: #e8e8ed !important;
+}
+html.baselead-light .recharts-cartesian-grid line {
+  stroke: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Chart tooltips */
+html.baselead-light .recharts-default-tooltip {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.18);
+}
+html.baselead-light .recharts-default-tooltip .recharts-tooltip-label {
+  color: #6e6e73 !important;
+}
+
+/* Floating labels on maps and charts (bg-black/xx) become frosted white */
+html.baselead-light .baselead-main [class*="bg-black/"]:not(.fixed):not([class*="inset-0"]) {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.18);
+}
