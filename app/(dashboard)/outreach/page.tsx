@@ -4729,7 +4729,7 @@ StudioBase`;
             )}
             detail="Interested leads"
             accent={PINK}
-            surface={PURPLE_SURFACE}
+            surface="#3A1530"
           />
 
           <KpiCard
@@ -4745,7 +4745,7 @@ StudioBase`;
             )}
             detail="Upcoming outreach"
             accent={CYAN}
-            surface="#102A31"
+            surface="#0F2E2B"
           />
         </div>
 

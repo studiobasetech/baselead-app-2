@@ -2174,3 +2174,11 @@ html.baselead-light [class*="from-[#3B82F6]"][class*="bg-gradient"],
 html.baselead-light [class*="from-[#3B82F6]"][class*="bg-gradient"] * {
   color: #ffffff !important;
 }
+
+/* Icon tile surfaces for turquoise, orange and pink (match their icons) */
+html [class*="bg-[#0F2E2B]"] { background-color: #0f2e2b; }
+html [class*="bg-[#3A200C]"] { background-color: #3a200c; }
+html [class*="bg-[#3A1530]"] { background-color: #3a1530; }
+html.baselead-light [class*="bg-[#0F2E2B]"] { background-color: #ddf8f3 !important; }
+html.baselead-light [class*="bg-[#3A200C]"] { background-color: #ffedd5 !important; }
+html.baselead-light [class*="bg-[#3A1530]"] { background-color: #fde7f3 !important; }

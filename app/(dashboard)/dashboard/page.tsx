@@ -79,6 +79,9 @@ const PURPLE_SURFACE = "#241A38";
 const RED_SURFACE = "#3A1418";
 const GREEN_SURFACE = "#18200B";
 const BLUE_SURFACE = "#10243A";
+const CYAN_SURFACE = "#0F2E2B";
+const ORANGE_SURFACE = "#3A200C";
+const PINK_SURFACE = "#3A1530";
 
 const LIGHT_ICON_SURFACES: Record<string, string> = {
   [GOLD_SURFACE]: "#FFF7D6",
@@ -86,6 +89,9 @@ const LIGHT_ICON_SURFACES: Record<string, string> = {
   [RED_SURFACE]: "#FFEBEE",
   [GREEN_SURFACE]: "#EFFBDC",
   [BLUE_SURFACE]: "#EAF3FF",
+  [CYAN_SURFACE]: "#DDF8F3",
+  [ORANGE_SURFACE]: "#FFEDD5",
+  [PINK_SURFACE]: "#FDE7F3",
 };
 
 function getDashboardIconSurface(
@@ -2127,7 +2133,7 @@ export default function DashboardPage() {
             icon =
               MessageSquare;
             bg =
-              BLUE_SURFACE;
+              CYAN_SURFACE;
             fg = "#2DD4BF";
             text =
               "Lead responded";
@@ -2475,7 +2481,7 @@ export default function DashboardPage() {
                     style={{
                       backgroundColor:
                         getDashboardIconSurface(
-                          GOLD_SURFACE,
+                          ORANGE_SURFACE,
                           isLightMode,
                         ),
                     }}
@@ -2520,7 +2526,7 @@ export default function DashboardPage() {
                     style={{
                       backgroundColor:
                         getDashboardIconSurface(
-                          BLUE_SURFACE,
+                          CYAN_SURFACE,
                           isLightMode,
                         ),
                     }}
@@ -3748,7 +3754,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        BLUE_SURFACE,
+                        CYAN_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -3898,7 +3904,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        PURPLE_SURFACE,
+                        PINK_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -4081,7 +4087,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        BLUE_SURFACE,
+                        CYAN_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -4293,7 +4299,7 @@ export default function DashboardPage() {
             style={{
               backgroundColor:
                 getDashboardIconSurface(
-                  PURPLE_SURFACE,
+                  PINK_SURFACE,
                   isLightMode,
                 ),
             }}
