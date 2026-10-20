@@ -352,6 +352,14 @@ function applyPreferencesToDocument(
   root.style.colorScheme =
     isDark ? "dark" : "light";
 
+  // Remembered for the next page load so the right theme paints instantly
+  // (read by the inline script in app/layout.tsx before React loads).
+  try {
+    window.localStorage.setItem("baselead-theme", isDark ? "dark" : "light");
+  } catch {
+    /* ignore */
+  }
+
   /* -------------------------------------------------------
      COMPACT LAYOUT
   ------------------------------------------------------- */
