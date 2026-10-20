@@ -4686,7 +4686,7 @@ export default function CalendarPage() {
             <MapPin
               size={15}
               style={{
-                color: GOLD,
+                color: BRAND,
               }}
             />
             {location}
@@ -5023,7 +5023,7 @@ export default function CalendarPage() {
               <MapPin
                 size={13}
                 style={{
-                  color: GOLD,
+                  color: BRAND,
                 }}
               />
               {location.replace(
