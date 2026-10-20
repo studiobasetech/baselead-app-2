@@ -478,7 +478,7 @@ export default function DashboardSidebar() {
                           boxShadow:
                             "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 24px -12px rgba(0,0,0,0.8)",
                         }
-                      : { "--nav": color, color: MUTED }) as CSSProperties
+                      : { "--nav": color, color: MUTED }) as unknown as CSSProperties
                   }
                 >
                   <Icon
