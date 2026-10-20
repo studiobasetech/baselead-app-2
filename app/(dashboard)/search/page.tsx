@@ -663,9 +663,9 @@ function PreviewItem({
   color?: "green" | "yellow" | "purple";
 }) {
   const colors = {
-    green: "bg-[#84CC16]/10 text-[#84CC16]",
+    green: "bg-[#3B82F6]/10 text-[#3B82F6]",
     yellow: "bg-[#3B82F6]/10 text-[#3B82F6]",
-    purple: "bg-[#A78BFA]/10 text-[#A78BFA]",
+    purple: "bg-[#3B82F6]/10 text-[#3B82F6]",
   };
 
   return (
