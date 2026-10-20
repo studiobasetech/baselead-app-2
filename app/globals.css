@@ -1181,19 +1181,20 @@ html:not(.baselead-light) .baselead-sidebar {
 }
 
 /* Gentle entrance for each page */
+/* Opacity only, and no lingering fill: a transform animation would turn
+   the page into the containing block of fixed pop-ups (they'd open far
+   down the page instead of in the middle of the screen). */
 @keyframes blFadeUp {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
 .baselead-main > * {
-  animation: blFadeUp 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: blFadeUp 0.3s ease-out backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

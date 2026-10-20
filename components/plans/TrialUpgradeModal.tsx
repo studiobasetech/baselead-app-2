@@ -122,10 +122,10 @@ export default function TrialUpgradeModal() {
           <button
             type="button"
             onClick={closeModal}
-            className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 text-gray-500 transition hover:bg-white/5 hover:text-white"
+            className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-black/40 text-gray-300 transition hover:bg-white/10 hover:text-white"
             aria-label="Close"
           >
-            <X size={17} />
+            <X size={20} />
           </button>
 
           <div className="relative">
@@ -187,10 +187,10 @@ export default function TrialUpgradeModal() {
         <button
           type="button"
           onClick={closeModal}
-          className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 text-gray-500 transition hover:bg-white/5 hover:text-white"
+          className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-black/40 text-gray-300 transition hover:bg-white/10 hover:text-white"
           aria-label="Close"
         >
-          <X size={17} />
+          <X size={20} />
         </button>
 
         <div className="relative">
