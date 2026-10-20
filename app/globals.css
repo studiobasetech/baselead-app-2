@@ -1538,6 +1538,7 @@ html.baselead-light [class*="bg-[#2A2A2A]"] {
    COLORED TABS — each tab has its own color (--tab) on hover/active
 ========================================================= */
 .bl-tab {
+  white-space: nowrap;
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 .bl-tab:hover {
