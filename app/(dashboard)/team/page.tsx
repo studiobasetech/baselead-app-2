@@ -146,7 +146,7 @@ export default function TeamPerformancePage() {
 
       <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
         {[
-          { label: "Emails sent", value: totals.emails, icon: Mail, color: "#F5C518" },
+          { label: "Emails sent", value: totals.emails, icon: Mail, color: "#3B82F6" },
           { label: "Replies", value: totals.replies, icon: MessageSquareReply, color: "#2DD4BF" },
           { label: "Meetings", value: totals.meetings, icon: Video, color: "#F22F46" },
           { label: "Proposals", value: totals.proposals, icon: FileSignature, color: "#A78BFA" },
@@ -255,7 +255,7 @@ export default function TeamPerformancePage() {
         {/* Funnel */}
         <section className="min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center gap-3">
-            <span className="bl-icon-tile" style={{ "--tab": "#2DD4BF" } as CSSProperties}>
+            <span className="bl-icon-tile" style={{ "--tab": "#F472B6" } as CSSProperties}>
               <Filter size={17} strokeWidth={2.2} />
             </span>
             <h2 className="text-base font-semibold">Pipeline funnel</h2>

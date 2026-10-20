@@ -166,8 +166,8 @@ const tabs: ReportTab[] = [
 ];
 
 const TAB_STYLE: Record<string, { icon: typeof Compass; color: string }> = {
-  Overview: { icon: Compass, color: "#F5C518" },
-  Leads: { icon: Users, color: "#3B82F6" },
+  Overview: { icon: Compass, color: "#3B82F6" },
+  Leads: { icon: Users, color: "#F5C518" },
   Outreach: { icon: Send, color: "#A78BFA" },
   Pipeline: { icon: GitBranch, color: "#2DD4BF" },
   Revenue: { icon: DollarSign, color: "#84CC16" },
@@ -229,7 +229,9 @@ function getIconBackground(color: string) {
     case BLUE:
       return "var(--report-icon-blue-bg)";
     default:
-      return "var(--report-icon-neutral-bg)";
+      return color.startsWith("#")
+        ? hexToRgba(color, 0.14)
+        : "var(--report-icon-neutral-bg)";
   }
 }
 
@@ -1283,11 +1285,11 @@ function PipelineChart({
   return (
     <Card
       className="p-5"
-      accentColor={RED}
+      accentColor={BLUE}
     >
       <SectionHeader
         title="Pipeline"
-        color={RED}
+        color={BLUE}
       />
 
       <div className="space-y-2">
@@ -1381,11 +1383,11 @@ function Funnel({
   return (
     <Card
       className="min-h-[390px] p-5"
-      accentColor={GREEN}
+      accentColor={"#2DD4BF"}
     >
       <SectionHeader
         title="Conversion Funnel"
-        color={GREEN}
+        color={"#2DD4BF"}
         action={
           <span
             style={{
@@ -2557,7 +2559,7 @@ export default function ReportsPage() {
             totalLeads,
           )}
           subtitle="From your database"
-          accentColor={GOLD}
+          accentColor={BLUE}
           progress={
             totalLeads > 0
               ? Math.min(
@@ -2596,7 +2598,7 @@ export default function ReportsPage() {
             contacted,
           )}
           subtitle="Current pipeline"
-          accentColor={BLUE}
+          accentColor={"#2DD4BF"}
           progress={
             totalLeads > 0
               ? (contacted /
@@ -2634,7 +2636,7 @@ export default function ReportsPage() {
             1,
           )}%`}
           subtitle="Won / total leads"
-          accentColor={GREEN}
+          accentColor={GOLD}
           progress={
             conversionRate
           }
@@ -2649,7 +2651,7 @@ export default function ReportsPage() {
             pipelineValue,
           )}
           subtitle="Estimated opportunity"
-          accentColor={GOLD}
+          accentColor={PURPLE}
           progress={
             totalLeads > 0
               ? Math.min(

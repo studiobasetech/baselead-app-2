@@ -2101,11 +2101,9 @@ export default function DashboardPage() {
           let icon =
             Users;
 
-          let bg =
-            GOLD_SURFACE;
+          let bg = BLUE_SURFACE;
 
-          let fg =
-            GOLD;
+          let fg = BRAND;
 
           let text =
             "Lead updated";
@@ -2129,8 +2127,8 @@ export default function DashboardPage() {
             icon =
               MessageSquare;
             bg =
-              RED_SURFACE;
-            fg = RED;
+              BLUE_SURFACE;
+            fg = "#2DD4BF";
             text =
               "Lead responded";
           } else if (
@@ -2176,8 +2174,8 @@ export default function DashboardPage() {
           ) {
             icon = Flame;
             bg =
-              RED_SURFACE;
-            fg = RED;
+              BLUE_SURFACE;
+            fg = BRAND;
             text =
               "High-intent lead found";
           }
@@ -2588,7 +2586,7 @@ export default function DashboardPage() {
               <MapPin
                 size={14}
                 style={{
-                  color: GOLD,
+                  color: BRAND,
                 }}
               />
 
@@ -2627,7 +2625,7 @@ export default function DashboardPage() {
               <CalendarIcon
                 size={14}
                 style={{
-                  color: PURPLE,
+                  color: BRAND,
                 }}
               />
 
@@ -3750,7 +3748,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        PURPLE_SURFACE,
+                        BLUE_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -3759,7 +3757,7 @@ export default function DashboardPage() {
                     size={14}
                     style={{
                       color:
-                        PURPLE,
+                        "#2DD4BF",
                     }}
                   />
                 </div>
@@ -4083,7 +4081,7 @@ export default function DashboardPage() {
                   style={{
                     backgroundColor:
                       getDashboardIconSurface(
-                        RED_SURFACE,
+                        BLUE_SURFACE,
                         isLightMode,
                       ),
                   }}
@@ -4091,7 +4089,7 @@ export default function DashboardPage() {
                   <Activity
                     size={14}
                     style={{
-                      color: RED,
+                      color: "#2DD4BF",
                     }}
                   />
                 </div>
@@ -4303,7 +4301,7 @@ export default function DashboardPage() {
             <Mail
               size={15}
               style={{
-                color: PURPLE,
+                color: "#F472B6",
               }}
             />
           </div>

@@ -340,7 +340,7 @@ export default function TodayPage() {
     { label: "Tasks due", value: dueToday.length, icon: Check, color: "#F5C518" },
     { label: "Replies this week", value: replies, icon: MessageSquareReply, color: "#2DD4BF" },
     { label: "Meetings today", value: todaysMeetings.length, icon: Video, color: "#F22F46" },
-    { label: "Hot leads waiting", value: hotLeads.length, icon: Flame, color: "#84CC16" },
+    { label: "Hot leads waiting", value: hotLeads.length, icon: Flame, color: "#F97316" },
   ];
 
   return (
@@ -427,7 +427,7 @@ export default function TodayPage() {
                 <h2 className="text-base font-semibold">Hot leads going cold</h2>
                 <p className="mt-0.5 text-xs text-gray-500">Score 75+ with no activity in 5 days.</p>
               </div>
-              <span className="bl-icon-tile" style={{ "--tab": "#84CC16" } as CSSProperties}>
+              <span className="bl-icon-tile" style={{ "--tab": "#F97316" } as CSSProperties}>
                 <Flame size={17} strokeWidth={2.2} />
               </span>
             </div>
@@ -440,7 +440,7 @@ export default function TodayPage() {
                 <Link
                   key={lead.id}
                   href={`/outreach?lead=${lead.id}`}
-                  className="group flex items-center justify-between rounded-xl border border-[#202020] bg-[#0A0A0A] p-3.5 transition hover:border-[#84CC16]/40"
+                  className="group flex items-center justify-between rounded-xl border border-[#202020] bg-[#0A0A0A] p-3.5 transition hover:border-[#F97316]/40"
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm text-gray-200">{lead.company || lead.name}</p>
@@ -448,7 +448,7 @@ export default function TodayPage() {
                       {lead.status || "new"} · score {lead.ai_score}
                     </p>
                   </div>
-                  <ArrowRight size={15} className="text-gray-600 transition group-hover:translate-x-0.5 group-hover:text-[#84CC16]" />
+                  <ArrowRight size={15} className="text-gray-600 transition group-hover:translate-x-0.5 group-hover:text-[#F97316]" />
                 </Link>
               ))}
             </div>
@@ -505,7 +505,7 @@ export default function TodayPage() {
           <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold">Live activity</h2>
-              <span className="bl-icon-tile" style={{ "--tab": "#A78BFA" } as CSSProperties}>
+              <span className="bl-icon-tile" style={{ "--tab": "#3B82F6" } as CSSProperties}>
                 <Activity size={17} strokeWidth={2.2} />
               </span>
             </div>

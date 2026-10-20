@@ -88,7 +88,7 @@ const TEMPLATES: { key: string; name: string; description: string; icon: typeof 
     name: "New client outreach",
     description: "3 emails and a call over 10 days. Best for new leads you found.",
     icon: Rocket,
-    color: "#F5C518",
+    color: "#3B82F6",
     steps: [
       {
         delay_days: 0,
@@ -471,7 +471,7 @@ export default function SequencesPage() {
       {/* HOW IT WORKS */}
       <ol className="mt-6 grid gap-3 sm:grid-cols-3">
         {[
-          { icon: Workflow, color: "#F472B6", title: "1. Build your steps", text: "Pick a template or write your own emails, calls and tasks." },
+          { icon: Workflow, color: "#3B82F6", title: "1. Build your steps", text: "Pick a template or write your own emails, calls and tasks." },
           { icon: UserPlus, color: "#F5C518", title: "2. Add leads", text: "Choose who should get it. The first email goes out right away." },
           { icon: MessageSquareReply, color: "#84CC16", title: "3. It runs by itself", text: "Follow-ups go out on schedule and stop when someone replies." },
         ].map(({ icon: Icon, color, title, text }) => (
@@ -533,7 +533,7 @@ export default function SequencesPage() {
             <article key={sequence.id} className="bl-card flex flex-col rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="bl-icon-tile" style={tile("#F472B6")}>
+                  <span className="bl-icon-tile" style={tile("#3B82F6")}>
                     <Workflow size={16} strokeWidth={2.2} />
                   </span>
                   <div className="min-w-0">
