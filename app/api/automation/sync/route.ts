@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getWorkspaceAccess } from "@/lib/workspace";
-import { detectReplies, runSequences } from "@/lib/automation";
+import { canReadInbox, detectReplies, runSequences } from "@/lib/automation";
 import { sendOutreachEmail } from "@/lib/outreach-send";
 
 // "Sync now" for the signed-in user (same work as the scheduled heartbeat).
@@ -22,12 +22,27 @@ export async function POST() {
     sequenceEmails: 0,
     sequenceTasks: 0,
     scheduled: 0,
+    checked: 0,
+    gmailConnected: false,
+    inboxAccess: false,
+    replyAddress: Boolean(process.env.INBOUND_REPLY_DOMAIN),
+    nextFollowUpAt: null as string | null,
     errors: [] as string[],
   };
+
+  const { data: gmail } = await supabase
+    .from("integration_credentials")
+    .select("user_id")
+    .eq("user_id", access.user.id)
+    .eq("provider", "gmail")
+    .maybeSingle();
+  result.gmailConnected = Boolean(gmail);
+  result.inboxAccess = result.gmailConnected && (await canReadInbox(supabase, access.user.id));
 
   try {
     const replies = await detectReplies(supabase, access.user.id);
     result.replies = replies.replies;
+    result.checked = replies.checked;
   } catch (error) {
     result.errors.push(error instanceof Error ? error.message : "Reply check failed.");
   }
@@ -56,6 +71,16 @@ export async function POST() {
       }
     }
   }
+
+  const { data: next } = await supabase
+    .from("sequence_enrollments")
+    .select("next_run_at")
+    .eq("user_id", access.user.id)
+    .eq("status", "active")
+    .order("next_run_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  result.nextFollowUpAt = next?.next_run_at ?? null;
 
   return NextResponse.json(result);
 }

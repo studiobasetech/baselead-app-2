@@ -287,7 +287,7 @@ export async function handleLeadReply(
 }
 
 /** True when this user's Gmail connection includes inbox read access. */
-async function canReadInbox(supabase: SupabaseClient, userId: string) {
+export async function canReadInbox(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
     .from("integration_credentials")
     .select("scopes")

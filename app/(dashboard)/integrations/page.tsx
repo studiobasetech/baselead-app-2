@@ -2668,16 +2668,35 @@ export default function IntegrationsPage() {
                   </p>
                 </div>
 
-                <AppStoreAction
-                  className="w-full"
-                  onClick={() =>
-                    void disconnect(
-                      selectedIntegration.id
-                    )
-                  }
-                >
-                  Disconnect
-                </AppStoreAction>
+                {selectedIntegration.id === "gmail" && (
+                  <p className="text-[11px] leading-5 text-gray-500">
+                    Connected before reply checking was added? Click Reconnect and allow BaseLead to read replies so it can stop follow-ups when a lead answers.
+                  </p>
+                )}
+
+                <div className="flex gap-2">
+                  {getOAuthProvider(selectedIntegration.id) && (
+                    <AppStoreAction
+                      className="flex-1"
+                      onClick={() =>
+                        startOAuth(selectedIntegration)
+                      }
+                    >
+                      Reconnect
+                    </AppStoreAction>
+                  )}
+
+                  <AppStoreAction
+                    className="flex-1"
+                    onClick={() =>
+                      void disconnect(
+                        selectedIntegration.id
+                      )
+                    }
+                  >
+                    Disconnect
+                  </AppStoreAction>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2 sm:flex-row">

@@ -103,7 +103,7 @@ export default function TodayPage() {
 
   const showToast = useCallback((message: string) => {
     setToast(message);
-    window.setTimeout(() => setToast(""), 3500);
+    window.setTimeout(() => setToast(""), 6500);
   }, []);
 
   const load = useCallback(async () => {
@@ -197,14 +197,34 @@ export default function TodayPage() {
         return;
       }
 
-      const parts = [
-        `${result.replies} new repl${result.replies === 1 ? "y" : "ies"}`,
-        `${result.sequenceEmails} follow-ups sent`,
-      ];
-      if (result.scheduled) parts.push(`${result.scheduled} scheduled emails sent`);
-      showToast(
-        result.errors?.length ? `${parts.join(" · ")} — ${result.errors[0]}` : parts.join(" · ")
+      if (!result.gmailConnected) {
+        showToast("Connect Gmail in Integrations first. BaseLead checks replies and sends follow-ups from your Gmail.");
+        return;
+      }
+
+      const parts: string[] = [];
+      if (result.inboxAccess) {
+        parts.push(
+          result.replies
+            ? `${result.replies} new repl${result.replies === 1 ? "y" : "ies"} found`
+            : `No new replies (${result.checked} conversation${result.checked === 1 ? "" : "s"} checked)`
+        );
+      } else if (!result.replyAddress) {
+        parts.push("Replies can't be read yet: reconnect Gmail in Integrations and allow BaseLead to read replies");
+      }
+      parts.push(
+        result.sequenceEmails
+          ? `${result.sequenceEmails} follow-up${result.sequenceEmails === 1 ? "" : "s"} sent`
+          : "no follow-ups due right now"
       );
+      if (result.sequenceTasks) parts.push(`${result.sequenceTasks} call/LinkedIn task${result.sequenceTasks === 1 ? "" : "s"} added`);
+      if (result.scheduled) parts.push(`${result.scheduled} scheduled email${result.scheduled === 1 ? "" : "s"} sent`);
+      if (!result.sequenceEmails && result.nextFollowUpAt) {
+        parts.push(
+          `next one ${new Date(result.nextFollowUpAt).toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })}`
+        );
+      }
+      showToast(result.errors?.length ? `${parts.join(" · ")} — ${result.errors[0]}` : parts.join(" · "));
 
       await load();
     } finally {
