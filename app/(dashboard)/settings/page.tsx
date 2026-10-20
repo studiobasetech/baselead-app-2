@@ -7254,15 +7254,15 @@ phone:
   ];
 
   const tabStyle: Record<string, { icon: typeof UserRound; color: string }> = {
-    "My Profile": { icon: UserRound, color: "#F5C518" },
-    Company: { icon: Building2, color: "#3B82F6" },
+    "My Profile": { icon: UserRound, color: "#3B82F6" },
+    Company: { icon: Building2, color: "#F5C518" },
     "AI & Services": { icon: Sparkles, color: "#A78BFA" },
     Preferences: { icon: Palette, color: "#F472B6" },
     Team: { icon: Users, color: "#2DD4BF" },
     "Billing & Plan": { icon: CreditCard, color: "#84CC16" },
     Notifications: { icon: Bell, color: "#F97316" },
     Security: { icon: Lock, color: "#F22F46" },
-    "API & Webhooks": { icon: Webhook, color: "#2DD4BF" },
+    "API & Webhooks": { icon: Webhook, color: "#3B82F6" },
   };
 
   return (

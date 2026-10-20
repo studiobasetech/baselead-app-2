@@ -1735,7 +1735,7 @@ export default function IntegrationsPage() {
       description:
         "Call & text leads",
       icon: <MessageSquare size={17} />,
-      color: TWILIO_RED,
+      color: "#2DD4BF",
     },
     {
       name: "Automation",
@@ -1749,7 +1749,7 @@ export default function IntegrationsPage() {
       description:
         "Browse everything",
       icon: <Grid2X2 size={17} />,
-      color: GOLD,
+      color: BLUE,
     },
   ];
 
@@ -1897,7 +1897,7 @@ export default function IntegrationsPage() {
     ).map((tab: Tab) => {
       const active = activeTab === tab;
       const meta = {
-        Store: { icon: Store, color: "#F5C518" },
+        Store: { icon: Store, color: "#3B82F6" },
         "My Apps": { icon: LayoutGrid, color: "#84CC16" },
         Webhooks: { icon: Webhook, color: "#2DD4BF" },
       }[tab];
