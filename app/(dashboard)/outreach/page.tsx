@@ -33,6 +33,11 @@ import {
   Trash2,
   UserRound,
   X,
+  Inbox,
+  FilePen,
+  CalendarClock,
+  Eye,
+  Repeat,
 } from "lucide-react";
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
@@ -221,15 +226,15 @@ const STATUSES = [
   "Interested",
 ] as const;
 
-const STATUS_STYLE: Record<(typeof STATUSES)[number], { emoji: string; color: string }> = {
-  All: { emoji: "📋", color: "#F5C518" },
-  Drafts: { emoji: "📝", color: "#9CA3AF" },
-  Scheduled: { emoji: "⏰", color: "#22D3EE" },
-  Sent: { emoji: "📤", color: "#60A5FA" },
-  Opened: { emoji: "👀", color: "#A78BFA" },
-  Replied: { emoji: "💬", color: "#84CC16" },
-  "Follow-ups": { emoji: "🔁", color: "#F97316" },
-  Interested: { emoji: "⭐", color: "#F472B6" },
+const STATUS_STYLE: Record<(typeof STATUSES)[number], { icon: typeof Inbox; color: string }> = {
+  All: { icon: Inbox, color: "#F5C518" },
+  Drafts: { icon: FilePen, color: "#9CA3AF" },
+  Scheduled: { icon: CalendarClock, color: "#22D3EE" },
+  Sent: { icon: Send, color: "#60A5FA" },
+  Opened: { icon: Eye, color: "#A78BFA" },
+  Replied: { icon: Reply, color: "#84CC16" },
+  "Follow-ups": { icon: Repeat, color: "#F97316" },
+  Interested: { icon: Star, color: "#F472B6" },
 };
 
 const AVAILABLE_CHANNELS: OutreachChannel[] = ["Email"];
@@ -4810,7 +4815,7 @@ StudioBase`;
                       : "text-[#888]"
                   }`}
                 >
-                  <span className="bl-tab-emoji" aria-hidden>{STATUS_STYLE[status].emoji}</span>
+                  {(() => { const Icon = STATUS_STYLE[status].icon; return <Icon size={14} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: STATUS_STYLE[status].color }} aria-hidden />; })()}
 
                   {status}
 

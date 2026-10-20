@@ -39,6 +39,11 @@ import {
   Radar,
   MousePointer2,
   CheckCircle2,
+  List,
+  Flame,
+  Send,
+  MessageCircle,
+  Handshake,
 } from "lucide-react";
 
 type SearchMode = "simple" | "advanced";
@@ -1352,14 +1357,14 @@ function SearchResultsView({
     value: ResultTab;
     label: string;
     count: number;
-    emoji: string;
+    icon: typeof List;
     color: string;
   }[] = [
-    { value: "all", label: "All Leads", count: counts.all, emoji: "📋", color: "#F5C518" },
-    { value: "highIntent", label: "High-Intent", count: counts.highIntent, emoji: "🔥", color: "#F97316" },
-    { value: "contacted", label: "Contacted", count: counts.contacted, emoji: "📨", color: "#60A5FA" },
-    { value: "responded", label: "Responded", count: counts.responded, emoji: "💬", color: "#A78BFA" },
-    { value: "client", label: "Client", count: counts.client, emoji: "🤝", color: "#84CC16" },
+    { value: "all", label: "All Leads", count: counts.all, icon: List, color: "#F5C518" },
+    { value: "highIntent", label: "High-Intent", count: counts.highIntent, icon: Flame, color: "#F97316" },
+    { value: "contacted", label: "Contacted", count: counts.contacted, icon: Send, color: "#60A5FA" },
+    { value: "responded", label: "Responded", count: counts.responded, icon: MessageCircle, color: "#A78BFA" },
+    { value: "client", label: "Client", count: counts.client, icon: Handshake, color: "#84CC16" },
   ];
 
   useEffect(() => {
@@ -1413,7 +1418,7 @@ function SearchResultsView({
                   active ? "text-white" : "text-gray-500"
                 }`}
               >
-                <span className="bl-tab-emoji" aria-hidden>{tab.emoji}</span>
+                <tab.icon size={15} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: tab.color }} aria-hidden />
                 {tab.label}
 
                 <span className="bl-tab-count rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-gray-600">

@@ -27,6 +27,10 @@ import {
   Trophy,
   Users,
   X,
+  Compass,
+  GitBranch,
+  DollarSign,
+  SlidersHorizontal,
 } from "lucide-react";
 
 import { supabase } from "@/components/lib/supabase";
@@ -161,13 +165,13 @@ const tabs: ReportTab[] = [
   "Custom Reports",
 ];
 
-const TAB_STYLE: Record<string, { emoji: string; color: string }> = {
-  Overview: { emoji: "🧭", color: "#F5C518" },
-  Leads: { emoji: "👥", color: "#60A5FA" },
-  Outreach: { emoji: "📨", color: "#A78BFA" },
-  Pipeline: { emoji: "📊", color: "#22D3EE" },
-  Revenue: { emoji: "💰", color: "#84CC16" },
-  "Custom Reports": { emoji: "🛠️", color: "#F472B6" },
+const TAB_STYLE: Record<string, { icon: typeof Compass; color: string }> = {
+  Overview: { icon: Compass, color: "#F5C518" },
+  Leads: { icon: Users, color: "#60A5FA" },
+  Outreach: { icon: Send, color: "#A78BFA" },
+  Pipeline: { icon: GitBranch, color: "#22D3EE" },
+  Revenue: { icon: DollarSign, color: "#84CC16" },
+  "Custom Reports": { icon: SlidersHorizontal, color: "#F472B6" },
 };
 
 const THEME = {
@@ -3805,7 +3809,7 @@ export default function ReportsPage() {
                       } as CSSProperties}
                       className="bl-tab relative mb-2 flex items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-xs font-medium"
                     >
-                      <span className="bl-tab-emoji" aria-hidden>{TAB_STYLE[tab]?.emoji}</span>
+                      {(() => { const Icon = TAB_STYLE[tab]?.icon ?? Compass; return <Icon size={14} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: TAB_STYLE[tab]?.color ?? GOLD }} aria-hidden />; })()}
                       {tab}
                     </button>
                   );

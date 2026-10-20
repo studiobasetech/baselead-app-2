@@ -62,13 +62,13 @@ const BUCKET = "sales-resources";
 const MAX_BYTES = 50 * 1024 * 1024;
 const EMOJIS = ["📁", "🎤", "🛡️", "🎓", "🏆", "💰", "✉️", "📊", "🎯", "🧠", "📞", "🤝", "📈", "🎬"];
 
-const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string; emoji: string }[] = [
-  { id: "all", label: "All", icon: BookOpen, color: "#F5C518", emoji: "🧰" },
-  { id: "document", label: "Documents", icon: FileText, color: "#60A5FA", emoji: "📄" },
-  { id: "video", label: "Videos", icon: PlayCircle, color: "#F0475C", emoji: "🎬" },
-  { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA", emoji: "🖼️" },
-  { id: "link", label: "Links", icon: Link2, color: "#22D3EE", emoji: "🔗" },
-  { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16", emoji: "📝" },
+const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string }[] = [
+  { id: "all", label: "All", icon: BookOpen, color: "#F5C518" },
+  { id: "document", label: "Documents", icon: FileText, color: "#60A5FA" },
+  { id: "video", label: "Videos", icon: PlayCircle, color: "#F0475C" },
+  { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA" },
+  { id: "link", label: "Links", icon: Link2, color: "#22D3EE" },
+  { id: "text", label: "Scripts", icon: Sparkles, color: "#84CC16" },
 ];
 
 const kindMeta = (kind: Kind) => KINDS.find((item) => item.id === kind) ?? KINDS[1];
@@ -335,6 +335,7 @@ export default function ResourcesPage() {
         <div className="flex gap-2 overflow-x-auto pb-1">
           {KINDS.map((item) => {
             const active = kind === item.id;
+            const Icon = item.icon;
             return (
               <button
                 key={item.id}
@@ -344,7 +345,7 @@ export default function ResourcesPage() {
                 className="bl-tab inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-[#202020] px-3 text-xs font-semibold text-[#9a9a9a]"
                 style={{ "--tab": item.color } as CSSProperties}
               >
-                <span className="bl-tab-emoji" aria-hidden>{item.emoji}</span> {item.label}
+                <Icon size={14} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: item.color }} aria-hidden /> {item.label}
               </button>
             );
           })}

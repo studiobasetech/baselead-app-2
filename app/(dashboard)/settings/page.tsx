@@ -33,6 +33,11 @@ import {
   Target,
   Sparkles,
   Zap,
+  UserRound,
+  Building2,
+  Palette,
+  Bell,
+  Webhook,
 } from "lucide-react";
 
 import {
@@ -7228,16 +7233,16 @@ phone:
     "API & Webhooks",
   ];
 
-  const tabStyle: Record<string, { emoji: string; color: string }> = {
-    "My Profile": { emoji: "👤", color: "#F5C518" },
-    Company: { emoji: "🏢", color: "#60A5FA" },
-    "AI & Services": { emoji: "✨", color: "#A78BFA" },
-    Preferences: { emoji: "🎨", color: "#F472B6" },
-    Team: { emoji: "👥", color: "#22D3EE" },
-    "Billing & Plan": { emoji: "💳", color: "#84CC16" },
-    Notifications: { emoji: "🔔", color: "#F97316" },
-    Security: { emoji: "🔒", color: "#F0475C" },
-    "API & Webhooks": { emoji: "🔌", color: "#2DD4BF" },
+  const tabStyle: Record<string, { icon: typeof UserRound; color: string }> = {
+    "My Profile": { icon: UserRound, color: "#F5C518" },
+    Company: { icon: Building2, color: "#60A5FA" },
+    "AI & Services": { icon: Sparkles, color: "#A78BFA" },
+    Preferences: { icon: Palette, color: "#F472B6" },
+    Team: { icon: Users, color: "#22D3EE" },
+    "Billing & Plan": { icon: CreditCard, color: "#84CC16" },
+    Notifications: { icon: Bell, color: "#F97316" },
+    Security: { icon: Lock, color: "#F0475C" },
+    "API & Webhooks": { icon: Webhook, color: "#2DD4BF" },
   };
 
   return (
@@ -7448,7 +7453,7 @@ phone:
                       : "text-gray-500"
                   }`}
                 >
-                  <span className="bl-tab-emoji" aria-hidden>{tabStyle[tab]?.emoji}</span>
+                  {(() => { const Icon = tabStyle[tab]?.icon ?? UserRound; return <Icon size={15} strokeWidth={2.2} className="bl-tab-emoji" style={{ color: tabStyle[tab]?.color }} aria-hidden />; })()}
                   {t(tab)}
                 </button>
               )
