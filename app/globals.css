@@ -1560,12 +1560,27 @@ html.baselead-light [class*="bg-[#2A2A2A]"] {
   color: var(--tab) !important;
   background-color: color-mix(in srgb, var(--tab) 16%, transparent) !important;
 }
+/* Every tab icon sits on its own pastel tile (same look everywhere) */
 .bl-tab .bl-tab-emoji {
   display: inline-block;
-  transition: transform 160ms ease;
+  box-sizing: content-box;
+  flex-shrink: 0;
+  padding: 5px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--tab) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 22%, transparent);
+  transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+.bl-tab:hover .bl-tab-emoji,
+.bl-tab[data-active="true"] .bl-tab-emoji {
+  background: color-mix(in srgb, var(--tab) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab) 40%, transparent), 0 0 14px -4px var(--tab);
 }
 .bl-tab:hover .bl-tab-emoji {
-  transform: scale(1.18) rotate(-6deg);
+  transform: scale(1.08) rotate(-6deg);
+}
+html.baselead-light .bl-tab .bl-tab-emoji {
+  background: color-mix(in srgb, var(--tab) 18%, #ffffff);
 }
 
 /* =========================================================
