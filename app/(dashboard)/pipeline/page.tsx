@@ -419,15 +419,15 @@ function LeadAvatar({
 }: {
   lead: Lead;
 }) {
-  const backgrounds = [
-    "bg-black",
-    "bg-pink-200",
-    "bg-[#123a1e]",
-    "bg-[#d5ead9]",
-    "bg-[#ead5bd]",
-    "bg-blue-100",
-    "bg-purple-100",
-    "bg-green-900",
+  const palette = [
+    "#F5C518",
+    "#22D3EE",
+    "#A78BFA",
+    "#84CC16",
+    "#F472B6",
+    "#60A5FA",
+    "#F97316",
+    "#2DD4BF",
   ];
 
   const hash = lead.id
@@ -438,9 +438,9 @@ function LeadAvatar({
       0
     );
 
-  const background =
-    backgrounds[
-      hash % backgrounds.length
+  const accent =
+    palette[
+      hash % palette.length
     ];
 
   const initials =
@@ -453,7 +453,8 @@ function LeadAvatar({
 
   return (
     <div
-      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${background} text-[9px] font-semibold tracking-wide text-black shadow-[0_4px_16px_rgba(0,0,0,0.22)] transition-all duration-200 group-hover:shadow-[0_6px_20px_rgba(245,197,24,0.10)]`}
+      className="bl-avatar flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold tracking-wide transition-all duration-200"
+      style={{ "--tab": accent } as React.CSSProperties}
     >
       {initials}
     </div>

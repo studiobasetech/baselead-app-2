@@ -2035,7 +2035,7 @@ export default function IntegrationsPage() {
                       {item.name}
                     </p>
 
-                    <p className="mt-1 text-[9px] text-[#555555]">
+                    <p className="mt-1 text-[10px] text-gray-500">
                       {item.description}
                     </p>
                   </button>
