@@ -4,7 +4,8 @@ import {
   useEffect,
   useMemo,
   useState,
-, type CSSProperties } from "react";
+  type CSSProperties,
+} from "react";
 
 import {
   CalendarDays,
