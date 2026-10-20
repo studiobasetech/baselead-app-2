@@ -65,7 +65,7 @@ const MAX_BYTES = 50 * 1024 * 1024;
 const EMOJIS = ["📁", "🎤", "🛡️", "🎓", "🏆", "💰", "✉️", "📊", "🎯", "🧠", "📞", "🤝", "📈", "🎬"];
 
 const KINDS: { id: Kind | "all"; label: string; icon: typeof FileText; color: string }[] = [
-  { id: "all", label: "All", icon: BookOpen, color: "#F5C518" },
+  { id: "all", label: "All", icon: BookOpen, color: "#3B82F6" },
   { id: "document", label: "Documents", icon: FileText, color: "#3B82F6" },
   { id: "video", label: "Videos", icon: PlayCircle, color: "#F22F46" },
   { id: "image", label: "Images", icon: ImageIcon, color: "#A78BFA" },
@@ -332,7 +332,7 @@ export default function ResourcesPage() {
 
       <div className="mt-5 flex gap-1 overflow-x-auto rounded-xl border border-[#202020] bg-[#0D0D0D] p-1 sm:w-fit">
         {([
-          { id: "resources", label: "Resources", icon: BookOpen, color: "#F5C518" },
+          { id: "resources", label: "Resources", icon: BookOpen, color: "#3B82F6" },
           { id: "proposals", label: "Proposals", icon: FileSignature, color: "#84CC16" },
         ] as const).map((item) => (
           <button
