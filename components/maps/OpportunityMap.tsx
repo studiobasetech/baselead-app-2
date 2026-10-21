@@ -81,9 +81,9 @@ function loadLeaflet(): Promise<LeafletGlobal> {
 }
 
 export function scoreTier(score: number) {
-  if (score >= 80) return { label: "High", color: "#F5C518" };
-  if (score >= 60) return { label: "Strong", color: "#84CC16" };
-  return { label: "Emerging", color: "#A78BFA" };
+  if (score >= 80) return { label: "High", color: "#3B82F6" };
+  if (score >= 60) return { label: "Strong", color: "#8C8C8C" };
+  return { label: "Emerging", color: "#5E5E66" };
 }
 
 function escapeHtml(value: string) {

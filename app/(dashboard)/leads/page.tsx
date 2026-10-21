@@ -219,10 +219,10 @@ function getScoreClass(
   score: number,
 ) {
   if (score >= 80) {
-    return "text-[#84CC16]";
+    return "text-[#3B82F6] font-semibold";
   }
 
-  return "text-[#3B82F6]";
+  return "text-white";
 }
 
 function getOpportunity(
@@ -1152,7 +1152,7 @@ function StatCard({
             {value}
           </p>
 
-          <p className="mt-1 text-xs text-[#84CC16]">
+          <p className="mt-1 text-xs text-gray-500">
             {change}
           </p>
         </div>
@@ -1252,7 +1252,7 @@ function SocialIcons({
       url: lead.googleMapsUrl,
       content: "↗",
       className:
-        "rounded-full border border-[#84CC16]/40 font-bold text-[#84CC16]",
+        "rounded-full border border-white/20 font-bold text-gray-300",
     },
   ].filter(
     (item) => item.url,
@@ -1424,8 +1424,8 @@ function LeadCard({
             className={`mt-1 text-xs ${
               lead.opportunity ===
               "High Opportunity"
-                ? "text-[#84CC16]"
-                : "text-[#3B82F6]"
+                ? "font-medium text-[#3B82F6]"
+                : "text-gray-500"
             }`}
           >
             {lead.opportunity}
@@ -1821,7 +1821,7 @@ function LeadDetailPanel({
               </span>
             </div>
 
-            <span className="mt-2 inline-flex rounded-md bg-[#84CC16]/10 px-2.5 py-1 text-sm text-[#84CC16]">
+            <span className={`mt-2 inline-flex rounded-md px-2.5 py-1 text-sm ${lead.score >= 80 ? "bg-[#3B82F6]/10 font-medium text-[#3B82F6]" : "bg-white/5 text-gray-400"}`}>
               {lead.opportunity}
             </span>
           </div>
@@ -1832,12 +1832,12 @@ function LeadDetailPanel({
               style={{
                 borderTopColor:
                   lead.score >= 80
-                    ? "#84CC16"
-                    : "#3B82F6",
+                    ? "#3B82F6"
+                    : "#8C8C8C",
                 borderLeftColor:
                   lead.score >= 80
-                    ? "#84CC16"
-                    : "#3B82F6",
+                    ? "#3B82F6"
+                    : "#8C8C8C",
                 transform:
                   "rotate(-35deg)",
               }}
@@ -2517,12 +2517,12 @@ function OpportunityRadar({
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#84CC16]/10 bg-[#84CC16]/[0.03] px-4 py-2.5">
+            <div className="rounded-xl border border-[#3B82F6]/15 bg-[#3B82F6]/[0.04] px-4 py-2.5">
               <p className="text-[10px] uppercase tracking-wider text-gray-600">
                 High Potential
               </p>
 
-              <p className="mt-0.5 text-lg font-medium text-[#84CC16]">
+              <p className="mt-0.5 text-lg font-medium text-[#3B82F6]">
                 {highOpportunityCount}
               </p>
             </div>
@@ -2670,14 +2670,14 @@ function OpportunityRadar({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#84CC16]" />
+                <span className="h-2 w-2 rounded-full bg-[#8C8C8C]" />
                 <span className="text-[11px] text-gray-500">
                   Strong 60–79
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#A78BFA]" />
+                <span className="h-2 w-2 rounded-full bg-[#5E5E66]" />
                 <span className="text-[11px] text-gray-500">
                   Emerging &lt;60
                 </span>
