@@ -33,7 +33,7 @@ function cleanSteps(steps: StepInput[] | undefined) {
     }));
 }
 
-// List sequences with their steps and enrollment counts.
+// List sequences with their steps, enrollment counts and the people in them.
 export async function GET() {
   const result = await guard();
   if ("error" in result) return result.error;
@@ -42,7 +42,9 @@ export async function GET() {
 
   const { data: sequences, error } = await supabase
     .from("sequences")
-    .select("id, name, active, created_at, sequence_steps(*), sequence_enrollments(status)")
+    .select(
+      "id, name, active, created_at, sequence_steps(*), sequence_enrollments(id, lead_id, status, current_step, next_run_at, last_error, created_at)"
+    )
     .eq("company_id", access.company.id)
     .order("created_at", { ascending: false });
 
@@ -50,9 +52,37 @@ export async function GET() {
     return NextResponse.json({ error: error.message, sequences: [] }, { status: 500 });
   }
 
+  type Enrollment = {
+    id: string;
+    lead_id: string;
+    status: string;
+    current_step: number;
+    next_run_at: string | null;
+    last_error: string | null;
+    created_at: string;
+  };
+
+  // Names for everyone enrolled (one query for all sequences).
+  const leadIds = Array.from(
+    new Set(
+      (sequences ?? []).flatMap((sequence) =>
+        ((sequence.sequence_enrollments ?? []) as Enrollment[]).map((e) => e.lead_id)
+      )
+    )
+  ).slice(0, 1000);
+
+  const leadMap = new Map<string, { name: string | null; company: string | null; email: string | null }>();
+  if (leadIds.length) {
+    const { data: leads } = await supabase
+      .from("leads")
+      .select("id, name, company, email")
+      .in("id", leadIds);
+    for (const lead of leads ?? []) leadMap.set(lead.id, lead);
+  }
+
   return NextResponse.json({
     sequences: (sequences ?? []).map((sequence) => {
-      const enrollments = (sequence.sequence_enrollments ?? []) as { status: string }[];
+      const enrollments = (sequence.sequence_enrollments ?? []) as Enrollment[];
       return {
         id: sequence.id,
         name: sequence.name,
@@ -67,6 +97,22 @@ export async function GET() {
           completed: enrollments.filter((e) => e.status === "completed").length,
           total: enrollments.length,
         },
+        people: enrollments
+          .sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""))
+          .map((e) => {
+            const lead = leadMap.get(e.lead_id);
+            return {
+              id: e.id,
+              lead_id: e.lead_id,
+              name: lead?.name ?? null,
+              company: lead?.company ?? null,
+              email: lead?.email ?? null,
+              status: e.status,
+              current_step: e.current_step,
+              next_run_at: e.next_run_at,
+              last_error: e.last_error,
+            };
+          }),
       };
     }),
     allowed: access.can("outreach_automation"),

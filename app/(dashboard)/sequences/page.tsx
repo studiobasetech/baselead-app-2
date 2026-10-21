@@ -42,12 +42,25 @@ type Step = {
   body: string;
 };
 
+type Person = {
+  id: string;
+  lead_id: string;
+  name: string | null;
+  company: string | null;
+  email: string | null;
+  status: string;
+  current_step: number;
+  next_run_at: string | null;
+  last_error: string | null;
+};
+
 type Sequence = {
   id: string;
   name: string;
   active: boolean;
   steps: Step[];
   stats: { active: number; replied: number; completed: number; total: number };
+  people?: Person[];
 };
 
 type LeadOption = {
@@ -192,6 +205,8 @@ export default function SequencesPage() {
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
   const cursor = useRef<Record<number, number>>({});
+  const [peopleOpen, setPeopleOpen] = useState<string | null>(null);
+  const [stepPreview, setStepPreview] = useState<{ sequence: Sequence; index: number } | null>(null);
 
   const showToast = (message: string) => {
     setToast(message);
@@ -217,13 +232,14 @@ export default function SequencesPage() {
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
-      if (enrolling) setEnrolling(null);
+      if (stepPreview) setStepPreview(null);
+      else if (enrolling) setEnrolling(null);
       else if (editing) setEditing(null);
       else if (choosing) setChoosing(false);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [choosing, editing, enrolling]);
+  }, [choosing, editing, enrolling, stepPreview]);
 
   const totals = useMemo(
     () => ({
@@ -295,6 +311,14 @@ export default function SequencesPage() {
     if (!window.confirm(`Delete "${sequence.name}"? Leads in it will stop receiving emails.`)) return;
     await fetch(`/api/sequences?id=${sequence.id}`, { method: "DELETE" });
     showToast("Sequence deleted.");
+    void load();
+  }
+
+  async function removePerson(sequence: Sequence, person: Person) {
+    const who = person.company || person.name || "this lead";
+    if (!window.confirm(`Stop "${sequence.name}" for ${who}? No more steps will be sent to them.`)) return;
+    await fetch(`/api/sequences/enroll?sequenceId=${sequence.id}&leadId=${person.lead_id}`, { method: "DELETE" });
+    showToast(`${who} was taken out of the sequence.`);
     void load();
   }
 
@@ -510,11 +534,11 @@ export default function SequencesPage() {
       )}
 
       {/* LIST */}
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        {loading && [0, 1].map((i) => <div key={i} className="h-64 animate-pulse rounded-2xl bg-white/[0.03]" />)}
+      <div className="mt-6 grid min-w-0 grid-cols-1 gap-5">
+        {loading && [0, 1].map((i) => <div key={i} className="h-72 animate-pulse rounded-2xl bg-white/[0.03]" />)}
 
         {!loading && sequences.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-[#2A2A2A] p-6 sm:p-8 lg:col-span-2">
+          <div className="rounded-2xl border border-dashed border-[#2A2A2A] p-6 sm:p-8">
             <div className="text-center">
               <span className="bl-icon-tile mx-auto" style={tile("#F472B6")}>
                 <Sparkles size={16} strokeWidth={2.2} />
@@ -527,121 +551,76 @@ export default function SequencesPage() {
         )}
 
         {sequences.map((sequence) => {
+          const people = sequence.people ?? [];
           const stepDays = dayNumbers(sequence.steps);
+          const totalDays = stepDays[stepDays.length - 1] ?? 1;
           const replyRate = sequence.stats.total > 0 ? Math.round((sequence.stats.replied / sequence.stats.total) * 100) : 0;
+          const waitingAt = sequence.steps.map((_, index) =>
+            people.filter((person) => person.status === "active" && person.current_step === index)
+          );
+          const showPeople = peopleOpen === sequence.id;
+
           return (
-            <article key={sequence.id} className="bl-card flex flex-col rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-              <div className="flex items-start justify-between gap-3">
+            <article key={sequence.id} className="bl-card min-w-0 rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 sm:p-6">
+              {/* header */}
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="bl-icon-tile" style={tile("#3B82F6")}>
                     <Workflow size={16} strokeWidth={2.2} />
                   </span>
                   <div className="min-w-0">
-                    <h2 className="truncate text-base font-semibold">{sequence.name}</h2>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="truncate text-lg font-semibold">{sequence.name}</h2>
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+                          sequence.active ? "bg-[#84CC16]/10 text-[#84CC16]" : "bg-white/5 text-gray-400"
+                        }`}
+                      >
+                        <span className={`h-1.5 w-1.5 rounded-full ${sequence.active ? "bg-[#84CC16]" : "bg-gray-500"}`} />
+                        {sequence.active ? "Running" : "Paused"}
+                      </span>
+                    </div>
                     <p className="mt-0.5 text-xs text-gray-500">
-                      {sequence.steps.length} step{sequence.steps.length === 1 ? "" : "s"} over {stepDays[stepDays.length - 1] ?? 1} day
-                      {(stepDays[stepDays.length - 1] ?? 1) === 1 ? "" : "s"}
+                      {sequence.steps.length} step{sequence.steps.length === 1 ? "" : "s"} over {totalDays} day{totalDays === 1 ? "" : "s"} · stops by itself when someone replies
                     </p>
                   </div>
                 </div>
 
-                <span
-                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
-                    sequence.active ? "bg-[#84CC16]/10 text-[#84CC16]" : "bg-white/5 text-gray-400"
-                  }`}
-                >
-                  <span className={`h-1.5 w-1.5 rounded-full ${sequence.active ? "bg-[#84CC16]" : "bg-gray-500"}`} />
-                  {sequence.active ? "Running" : "Paused"}
-                </span>
-              </div>
-
-              {/* timeline */}
-              <ol className="mt-4 space-y-1.5">
-                {sequence.steps.slice(0, 5).map((step, index) => {
-                  const meta = STEP_TYPES[step.type] ?? STEP_TYPES.email;
-                  const Icon = meta.icon;
-                  return (
-                    <li key={index} className="flex items-center gap-3 rounded-xl bg-white/[0.02] px-2.5 py-2">
-                      <span className="w-12 shrink-0 text-[11px] font-medium text-gray-500">Day {stepDays[index]}</span>
-                      <span className="bl-icon-tile !h-7 !w-7 !rounded-lg" style={tile(meta.color)}>
-                        <Icon size={13} strokeWidth={2.2} />
-                      </span>
-                      <span className="min-w-0 flex-1 truncate text-xs text-gray-300">
-                        <span className="text-gray-500">{meta.label}: </span>
-                        {step.subject || (step.type === "email" ? "(no subject)" : "Task")}
-                      </span>
-                    </li>
-                  );
-                })}
-                {sequence.steps.length > 5 && (
-                  <li className="px-2.5 text-[11px] text-gray-500">+{sequence.steps.length - 5} more steps</li>
-                )}
-              </ol>
-
-              {/* stats */}
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                {[
-                  { label: "In progress", value: sequence.stats.active },
-                  { label: "Replied", value: sequence.stats.replied },
-                  { label: "Finished", value: sequence.stats.completed },
-                ].map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-[#202020] py-2">
-                    <p className="text-base font-semibold tabular-nums">{stat.value}</p>
-                    <p className="text-[10px] text-gray-500">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {sequence.stats.total > 0 && (
-                <div className="mt-3">
-                  <div className="flex justify-between text-[11px] text-gray-500">
-                    <span>Reply rate</span>
-                    <span>{replyRate}%</span>
-                  </div>
-                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#191919]">
-                    <div className="h-full rounded-full bg-[#2DD4BF]" style={{ width: `${replyRate}%` }} />
-                  </div>
-                </div>
-              )}
-
-              {/* actions */}
-              <div className="mt-auto pt-5">
-                {sequence.active ? (
-                  <button
-                    type="button"
-                    onClick={() => void openEnroll(sequence)}
-                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#3B82F6] py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
-                  >
-                    <UserPlus size={15} /> Add leads
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => void toggle(sequence)}
-                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-[#84CC16]/40 bg-[#84CC16]/10 py-2.5 text-sm font-semibold text-[#84CC16] transition hover:bg-[#84CC16]/20"
-                  >
-                    <Play size={15} /> Resume to add leads
-                  </button>
-                )}
-
-                <div className="mt-2 flex gap-2">
+                <div className="flex flex-wrap gap-2">
+                  {sequence.active ? (
+                    <button
+                      type="button"
+                      onClick={() => void openEnroll(sequence)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#3B82F6] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
+                    >
+                      <UserPlus size={15} /> Add leads
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => void toggle(sequence)}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-[#84CC16]/40 bg-[#84CC16]/10 px-4 py-2 text-sm font-semibold text-[#84CC16] transition hover:bg-[#84CC16]/20"
+                    >
+                      <Play size={15} /> Resume
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => {
                       setPreviewing(null);
                       setEditing({ id: sequence.id, name: sequence.name, steps: sequence.steps.map((step) => ({ ...step, subject: step.subject ?? "", body: step.body ?? "" })) });
                     }}
-                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#202020] py-2 text-xs text-gray-300 transition hover:border-[#2A2A2A] hover:bg-[#171717]"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#202020] px-3 py-2 text-sm text-gray-300 transition hover:border-[#2A2A2A] hover:bg-[#171717]"
                   >
-                    <Pencil size={13} /> Edit
+                    <Pencil size={14} /> Edit
                   </button>
                   {sequence.active && (
                     <button
                       type="button"
                       onClick={() => void toggle(sequence)}
-                      className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#202020] py-2 text-xs text-gray-300 transition hover:border-[#2A2A2A] hover:bg-[#171717]"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-[#202020] px-3 py-2 text-sm text-gray-300 transition hover:border-[#2A2A2A] hover:bg-[#171717]"
                     >
-                      <Pause size={13} /> Pause
+                      <Pause size={14} /> Pause
                     </button>
                   )}
                   <button
@@ -651,10 +630,98 @@ export default function SequencesPage() {
                     aria-label="Delete sequence"
                     title="Delete"
                   >
-                    <Trash2 size={13} />
+                    <Trash2 size={14} />
                   </button>
                 </div>
               </div>
+
+              {/* flow */}
+              <div className="mt-6 overflow-x-auto pb-2">
+                <ol className="flex min-w-max items-stretch">
+                  {sequence.steps.map((step, index) => {
+                    const meta = STEP_TYPES[step.type] ?? STEP_TYPES.email;
+                    const waiting = waitingAt[index]?.length ?? 0;
+                    return (
+                      <li key={index} className="flex items-stretch">
+                        {index > 0 && (
+                          <div className="flex w-20 shrink-0 flex-col items-center justify-center px-1">
+                            <span className="text-[10px] text-gray-500">wait {step.delay_days}d</span>
+                            <span className="mt-1 h-px w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5" />
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setStepPreview({ sequence, index })}
+                          className="group w-44 shrink-0 rounded-2xl border border-[#202020] bg-white/[0.02] p-3 text-left transition hover:-translate-y-0.5"
+                          style={{ "--hover-accent": meta.color } as CSSProperties}
+                          data-hover-accent="1"
+                          title="Preview this step"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-semibold text-gray-400">Day {stepDays[index]}</span>
+                            <span className="bl-icon-tile !h-7 !w-7 !rounded-lg" style={tile(meta.color)}>
+                              <meta.icon size={13} strokeWidth={2.2} />
+                            </span>
+                          </div>
+                          <p className="mt-2 text-xs font-semibold">{meta.label}{step.type === "email" ? (index === 0 ? " · first touch" : " · follow-up") : " · task"}</p>
+                          <p className="mt-0.5 truncate text-[11px] text-gray-500">{fillSample(step.subject) || "(no subject)"}</p>
+                          <div className="mt-3 flex items-center gap-1.5">
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                                waiting ? "bg-[#3B82F6]/10 text-[#3B82F6]" : "bg-white/5 text-gray-500"
+                              }`}
+                            >
+                              <Users size={10} /> {waiting} {waiting === 1 ? "lead" : "leads"} next
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    );
+                  })}
+                  {/* end node */}
+                  <li className="flex items-stretch">
+                    <div className="flex w-14 shrink-0 items-center px-1">
+                      <span className="h-px w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5" />
+                    </div>
+                    <div className="w-40 shrink-0 rounded-2xl border border-dashed border-[#2A2A2A] p-3">
+                      <span className="text-[11px] font-semibold text-gray-400">Result</span>
+                      <div className="mt-2 space-y-1.5 text-[11px]">
+                        <p className="flex items-center gap-1.5 text-gray-300"><MessageSquareReply size={12} className="text-[#2DD4BF]" /> {sequence.stats.replied} replied</p>
+                        <p className="flex items-center gap-1.5 text-gray-300"><CheckCircle2 size={12} className="text-[#A78BFA]" /> {sequence.stats.completed} finished</p>
+                        <p className="text-[10px] leading-4 text-gray-500">A reply stops the steps right away.</p>
+                      </div>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+              {/* stats + people toggle */}
+              <div className="mt-4 flex flex-col gap-3 border-t border-[#202020] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-gray-400">
+                  <span><b className="text-white">{sequence.stats.active}</b> in progress</span>
+                  <span><b className="text-white">{sequence.stats.replied}</b> replied</span>
+                  <span><b className="text-white">{sequence.stats.completed}</b> finished</span>
+                  {sequence.stats.total > 0 && (
+                    <span className="flex items-center gap-2">
+                      <b className="text-white">{replyRate}%</b> reply rate
+                      <span className="h-1.5 w-20 overflow-hidden rounded-full bg-[#191919]">
+                        <span className="block h-full rounded-full bg-[#2DD4BF]" style={{ width: `${replyRate}%` }} />
+                      </span>
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPeopleOpen(showPeople ? null : sequence.id)}
+                  disabled={people.length === 0}
+                  className="inline-flex items-center gap-1.5 self-start rounded-lg px-2 py-1 text-xs font-medium text-[#3B82F6] transition hover:bg-[#3B82F6]/10 disabled:text-gray-600 disabled:hover:bg-transparent sm:self-auto"
+                >
+                  <Users size={13} />
+                  {people.length === 0 ? "No leads yet" : showPeople ? "Hide people" : `See who's in it (${people.length})`}
+                </button>
+              </div>
+
+              {showPeople && <PeopleList sequence={sequence} people={people} onRemove={(person) => void removePerson(sequence, person)} />}
             </article>
           );
         })}
@@ -868,6 +935,35 @@ export default function SequencesPage() {
               ) : (
                 <p className="text-center text-xs text-gray-500">You can have up to {MAX_STEPS} steps.</p>
               )}
+
+              {editing.steps.length > 0 && (
+                <div className="mt-5 rounded-2xl border border-[#3B82F6]/20 bg-[#3B82F6]/[0.05] p-4">
+                  <p className="text-xs font-semibold text-[#3B82F6]">What will happen</p>
+                  <ol className="mt-2 space-y-1.5 text-xs leading-5 text-gray-300">
+                    {editing.steps.map((step, index) => (
+                      <li key={index} className="flex gap-2">
+                        <span className="w-12 shrink-0 text-gray-500">Day {days[index]}</span>
+                        <span>
+                          {step.type === "email"
+                            ? index === 0
+                              ? "We email them"
+                              : "If they haven't replied, we email again"
+                            : step.type === "call"
+                              ? "You get a task to call them"
+                              : step.type === "linkedin"
+                                ? "You get a task to reach out on LinkedIn"
+                                : "You get a to-do"}
+                          {step.subject ? <span className="text-gray-500"> — “{fillSample(step.subject)}”</span> : null}
+                        </span>
+                      </li>
+                    ))}
+                    <li className="flex gap-2">
+                      <span className="w-12 shrink-0 text-gray-500">Anytime</span>
+                      <span>If they reply, everything stops and the lead moves to Responded.</span>
+                    </li>
+                  </ol>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-3 border-t border-white/10 px-6 py-4">
@@ -1025,6 +1121,49 @@ export default function SequencesPage() {
         </div>
       )}
 
+      {/* STEP PREVIEW */}
+      {stepPreview && (() => {
+        const step = stepPreview.sequence.steps[stepPreview.index];
+        const meta = STEP_TYPES[step.type] ?? STEP_TYPES.email;
+        const day = dayNumbers(stepPreview.sequence.steps)[stepPreview.index];
+        return (
+          <div className="fixed inset-0 z-[85] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center sm:p-4" onClick={() => setStepPreview(null)}>
+            <div className="w-full max-w-lg rounded-t-3xl border border-white/10 bg-[#0D0D0D] p-6 shadow-2xl sm:rounded-3xl" onClick={(event) => event.stopPropagation()}>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="bl-icon-tile" style={tile(meta.color)}><meta.icon size={16} strokeWidth={2.2} /></span>
+                  <div>
+                    <p className="text-xs text-gray-500">Step {stepPreview.index + 1} · Day {day}</p>
+                    <h3 className="text-base font-semibold">{meta.label} — {meta.hint.toLowerCase()}</h3>
+                  </div>
+                </div>
+                <button type="button" onClick={() => setStepPreview(null)} className="rounded-lg p-1.5 text-gray-500 hover:text-white" aria-label="Close"><X size={18} /></button>
+              </div>
+              <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <p className="text-[11px] uppercase tracking-wider text-gray-500">{step.type === "email" ? "What the lead receives (sample lead)" : "Task for the rep"}</p>
+                <p className="mt-2 text-sm font-semibold">{fillSample(step.subject) || "(no subject)"}</p>
+                {step.body && <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300">{fillSample(step.body)}</p>}
+              </div>
+              <div className="mt-5 flex gap-2">
+                <button type="button" onClick={() => setStepPreview(null)} className="h-11 flex-1 rounded-xl border border-white/10 text-sm text-gray-300 hover:text-white">Close</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const seq = stepPreview.sequence;
+                    setStepPreview(null);
+                    setPreviewing(null);
+                    setEditing({ id: seq.id, name: seq.name, steps: seq.steps.map((st) => ({ ...st, subject: st.subject ?? "", body: st.body ?? "" })) });
+                  }}
+                  className="h-11 flex-1 rounded-xl bg-[#3B82F6] text-sm font-semibold text-white hover:bg-[#2F74E8]"
+                >
+                  Edit steps
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {toast && (
         <div className="fixed bottom-24 left-1/2 z-[90] max-w-[90vw] -translate-x-1/2 rounded-xl border border-white/10 bg-[#111]/95 px-4 py-3 text-sm text-gray-200 shadow-2xl backdrop-blur lg:bottom-8">
           {toast}
@@ -1102,5 +1241,53 @@ function IconButton({
     >
       {children}
     </button>
+  );
+}
+
+function personStatus(person: Person, steps: Step[]) {
+  const total = steps.length;
+  if (person.status === "replied") return { label: "Replied", color: "#2DD4BF" };
+  if (person.status === "completed") return { label: "Finished all steps", color: "#A78BFA" };
+  if (person.status === "stopped") return { label: person.last_error ? "Stopped · " + person.last_error : "Stopped", color: "#8C8C8C" };
+  const next = Math.min(person.current_step + 1, total);
+  const when = person.next_run_at
+    ? new Date(person.next_run_at).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
+    : "soon";
+  return { label: `Step ${next} of ${total} · ${when}`, color: "#3B82F6" };
+}
+
+function PeopleList({ sequence, people, onRemove }: { sequence: Sequence; people: Person[]; onRemove: (person: Person) => void }) {
+  return (
+    <ul className="mt-4 divide-y divide-[#202020] overflow-hidden rounded-xl border border-[#202020]">
+      {people.map((person) => {
+        const status = personStatus(person, sequence.steps);
+        const progress = sequence.steps.length ? Math.min(person.current_step, sequence.steps.length) / sequence.steps.length : 0;
+        return (
+          <li key={person.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium">{person.company || person.name || "Lead"}</p>
+              <p className="truncate text-[11px] text-gray-500">{person.email || "No email"}</p>
+            </div>
+            <div className="flex items-center gap-3 sm:w-72">
+              <span className="h-1.5 w-16 shrink-0 overflow-hidden rounded-full bg-[#191919]">
+                <span className="block h-full rounded-full" style={{ width: `${Math.max(progress * 100, person.status === "active" ? 6 : 100)}%`, backgroundColor: status.color }} />
+              </span>
+              <span className="truncate text-xs" style={{ color: status.color }}>{status.label}</span>
+            </div>
+            {person.status === "active" ? (
+              <button
+                type="button"
+                onClick={() => onRemove(person)}
+                className="self-start rounded-lg px-2 py-1 text-xs text-gray-500 transition hover:bg-[#F22F46]/10 hover:text-[#F22F46] sm:self-auto"
+              >
+                Stop for this lead
+              </button>
+            ) : (
+              <span className="hidden w-[118px] sm:block" />
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
