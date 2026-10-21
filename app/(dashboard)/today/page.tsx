@@ -81,12 +81,27 @@ function relative(iso: string) {
   return rtf.format(Math.round(hours / 24), "day");
 }
 
-function greeting() {
-  const hour = new Date().getHours();
-  return hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+// Uses the user's own clock: morning 5–11, afternoon 12–17, night 18–4.
+function greetingFor(date: Date) {
+  const hour = date.getHours();
+  if (hour >= 5 && hour < 12) return "Good morning";
+  if (hour >= 12 && hour < 18) return "Good afternoon";
+  return "Good night";
+}
+
+function useGreeting() {
+  const [text, setText] = useState("");
+  useEffect(() => {
+    const update = () => setText(greetingFor(new Date()));
+    update();
+    const timer = window.setInterval(update, 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  return text;
 }
 
 export default function TodayPage() {
+  const greeting = useGreeting();
   const { companyId } = usePlan();
 
   const [userId, setUserId] = useState<string | null>(null);
@@ -356,8 +371,8 @@ export default function TodayPage() {
               <Sparkles size={12} /> Today
             </p>
             <h1 className="mt-4 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
-              {greeting()}
-              {name ? `, ${name}` : ""}
+              {greeting || "\u00a0"}
+              {greeting && name ? `, ${name.charAt(0).toUpperCase()}${name.slice(1)}` : ""}
             </h1>
             <p className="mt-2 text-sm text-gray-500">
               {new Date().toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}
