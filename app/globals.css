@@ -2160,3 +2160,14 @@ html.baselead-light .bl-skeleton {
 @media (prefers-reduced-motion: reduce) {
   .bl-skeleton { animation: none; }
 }
+
+/* Ask BaseLead panel */
+.bl-dot { animation: blDot 1s ease-in-out infinite; }
+@keyframes blDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
+html.baselead-light .bl-assistant { background: #ffffff; color: #1d1d1f; border-color: rgba(0,0,0,0.08); }
+html.baselead-light .bl-assistant .text-gray-200,
+html.baselead-light .bl-assistant .text-gray-300 { color: #3a3a3c !important; }
+html.baselead-light .bl-assistant textarea { color: #1d1d1f; }
+html.baselead-light .bl-assistant [class*="border-white/10"] { border-color: rgba(0,0,0,0.08) !important; }
+html.baselead-light .bl-assistant [class*="bg-white/[0.03]"] { background: #f5f5f7 !important; }
+html.baselead-light .bl-assistant .bg-\[\#3B82F6\] { color: #fff; }

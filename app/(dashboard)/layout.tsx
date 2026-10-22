@@ -1,6 +1,7 @@
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import TrialUpgradeModal from "@/components/plans/TrialUpgradeModal";
 import HoverAccent from "@/components/ui/HoverAccent";
+import AssistantPanel from "@/components/assistant/AssistantPanel";
 
 export default function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default function DashboardLayout({
 
       <TrialUpgradeModal />
       <HoverAccent />
+      <AssistantPanel />
     </div>
   );
 }
