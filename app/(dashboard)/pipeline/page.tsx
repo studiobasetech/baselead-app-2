@@ -36,6 +36,8 @@ import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import LeadDealPanel from "@/components/leads/LeadDealPanel";
 import { emitEvent } from "@/lib/events-client";
+import { SkeletonBoard } from "@/components/ui/Skeleton";
+import CompanyLogo from "@/components/ui/CompanyLogo";
 
 type PipelineStage =
   | "New Lead"
@@ -419,46 +421,7 @@ function LeadAvatar({
 }: {
   lead: Lead;
 }) {
-  const palette = [
-    "#F5C518",
-    "#2DD4BF",
-    "#A78BFA",
-    "#84CC16",
-    "#F472B6",
-    "#3B82F6",
-    "#F97316",
-    "#2DD4BF",
-  ];
-
-  const hash = lead.id
-    .split("")
-    .reduce(
-      (total, char) =>
-        total + char.charCodeAt(0),
-      0
-    );
-
-  const accent =
-    palette[
-      hash % palette.length
-    ];
-
-  const initials =
-    lead.name
-      .split(" ")
-      .slice(0, 2)
-      .map((word) => word[0])
-      .join("")
-      .toUpperCase() || "?";
-
-  return (
-    <div
-      className="bl-avatar flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold tracking-wide transition-all duration-200"
-      style={{ "--tab": accent } as React.CSSProperties}
-    >
-      {initials}
-    </div>
-  );
+  return <CompanyLogo name={lead.name} website={lead.website} size={40} />;
 }
 
 function socialIcon(
@@ -3151,15 +3114,7 @@ export default function PipelinePage() {
         )}
 
         {loading ? (
-          <div className="mt-6 flex min-h-[400px] items-center justify-center rounded-xl border border-[#202020] bg-[#0D0D0D] shadow-[0_14px_36px_rgba(0,0,0,0.24)]">
-            <div className="text-center">
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6] shadow-[0_0_20px_rgba(59,130,246,0.12)]" />
-
-              <p className="mt-3 text-xs text-gray-500">
-                Loading pipeline...
-              </p>
-            </div>
-          </div>
+          <SkeletonBoard />
         ) : leads.length ===
           0 ? (
           <div className="mt-6 flex min-h-[400px] items-center justify-center rounded-xl border border-[#202020] bg-[#0D0D0D] shadow-[0_14px_36px_rgba(0,0,0,0.24)]">

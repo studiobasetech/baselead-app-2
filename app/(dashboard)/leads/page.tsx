@@ -40,6 +40,8 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { recommendedServices } from "@/lib/recommendations";
 import OpportunityMap from "@/components/maps/OpportunityMap";
+import { SkeletonRows } from "@/components/ui/Skeleton";
+import CompanyLogo from "@/components/ui/CompanyLogo";
 
 /* =========================================================
    TYPES
@@ -1170,21 +1172,11 @@ function LeadLogo({
 }: {
   lead: Lead;
 }) {
-  const logoClasses =
-    lead.score >= 90
-      ? "bg-black text-white"
-      : lead.score >= 80
-        ? "bg-[#18200B] text-white"
-        : lead.score >= 70
-          ? "bg-[#10243A] text-[#3B82F6]"
-          : "bg-[#10243A] text-white";
-
   return (
-    <div
-      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[11px] font-medium tracking-wide ${logoClasses} lg:h-14 lg:w-14 lg:text-xs`}
-    >
-      {lead.logo}
-    </div>
+    <>
+      <CompanyLogo name={lead.company || lead.name} website={lead.website} initials={lead.logo} size={48} className="lg:hidden" />
+      <CompanyLogo name={lead.company || lead.name} website={lead.website} initials={lead.logo} size={56} className="hidden lg:flex" />
+    </>
   );
 }
 
@@ -5861,21 +5853,7 @@ ${companyName}`;
               >
                 <div className="min-w-0">
                   {loading && (
-                    <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-8 text-center">
-                      <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]" />
-
-                      <p className="mt-4 text-base text-gray-400">
-                        Loading your
-                        discovered
-                        leads...
-                      </p>
-
-                      <p className="mt-1 text-xs text-gray-700">
-                        Loading your company
-                        settings and lead
-                        data
-                      </p>
-                    </div>
+                    <SkeletonRows rows={6} />
                   )}
 
                   {!loading &&

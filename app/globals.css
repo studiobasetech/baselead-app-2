@@ -2100,3 +2100,63 @@ html.baselead-light body .baselead-main [class~="bg-[#3A1530]"] {
 html.baselead-light .bl-logo-tile {
   background: color-mix(in srgb, var(--tab) 16%, #ffffff) !important;
 }
+
+/* Calm, premium: no large decorative blurred blobs behind content.
+   (Small soft tints inside cards stay.) */
+.baselead-main .absolute.rounded-full[class*="blur-3xl"],
+.baselead-main .absolute.rounded-full[class*="blur-[1"] {
+  display: none !important;
+}
+
+/* =========================================================
+   TYPOGRAPHY POLISH
+   - Numbers line up (equal-width digits) everywhere in the app.
+   - Clear 3-level hierarchy: page title → section → body.
+   - Big KPI numbers are bold and tight.
+========================================================= */
+.baselead-main {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "cv11", "tnum";
+  text-rendering: optimizeLegibility;
+}
+.baselead-main h1 {
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+}
+.baselead-main h2 {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.baselead-main p.text-2xl,
+.baselead-main p.text-3xl,
+.baselead-main p.text-4xl,
+.baselead-main span.text-3xl,
+.baselead-main p[class*="text-[26px]"],
+.baselead-main p[class*="text-[28px]"],
+.baselead-main p[class*="text-[30px]"] {
+  font-weight: 700 !important;
+  letter-spacing: -0.03em;
+}
+.baselead-main [class*="uppercase"][class*="text-[10px]"],
+.baselead-main [class*="uppercase"][class*="text-[11px]"] {
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+/* Skeleton loading shimmer */
+.bl-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.09) 40%, rgba(255,255,255,0.045) 80%);
+  background-size: 300% 100%;
+  animation: blShimmer 1.4s ease-in-out infinite;
+}
+html.baselead-light .bl-skeleton {
+  background: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.09) 40%, rgba(0,0,0,0.05) 80%);
+  background-size: 300% 100%;
+}
+@keyframes blShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bl-skeleton { animation: none; }
+}

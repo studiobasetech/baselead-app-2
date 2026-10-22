@@ -49,6 +49,7 @@ import { useRouter } from "next/navigation";
 
 import { supabase } from "@/components/lib/supabase";
 import { usePreferences } from "@/components/preferences/PreferencesProvider";
+import { SkeletonPage } from "@/components/ui/Skeleton";
 
 /* =========================================================
    BASELEAD BRAND COLORS
@@ -2261,22 +2262,7 @@ export default function DashboardPage() {
       <main
         className={`min-h-screen flex-1 min-w-0 bg-[#050505] text-white ${pagePadding}`}
       >
-        <div className="flex min-h-[70vh] items-center justify-center">
-          <div className="text-center">
-            <div
-              className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]"
-            />
-
-            <p
-              className="mt-4 text-sm"
-              style={{
-                color: MUTED,
-              }}
-            >
-              Loading your dashboard...
-            </p>
-          </div>
-        </div>
+        <SkeletonPage />
       </main>
     );
   }
@@ -2378,34 +2364,6 @@ export default function DashboardPage() {
                 AI-Powered Intelligence
               </span>
 
-              {/* LIVE */}
-
-              <span
-                className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium"
-                style={{
-                  border:
-                    `1px solid ${hexToRgba(
-                      GREEN,
-                      0.2,
-                    )}`,
-                  backgroundColor:
-                    hexToRgba(
-                      GREEN,
-                      0.05,
-                    ),
-                  color: GREEN,
-                }}
-              >
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{
-                    backgroundColor:
-                      GREEN,
-                  }}
-                />
-
-                Live
-              </span>
             </div>
 
             {/* PAGE TITLE */}
@@ -2857,23 +2815,6 @@ export default function DashboardPage() {
                   color: BRAND,
                 }}
               />
-            </div>
-
-            <div
-              className="flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold"
-              style={{
-                backgroundColor:
-                  hexToRgba(
-                    BRAND,
-                    0.06,
-                  ),
-                color: BRAND,
-              }}
-            >
-              <TrendingUp
-                size={10}
-              />
-              LIVE
             </div>
           </div>
 

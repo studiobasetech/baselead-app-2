@@ -53,6 +53,7 @@ import {
 import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { usePreferences } from "@/components/preferences/PreferencesProvider";
+import { SkeletonRows } from "@/components/ui/Skeleton";
 
 /* =========================================================
    TYPES
@@ -7483,16 +7484,8 @@ phone:
 
         <div className="mt-5">
           {companyLoading ? (
-            <div className="flex min-h-[400px] items-center justify-center">
-              <div className="text-center">
-                <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-[#3B82F6]" />
-
-                <p className="mt-4 text-[14px] text-gray-600">
-                  {t(
-                    "Loading workspace settings..."
-                  )}
-                </p>
-              </div>
+            <div className="max-w-[1180px]">
+              <SkeletonRows rows={5} />
             </div>
           ) : (
             <div className="max-w-[1180px]">

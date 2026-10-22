@@ -42,6 +42,7 @@ import {
 } from "lucide-react";
 import PlanGate from "@/components/plans/PlanGate";
 import { usePlan } from "@/components/plans/PlanProvider";
+import { SkeletonRows } from "@/components/ui/Skeleton";
 
 /* =========================================================
    DASHBOARD VISUAL SYSTEM
@@ -2295,13 +2296,7 @@ export default function IntegrationsPage() {
           </div>
 
           {loadingConnections ? (
-            <Card className="p-12 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6]" />
-
-              <p className="mt-4 text-[11px] text-[#555555]">
-                Loading connected apps...
-              </p>
-            </Card>
+            <SkeletonRows rows={3} />
           ) : connectedIntegrations.length ===
             0 ? (
             <Card className="p-12 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">

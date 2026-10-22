@@ -42,6 +42,7 @@ import {
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { emitEvent } from "@/lib/events-client";
+import { SkeletonRows } from "@/components/ui/Skeleton";
 
 /* =========================================================
    TYPES
@@ -908,24 +909,16 @@ function KpiCard({
           : "0 8px 24px rgba(0,0,0,0.18)";
       }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] transition-all duration-300 group-hover:h-[3px]" style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, boxShadow: `0 0 18px ${hexToRgba(accent, 0.22)}` }} />
       <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full blur-3xl transition-all duration-300 group-hover:scale-125" style={{ backgroundColor: hexToRgba(accent, 0.08) }} />
       <div className="relative">
         <div className="flex items-center justify-between">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-105" style={{ backgroundColor: iconSurface(accent), borderColor: hexToRgba(accent, isLightMode() ? 0.30 : 0.24), boxShadow: isLightMode() ? `0 8px 20px rgba(18,18,24,0.08)` : `0 8px 20px rgba(0,0,0,0.12)` }}>
             <span style={{ color: accent }} className="transition-all duration-300 group-hover:drop-shadow-[0_0_8px_currentColor]">{icon}</span>
           </div>
-          <span className="flex items-center gap-1.5 rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.15em]" style={{ borderColor: hexToRgba(accent, 0.16), backgroundColor: hexToRgba(accent, 0.05), color: accent }}>
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent, boxShadow: `0 0 8px ${hexToRgba(accent, 0.35)}` }} />
-            Live
-          </span>
         </div>
         <p className="mt-4 text-[10px] font-medium uppercase tracking-[0.12em] text-[#777]">{label}</p>
-        <p className="mt-1 text-[24px] font-semibold tracking-tight text-white">{value}</p>
+        <p className="mt-1 text-[28px] font-bold tracking-[-0.03em] tabular-nums text-white">{value}</p>
         <p className="mt-1 truncate text-[10px] text-[#666]">{detail}</p>
-        <div className="mt-3 flex items-end gap-1 opacity-60 transition-opacity duration-300 group-hover:opacity-100">
-          {[0.35,0.55,0.42,0.72,0.5,0.85,0.62].map((height,index)=><span key={index} className="flex-1 rounded-full" style={{height:`${Math.max(3,height*12)}px`,backgroundColor:hexToRgba(accent,0.22+height*0.32)}} />)}
-        </div>
       </div>
     </div>
   );
@@ -983,7 +976,7 @@ function OutreachIntelligence({ outreach, onOpen }: { outreach: Outreach[]; onOp
       <div className="group relative overflow-hidden rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#3B82F6]/30 hover:shadow-[0_18px_40px_rgba(59,130,246,0.08)]">
         <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#3B82F6]/25 bg-[#EAF3FF] dark:bg-[#10243A]"><Activity size={14} className="text-[#3B82F6]" /></div><div><p className="text-[12px] font-semibold text-white">Engagement Pulse</p><p className="text-[10px] text-[#666]">Current outreach momentum</p></div></div><TrendingUp size={14} className="text-[#84CC16]"/></div>
         <div className="mt-5 flex h-24 items-end gap-2">{activity.map(item=><div key={item.label} className="flex h-full flex-1 flex-col justify-end gap-2"><div className="flex flex-1 items-end justify-center"><div className="w-full max-w-[28px] rounded-t-lg transition-all duration-500 group-hover:shadow-[0_0_18px_currentColor]" style={{height:`${Math.max(8,(item.value/max)*72)}px`,backgroundColor:item.color,opacity:0.82}}/></div><p className="text-center text-[10px] text-[#555]">{item.label}</p></div>)}</div>
-        <div className="mt-3 flex items-center justify-between border-t border-[#202020] pt-3"><span className="text-[10px] text-[#666]">{outreach.length} total records</span><span className="flex items-center gap-1.5 text-[10px] text-[#84CC16]"><span className="h-1.5 w-1.5 rounded-full bg-[#84CC16] shadow-[0_0_8px_rgba(132,204,22,0.35)]"/>Live signal</span></div>
+        <div className="mt-3 flex items-center justify-between border-t border-[#202020] pt-3"><span className="text-[10px] text-[#666]">{outreach.length} total records</span></div>
       </div>
     </div>
   );
@@ -4977,12 +4970,8 @@ StudioBase`;
         )}
 
         {loading && (
-          <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0A0A0A] py-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-            <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#202020] border-t-[#3B82F6] shadow-[0_0_16px_rgba(59,130,246,0.08)]" />
-
-            <p className="mt-3 text-[10px] uppercase tracking-wider text-[#666]">
-              Loading outreach
-            </p>
+          <div className="mt-4">
+            <SkeletonRows rows={5} />
           </div>
         )}
 
