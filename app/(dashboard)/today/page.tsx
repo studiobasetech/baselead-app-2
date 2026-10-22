@@ -20,6 +20,7 @@ import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import BookingLinkCard from "@/components/booking/BookingLinkCard";
 import PostItBoard, { type BoardColumn } from "@/components/today/PostItBoard";
+import DailyBrief from "@/components/today/DailyBrief";
 
 type Task = {
   id: string;
@@ -407,6 +408,8 @@ export default function TodayPage() {
       </section>
 
       <SetupBanner />
+
+      <DailyBrief />
 
       {setupNeeded && (
         <div className="mt-4 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-amber-200">
