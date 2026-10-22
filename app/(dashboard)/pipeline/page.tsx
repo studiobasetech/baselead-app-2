@@ -1656,8 +1656,8 @@ export default function PipelinePage() {
         selectedLeadId
     ) ?? null;
 
-  async function loadLeads() {
-    setLoading(true);
+  async function loadLeads(silent = false) {
+    if (!silent) setLoading(true);
     setError(null);
 
     const {
@@ -1838,6 +1838,10 @@ export default function PipelinePage() {
   useEffect(() => {
     loadLeads();
 
+    // Live updates: refresh quietly when leads change.
+    const refresh = () => void loadLeads(true);
+    window.addEventListener("baselead:data-changed", refresh);
+    return () => window.removeEventListener("baselead:data-changed", refresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -2171,3 +2171,9 @@ html.baselead-light .bl-assistant textarea { color: #1d1d1f; }
 html.baselead-light .bl-assistant [class*="border-white/10"] { border-color: rgba(0,0,0,0.08) !important; }
 html.baselead-light .bl-assistant [class*="bg-white/[0.03]"] { background: #f5f5f7 !important; }
 html.baselead-light .bl-assistant .bg-\[\#3B82F6\] { color: #fff; }
+
+/* Live update notices */
+.bl-live-notice { animation: blSlideIn 320ms cubic-bezier(.2,.8,.2,1); }
+@keyframes blSlideIn { from { opacity: 0; transform: translateX(24px) scale(.98); } to { opacity: 1; transform: none; } }
+html.baselead-light .bl-live-notice { background: rgba(255,255,255,.97); color: #1d1d1f; border-color: rgba(0,0,0,.08); }
+@media (prefers-reduced-motion: reduce) { .bl-live-notice { animation: none; } }

@@ -199,6 +199,9 @@ export default function TodayPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
+    const refresh = () => void load();
+    window.addEventListener("baselead:data-changed", refresh);
+    return () => window.removeEventListener("baselead:data-changed", refresh);
   }, [load]);
 
   async function sync() {
