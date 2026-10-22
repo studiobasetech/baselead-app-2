@@ -403,7 +403,7 @@ export default function DashboardSidebar() {
 
   function getNotificationIcon(type: Notification["type"]) {
     const map = {
-      lead: { bg: "bg-[#3B82F6]/10", icon: <Target size={17} style={{ color: GOLD }} /> },
+      lead: { bg: "bg-[#3B82F6]/10", icon: <Target size={17} style={{ color: BRAND }} /> },
       outreach: { bg: "bg-[#3B82F6]/10", icon: <Mail size={17} className="text-[#3B82F6]" /> },
       meeting: { bg: "bg-[#A78BFA]/10", icon: <CalendarIcon size={17} className="text-[#A78BFA]" /> },
       system: { bg: "bg-[#84CC16]/10", icon: <CheckCircle2 size={17} className="text-[#84CC16]" /> },
@@ -510,7 +510,7 @@ export default function DashboardSidebar() {
               <div className="flex items-center justify-between">
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="relative">
-                    <Bell size={20} strokeWidth={1.8} style={{ color: GOLD }} />
+                    <Bell size={20} strokeWidth={1.8} style={{ color: BRAND }} />
                     {badge}
                   </div>
 
@@ -756,7 +756,7 @@ export default function DashboardSidebar() {
               key={href}
               href={href}
               className="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-medium"
-              style={{ color: active ? GOLD : MUTED }}
+              style={{ color: active ? BRAND : MUTED }}
             >
               <Icon size={20} strokeWidth={1.8} />
               <span className="max-w-full truncate px-1">{t(label)}</span>
