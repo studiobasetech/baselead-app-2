@@ -191,10 +191,15 @@ export function briefCandidates(context: WorkspaceContext): BriefAction[] {
   // 4. Overdue tasks.
   const overdue = context.tasks.filter((task) => task.dueAt && new Date(task.dueAt).getTime() < Date.now());
   if (overdue.length) {
+    const named = overdue.find((task) => task.title.trim().length >= 4);
     actions.push({
       kind: "task",
-      title: overdue.length === 1 ? `Finish: ${overdue[0].title}` : `Clear ${overdue.length} overdue tasks`,
-      reason: overdue.length === 1 ? `It was due ${ago(overdue[0].dueAt)}.` : `Oldest: "${overdue[0].title}".`,
+      title: overdue.length === 1 && named ? `Finish: ${named.title}` : `Clear ${overdue.length} overdue task${overdue.length === 1 ? "" : "s"}`,
+      reason: named
+        ? overdue.length === 1
+          ? `It was due ${ago(named.dueAt)}.`
+          : `Oldest one: "${named.title}". They're on your board below.`
+        : "They're waiting on your board below.",
       href: "/today",
     });
   }

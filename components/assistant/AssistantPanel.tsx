@@ -103,7 +103,7 @@ export default function AssistantPanel() {
           onClick={() => setOpen(false)}
         />
         <aside
-          className={`bl-assistant absolute bottom-0 right-0 top-0 flex w-full max-w-[420px] flex-col border-l border-white/10 bg-[#0B0B0D] text-white shadow-2xl transition-transform duration-300 ease-out ${
+          className={`bl-assistant absolute bottom-0 right-0 top-0 flex w-full max-w-[420px] flex-col border-l border-white/10 text-white shadow-2xl transition-transform duration-300 ease-out ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
           role="dialog"

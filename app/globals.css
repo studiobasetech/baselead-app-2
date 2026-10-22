@@ -2164,7 +2164,8 @@ html.baselead-light .bl-skeleton {
 /* Ask BaseLead panel */
 .bl-dot { animation: blDot 1s ease-in-out infinite; }
 @keyframes blDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
-html.baselead-light .bl-assistant { background: #ffffff; color: #1d1d1f; border-color: rgba(0,0,0,0.08); }
+html .bl-assistant { background: #0b0b0d !important; }
+html.baselead-light .bl-assistant { background: #ffffff !important; color: #1d1d1f; border-color: rgba(0,0,0,0.08); }
 html.baselead-light .bl-assistant .text-gray-200,
 html.baselead-light .bl-assistant .text-gray-300 { color: #3a3a3c !important; }
 html.baselead-light .bl-assistant textarea { color: #1d1d1f; }
