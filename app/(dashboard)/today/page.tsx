@@ -21,6 +21,8 @@ import { usePlan } from "@/components/plans/PlanProvider";
 import BookingLinkCard from "@/components/booking/BookingLinkCard";
 import PostItBoard, { type BoardColumn } from "@/components/today/PostItBoard";
 import DailyBrief from "@/components/today/DailyBrief";
+import GettingStarted from "@/components/onboarding/GettingStarted";
+import EmptyState from "@/components/ui/EmptyState";
 
 type Task = {
   id: string;
@@ -412,6 +414,10 @@ export default function TodayPage() {
 
       <SetupBanner />
 
+      <div className="mt-6">
+        <GettingStarted />
+      </div>
+
       <DailyBrief />
 
       {setupNeeded && (
@@ -455,7 +461,9 @@ export default function TodayPage() {
 
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               {hotLeads.length === 0 && !loading && (
-                <p className="text-sm text-gray-500 sm:col-span-2">Nothing waiting. Nice work.</p>
+                <div className="sm:col-span-2">
+                  <EmptyState icon={Flame} color="#84CC16" accents={["#3B82F6", "#F97316"]} title="No hot lead is waiting" text="Every strong lead has been contacted in the last 5 days. Nice work." compact />
+                </div>
               )}
               {hotLeads.map((lead) => (
                 <Link
@@ -493,7 +501,15 @@ export default function TodayPage() {
 
             <div className="mt-4 space-y-2">
               {meetings.length === 0 && !loading && (
-                <p className="text-sm text-gray-500">No meetings today or tomorrow.</p>
+                <EmptyState
+                  icon={Video}
+                  color="#F472B6"
+                  accents={["#3B82F6", "#A78BFA"]}
+                  title="No meetings today or tomorrow"
+                  text="Share your booking link in emails so leads can pick a time on their own."
+                  action={{ label: "Open calendar", href: "/calendar" }}
+                  compact
+                />
               )}
               {meetings.map((meeting) => {
                 const link = meeting.meet_url || meeting.location?.match(/https?:\/\/\S+/)?.[0];
@@ -533,7 +549,9 @@ export default function TodayPage() {
 
             <ol className="relative mt-4 space-y-4 border-l border-[#202020] pl-4">
               {activity.length === 0 && !loading && (
-                <li className="text-sm text-gray-500">Activity appears here as you work.</li>
+                <li>
+                  <EmptyState icon={Activity} color="#3B82F6" accents={["#2DD4BF", "#F5C518"]} title="Your activity will show up here" text="Emails, replies, meetings and deals appear as they happen." compact />
+                </li>
               )}
               {activity.map((item) => (
                 <li key={item.id} className="relative">

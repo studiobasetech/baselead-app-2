@@ -43,6 +43,7 @@ import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { emitEvent } from "@/lib/events-client";
 import { SkeletonRows } from "@/components/ui/Skeleton";
+import EmptyState from "@/components/ui/EmptyState";
 
 /* =========================================================
    TYPES
@@ -4979,60 +4980,24 @@ StudioBase`;
           !error &&
           filteredOutreach.length ===
             0 && (
-            <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0A0A0A] px-5 py-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.20)]">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#3B82F6]/20 bg-[#EAF3FF] dark:bg-[#10243A] shadow-[0_0_24px_rgba(59,130,246,0.06)]">
-                <Send
-                  size={21}
-                  className="text-[#3B82F6]"
+            <div className="mt-4 rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+              {outreach.length > 0 ? (
+                <EmptyState
+                  icon={SlidersHorizontal}
+                  color="#A78BFA"
+                  accents={["#3B82F6", "#2DD4BF"]}
+                  title="No emails match these filters"
+                  text="Try another tab or clear the search to see all your outreach."
+                  action={{ label: "Clear filters", onClick: clearFilters }}
                 />
-              </div>
-
-              <h2 className="mt-5 text-sm font-semibold text-white">
-                {outreach.length >
-                0
-                  ? "No matching outreach"
-                  : "Your outreach workspace is empty"}
-              </h2>
-
-              <p className="mx-auto mt-2 max-w-sm text-[12px] leading-5 text-[#666]">
-                {outreach.length >
-                0
-                  ? "Try changing your search or filters."
-                  : "Create your first personalized email outreach message for one of your leads."}
-              </p>
-
-              {outreach.length >
-              0 ? (
-                <button
-                  type="button"
-                  onClick={
-                    clearFilters
-                  }
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[#202020] bg-[#101010] px-4 py-2.5 text-[10px] text-[#777] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2A2A2A] hover:bg-[#171717] hover:text-white hover:shadow-[0_10px_24px_rgba(0,0,0,0.24)]"
-                >
-                  <SlidersHorizontal
-                    size={13}
-                  />
-                  Clear Filters
-                </button>
-              ) : leads.length >
-                0 ? (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setNewOpen(
-                      true
-                    )
-                  }
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-4 py-2.5 text-[10px] font-semibold text-white shadow-[0_6px_18px_rgba(59,130,246,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(59,130,246,0.18)]"
-                >
-                  <Plus size={13} />
-                  Create Outreach
-                </button>
               ) : (
-                <p className="mt-5 text-[10px] text-[#555]">
-                  Add a lead first to create outreach.
-                </p>
+                <EmptyState
+                  icon={Send}
+                  title="Your first email is one click away"
+                  text={leads.length > 0 ? "Pick a lead and BaseLead writes a personal email you can send from your own Gmail." : "Find businesses first, then BaseLead writes a personal email for each one."}
+                  action={leads.length > 0 ? { label: "Create outreach", onClick: () => setNewOpen(true) } : { label: "Find leads", href: "/search" }}
+                  secondary={{ label: "Set up a sequence", href: "/sequences" }}
+                />
               )}
             </div>
           )}

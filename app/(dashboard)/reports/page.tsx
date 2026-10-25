@@ -3480,13 +3480,13 @@ export default function ReportsPage() {
 
                   <span
                     style={{
-                      color: GOLD,
+                      color: BLUE,
                       backgroundColor:
                         getIconBackground(
-                          GOLD,
+                          BLUE,
                         ),
                       borderColor:
-                        softBorder(GOLD),
+                        softBorder(BLUE),
                     }}
                     className="rounded-full border px-2 py-1 text-[9px] font-bold uppercase tracking-wide"
                   >
@@ -3733,12 +3733,12 @@ export default function ReportsPage() {
                   }
                   style={{
                     ...accentStyle(
-                      GOLD,
+                      BLUE,
                     ),
-                    color: "#171717",
+                    color: "#FFFFFF",
                     backgroundColor:
-                      GOLD,
-                    borderColor: GOLD,
+                      BLUE,
+                    borderColor: BLUE,
                   }}
                   className="flex h-9 items-center gap-2 rounded-xl border px-3 text-[10px] font-semibold transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[var(--report-item-shadow)]"
                 >

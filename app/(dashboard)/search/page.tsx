@@ -864,12 +864,12 @@ function SearchLeadCard({
             </div>
           )}
 
-          <div className="mt-3 text-xs text-gray-600">
-            Est. Value{" "}
-            <span className="text-gray-300">
-              {estimatedValue || "Not estimated"}
-            </span>
-          </div>
+          {estimatedValue && (
+            <div className="mt-3 text-xs text-gray-600">
+              Est. value{" "}
+              <span className="text-gray-300">{estimatedValue}</span>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-start gap-2 border-t border-white/5 pt-4 xl:border-t-0 xl:pt-0">

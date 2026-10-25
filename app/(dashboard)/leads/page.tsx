@@ -42,6 +42,7 @@ import { recommendedServices } from "@/lib/recommendations";
 import OpportunityMap from "@/components/maps/OpportunityMap";
 import { SkeletonRows } from "@/components/ui/Skeleton";
 import CompanyLogo from "@/components/ui/CompanyLogo";
+import EmptyState from "@/components/ui/EmptyState";
 
 /* =========================================================
    TYPES
@@ -1449,12 +1450,14 @@ function LeadCard({
             )}
           </div>
 
-          <p className="mt-2 text-sm text-gray-500">
-            Est. Value:{" "}
-            <span className="text-gray-300">
-              {lead.projectValue}
-            </span>
-          </p>
+          {lead.projectValue && lead.projectValue !== "Not estimated" && (
+            <p className="mt-2 text-sm text-gray-500">
+              Est. value:{" "}
+              <span className="text-gray-300">
+                {lead.projectValue}
+              </span>
+            </p>
+          )}
         </div>
 
         <div className="relative hidden items-center justify-end gap-2 lg:flex">
@@ -5874,60 +5877,25 @@ ${companyName}`;
                     !error &&
                     filteredLeads.length ===
                       0 && (
-                      <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-10 text-center">
-                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#3B82F6]/10">
-                          <Search
-                            size={21}
-                            className="text-[#3B82F6]"
+                      <div className="rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+                        {leads.length === 0 ? (
+                          <EmptyState
+                            icon={Search}
+                            title="Find your first 50 clients"
+                            text="Describe who you sell to and BaseLead finds real businesses, scores them and tells you who to call first."
+                            action={{ label: "Start a search", href: "/search" }}
                           />
-                        </div>
-
-                        <h3 className="mt-4 text-lg font-medium text-white">
-                          No leads found
-                        </h3>
-
-                        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                          {leads.length ===
-                          0
-                            ? "Run your first search to discover businesses that match your ideal customer."
-                            : activeFilterCount >
-                                0
-                              ? "No discovered leads match your current filters."
-                              : "Try another search term or change the selected lead filters."}
-                        </p>
-
-                        {leads.length ===
-                          0 && (
-                          <a
-                            href="/search"
-                            className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
-                          >
-                            <Search
-                              size={16}
-                            />
-                            Start a
-                            Search
-                          </a>
+                        ) : (
+                          <EmptyState
+                            icon={Filter}
+                            color="#A78BFA"
+                            accents={["#3B82F6", "#2DD4BF"]}
+                            title="No leads match these filters"
+                            text="Try another tab, a different location or clear the filters to see all your leads."
+                            action={activeFilterCount > 0 ? { label: "Clear filters", onClick: clearAllFilters } : undefined}
+                            compact
+                          />
                         )}
-
-                        {leads.length >
-                          0 &&
-                          activeFilterCount >
-                            0 && (
-                            <button
-                              type="button"
-                              onClick={
-                                clearAllFilters
-                              }
-                              className="mt-5 inline-flex items-center gap-2 rounded-lg border border-white/10 px-5 py-2.5 text-sm text-gray-300 transition hover:border-white/20 hover:text-white"
-                            >
-                              <X
-                                size={16}
-                              />
-                              Clear
-                              Filters
-                            </button>
-                          )}
                       </div>
                     )}
 

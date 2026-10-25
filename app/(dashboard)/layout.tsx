@@ -3,6 +3,8 @@ import TrialUpgradeModal from "@/components/plans/TrialUpgradeModal";
 import HoverAccent from "@/components/ui/HoverAccent";
 import AssistantPanel from "@/components/assistant/AssistantPanel";
 import LiveUpdates from "@/components/live/LiveUpdates";
+import NumberMotion from "@/components/motion/NumberMotion";
+import CommandBar from "@/components/command/CommandBar";
 
 export default function DashboardLayout({
   children,
@@ -22,6 +24,8 @@ export default function DashboardLayout({
       <HoverAccent />
       <AssistantPanel />
       <LiveUpdates />
+      <NumberMotion />
+      <CommandBar />
     </div>
   );
 }

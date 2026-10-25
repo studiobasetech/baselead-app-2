@@ -174,7 +174,66 @@ export default function TeamPerformancePage() {
             <h2 className="text-base font-semibold">Leaderboard</h2>
           </div>
 
-          <div className="mt-4 overflow-x-auto">
+          {/* Phone: one card per rep */}
+          <ul className="mt-4 space-y-2.5 md:hidden">
+            {reps.map((rep, index) => {
+              const replyRate = rep.emails ? Math.round((rep.replies / rep.emails) * 100) : 0;
+              const progress = rep.goal ? Math.min(100, (rep.monthWonValue / rep.goal) * 100) : 0;
+              return (
+                <li key={rep.userId} className="rounded-xl border border-[#202020] bg-white/[0.02] p-4">
+                  <div className="flex items-center gap-3">
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${index === 0 && rep.wonValue > 0 ? "bg-[#3B82F6] text-white" : "bg-white/[0.06] text-gray-300"}`}>
+                      {index === 0 && rep.wonValue > 0 ? <Crown size={14} /> : rep.name.charAt(0).toUpperCase()}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium">{rep.name}</p>
+                      <p className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                        {rep.role}
+                        {rep.overdueTasks > 0 && (
+                          <span className="inline-flex items-center gap-1 text-[#F22F46]">
+                            <AlertTriangle size={10} /> {rep.overdueTasks} overdue
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <span className="text-sm font-semibold text-[#84CC16]">{formatMoney(rep.wonValue)}</span>
+                  </div>
+                  <div className="mt-3 grid grid-cols-4 gap-2 text-center">
+                    {[
+                      ["Leads", String(rep.leads)],
+                      ["Emails", String(rep.emails)],
+                      ["Replies", `${replyRate}%`],
+                      ["Meetings", String(rep.meetings)],
+                    ].map(([label, value]) => (
+                      <div key={label} className="rounded-lg bg-white/[0.03] py-2">
+                        <p className="text-sm font-semibold tabular-nums">{value}</p>
+                        <p className="text-[10px] text-gray-500">{label}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" disabled={!canEditGoals} onClick={() => void setGoal(rep)} className="mt-3 w-full text-left disabled:cursor-default">
+                    {rep.goal ? (
+                      <>
+                        <div className="flex justify-between text-[11px] text-gray-500">
+                          <span>Goal: {formatMoney(rep.monthWonValue)}</span>
+                          <span>{formatMoney(rep.goal)}</span>
+                        </div>
+                        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#191919]">
+                          <div className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#84CC16]" style={{ width: `${progress}%` }} />
+                        </div>
+                      </>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
+                        <Target size={12} /> {canEditGoals ? "Set a monthly goal" : "No goal"}
+                      </span>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="mt-4 hidden overflow-x-auto md:block">
             <table className="w-full min-w-[720px] text-sm">
               <thead className="text-left text-[11px] uppercase tracking-wider text-gray-500">
                 <tr>

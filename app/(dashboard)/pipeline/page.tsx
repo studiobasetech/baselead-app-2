@@ -38,6 +38,7 @@ import LeadDealPanel from "@/components/leads/LeadDealPanel";
 import { emitEvent } from "@/lib/events-client";
 import { SkeletonBoard } from "@/components/ui/Skeleton";
 import CompanyLogo from "@/components/ui/CompanyLogo";
+import EmptyState from "@/components/ui/EmptyState";
 
 type PipelineStage =
   | "New Lead"
@@ -571,7 +572,9 @@ function PipelineColumn({
   onDragStart,
   onAddLead,
   onEdit,
+  fullWidth = false,
 }: {
+  fullWidth?: boolean;
   stage: PipelineStage;
   leads: Lead[];
   selectedLeadId: string | null;
@@ -599,7 +602,7 @@ function PipelineColumn({
       onDrop={(event) =>
         onDrop(event, stage)
       }
-      className="group flex w-[158px] min-w-[158px] flex-col rounded-xl border border-[#202020] bg-[#0A0A0A] p-1.5 shadow-[0_10px_28px_rgba(0,0,0,0.22)] transition-all duration-200 hover:border-[#2A2A2A] hover:shadow-[0_16px_36px_rgba(0,0,0,0.28)] sm:w-[185px] sm:min-w-[185px]"
+      className={`group flex flex-col rounded-xl border border-[#202020] bg-[#0A0A0A] p-1.5 shadow-[0_10px_28px_rgba(0,0,0,0.22)] transition-all duration-200 hover:border-[#2A2A2A] hover:shadow-[0_16px_36px_rgba(0,0,0,0.28)] ${fullWidth ? "w-full" : "w-[158px] min-w-[158px] sm:w-[185px] sm:min-w-[185px]"}`}
     >
       <div className="relative rounded-lg bg-[#0D0D0D] px-2 py-2 shadow-[0_5px_16px_rgba(0,0,0,0.18)]">
         <div
@@ -1604,6 +1607,7 @@ export default function PipelinePage() {
     viewMode,
     setViewMode,
   ] = useState<ViewMode>("kanban");
+  const [mobileStage, setMobileStage] = useState<PipelineStage>("New Lead");
 
   const [
     draggedLeadId,
@@ -2881,7 +2885,7 @@ export default function PipelinePage() {
           />
         </div>
 
-        <div className="mt-4 flex flex-col gap-2 xl:flex-row xl:items-center">
+        <div className="mt-4 flex flex-wrap items-center gap-2 xl:flex-nowrap">
           <div className="flex gap-2">
             <button
               type="button"
@@ -2944,7 +2948,7 @@ export default function PipelinePage() {
             }`}
           >
             <Filter size={15} />
-            Filter
+            <span className="hidden sm:inline">Filter</span>
           </button>
 
           <button
@@ -2957,10 +2961,10 @@ export default function PipelinePage() {
             className="flex h-10 items-center justify-center gap-2 rounded-xl border border-[#202020] bg-[#0D0D0D] px-4 text-xs text-gray-300 shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#84CC16]/45 hover:bg-[#101010] hover:text-[#84CC16] hover:shadow-[0_10px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(132,204,22,0.06)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Download size={15} />
-            Export
+            <span className="hidden sm:inline">Export</span>
           </button>
 
-          <div className="group flex min-w-0 flex-1 items-center rounded-xl border border-[#202020] bg-[#0D0D0D] px-3 shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 focus-within:border-[#3B82F6]/45 focus-within:bg-[#101010] focus-within:shadow-[0_0_22px_rgba(59,130,246,0.045)] xl:ml-auto xl:max-w-[250px]">
+          <div className="group flex w-full min-w-0 flex-1 items-center rounded-xl sm:w-auto border border-[#202020] bg-[#0D0D0D] px-3 shadow-[0_6px_18px_rgba(0,0,0,0.16)] transition-all duration-200 focus-within:border-[#3B82F6]/45 focus-within:bg-[#101010] focus-within:shadow-[0_0_22px_rgba(59,130,246,0.045)] xl:ml-auto xl:max-w-[250px]">
             <Search
               size={15}
               className="mr-2 shrink-0 text-gray-600 transition-colors group-focus-within:text-[#3B82F6]"
@@ -3121,33 +3125,16 @@ export default function PipelinePage() {
           <SkeletonBoard />
         ) : leads.length ===
           0 ? (
-          <div className="mt-6 flex min-h-[400px] items-center justify-center rounded-xl border border-[#202020] bg-[#0D0D0D] shadow-[0_14px_36px_rgba(0,0,0,0.24)]">
-            <div className="max-w-sm px-6 text-center">
-              <Users
-                size={30}
-                className="mx-auto text-[#3B82F6]"
-              />
-
-              <p className="mt-4 text-sm text-gray-300">
-                No leads in your pipeline yet.
-              </p>
-
-              <p className="mt-1 text-xs leading-5 text-gray-600">
-                Add a lead manually or run a lead search to start building
-                your pipeline.
-              </p>
-
-              <button
-                type="button"
-                onClick={() =>
-                  openAddModal()
-                }
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_8px_22px_rgba(59,130,246,0.12)] transition-all hover:-translate-y-0.5 hover:bg-[#3B82F6] hover:shadow-[0_12px_28px_rgba(59,130,246,0.20)]"
-              >
-                <Plus size={14} />
-                Add Your First Lead
-              </button>
-            </div>
+          <div className="mt-6 rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+            <EmptyState
+              icon={Users}
+              color="#2DD4BF"
+              accents={["#3B82F6", "#84CC16"]}
+              title="Your pipeline starts with one lead"
+              text="Every deal you're working on lives here, from first contact to signed. Add one by hand or find businesses with a search."
+              action={{ label: "Find leads", href: "/search" }}
+              secondary={{ label: "Add a lead", onClick: () => openAddModal() }}
+            />
           </div>
         ) : filteredLeads.length ===
           0 ? (
@@ -3176,7 +3163,42 @@ export default function PipelinePage() {
         ) : viewMode ===
           "kanban" ? (
           <>
-            <div className="mt-4 overflow-x-auto rounded-xl pb-3">
+            {/* Phone: one stage at a time, with stage chips */}
+            <div className="mt-4 lg:hidden">
+              <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-3">
+                {stages.map((stage) => {
+                  const count = filteredLeads.filter((lead) => lead.stage === stage).length;
+                  const active = mobileStage === stage;
+                  return (
+                    <button
+                      key={stage}
+                      type="button"
+                      onClick={() => setMobileStage(stage)}
+                      data-active={active}
+                      style={{ "--tab": stageColors[stage] } as React.CSSProperties}
+                      className="bl-tab flex shrink-0 items-center gap-2 rounded-full border border-[#202020] px-3 py-1.5 text-xs font-medium text-gray-400"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: stageColors[stage] }} />
+                      {stage}
+                      <span className="bl-tab-count rounded-full bg-white/5 px-1.5 text-[10px]">{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <PipelineColumn
+                fullWidth
+                stage={mobileStage}
+                leads={filteredLeads.filter((lead) => lead.stage === mobileStage)}
+                selectedLeadId={selectedLeadId}
+                onSelect={selectLead}
+                onDrop={handleDrop}
+                onDragStart={handleDragStart}
+                onAddLead={openAddModal}
+                onEdit={openEditModal}
+              />
+            </div>
+
+            <div className="mt-4 hidden overflow-x-auto rounded-xl pb-3 lg:block">
               <div className="flex min-w-max gap-2">
                 {stages.map(
                   (stage) => (

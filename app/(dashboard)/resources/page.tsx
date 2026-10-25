@@ -27,6 +27,7 @@ import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { STARTER_KIT } from "@/components/resources/starter-kit";
 import ProposalsWorkspace from "@/components/proposals/ProposalsWorkspace";
+import EmptyState from "@/components/ui/EmptyState";
 
 type Kind = "document" | "video" | "image" | "link" | "text";
 
@@ -529,8 +530,20 @@ export default function ResourcesPage() {
                 {searching ? `${visible.length} results` : currentFolder?.is_course ? "Lessons" : "Resources"}
               </h2>
               {visible.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-sm text-gray-500">
-                  {searching ? "Nothing matches your search." : isManager ? "This folder is empty. Use “Add resource” to upload a file, video or script." : "Nothing here yet."}
+                <div className="rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+                  {searching ? (
+                    <EmptyState icon={Search} color="#A78BFA" title="Nothing matches your search" text="Try another word, or look in a different folder." compact />
+                  ) : (
+                    <EmptyState
+                      icon={BookOpen}
+                      color="#F5C518"
+                      accents={["#3B82F6", "#F472B6"]}
+                      title={isManager ? "Give your team what they need to sell" : "Nothing here yet"}
+                      text={isManager ? "Upload pitch decks, scripts, training videos and price sheets so every rep sells the same way." : "Your manager hasn't added resources to this folder yet."}
+                      action={isManager ? { label: "Add resource", onClick: () => setEditingResource({ kind: "document", folder_id: folderId, tags: [] }) } : undefined}
+                      compact
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

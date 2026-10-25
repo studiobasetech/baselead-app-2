@@ -19,6 +19,7 @@ import {
 
 import { supabase } from "@/components/lib/supabase";
 import { computeTotals, formatMoney, type LineItem, type Proposal } from "@/lib/proposals";
+import EmptyState from "@/components/ui/EmptyState";
 
 type LeadOption = { id: string; company: string | null; name: string | null; email: string | null };
 
@@ -302,9 +303,15 @@ export default function ProposalsWorkspace({ embedded = false }: { embedded?: bo
 
       <div className="mt-6 space-y-2">
         {!loading && proposals.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-[#2A2A2A] p-10 text-center">
-            <FileText className="mx-auto text-[#3B82F6]" />
-            <p className="mt-3 text-sm text-gray-400">No proposals yet. Create one from a lead in a couple of minutes.</p>
+          <div className="rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+            <EmptyState
+              icon={FileText}
+              color="#84CC16"
+              accents={["#3B82F6", "#F5C518"]}
+              title="Send a proposal, get signed and paid"
+              text="Build a proposal in minutes. Your client signs online and pays a deposit — the pipeline updates by itself."
+              action={{ label: "New proposal", onClick: () => setDraft(emptyDraft()) }}
+            />
           </div>
         )}
 
