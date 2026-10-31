@@ -2305,3 +2305,40 @@ html.baselead-light .bl-cmd-trigger{background:#fff;border-color:#E4E4E7;color:#
 html.baselead-light .bl-cmd-trigger:hover{color:#18181B;border-color:#93C5FD}
 @media (prefers-reduced-motion: reduce){.bl-cmd,.bl-cmd-backdrop{animation:none}}
 .bl-cmd input,.bl-cmd input:focus,.bl-cmd input:focus-visible{outline:none!important;box-shadow:none!important;border:0!important}
+
+/* ===== Phone & iPad app (Capacitor): keep content clear of the status bar,
+   the home indicator and the rounded corners / notch in every orientation. ===== */
+@media (min-width: 1024px) {
+  html.bl-native .baselead-sidebar {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+  html.bl-native .baselead-main {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+@media (max-width: 1023px) {
+  .baselead-mobile-topbar,
+  .baselead-mobile-bottombar {
+    padding-left: max(0.25rem, env(safe-area-inset-left));
+    padding-right: max(0.25rem, env(safe-area-inset-right));
+  }
+  .baselead-main {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+/* Tablets in portrait (iPad): use the extra width — wider content, comfortable spacing. */
+@media (min-width: 744px) and (max-width: 1023px) {
+  .baselead-mobile-bottombar a,
+  .baselead-mobile-bottombar button {
+    max-width: 140px;
+  }
+  .baselead-mobile-bottombar {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+}
