@@ -67,11 +67,12 @@ BaseLead is a product of Studio Base LLC.
 ## Screenshots (in marketing/app-store/)
 
 - iPhone 6.7" (1290 × 2796): `iphone-6.7-01-today.png` … `iphone-6.7-10-dashboard.png`. App Store Connect scales these to the other iPhone sizes.
+- iPad 13" (2064 × 2752): `ipad-13-01-today.png` … `ipad-13-07-proposals.png`. App Store Connect scales these to the other iPad sizes.
 - Google Play phone (1080 × 1920): `android-01-today.png` … `android-10-dashboard.png`
 - Google Play feature graphic (1024 × 500): `play-feature-graphic.png`
 - Google Play icon (512 × 512): `play-icon-512.png`
 - App preview video (optional): `BaseLead-AI-App-Tour.mp4` (Google Play needs it on YouTube; Apple has its own preview format, so skip it for Apple at first)
-- In Xcode, set the app to **iPhone only** (Target → General → Supported Destinations → remove iPad) so you don't need iPad screenshots.
+- The app supports **iPhone and iPad** in every orientation (portrait, landscape, Split View and Slide Over). In Xcode keep iPad under Target → General → Supported Destinations, and leave "Requires full screen" unchecked.
 
 ## App Privacy (Apple “nutrition label”) and Google Play Data safety
 

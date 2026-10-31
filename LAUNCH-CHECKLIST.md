@@ -47,6 +47,6 @@ Marca cada paso cuando lo termines. Lo que dice **(Claude)** ya está hecho en e
     bash scripts/mobile-setup.sh https://TU-DOMINIO
     npx cap open ios
     ```
-    En Xcode: Signing & Capabilities → tu equipo, agrega **Push Notifications** y **Background Modes → Remote notifications**, y deja solo iPhone (sin iPad).
+    En Xcode: Signing & Capabilities → tu equipo, agrega **Push Notifications** y **Background Modes → Remote notifications**, y deja iPhone **y iPad** (la app ya está adaptada al iPad en vertical, horizontal y pantalla dividida).
 11. **Supabase → Auth → URL Configuration**: agrega `https://TU-DOMINIO/**` y `com.studiobase.baselead://**` a las Redirect URLs.
 12. **App Store Connect**: crea la app, pega los textos de `STORE-LISTING.md`, sube las capturas, crea una cuenta demo para Apple y envía a revisión. Al principio publícala solo en **Estados Unidos**.

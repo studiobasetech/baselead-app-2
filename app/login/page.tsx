@@ -389,7 +389,7 @@ export default function LoginPage() {
           <div className="relative flex items-center justify-center py-8 lg:py-6">
             <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-blue-500/80 via-blue-500/15 to-[#F5C518]/45 p-[1.5px]">
               <section className="relative rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
-                <div className="absolute right-8 top-8 hidden text-sm text-gray-500 lg:block">
+                <div className="absolute right-8 top-8 hidden text-sm text-gray-500 xl:block">
                   Don&apos;t have an account?
 
                   <a
@@ -673,7 +673,7 @@ export default function LoginPage() {
 
                 <AppleSignInButton onClick={() => handleGoogleLogin("apple")} disabled={loading} />
 
-                <div className="mt-6 text-center text-sm text-gray-500 lg:hidden">
+                <div className="mt-6 text-center text-sm text-gray-500 xl:hidden">
                   Don&apos;t have an account?
 
                   <a
