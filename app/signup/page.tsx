@@ -1,6 +1,7 @@
 "use client";
 
 import AppleSignInButton from "@/components/auth/AppleSignInButton";
+import LanguageToggle from "@/components/i18n/LanguageToggle";
 import { authRedirect, isNativeApp, openInSystemBrowser } from "@/lib/native";
 
 import { FormEvent, useState } from "react";
@@ -141,28 +142,29 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#020204] text-white">
+      <LanguageToggle className="fixed right-4 top-4 z-50" />
       {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
+        <div className="absolute left-[25%] top-[-15%] h-[600px] w-[600px] rounded-full bg-[#3B82F6]/[0.08] blur-[150px]" />
         <div className="absolute right-[-10%] top-[20%] h-[550px] w-[550px] rounded-full bg-[#2DD4BF]/[0.06] blur-[160px]" />
         <div className="absolute left-[15%] top-[5%] h-[300px] w-[300px] rounded-full bg-[#3B82F6]/[0.025] blur-[130px]" />
-        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-[#A78BFA]/[0.08] blur-[150px]" />
+        <div className="absolute bottom-[-20%] left-[-5%] h-[500px] w-[600px] rounded-full bg-[#3B82F6]/[0.08] blur-[150px]" />
         <div className="absolute bottom-[-15%] right-[-5%] h-[500px] w-[600px] rounded-full bg-[#2DD4BF]/[0.07] blur-[150px]" />
 
         <div className="absolute inset-0 opacity-50">
-          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-[#A78BFA]/40 to-transparent" />
+          <div className="absolute left-[38%] top-0 h-[520px] w-px bg-gradient-to-b from-transparent via-[#3B82F6]/40 to-transparent" />
           <div className="absolute left-[42%] top-10 h-[500px] w-px bg-gradient-to-b from-transparent via-[#2DD4BF]/30 to-transparent" />
           <div className="absolute left-[46%] top-[-20px] h-[560px] w-px bg-gradient-to-b from-transparent via-[#3B82F6]/30 to-transparent" />
 
-          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/50 to-transparent" />
+          <div className="absolute left-[25%] top-[15%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#3B82F6]/50 to-transparent" />
           <div className="absolute left-[30%] top-[28%] h-px w-[420px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/40 to-transparent" />
-          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#A78BFA]/40 to-transparent" />
+          <div className="absolute left-[35%] top-[42%] h-px w-[400px] rotate-[25deg] bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
           <div className="absolute left-[27%] top-[57%] h-px w-[400px] rotate-[-20deg] bg-gradient-to-r from-transparent via-[#2DD4BF]/30 to-transparent" />
 
-          <div className="absolute left-[39%] top-[16%] h-2 w-2 rounded-full bg-[#A78BFA] shadow-[0_0_12px_#A78BFA]" />
+          <div className="absolute left-[39%] top-[16%] h-2 w-2 rounded-full bg-[#3B82F6] shadow-[0_0_12px_#3B82F6]" />
           <div className="absolute left-[45%] top-[25%] h-2 w-2 rounded-full bg-[#2DD4BF] shadow-[0_0_12px_#2DD4BF]" />
           <div className="absolute left-[35%] top-[39%] h-1.5 w-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_10px_#3B82F6]" />
-          <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-[#A78BFA] shadow-[0_0_12px_#A78BFA]" />
+          <div className="absolute left-[42%] top-[50%] h-2 w-2 rounded-full bg-[#3B82F6] shadow-[0_0_12px_#3B82F6]" />
           <div className="absolute left-[32%] top-[65%] h-2 w-2 rounded-full bg-[#2DD4BF] shadow-[0_0_12px_#2DD4BF]" />
         </div>
       </div>
@@ -170,7 +172,7 @@ export default function SignupPage() {
       {/* PAGE */}
       <div className="relative z-10 min-h-screen p-3 sm:p-5 lg:p-6">
         <div className="mx-auto flex min-h-[calc(100vh-24px)] max-w-[1600px] items-center justify-center">
-          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-[#A78BFA]/70 via-[#2DD4BF]/20 to-[#3B82F6]/60 p-[1.5px]">
+          <div className="w-full max-w-[680px] rounded-2xl bg-gradient-to-br from-blue-500/80 via-blue-500/15 to-[#F5C518]/45 p-[1.5px]">
             <section className="rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
 
               {/* TOP NAV */}
@@ -220,7 +222,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <User
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#A78BFA]"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#F5C518]"
                     />
 
                     <input
@@ -230,7 +232,7 @@ export default function SignupPage() {
                       placeholder="Enter your name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="h-[64px] w-full rounded-xl border border-[#A78BFA]/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/30"
+                      className="h-[64px] w-full rounded-xl border border-[#F5C518]/60 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#F5C518] focus:ring-1 focus:ring-[#F5C518]/25"
                     />
                   </div>
                 </div>
@@ -247,7 +249,7 @@ export default function SignupPage() {
                   <div className="relative">
                     <Mail
                       size={23}
-                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#A78BFA]"
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-[#F5C518]"
                     />
 
                     <input
@@ -257,7 +259,7 @@ export default function SignupPage() {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-[64px] w-full rounded-xl border border-[#A78BFA]/70 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/30"
+                      className="h-[64px] w-full rounded-xl border border-[#F5C518]/60 bg-black/40 pl-16 pr-5 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#F5C518] focus:ring-1 focus:ring-[#F5C518]/25"
                     />
                   </div>
                 </div>
@@ -442,7 +444,7 @@ export default function SignupPage() {
               <div className="mt-10 flex items-center justify-center gap-3 text-sm text-gray-500">
                 <ShieldCheck
                   size={22}
-                  className="text-[#A78BFA]"
+                  className="text-[#3B82F6]"
                 />
 
                 <span>

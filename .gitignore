@@ -44,3 +44,6 @@ _backups/
 _demo/
 /.next-build/
 _to_delete/
+
+# Files Claude sends in chat
+/Claude outputs/

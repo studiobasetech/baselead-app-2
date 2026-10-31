@@ -4528,7 +4528,7 @@ const teamPercent =
             )}
 
             {process.env.NODE_ENV !== "production" && (
-              <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-dashed border-[#F5C518]/30 bg-[#F5C518]/[0.05] px-3 py-2 text-[11px] text-amber-200">
+              <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-dashed border-[#F5C518]/30 bg-[#F5C518]/[0.05] px-3 py-2 text-[11px] text-[#F5C518]">
                 <span className="mr-1 font-semibold">Test mode (no charge):</span>
                 {(["trial", "Starter", "Pro", "Scale"] as const).map((name) => (
                   <button

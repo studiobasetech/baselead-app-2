@@ -262,14 +262,14 @@ const STATUS_STYLE: Record<(typeof STATUSES)[number], { icon: typeof Inbox; colo
 const AVAILABLE_CHANNELS: OutreachChannel[] = ["Email"];
 
 const AVATAR_CLASSES = [
-  "bg-black",
-  "bg-pink-200",
-  "bg-[#ead8c8]",
-  "bg-[#19461f]",
-  "bg-[#d9eadc]",
-  "bg-blue-100",
-  "bg-[#123b2c]",
-  "bg-[#F97316]",
+  "bg-[#10243A] !text-[#3B82F6]",
+  "bg-[#241A38] !text-[#A78BFA]",
+  "bg-[#0F2E2B] !text-[#2DD4BF]",
+  "bg-[#18200B] !text-[#84CC16]",
+  "bg-[#332A0C] !text-[#F5C518]",
+  "bg-[#3A1530] !text-[#F472B6]",
+  "bg-[#3A200C] !text-[#F97316]",
+  "bg-[#3A1418] !text-[#F22F46]",
 ];
 
 /* =========================================================

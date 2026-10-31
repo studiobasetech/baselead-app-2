@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Check, Minus, Play, Plus } from "lucide-react";
@@ -100,17 +101,20 @@ export function HowItWorksTabs() {
 export function TourVideo() {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const { language } = useLanguage();
+  const es = language === "es";
   return (
-    <div className="relative mx-auto w-[280px] rounded-[40px] border border-white/15 bg-[#0b0d12] p-2.5 shadow-[0_40px_90px_rgba(0,0,0,0.7)] sm:w-[300px]">
+    <div className="relative mx-auto w-[290px] overflow-hidden rounded-[28px] border border-white/15 bg-black shadow-[0_40px_90px_rgba(0,0,0,0.7)] sm:w-[340px]">
       <video
+        key={language}
         ref={ref}
-        src="/landing/tour.mp4"
-        poster="/landing/tour-poster.jpg"
-        className="block w-full rounded-[32px]"
+        src={es ? "/landing/tour-es.mp4" : "/landing/tour.mp4"}
+        poster={es ? "/landing/tour-poster-es.jpg" : "/landing/tour-poster.jpg"}
+        className="block aspect-[9/16] w-full object-cover"
         playsInline
         muted
         controls={playing}
-        preload="none"
+        preload="metadata"
         onEnded={() => setPlaying(false)}
       />
       {!playing && (
@@ -118,7 +122,10 @@ export function TourVideo() {
           type="button"
           onClick={() => {
             setPlaying(true);
-            void ref.current?.play();
+            if (ref.current) {
+              ref.current.muted = false;
+              void ref.current.play();
+            }
           }}
           className="absolute inset-0 flex items-center justify-center"
           aria-label="Play the BaseLead tour"

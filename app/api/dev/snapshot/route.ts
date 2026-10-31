@@ -10,7 +10,25 @@ const off = () => process.env.NODE_ENV === "production";
 
 export async function POST(request: Request) {
   if (off()) return NextResponse.json({ error: "Not available" }, { status: 404 });
-  const { name, content, copyFrom } = (await request.json()) as { name: string; content: string; copyFrom?: string };
+  const body = (await request.json()) as { name: string; content: string; copyFrom?: string; tts?: string; voice?: string };
+  const { name, content, copyFrom } = body;
+  if (body.tts) {
+    // DEV ONLY: Deepgram Aura-2 voice-over for the ad (key stays in .env.local).
+    const key = process.env.DEEPGRAM_API_KEY;
+    if (!key) return NextResponse.json({ error: "DEEPGRAM_API_KEY missing" }, { status: 400 });
+    const model = String(body.voice || "aura-2-thalia-en").replace(/[^a-z0-9-]/gi, "");
+    const res = await fetch(`https://api.deepgram.com/v1/speak?model=${model}&encoding=mp3`, {
+      method: "POST",
+      headers: { Authorization: `Token ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ text: body.tts }),
+    });
+    if (!res.ok) return NextResponse.json({ error: `Deepgram ${res.status}: ${(await res.text()).slice(0, 200)}` }, { status: 502 });
+    const dir = path.join(process.cwd(), "_to_delete", "ad-voice");
+    await mkdir(dir, { recursive: true });
+    const buf = Buffer.from(await res.arrayBuffer());
+    await writeFile(path.join(dir, String(name).replace(/[^a-z0-9._-]/gi, "_")), buf);
+    return NextResponse.json({ ok: true, bytes: buf.length });
+  }
   if (copyFrom) {
     // Re-write a file natively (fresh inode) so it can be staged.
     const { readFile } = await import("node:fs/promises");

@@ -1,6 +1,7 @@
 "use client";
 
 import AppleSignInButton from "@/components/auth/AppleSignInButton";
+import LanguageToggle from "@/components/i18n/LanguageToggle";
 import { authRedirect, isNativeApp, openInSystemBrowser } from "@/lib/native";
 
 import React, { FormEvent, useEffect, useState } from "react";
@@ -236,7 +237,7 @@ export default function LoginPage() {
     },
     {
       icon: Mail,
-      color: "text-emerald-400",
+      color: "text-[#84CC16]",
       text: "Personalize with AI",
     },
     {
@@ -350,7 +351,7 @@ export default function LoginPage() {
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-emerald-400/40 bg-emerald-400/[0.04]">
                   <Mail
                     size={27}
-                    className="text-emerald-400"
+                    className="text-[#84CC16]"
                   />
                 </div>
 
@@ -386,6 +387,7 @@ export default function LoginPage() {
             </div>
           </section>
 
+          <LanguageToggle className="fixed right-4 top-4 z-50" />
           <div className="relative flex items-center justify-center py-8 lg:py-6">
             <div className="w-full max-w-[620px] rounded-2xl bg-gradient-to-br from-blue-500/80 via-blue-500/15 to-[#F5C518]/45 p-[1.5px]">
               <section className="relative rounded-2xl bg-[#050506]/95 p-6 sm:p-10 xl:p-14">
@@ -539,7 +541,7 @@ export default function LoginPage() {
                     <div className="relative">
                       <LockKeyhole
                         size={23}
-                        className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-400"
+                        className="absolute left-5 top-1/2 -translate-y-1/2 text-[#84CC16]"
                       />
 
                       <input
@@ -555,7 +557,7 @@ export default function LoginPage() {
                         onChange={(e) =>
                           setPassword(e.target.value)
                         }
-                        className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-400/70 focus:ring-1 focus:ring-emerald-400/20"
+                        className="h-[64px] w-full rounded-xl border border-white/20 bg-black/40 pl-16 pr-16 text-base text-white outline-none transition placeholder:text-gray-600 focus:border-[#84CC16]/70 focus:ring-1 focus:ring-[#84CC16]/20"
                       />
 
                       <button
@@ -596,7 +598,7 @@ export default function LoginPage() {
                   </div>
 
                   {error && (
-                    <div className="mt-5 rounded-xl border border-red-500/30 bg-red-500/[0.06] px-4 py-3 text-sm text-red-300">
+                    <div className="mt-5 rounded-xl border border-[#F22F46]/30 bg-[#F22F46]/[0.06] px-4 py-3 text-sm text-[#F22F46]">
                       {error}
                     </div>
                   )}

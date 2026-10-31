@@ -358,9 +358,9 @@ export default function ResourcesPage() {
       <>
 
       {setupError && (
-        <div className="mt-6 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-amber-200">
+        <div className="mt-6 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-[#F5C518]">
           Run <code>supabase/UPDATE_4_RUN_THIS.sql</code> in Supabase → SQL Editor to turn on the Sales Toolkit.
-          <span className="mt-1 block text-xs text-amber-200/60">Supabase says: {setupError}</span>
+          <span className="mt-1 block text-xs text-[#F5C518]/60">Supabase says: {setupError}</span>
         </div>
       )}
 

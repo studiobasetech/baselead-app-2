@@ -2342,3 +2342,95 @@ html.baselead-light .bl-cmd-trigger:hover{color:#18181B;border-color:#93C5FD}
     gap: 1.5rem;
   }
 }
+
+/* =========================================================
+   DEEPER DARK (2026-10-31) — true black page, near-black panels,
+   softer colored glow and less white sheen, so dark mode reads
+   black instead of grey. Light mode is untouched.
+========================================================= */
+html:not(.baselead-light),
+html:not(.baselead-light) body {
+  background: #000000;
+}
+
+html:not(.baselead-light) main[class*="bg-[#050505]"],
+html:not(.baselead-light) .baselead-main {
+  background-color: #000000;
+  background-image:
+    radial-gradient(1000px 560px at 92% -6%, rgba(167, 139, 250, 0.07), transparent 60%),
+    radial-gradient(820px 520px at 4% -2%, rgba(59, 130, 246, 0.05), transparent 58%),
+    radial-gradient(1000px 700px at 55% 112%, rgba(59, 130, 246, 0.05), transparent 60%);
+}
+
+html:not(.baselead-light) .bg-\[\#050505\],
+html:not(.baselead-light) .bg-\[\#050506\],
+html:not(.baselead-light) .bg-\[\#020204\] { background-color: #000000; }
+
+/* Panels: near-black, mostly opaque (the glow no longer greys them out) */
+html:not(.baselead-light) :is(.bg-\[\#060606\], .bg-\[\#070707\], .bg-\[\#080808\], .bg-\[\#090909\], .bg-\[\#0A0A0A\], .bg-\[\#0a0a0a\], .bg-\[\#0B0B0D\], .bg-\[\#0B0B0F\], .bg-\[\#0b0b08\]) {
+  background-color: rgba(5, 5, 6, 0.82);
+}
+html:not(.baselead-light) :is(.bg-\[\#0D0D0D\], .bg-\[\#101010\], .bg-\[\#111111\], .bg-\[\#0d0e12\], .bg-\[\#0D0E12\], .bg-\[\#111114\], .bg-\[\#0f1117\], .bg-\[\#0F1117\]) {
+  background-color: rgba(9, 9, 10, 0.85);
+}
+html:not(.baselead-light) :is(.bg-\[\#171717\], .bg-\[\#191919\], .bg-\[\#1B1B1B\], .bg-\[\#1b1b1b\]) {
+  background-color: rgba(16, 16, 17, 0.88);
+}
+html:not(.baselead-light) :is(.bg-\[\#202020\], .bg-\[\#2A2A2A\]) {
+  background-color: rgba(24, 24, 26, 0.9);
+}
+
+/* Hovers stay a touch lighter than the panel */
+html:not(.baselead-light) :is(.hover\:bg-\[\#0D0D0D\], .hover\:bg-\[\#0a0a0a\], .hover\:bg-\[\#101010\]):hover { background-color: rgba(14, 14, 16, 0.9); }
+html:not(.baselead-light) :is(.hover\:bg-\[\#171717\], .hover\:bg-\[\#191919\], .hover\:bg-\[\#1B1B1B\]):hover { background-color: rgba(22, 22, 24, 0.92); }
+
+/* Less white sheen on rounded panels */
+:is(
+html:not(.baselead-light) .bg-\[\#060606\],
+html:not(.baselead-light) .bg-\[\#070707\],
+html:not(.baselead-light) .bg-\[\#080808\],
+html:not(.baselead-light) .bg-\[\#090909\],
+html:not(.baselead-light) .bg-\[\#0A0A0A\],
+html:not(.baselead-light) .bg-\[\#0B0B0D\],
+html:not(.baselead-light) .bg-\[\#0B0B0F\],
+html:not(.baselead-light) .bg-\[\#0D0D0D\],
+html:not(.baselead-light) .bg-\[\#0a0a0a\],
+html:not(.baselead-light) .bg-\[\#0b0b08\],
+html:not(.baselead-light) .bg-\[\#101010\],
+html:not(.baselead-light) .bg-\[\#111111\],
+html:not(.baselead-light) .bg-\[\#171717\],
+html:not(.baselead-light) .bg-\[\#191919\],
+html:not(.baselead-light) .bg-\[\#1B1B1B\],
+html:not(.baselead-light) .bg-\[\#202020\],
+html:not(.baselead-light) .bg-\[\#2A2A2A\]
+):where([class*="rounded"]) {
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0) 45%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    0 18px 50px -22px rgba(0, 0, 0, 1),
+    var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Sidebar and inline-styled panels: black glass */
+html:not(.baselead-light) .baselead-sidebar {
+  background-color: #000000 !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0) 30%);
+}
+html:not(.baselead-light) [style*="background-color: rgba(13, 13, 15, 0.55)"],
+html:not(.baselead-light) [style*="background-color: rgba(18, 18, 20, 0.6)"],
+html:not(.baselead-light) [style*="background-color: rgba(10, 10, 12, 0.55)"] {
+  background-color: rgba(6, 6, 7, 0.85) !important;
+  background-image: none;
+}
+
+/* Grain off: it lifted the blacks */
+html:not(.baselead-light) body::after { opacity: 0.015; }
+
+/* Mobile bars match the black page */
+html:not(.baselead-light) .baselead-mobile-topbar,
+html:not(.baselead-light) .baselead-mobile-bottombar {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+}

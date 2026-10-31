@@ -421,13 +421,13 @@ export default function TodayPage() {
       <DailyBrief />
 
       {setupNeeded && (
-        <div className="mt-4 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-amber-200">
+        <div className="mt-4 rounded-2xl border border-[#F5C518]/30 bg-[#F5C518]/[0.06] p-4 text-sm text-[#F5C518]">
           {/permission denied/i.test(setupNeeded) ? (
             <>Supabase is blocking the app from the new tables. Run <code>supabase/FIX_PERMISSIONS.sql</code> in Supabase → SQL Editor.</>
           ) : (
             <>Run <code>supabase/RUN_THIS_IN_SUPABASE.sql</code> in Supabase → SQL Editor to turn on tasks, the activity timeline and automation.</>
           )}
-          <span className="mt-1 block text-xs text-amber-200/60">Supabase says: {setupNeeded}</span>
+          <span className="mt-1 block text-xs text-[#F5C518]/60">Supabase says: {setupNeeded}</span>
         </div>
       )}
 

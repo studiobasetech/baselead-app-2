@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CalendarCheck, Check, MessageSquareReply, Sparkles, Target, X } from "lucide-react";
 import { LEGAL } from "@/components/legal/LegalPage";
+import LanguageToggle from "@/components/i18n/LanguageToggle";
 import { Faq, HowItWorksTabs, PricingPlans, TourVideo } from "@/components/marketing/LandingInteractive";
 
 /*
@@ -64,7 +65,7 @@ function Badge() {
 
 export default function Landing() {
   return (
-    <main className="bl-landing min-h-screen overflow-x-hidden bg-[#050507] text-white" data-no-translate>
+    <main className="bl-landing min-h-screen overflow-x-hidden bg-[#050507] text-white">
       <style>{`
         @keyframes blLandFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
         @keyframes blLandIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
@@ -85,6 +86,7 @@ export default function Landing() {
           <img src="/logo-on-dark.png" alt="BaseLead" className="h-7 w-auto sm:h-9" />
         </Link>
         <nav className="flex items-center justify-end gap-2 text-sm">
+          <LanguageToggle />
           <Link href="/login" className="hidden rounded-lg px-3 py-2 text-gray-300 hover:text-white sm:block">Log in</Link>
           <Link href="/signup" className="whitespace-nowrap rounded-xl bg-[#3B82F6] px-3 py-2 font-semibold text-white hover:bg-[#2F74E8] sm:px-4">
             <span className="sm:hidden">Try free</span>
@@ -177,9 +179,9 @@ export default function Landing() {
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-24 lg:grid-cols-[1fr_auto]">
         <div className="text-center lg:text-left">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">See it in action</p>
-          <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">Take the 2-minute tour</h2>
+          <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">See BaseLead in 30 seconds</h2>
           <p className="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-gray-400 lg:mx-0">
-            Watch every page of BaseLead on a phone: your daily brief, AI-scored leads, automatic follow-ups, pipeline and proposals.
+            Watch BaseLead find real clients, score them with AI, write your emails, follow up for you and get deals signed. All from your phone.
           </p>
           <Link href="/signup" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white hover:bg-[#2F74E8]">
             Try it free for 7 days <ArrowRight className="h-4 w-4" />
