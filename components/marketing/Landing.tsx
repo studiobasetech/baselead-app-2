@@ -1,43 +1,82 @@
 import Link from "next/link";
-import {
-  ArrowRight, BarChart3, CalendarCheck, FileSignature, MailCheck, Radar, Sparkles, Target, Users, Workflow,
-} from "lucide-react";
+import { ArrowRight, CalendarCheck, Check, MessageSquareReply, Sparkles, Target, X } from "lucide-react";
 import { LEGAL } from "@/components/legal/LegalPage";
-import { PLAN_DEFINITIONS } from "@/lib/plans";
+import { Faq, HowItWorksTabs, PricingPlans, TourVideo } from "@/components/marketing/LandingInteractive";
 
 /*
- * Public home page (logged-out visitors). Also serves as the homepage Google
- * and Apple review: it explains the product and links Privacy, Terms and Support.
+ * Public home page (logged-out visitors). Also the homepage Google and Apple
+ * review: it explains the product and links Privacy, Terms and Support.
+ * Screens shown are real BaseLead screens with sample data (public/landing/).
  */
 
-const FEATURES = [
-  { icon: Radar, color: "#3B82F6", title: "Find real clients", text: "Describe what you sell and who you want. BaseLead searches real local businesses and adds the best fits." },
-  { icon: Target, color: "#F5C518", title: "AI lead scoring", text: "Every lead gets a 0–100 opportunity score, the reasons behind it and the service to offer." },
-  { icon: MailCheck, color: "#2DD4BF", title: "Personal emails, tracked", text: "AI drafts each email from your own Gmail. See opens and replies without leaving the app." },
-  { icon: Workflow, color: "#F472B6", title: "Follow-ups on autopilot", text: "Sequences send each follow-up on schedule and stop the moment a lead replies." },
-  { icon: CalendarCheck, color: "#84CC16", title: "Meetings booked for you", text: "Leads pick a time from your link; the meeting lands in Google Calendar with a Meet link." },
-  { icon: FileSignature, color: "#A78BFA", title: "Proposals that get paid", text: "Send proposals, collect an e-signature and take the deposit by card." },
-  { icon: BarChart3, color: "#F97316", title: "Pipeline & reports", text: "Deals move from New to Won on their own. Live dashboards for you and your team." },
-  { icon: Users, color: "#2DD4BF", title: "Built for teams", text: "Invite your reps, set monthly goals and see who is closing on the leaderboard." },
+const WHO = [
+  ["Marketing agencies", "#3B82F6"],
+  ["Web designers", "#F5C518"],
+  ["Contractors", "#2DD4BF"],
+  ["Med spas", "#F472B6"],
+  ["Real estate", "#84CC16"],
+  ["Consultants", "#A78BFA"],
+] as const;
+
+const HIGHLIGHTS = [
+  {
+    tag: "AI lead score",
+    color: "#F5C518",
+    title: "Know exactly who to call first",
+    text: "Every lead gets a 0–100 opportunity score, the reasons behind it, the service to offer and the estimated deal value.",
+    images: ["/landing/phone-lead.webp", "/landing/phone-radar.webp"],
+  },
+  {
+    tag: "Sequences",
+    color: "#F472B6",
+    title: "Follow-ups that stop when they reply",
+    text: "Write your steps once. BaseLead sends each email on schedule from your Gmail, and takes a lead out the moment they answer.",
+    images: ["/landing/phone-sequences.webp", "/landing/phone-outreach.webp"],
+  },
+  {
+    tag: "Pipeline & proposals",
+    color: "#84CC16",
+    title: "Proposals that get signed and paid",
+    text: "Leads move from New to Won on their own. Send a proposal, get an e-signature and take the deposit by card.",
+    images: ["/landing/phone-pipeline.webp", "/landing/phone-proposals.webp"],
+  },
 ];
 
-const STEPS = [
-  ["Tell BaseLead what you sell", "Your services, ideal client and target cities."],
-  ["Get scored leads", "Real businesses, ranked by how likely they are to buy."],
-  ["Reach out and follow up", "Personal emails and automatic follow-ups from your inbox."],
-  ["Book, propose, close", "Meetings, proposals, signatures and payments in one place."],
-];
+function Phone({ src, className = "" }: { src: string; className?: string }) {
+  return (
+    <div className={`rounded-[38px] border border-white/15 bg-[#0b0d12] p-2 shadow-[0_40px_90px_rgba(0,0,0,0.7)] ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="BaseLead on a phone" className="block w-full rounded-[30px]" loading="lazy" width={600} height={1298} />
+    </div>
+  );
+}
 
-const money = (n: number) => `$${n.toLocaleString("en-US")}`;
+function Badge() {
+  return (
+    <span className="inline-flex items-center gap-2.5 rounded-full border border-purple-500/60 bg-purple-500/[0.04] px-4 py-2">
+      <Target className="h-4 w-4 text-purple-400" />
+      <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-xs font-semibold uppercase tracking-wider text-transparent sm:text-sm">
+        World&apos;s 1st AI powered B2B client finder
+      </span>
+    </span>
+  );
+}
 
 export default function Landing() {
-  const plans = Object.values(PLAN_DEFINITIONS);
   return (
-    <main className="min-h-screen bg-[#050505] text-white" data-no-translate>
-      <div className="pointer-events-none fixed inset-x-0 top-0 h-[520px] bg-[radial-gradient(700px_380px_at_50%_0%,rgba(59,130,246,0.18),transparent_70%)]" />
+    <main className="bl-landing min-h-screen overflow-x-hidden bg-[#050507] text-white" data-no-translate>
+      <style>{`
+        @keyframes blLandFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+        @keyframes blLandIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+        .bl-land-float { animation: blLandFloat 5s ease-in-out infinite; }
+        .bl-land-fade { animation: blLandIn .45s ease-out both; }
+        @media (prefers-reduced-motion: reduce) { .bl-land-float, .bl-land-fade { animation: none; } }
+      `}</style>
 
-      <header className="relative mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-5 py-5">
+      {/* ---------- Header ---------- */}
+      <header className="relative z-10 mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-5 py-5">
         <nav className="flex items-center gap-1 text-sm">
+          <a href="#how" className="hidden rounded-lg px-3 py-2 text-gray-400 hover:text-white md:block">Product</a>
           <a href="#pricing" className="hidden rounded-lg px-3 py-2 text-gray-400 hover:text-white sm:block">Pricing</a>
           <Link href="/support" className="hidden rounded-lg px-3 py-2 text-gray-400 hover:text-white sm:block">Support</Link>
         </nav>
@@ -54,87 +93,171 @@ export default function Landing() {
         </nav>
       </header>
 
-      <section className="relative mx-auto max-w-4xl px-5 pb-16 pt-14 text-center sm:pt-20">
-        <span className="inline-flex items-center gap-2.5 rounded-full border border-purple-500/60 bg-purple-500/[0.04] px-4 py-2">
-          <Sparkles className="h-4 w-4 text-purple-400" />
-          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-xs font-semibold uppercase tracking-wider text-transparent sm:text-sm">
-            AI sales app for growing businesses
-          </span>
-        </span>
-        <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight [text-wrap:balance] sm:text-6xl">
-          Find clients. Follow up. Close. All in one app.
-        </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-gray-400">
-          BaseLead finds local businesses that need what you sell, scores them with AI, writes the emails and follows up
-          for you, so your team spends its time closing deals.
-        </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3 font-semibold text-white shadow-[0_12px_30px_-10px_rgba(59,130,246,0.8)] hover:bg-[#2F74E8]">
-            Start your {7}-day free trial <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link href="/signup" className="rounded-xl border border-white/10 px-6 py-3 font-semibold text-gray-200 hover:border-white/25">
-            Sign up free
-          </Link>
-        </div>
-        <p className="mt-3 text-xs text-gray-500">Create a free account, then start your 7-day trial whenever you’re ready. No credit card needed.</p>
-      </section>
-
-      <section className="relative mx-auto max-w-6xl px-5 pb-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map(({ icon: Icon, color, title, text }) => (
-            <div key={title} className="rounded-2xl border border-white/10 bg-[#0D0D0F] p-5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: `${color}22`, color }}>
-                <Icon className="h-5 w-5" />
-              </span>
-              <h2 className="mt-4 font-semibold">{title}</h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-gray-400">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 pb-20">
-        <h2 className="text-center text-3xl font-bold tracking-tight">How it works</h2>
-        <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map(([title, text], i) => (
-            <li key={title} className="rounded-2xl border border-white/10 p-5">
-              <span className="text-sm font-semibold text-[#3B82F6]">Step {i + 1}</span>
-              <h3 className="mt-2 font-semibold">{title}</h3>
-              <p className="mt-1 text-sm text-gray-400">{text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section id="pricing" className="mx-auto max-w-6xl px-5 pb-24">
-        <h2 className="text-center text-3xl font-bold tracking-tight">Simple pricing</h2>
-        <p className="mt-2 text-center text-gray-400">Every plan starts with a 7-day free trial. Save about 15% with yearly billing.</p>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {plans.map((plan) => (
-            <div key={plan.name} className={`rounded-2xl border p-6 ${plan.name === "Pro" ? "border-[#3B82F6]/60 bg-[#0B1626]" : "border-white/10 bg-[#0D0D0F]"}`}>
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">{plan.name}</h3>
-                {plan.name === "Pro" && <span className="rounded-full bg-[#3B82F6] px-2.5 py-0.5 text-xs font-semibold">Most popular</span>}
-              </div>
-              <p className="mt-4 text-4xl font-bold tabular-nums">{money(plan.monthly)}<span className="text-base font-medium text-gray-500">/mo</span></p>
-              <ul className="mt-5 space-y-2 text-sm text-gray-300">
-                <li>{plan.leadLimit.toLocaleString("en-US")} leads</li>
-                <li>{plan.teamLimit ? `Up to ${plan.teamLimit} team members` : "Unlimited team members"}</li>
-                <li>{plan.campaignLimit ? `${plan.campaignLimit} active campaigns` : "Unlimited campaigns"}</li>
-                <li>{plan.contactLookupLimit.toLocaleString("en-US")} decision-maker lookups / month</li>
-                {plan.features.includes("outreach_automation") && <li>Automatic follow-ups & sequences</li>}
-                {plan.features.includes("api_access") && <li>API access & custom reports</li>}
-              </ul>
-              <Link href="/signup" className={`mt-6 block rounded-xl px-4 py-2.5 text-center font-semibold ${plan.name === "Pro" ? "bg-[#3B82F6] text-white hover:bg-[#2F74E8]" : "border border-white/15 hover:border-white/30"}`}>
-                Start free trial
+      {/* ---------- Hero ---------- */}
+      <section className="relative pb-20 pt-6 lg:pb-28">
+        <div className="pointer-events-none absolute inset-x-0 -top-40 h-[820px] bg-[radial-gradient(600px_380px_at_72%_42%,rgba(59,130,246,0.28),transparent_70%),radial-gradient(420px_300px_at_12%_18%,rgba(168,85,247,0.16),transparent_70%),radial-gradient(380px_260px_at_88%_88%,rgba(245,197,24,0.10),transparent_70%)]" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-[1fr_1.15fr]">
+          <div className="text-center lg:text-left">
+            <Badge />
+            <h1 className="mt-6 text-5xl font-extrabold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[64px]">
+              Find clients.
+              <br />
+              Follow up.
+              <br />
+              <span className="bg-gradient-to-r from-[#60A5FA] to-[#3B82F6] bg-clip-text text-transparent">Close.</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-gray-400 lg:mx-0">
+              BaseLead finds local businesses that need what you sell, scores them with AI, writes the emails and follows up
+              for you, so your team spends its time closing deals.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+              <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white shadow-[0_14px_34px_-12px_rgba(59,130,246,0.9)] hover:bg-[#2F74E8]">
+                Start your 7-day free trial <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/signup" className="rounded-xl border border-white/15 px-6 py-3.5 font-semibold text-gray-200 hover:border-white/30">
+                Sign up free
               </Link>
             </div>
+            <p className="mt-3 text-xs text-gray-500">Create a free account, then start your 7-day trial whenever you’re ready. No credit card needed.</p>
+            <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400 lg:justify-start">
+              <span>⚡ <b className="text-white">Real</b> local businesses</span>
+              <span>🎯 <b className="text-white">AI</b> lead scores</span>
+              <span>📬 Sends from <b className="text-white">your Gmail</b></span>
+            </div>
+          </div>
+
+          {/* App preview */}
+          <div className="relative mx-auto h-[420px] w-full max-w-[640px] sm:h-[520px]">
+            <div className="absolute right-0 top-4 w-[88%] rounded-2xl border border-white/10 bg-gradient-to-b from-[#1b1f29] to-[#11141b] p-2 pb-0 shadow-[0_50px_120px_-30px_rgba(59,130,246,0.45),0_30px_80px_rgba(0,0,0,0.6)] sm:p-2.5 sm:pb-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/landing/desk-today.webp" alt="BaseLead Today screen" className="block w-full rounded-t-[10px]" width={1600} height={1000} />
+            </div>
+            <Phone src="/landing/phone-leads.webp" className="absolute -left-2 top-28 w-[34%] sm:top-36" />
+
+            <div className="bl-land-float absolute -right-2 -top-3 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur sm:flex">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2DD4BF]/15 text-[#2DD4BF]"><MessageSquareReply className="h-4 w-4" /></span>
+              <span>Jordan Hayes replied<small className="block text-[11px] text-gray-500">“Can we talk Thursday?”</small></span>
+            </div>
+            <div className="bl-land-float absolute -left-6 top-14 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur [animation-delay:1.2s] sm:flex">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3B82F6]/15 text-[#3B82F6]"><Target className="h-4 w-4" /></span>
+              <span>New lead · score <b className="text-[#60A5FA]">92</b><small className="block text-[11px] text-gray-500">Maison Floral Design</small></span>
+            </div>
+            <div className="bl-land-float absolute bottom-2 right-6 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur [animation-delay:2.4s] sm:flex">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F472B6]/15 text-[#F472B6]"><CalendarCheck className="h-4 w-4" /></span>
+              <span>Meeting booked · 10:00 AM<small className="block text-[11px] text-gray-500">Pure Glow Med Spa · $7,200</small></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Who it's for ---------- */}
+      <section className="border-y border-white/[0.08] py-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-2.5 px-5 text-sm text-gray-400">
+          <span className="w-full text-center md:w-auto">Built for businesses that sell to local businesses:</span>
+          {WHO.map(([name, color]) => (
+            <span key={name} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-2 text-[13px] text-gray-200">
+              <i className="inline-block h-2 w-2 rounded-full" style={{ background: color }} />
+              {name}
+            </span>
           ))}
+        </div>
+      </section>
+
+      {/* ---------- How it works ---------- */}
+      <section id="how" className="mx-auto max-w-6xl px-5 py-24 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">How it works</p>
+        <h2 className="mx-auto mt-3 max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight [text-wrap:balance] sm:text-[44px]">
+          From “who should I call?” to a signed deal
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-gray-400">Four steps, one app. Tap a step to see that part of BaseLead.</p>
+        <HowItWorksTabs />
+      </section>
+
+      {/* ---------- Tour video ---------- */}
+      <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-24 lg:grid-cols-[1fr_auto]">
+        <div className="text-center lg:text-left">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">See it in action</p>
+          <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">Take the 2-minute tour</h2>
+          <p className="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-gray-400 lg:mx-0">
+            Watch every page of BaseLead on a phone: your daily brief, AI-scored leads, automatic follow-ups, pipeline and proposals.
+          </p>
+          <Link href="/signup" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white hover:bg-[#2F74E8]">
+            Try it free for 7 days <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <TourVideo />
+      </section>
+
+      {/* ---------- Highlights ---------- */}
+      <section className="mx-auto max-w-6xl px-5 pb-16">
+        {HIGHLIGHTS.map((item, index) => (
+          <div key={item.title} className="grid items-center gap-10 py-12 md:grid-cols-2 md:gap-16">
+            <div className={`text-center md:text-left ${index % 2 ? "md:order-2" : ""}`}>
+              <span className="inline-flex rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em]" style={{ background: `${item.color}1f`, color: item.color }}>
+                {item.tag}
+              </span>
+              <h3 className="mt-4 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{item.title}</h3>
+              <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-gray-400 md:mx-0">{item.text}</p>
+            </div>
+            <div className="relative mx-auto h-[440px] w-full max-w-[460px] sm:h-[500px]">
+              <div className="pointer-events-none absolute inset-12 rounded-full opacity-30 blur-[70px]" style={{ background: item.color }} />
+              <Phone src={item.images[0]} className="absolute left-0 top-0 w-[52%]" />
+              <Phone src={item.images[1]} className="absolute right-0 top-14 w-[52%]" />
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* ---------- Before / with ---------- */}
+      <section className="mx-auto max-w-6xl px-5 pb-24 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">Why BaseLead</p>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">Stop chasing. Start closing.</h2>
+        <div className="mt-11 grid gap-5 text-left md:grid-cols-2">
+          <div className="rounded-3xl border border-white/10 bg-[#0D0E12] p-7">
+            <h3 className="text-lg font-semibold text-[#F87171]">Without BaseLead</h3>
+            <ul className="mt-5 space-y-3.5 text-[15px] text-gray-300">
+              {["Hours searching Google Maps and copying into spreadsheets", "Guessing which leads are worth your time", "Writing every email from scratch", "Follow-ups forgotten, deals going cold"].map((t) => (
+                <li key={t} className="flex gap-3"><X className="mt-0.5 h-4 w-4 shrink-0 text-[#F22F46]" strokeWidth={3} />{t}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-3xl border border-[#3B82F6]/45 bg-[linear-gradient(180deg,rgba(59,130,246,0.10),transparent)] bg-[#0D0E12] p-7">
+            <h3 className="text-lg font-semibold text-[#60A5FA]">With BaseLead</h3>
+            <ul className="mt-5 space-y-3.5 text-[15px] text-gray-300">
+              {["Real businesses found and organized in seconds", "AI scores tell you who to call first", "Personal emails written for you", "Automatic follow-ups and a pipeline that moves on its own"].map((t) => (
+                <li key={t} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#3B82F6]" strokeWidth={3} />{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Pricing + FAQ ---------- */}
+      <section id="pricing" className="mx-auto max-w-6xl px-5 pb-24 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">Pricing</p>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">Simple plans. 7-day free trial.</h2>
+        <PricingPlans />
+        <h2 className="mt-24 text-3xl font-bold tracking-tight">Questions</h2>
+        <Faq />
+      </section>
+
+      {/* ---------- Final CTA ---------- */}
+      <section className="px-5 pb-20">
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] border border-[#3B82F6]/35 bg-[radial-gradient(500px_260px_at_50%_0%,rgba(59,130,246,0.35),transparent_70%),radial-gradient(300px_200px_at_90%_100%,rgba(245,197,24,0.12),transparent_70%)] bg-[#0A0D14] px-6 py-16 text-center sm:px-16">
+          <Sparkles className="mx-auto h-7 w-7 text-[#F5C518]" />
+          <h2 className="mt-4 text-4xl font-bold tracking-tight [text-wrap:balance] sm:text-5xl">Your next client is already out there.</h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-gray-400">Let BaseLead find them, write to them and remind you when to follow up.</p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white hover:bg-[#2F74E8]">
+              Start your 7-day free trial <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link href="/signup" className="rounded-xl border border-white/15 px-6 py-3.5 font-semibold text-gray-200 hover:border-white/30">Sign up free</Link>
+          </div>
         </div>
       </section>
 
       <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {LEGAL.company}. BaseLead is a product of Studio Base.</p>
           <nav className="flex gap-5">
             <Link href="/privacy" className="hover:text-white">Privacy</Link>

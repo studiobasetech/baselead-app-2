@@ -168,7 +168,7 @@ export function PricingPlans() {
                 ${price}
                 <span className="text-base font-medium text-gray-500">/mo</span>
               </p>
-              <p className="mt-2 text-sm text-gray-500">{yearly ? `$${plan.yearly.toLocaleString("en-US")} billed yearly` : PLAN_COPY[plan.name].tagline}</p>
+              <p className="mt-2 text-sm text-gray-500">{yearly ? `$${Math.round(plan.yearly).toLocaleString("en-US")} billed yearly` : PLAN_COPY[plan.name].tagline}</p>
               <ul className="mt-6 space-y-2.5 text-sm text-gray-300">
                 {PLAN_COPY[plan.name].bullets(plan).map((b) => (
                   <li key={b} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#3B82F6]" strokeWidth={3} />{b}</li>
