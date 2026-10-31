@@ -258,7 +258,7 @@ export default function Landing() {
 
       <footer className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {LEGAL.company}. BaseLead is a product of Studio Base.</p>
+          <p>© {new Date().getFullYear()} {LEGAL.company}. All rights reserved.</p>
           <nav className="flex gap-5">
             <Link href="/privacy" className="hover:text-white">Privacy</Link>
             <Link href="/terms" className="hover:text-white">Terms</Link>

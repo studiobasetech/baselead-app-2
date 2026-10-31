@@ -11,6 +11,9 @@ Copy and paste these into App Store Connect and Google Play Console. Character l
 - **Category**: Business (secondary: Productivity)
 - **Age rating**: 4+ / Everyone (no objectionable content)
 - **Price**: Free to download (subscriptions are sold on the website)
+- **Seller / developer name**: Studio Base LLC (Apple shows the name from your D-U-N-S enrollment)
+- **Copyright** (App Store Connect): `2026 Studio Base LLC`
+- **Support email**: info@studiobase.tech
 
 ## Keywords (iPhone) [100]
 
