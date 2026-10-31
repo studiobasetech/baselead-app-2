@@ -29,6 +29,19 @@ export async function POST(request: Request) {
 // Turns an image URL into a data: URI (so the demo works offline).
 export async function GET(request: Request) {
   if (off()) return NextResponse.json({ error: "Not available" }, { status: 404 });
+  if (new URL(request.url).searchParams.get("rlscheck")) {
+    // Security check: what can an anonymous visitor read with the public key?
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
+    const tables = (new URL(request.url).searchParams.get("rlscheck") ?? "").split(",");
+    const out: Record<string, string> = {};
+    for (const t of tables) {
+      const res = await fetch(`${url}/rest/v1/${t}?select=*&limit=1`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+      const body = await res.text();
+      out[t] = res.status + " " + (res.ok ? (body === "[]" ? "no rows visible" : "ROWS VISIBLE") : body.slice(0, 80));
+    }
+    return NextResponse.json(out);
+  }
   if (new URL(request.url).searchParams.get("script")) {
     const { readFile } = await import("node:fs/promises");
     const js = await readFile(path.join(process.cwd(), "_demo", "demo-data.js"), "utf8");

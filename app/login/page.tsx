@@ -1,5 +1,8 @@
 "use client";
 
+import AppleSignInButton from "@/components/auth/AppleSignInButton";
+import { authRedirect, isNativeApp, openInSystemBrowser } from "@/lib/native";
+
 import React, { FormEvent, useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -150,7 +153,7 @@ export default function LoginPage() {
       : nextPath;
   }
 
-  async function handleGoogleLogin() {
+  async function handleGoogleLogin(provider: "google" | "apple" = "google") {
     setError("");
     setSuccess("");
     setLoading(true);
@@ -162,15 +165,20 @@ export default function LoginPage() {
           )}`
         : nextPath;
 
-      const { error: googleError } =
+      const { data: oauthData, error: googleError } =
         await supabase.auth.signInWithOAuth({
-          provider: "google",
+          provider,
           options: {
-            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(
-              redirectTarget
-            )}`,
+            redirectTo: authRedirect(redirectTarget),
+            skipBrowserRedirect: isNativeApp(),
           },
         });
+
+      if (!googleError && isNativeApp() && oauthData?.url) {
+        await openInSystemBrowser(oauthData.url);
+        setLoading(false);
+        return;
+      }
 
       if (googleError) {
         setError(googleError.message);
@@ -178,7 +186,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error(err);
-      setError("Unable to continue with Google.");
+      setError(provider === "apple" ? "Unable to continue with Apple." : "Unable to continue with Google.");
       setLoading(false);
     }
   }
@@ -630,7 +638,7 @@ export default function LoginPage() {
 
                 <button
                   type="button"
-                  onClick={handleGoogleLogin}
+                  onClick={() => handleGoogleLogin()}
                   disabled={loading}
                   className="flex h-[62px] w-full items-center justify-center rounded-xl border border-white/20 bg-black/30 text-base font-medium text-white transition hover:bg-white/[0.04] disabled:cursor-not-allowed disabled:opacity-60"
                 >
@@ -662,6 +670,8 @@ export default function LoginPage() {
 
                   Continue with Google
                 </button>
+
+                <AppleSignInButton onClick={() => handleGoogleLogin("apple")} disabled={loading} />
 
                 <div className="mt-6 text-center text-sm text-gray-500 lg:hidden">
                   Don&apos;t have an account?

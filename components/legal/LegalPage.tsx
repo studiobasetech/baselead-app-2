@@ -41,6 +41,7 @@ export default function LegalPage({ title, intro, children }: { title: string; i
           <nav className="flex gap-5 text-sm text-gray-400">
             <Link href="/privacy" className="hover:text-white">Privacy</Link>
             <Link href="/terms" className="hover:text-white">Terms</Link>
+            <Link href="/support" className="hover:text-white">Support</Link>
           </nav>
         </div>
 

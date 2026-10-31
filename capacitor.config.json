@@ -1,18 +1,32 @@
 {
   "appId": "com.studiobase.baselead",
   "appName": "BaseLead",
-  "webDir": "public",
+  "webDir": "mobile/www",
   "server": {
-    "url": "https://app.YOUR-DOMAIN.com/today",
+    "url": "https://YOUR-DOMAIN/today",
     "cleartext": false,
-    "allowNavigation": ["app.YOUR-DOMAIN.com", "accounts.google.com", "checkout.stripe.com", "billing.stripe.com"]
+    "errorPath": "index.html",
+    "allowNavigation": ["YOUR-DOMAIN", "*.supabase.co", "checkout.stripe.com", "billing.stripe.com"]
   },
   "ios": {
     "contentInset": "never",
     "backgroundColor": "#050505",
+    "scheme": "BaseLead",
     "limitsNavigationsToAppBoundDomains": false
   },
   "android": {
-    "backgroundColor": "#050505"
+    "backgroundColor": "#050505",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#050505",
+      "showSpinner": false
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
   }
 }

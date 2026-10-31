@@ -36,9 +36,12 @@ export async function GET(
   } = await supabase.auth.getUser();
 
   if (error || !user) {
-    return NextResponse.redirect(
-      new URL("/login", request.url)
-    );
+    // Not signed in (e.g. opened from the phone app in the system browser):
+    // sign in first, then come straight back here.
+    const login = new URL("/login", request.url);
+    const here = new URL(request.url);
+    login.searchParams.set("next", `${here.pathname}${here.search}`);
+    return NextResponse.redirect(login);
   }
 
   const incoming = new URL(request.url);

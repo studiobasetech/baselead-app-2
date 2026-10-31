@@ -108,7 +108,7 @@ export default function LeadPhoneActions({
     onChanged?.();
   }
 
-  function useTemplate(template: string) {
+  function applyTemplate(template: string) {
     setSms(
       template
         .replace("{{name}}", lead?.contact || "there")
@@ -221,7 +221,7 @@ export default function LeadPhoneActions({
               <button
                 key={index}
                 type="button"
-                onClick={() => useTemplate(template)}
+                onClick={() => applyTemplate(template)}
                 className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] text-gray-400 hover:text-white"
               >
                 Template {index + 1}

@@ -1,5 +1,8 @@
 "use client";
 
+import AppleSignInButton from "@/components/auth/AppleSignInButton";
+import { authRedirect, isNativeApp, openInSystemBrowser } from "@/lib/native";
+
 import { FormEvent, useState } from "react";
 import {
   ArrowRight,
@@ -104,19 +107,26 @@ export default function SignupPage() {
     }
   }
 
-  async function handleGoogleSignup() {
+  async function handleGoogleSignup(provider: "google" | "apple" = "google") {
     setError("");
     setSuccess("");
     setLoading(true);
 
     try {
-      const { error: googleError } =
+      const { data: oauthData, error: googleError } =
         await supabase.auth.signInWithOAuth({
-          provider: "google",
+          provider,
           options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
+            redirectTo: authRedirect("/today"),
+            skipBrowserRedirect: isNativeApp(),
           },
         });
+
+      if (!googleError && isNativeApp() && oauthData?.url) {
+        await openInSystemBrowser(oauthData.url);
+        setLoading(false);
+        return;
+      }
 
       if (googleError) {
         setError(googleError.message);
@@ -124,7 +134,7 @@ export default function SignupPage() {
       }
     } catch (err) {
       console.error(err);
-      setError("Unable to continue with Google.");
+      setError(provider === "apple" ? "Unable to continue with Apple." : "Unable to continue with Google.");
       setLoading(false);
     }
   }
@@ -397,7 +407,7 @@ export default function SignupPage() {
               {/* GOOGLE */}
               <button
                 type="button"
-                onClick={handleGoogleSignup}
+                onClick={() => handleGoogleSignup()}
                 disabled={loading}
                 className="flex h-[62px] w-full items-center justify-center rounded-xl border border-white/20 bg-black/30 text-base font-medium text-white transition hover:bg-white/[0.04] disabled:cursor-not-allowed disabled:opacity-60"
               >
@@ -425,6 +435,8 @@ export default function SignupPage() {
 
                 Continue with Google
               </button>
+
+                <AppleSignInButton onClick={() => handleGoogleSignup("apple")} disabled={loading} />
 
               {/* SECURITY */}
               <div className="mt-10 flex items-center justify-center gap-3 text-sm text-gray-500">

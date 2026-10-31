@@ -1,3 +1,4 @@
+import { sendPush } from "@/lib/push";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getGoogleAccessToken, sendGmail } from "@/lib/integrations/google-api";
 
@@ -177,6 +178,11 @@ export async function notifyUser(
       if (!prefs.email_notifications) return { sent: false, reason: "email notifications are off" };
       const specific = PREF_FOR[kind];
       if (specific && !prefs[specific]) return { sent: false, reason: `${specific} is off` };
+    }
+
+    // Phone notification (iPhone/Android app), alongside the email.
+    if (kind !== "test") {
+      void sendPush(admin, userId, { title: content.subject, body: content.lines[0] ?? content.heading, url: content.ctaPath });
     }
 
     const to = await userEmail(admin, userId);

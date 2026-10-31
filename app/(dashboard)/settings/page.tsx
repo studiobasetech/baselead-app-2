@@ -54,6 +54,7 @@ import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { usePreferences } from "@/components/preferences/PreferencesProvider";
 import { SkeletonRows } from "@/components/ui/Skeleton";
+import { isNativeApp, openInSystemBrowser } from "@/lib/native";
 
 /* =========================================================
    TYPES
@@ -4258,7 +4259,9 @@ function BillingPlan({
         return;
       }
 
-      window.location.assign(result.url);
+      // In the phone app, payments open in the browser (App Store rules).
+      if (isNativeApp()) await openInSystemBrowser(result.url);
+      else window.location.assign(result.url);
     } catch (error) {
       console.error("Billing error:", error);
       onToast(t("Your plan could not be updated. Please try again."));

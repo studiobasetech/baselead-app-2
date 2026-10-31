@@ -43,6 +43,7 @@ import {
 import PlanGate from "@/components/plans/PlanGate";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { SkeletonRows } from "@/components/ui/Skeleton";
+import { isNativeApp, openInSystemBrowser } from "@/lib/native";
 
 /* =========================================================
    DASHBOARD VISUAL SYSTEM
@@ -1284,6 +1285,12 @@ export default function IntegrationsPage() {
       `/api/integrations/oauth/${provider}/start?returnTo=${encodeURIComponent(
         returnTo
       )}`;
+
+    // In the phone app, Google sign-in screens must open in the system browser.
+    if (isNativeApp()) {
+      void openInSystemBrowser(url);
+      return;
+    }
 
     window.location.assign(url);
   }

@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   "/u",
   "/privacy",
   "/terms",
+  "/support",
 ];
 
 // Pages that only make sense when logged OUT.
@@ -85,7 +86,7 @@ export async function proxy(request: NextRequest) {
 
   // Logged out and trying to open a private page -> go to login,
   // remembering where they wanted to go.
-  if (!isLoggedIn && !matches(pathname, PUBLIC_PATHS)) {
+  if (!isLoggedIn && pathname !== "/" && !matches(pathname, PUBLIC_PATHS)) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.search = "";

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import NativeBridge from "@/components/native/NativeBridge";
 import "./globals.css";
 
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
@@ -68,6 +69,7 @@ export default function RootLayout({
           <PreferencesProvider>
             <PlanProvider>
               {children}
+              <NativeBridge />
             </PlanProvider>
           </PreferencesProvider>
         </LanguageProvider>
