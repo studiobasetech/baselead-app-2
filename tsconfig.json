@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
 , "app/signup", "app/signup"  ],
-  "exclude": ["node_modules", "_backups"]
+  "exclude": ["node_modules", "_backups", "_to_delete"]
 }

@@ -243,14 +243,18 @@ export default function DashboardSidebar() {
 
       const metadata = user.user_metadata || {};
 
-      const { data: company, error: companyError } = await supabase
+      // limit(1): never fails if an account ever has more than one company row.
+      const { data: companyRows, error: companyError } = await supabase
         .from("company_profiles")
         .select("company_name, logo_url")
         .eq("user_id", user.id)
-        .maybeSingle();
+        .limit(1);
+      const company = companyRows?.[0] ?? null;
 
-      if (companyError) {
-        console.error("Sidebar company load error:", companyError);
+      // Aborted requests (page change while loading) are normal, not errors.
+      const aborted = /abort/i.test(`${companyError?.message ?? ""} ${companyError?.details ?? ""}`);
+      if (companyError && !aborted) {
+        console.warn("Sidebar company load error:", companyError.message || companyError.code || "unknown error", companyError.details ?? "");
       }
 
       setWorkspace({
