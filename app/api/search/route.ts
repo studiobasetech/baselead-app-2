@@ -130,6 +130,18 @@ export async function POST(request: Request) {
           new Date(company.trial_ends_at).getTime() <= now
       );
 
+    if (billingStatus === "inactive") {
+      return NextResponse.json(
+        {
+          success: false,
+          code: "TRIAL_NOT_STARTED",
+          error:
+            "Start your 7-day free trial to search for leads. It's free and needs no credit card.",
+        },
+        { status: 402 }
+      );
+    }
+
     if (
       billingStatus !== "trialing" &&
       billingStatus !== "active"

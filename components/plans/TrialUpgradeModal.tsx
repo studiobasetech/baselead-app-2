@@ -15,7 +15,7 @@ import { PLAN_DEFINITIONS, type PlanName } from "@/lib/plans";
  * Codes like FREEPLAN1295 can be redeemed right here.
  */
 
-type Reason = "welcome" | "ending" | "expired";
+type Reason = "start" | "welcome" | "ending" | "expired";
 
 const PLAN_STYLE: Record<PlanName, { color: string; tagline: string }> = {
   Starter: { color: "#3B82F6", tagline: "For solo sellers" },
@@ -58,6 +58,7 @@ export default function TrialUpgradeModal() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [activated, setActivated] = useState<PlanName | null>(null);
+  const [trialStarted, setTrialStarted] = useState(false);
 
   const daysLeft = useMemo(() => {
     if (!trialEndsAt) return 7;
@@ -72,7 +73,9 @@ export default function TrialUpgradeModal() {
     const today = new Date().toDateString();
     let next: Reason | null = null;
 
-    if (trialExpired) {
+    if (billingStatus === "inactive") {
+      next = "start";
+    } else if (trialExpired) {
       next = "expired";
     } else if (isTrial) {
       const lowLeads = trialLeadLimit > 0 && trialLeadsRemaining / trialLeadLimit <= 0.2;
@@ -124,6 +127,23 @@ export default function TrialUpgradeModal() {
     }
   }
 
+  async function startTrial() {
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch("/api/billing/start-trial", { method: "POST" });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Your trial could not be started. Please try again.");
+      await refreshPlan();
+      writeStore("baselead_journey_welcome", "1");
+      setTrialStarted(true);
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Your trial could not be started. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   function goToPlans() {
     close();
     window.location.href = "/settings?section=billing";
@@ -135,6 +155,11 @@ export default function TrialUpgradeModal() {
   const dayOfTrial = Math.min(7, Math.max(1, 7 - daysLeft + (daysLeft === 0 ? 0 : 1)));
 
   const copy = {
+    start: {
+      eyebrow: "Welcome to BaseLead",
+      title: "Start your 7-day free trial.",
+      text: "Your free account is ready. Start the trial to unlock BaseLead for 7 days: 100 leads, AI scoring, personal emails, follow-ups and your pipeline. No credit card needed.",
+    },
     welcome: {
       eyebrow: "Your BaseLead journey",
       title: "7 days to fill your pipeline.",
@@ -197,7 +222,27 @@ export default function TrialUpgradeModal() {
             <X size={20} />
           </button>
 
-          {activated ? (
+          {trialStarted ? (
+            <div className="relative py-6 text-center">
+              <span
+                className="bl-icon-tile mx-auto !h-16 !w-16 !rounded-2xl"
+                style={{ "--tab": "#3B82F6", animation: "blFloat 3s ease-in-out infinite" } as CSSProperties}
+              >
+                <Rocket size={30} strokeWidth={2} />
+              </span>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-[#3B82F6]">Trial started</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">Your 7 days start now 🚀</h2>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-gray-400">
+                Everything is unlocked. Start with a lead search: describe who you sell to and BaseLead finds them.
+              </p>
+              <a
+                href="/search"
+                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2F74E8]"
+              >
+                Find my first leads <ArrowRight size={16} />
+              </a>
+            </div>
+          ) : activated ? (
             /* ---------------- success ---------------- */
             <div className="relative py-6 text-center">
               {Array.from({ length: 26 }).map((_, index) => (
@@ -276,7 +321,7 @@ export default function TrialUpgradeModal() {
                   </div>
                 </div>
 
-                <div className="mt-5 grid grid-cols-2 gap-3">
+                {reason !== "start" && <div className="mt-5 grid grid-cols-2 gap-3">
                   <div className="rounded-xl bg-black/30 p-3">
                     <p className="text-[11px] uppercase tracking-wider text-gray-500">Trial leads used</p>
                     <p className="mt-1 text-lg font-semibold text-white tabular-nums">
@@ -295,7 +340,7 @@ export default function TrialUpgradeModal() {
                       <div className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#F472B6]" style={{ width: `${reason === "expired" ? 0 : Math.round((daysLeft / 7) * 100)}%` }} />
                     </div>
                   </div>
-                </div>
+                </div>}
               </div>
 
               {/* plan picker */}
@@ -359,6 +404,22 @@ export default function TrialUpgradeModal() {
               </div>
 
               {/* actions */}
+              {reason === "start" ? (
+                <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <button type="button" onClick={goToPlans} className="h-11 rounded-xl px-4 text-sm text-gray-400 transition hover:text-white">
+                    Compare plans first
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void startTrial()}
+                    disabled={busy}
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#3B82F6] px-6 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,130,246,0.8)] transition hover:bg-[#2F74E8] disabled:opacity-60"
+                  >
+                    {busy ? <Loader2 size={16} className="animate-spin" /> : <Rocket size={16} />}
+                    Start my 7-day free trial
+                  </button>
+                </div>
+              ) : (
               <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
                 {reason !== "expired" ? (
                   <button type="button" onClick={close} className="h-11 rounded-xl px-4 text-sm text-gray-400 transition hover:text-white">
@@ -375,6 +436,8 @@ export default function TrialUpgradeModal() {
                   Compare all plans <ArrowRight size={16} />
                 </button>
               </div>
+              )}
+
             </div>
           )}
         </div>

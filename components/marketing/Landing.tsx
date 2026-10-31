@@ -36,22 +36,30 @@ export default function Landing() {
     <main className="min-h-screen bg-[#050505] text-white" data-no-translate>
       <div className="pointer-events-none fixed inset-x-0 top-0 h-[520px] bg-[radial-gradient(700px_380px_at_50%_0%,rgba(59,130,246,0.18),transparent_70%)]" />
 
-      <header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-        <Link href="/" aria-label="BaseLead home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="BaseLead" className="h-9 w-auto rounded-lg" />
-        </Link>
-        <nav className="flex items-center gap-2 text-sm">
+      <header className="relative mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-5 py-5">
+        <nav className="flex items-center gap-1 text-sm">
           <a href="#pricing" className="hidden rounded-lg px-3 py-2 text-gray-400 hover:text-white sm:block">Pricing</a>
           <Link href="/support" className="hidden rounded-lg px-3 py-2 text-gray-400 hover:text-white sm:block">Support</Link>
-          <Link href="/login" className="rounded-lg px-3 py-2 text-gray-300 hover:text-white">Log in</Link>
-          <Link href="/signup" className="rounded-xl bg-[#3B82F6] px-4 py-2 font-semibold text-white hover:bg-[#2F74E8]">Start free trial</Link>
+        </nav>
+        <Link href="/" aria-label="BaseLead home" className="justify-self-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-on-dark.png" alt="BaseLead" className="h-7 w-auto sm:h-9" />
+        </Link>
+        <nav className="flex items-center justify-end gap-2 text-sm">
+          <Link href="/login" className="hidden rounded-lg px-3 py-2 text-gray-300 hover:text-white sm:block">Log in</Link>
+          <Link href="/signup" className="whitespace-nowrap rounded-xl bg-[#3B82F6] px-3 py-2 font-semibold text-white hover:bg-[#2F74E8] sm:px-4">
+            <span className="sm:hidden">Try free</span>
+            <span className="hidden sm:inline">Start free trial</span>
+          </Link>
         </nav>
       </header>
 
       <section className="relative mx-auto max-w-4xl px-5 pb-16 pt-14 text-center sm:pt-20">
-        <span className="inline-flex items-center gap-2 rounded-full border border-[#3B82F6]/30 bg-[#10243A] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#3B82F6]">
-          <Sparkles className="h-3.5 w-3.5" /> AI sales app for growing businesses
+        <span className="inline-flex items-center gap-2.5 rounded-full border border-purple-500/60 bg-purple-500/[0.04] px-4 py-2">
+          <Sparkles className="h-4 w-4 text-purple-400" />
+          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-xs font-semibold uppercase tracking-wider text-transparent sm:text-sm">
+            AI sales app for growing businesses
+          </span>
         </span>
         <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight [text-wrap:balance] sm:text-6xl">
           Find clients. Follow up. Close. All in one app.
@@ -64,11 +72,11 @@ export default function Landing() {
           <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3 font-semibold text-white shadow-[0_12px_30px_-10px_rgba(59,130,246,0.8)] hover:bg-[#2F74E8]">
             Start your {7}-day free trial <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link href="/login" className="rounded-xl border border-white/10 px-6 py-3 font-semibold text-gray-200 hover:border-white/25">
-            Log in
+          <Link href="/signup" className="rounded-xl border border-white/10 px-6 py-3 font-semibold text-gray-200 hover:border-white/25">
+            Sign up free
           </Link>
         </div>
-        <p className="mt-3 text-xs text-gray-500">No credit card needed for the trial.</p>
+        <p className="mt-3 text-xs text-gray-500">Create a free account, then start your 7-day trial whenever you’re ready. No credit card needed.</p>
       </section>
 
       <section className="relative mx-auto max-w-6xl px-5 pb-20">

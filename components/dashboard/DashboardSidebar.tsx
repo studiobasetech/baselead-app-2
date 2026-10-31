@@ -434,14 +434,14 @@ export default function DashboardSidebar() {
       <div className="flex items-center justify-between px-6 pb-5 pt-7">
         <Link href="/dashboard" className="block">
           <img
-            src="/logo.png"
+            src="/logo-on-dark.png"
             alt="BaseLead"
-            className="bl-logo-dark h-auto w-[175px] rounded-xl shadow-sm"
+            className="bl-logo-dark h-auto w-[160px]"
           />
           <img
-            src="/logo-light.png"
+            src="/logo-on-light.png"
             alt="BaseLead"
-            className="bl-logo-light h-auto w-[175px] rounded-xl"
+            className="bl-logo-light h-auto w-[160px]"
           />
         </Link>
 
@@ -704,8 +704,8 @@ export default function DashboardSidebar() {
         </button>
 
         <Link href="/dashboard">
-          <img src="/logo.png" alt="BaseLead" className="bl-logo-dark h-8 w-auto rounded-lg" />
-          <img src="/logo-light.png" alt="BaseLead" className="bl-logo-light h-8 w-auto rounded-lg" />
+          <img src="/logo-on-dark.png" alt="BaseLead" className="bl-logo-dark h-6 w-auto" />
+          <img src="/logo-on-light.png" alt="BaseLead" className="bl-logo-light h-6 w-auto" />
         </Link>
 
         <button

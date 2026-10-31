@@ -134,6 +134,7 @@ export const TRIAL_DURATION_DAYS = 7;
 export const TRIAL_LEAD_LIMIT = 100;
 
 export type BillingStatus =
+  | "inactive"
   | "trialing"
   | "active"
   | "past_due"
@@ -144,6 +145,7 @@ export function isBillingStatus(
   value: unknown
 ): value is BillingStatus {
   return (
+    value === "inactive" ||
     value === "trialing" ||
     value === "active" ||
     value === "past_due" ||

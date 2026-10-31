@@ -21,6 +21,7 @@ Marca cada paso cuando lo termines. Lo que dice **(Claude)** ya está hecho en e
    - `supabase/cleanup_demo_leads.sql` → borra los leads de prueba.
    - `supabase/UPDATE_6_RUN_THIS.sql` → actualizaciones en vivo.
    - `supabase/UPDATE_7_RUN_THIS.sql` → notificaciones del teléfono.
+   - `supabase/UPDATE_8_RUN_THIS.sql` → cuentas gratis: la prueba de 7 días empieza cuando la persona toca “Start my 7-day free trial”.
 2. **Prueba local**: en la Terminal, dentro de la carpeta, `npm run dev`, abre http://localhost:3000 sin sesión y revisa la nueva página de inicio. Avísame y reviso modo claro, tablet y todo lo visual.
 3. **Pide el número D-U-N-S** de Studio Base LLC (gratis, 1–2 semanas): https://developer.apple.com/enroll/duns-lookup/ — Apple lo exige para cuentas de empresa.
 4. **Stripe (modo prueba, gratis)**: crea la cuenta, crea los productos Starter/Pro/Scale con precio mensual y anual, y pega las claves en `.env.local` (te guío).

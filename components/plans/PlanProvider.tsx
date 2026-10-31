@@ -22,6 +22,7 @@ import {
 } from "@/lib/plans";
 
 type BillingStatus =
+  | "inactive"
   | "trialing"
   | "active"
   | "past_due"
@@ -51,6 +52,7 @@ function normalizeBillingStatus(
   value: unknown
 ): BillingStatus {
   if (
+    value === "inactive" ||
     value === "active" ||
     value === "past_due" ||
     value === "canceled" ||
