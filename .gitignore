@@ -43,3 +43,4 @@ next-env.d.ts
 _backups/
 _demo/
 /.next-build/
+_to_delete/
