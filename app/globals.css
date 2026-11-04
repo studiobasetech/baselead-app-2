@@ -1795,7 +1795,7 @@ html.baselead-light *::-webkit-scrollbar-thumb {
   }
 }
 
-/* BaseLead logo: black pill in dark mode, light pill in light mode */
+/* BaseLead logo: no background in either mode */
 .bl-logo-light {
   display: none;
 }
@@ -1804,10 +1804,8 @@ html.baselead-light .bl-logo-dark {
 }
 html.baselead-light .bl-logo-light {
   display: block;
-  background: #ffffff;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.06),
-    0 6px 18px -8px rgba(0, 0, 0, 0.18);
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* =========================================================
