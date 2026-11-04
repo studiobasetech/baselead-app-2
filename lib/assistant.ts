@@ -3,7 +3,7 @@ import type { WorkspaceAccess } from "@/lib/workspace";
 
 /*
  * "Ask BaseLead" + the daily brief.
- * Everything here works with smart rules for free. When ANTHROPIC_API_KEY
+ * Everything here works with smart rules for free. When an AI key (GEMINI_API_KEY or ANTHROPIC_API_KEY)
  * is set, the routes also use Claude to write the answers.
  */
 

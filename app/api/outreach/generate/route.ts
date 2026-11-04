@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   if (!isAiConfigured()) {
     return NextResponse.json(
-      { error: "AI writing is not configured. Add ANTHROPIC_API_KEY." },
+      { error: "AI writing is not configured. Add GEMINI_API_KEY or ANTHROPIC_API_KEY." },
       { status: 503 }
     );
   }

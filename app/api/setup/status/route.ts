@@ -184,12 +184,14 @@ export async function GET() {
   checks.push({
     id: "ai",
     group: "Recommended",
-    title: "AI writing & lead analysis (Anthropic)",
-    ok: env("ANTHROPIC_API_KEY"),
+    title: "AI writing & lead analysis",
+    ok: env("ANTHROPIC_API_KEY") || env("GEMINI_API_KEY"),
     detail: env("ANTHROPIC_API_KEY")
-      ? "AI writes outreach and analyzes leads."
-      : "console.anthropic.com → API Keys → add ANTHROPIC_API_KEY. Without it, emails use templates and scoring uses rules.",
-    action: { label: "Open Anthropic Console", href: "https://console.anthropic.com/settings/keys" },
+      ? "AI (Claude) writes outreach and analyzes leads."
+      : env("GEMINI_API_KEY")
+        ? "AI (Gemini) writes outreach and analyzes leads."
+        : "Add GEMINI_API_KEY (free, aistudio.google.com) or ANTHROPIC_API_KEY. Without it, emails use templates and scoring uses rules.",
+    action: { label: "Get a free Gemini key", href: "https://aistudio.google.com/apikey" },
   });
 
   /* ---------- Billing ---------- */

@@ -37,8 +37,10 @@ export async function POST(request: Request) {
       }
     );
     return NextResponse.json({ answer, links: rules.links, ai: true });
-  } catch {
+  } catch (error) {
     // AI unavailable: fall back to the free answer.
-    return NextResponse.json({ ...rules, ai: false });
+    console.warn("Ask BaseLead AI error:", error);
+    const detail = process.env.NODE_ENV !== "production" && error instanceof Error ? { aiError: error.message } : {};
+    return NextResponse.json({ ...rules, ai: false, ...detail });
   }
 }
