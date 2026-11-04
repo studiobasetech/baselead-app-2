@@ -1249,7 +1249,7 @@ function removeLocation(
             )
           }
           placeholder={t(
-            "Cities, states, countries..."
+            "Houston, TX; Austin, TX; Cancun, MX"
           )}
         />
 <div className="md:col-span-2">
@@ -6371,6 +6371,31 @@ function DangerZone({
    MAIN PAGE
 ========================================================= */
 
+/* Target locations are stored as a JSON list (["Houston, TX", ...]).
+   In Settings they are edited as one line separated by semicolons. */
+function locationsToText(value: unknown): string {
+  if (!value) return "";
+  let list: unknown = value;
+  if (typeof value === "string") {
+    try {
+      list = JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }
+  return Array.isArray(list)
+    ? list.filter((item): item is string => typeof item === "string").join("; ")
+    : String(value);
+}
+
+function textToLocations(text: string): string | null {
+  const list = text
+    .split(/[;\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return list.length ? JSON.stringify(Array.from(new Set(list))) : null;
+}
+
 export default function SettingsPage() {
   const { t } = useLanguage();
   const { preferences } = usePreferences();
@@ -6662,7 +6687,7 @@ export default function SettingsPage() {
           data.target_customer || "",
 
         target_locations:
-  data.target_locations || "",
+  locationsToText(data.target_locations),
 
 locations:
   Array.isArray(data.locations)
@@ -6908,8 +6933,7 @@ phone:
           null,
 
         target_locations:
-          companySettings.target_locations.trim() ||
-          null,
+          textToLocations(companySettings.target_locations),
 
         phone:
           companySettings.phone.trim() ||
@@ -7038,8 +7062,7 @@ phone:
               data.target_customer ||
               "",
             target_locations:
-              data.target_locations ||
-              "",
+              locationsToText(data.target_locations),
             phone:
               data.phone ||
               "",

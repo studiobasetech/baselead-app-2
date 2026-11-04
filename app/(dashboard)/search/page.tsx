@@ -486,6 +486,20 @@ function isClient(lead: SearchResultLead) {
   return ["client", "won"].includes(lead.status?.toLowerCase() || "");
 }
 
+/* Quick picks for the city box. Any city in the USA or Mexico can be typed. */
+const CITY_SUGGESTIONS = [
+  "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ", "Philadelphia, PA",
+  "San Antonio, TX", "San Diego, CA", "Dallas, TX", "Austin, TX", "Jacksonville, FL", "Fort Worth, TX",
+  "San Jose, CA", "Columbus, OH", "Charlotte, NC", "Indianapolis, IN", "San Francisco, CA", "Seattle, WA",
+  "Denver, CO", "Nashville, TN", "Washington, DC", "Boston, MA", "Las Vegas, NV", "Atlanta, GA",
+  "Miami, FL", "Orlando, FL", "Tampa, FL", "Minneapolis, MN", "Detroit, MI", "Portland, OR",
+  "Salt Lake City, UT", "Raleigh, NC", "Kansas City, MO", "St. Louis, MO", "New Orleans, LA", "El Paso, TX",
+  "Ciudad de México, CDMX", "Guadalajara, Jalisco", "Monterrey, Nuevo León", "Puebla, Puebla",
+  "Tijuana, Baja California", "Querétaro, Querétaro", "Mérida, Yucatán", "Cancún, Quintana Roo",
+  "León, Guanajuato", "San Luis Potosí, SLP", "Aguascalientes, Aguascalientes", "Chihuahua, Chihuahua",
+  "Hermosillo, Sonora", "Toluca, Estado de México", "Puerto Vallarta, Jalisco", "Playa del Carmen, Quintana Roo",
+];
+
 function InputBox({
   icon,
   label,
@@ -493,6 +507,7 @@ function InputBox({
   value,
   onChange,
   accent = "yellow",
+  list,
 }: {
   icon: ReactNode;
   label: string;
@@ -500,6 +515,8 @@ function InputBox({
   value: string;
   onChange: (value: string) => void;
   accent?: "yellow" | "purple" | "blue";
+  /** id of a <datalist> with suggestions */
+  list?: string;
 }) {
   const accentClasses = {
     yellow: "text-[#3B82F6] bg-[#3B82F6]/10",
@@ -524,6 +541,7 @@ function InputBox({
           onChange={(e) => onChange(e.target.value)}
           className="w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-700"
           placeholder={placeholder}
+          list={list}
         />
       </div>
     </div>
@@ -1887,15 +1905,10 @@ export default function NewSearchPage() {
         setTargetLocations(normalized);
         setTargetLocationsLoading(false);
 
-        if (normalized.length > 0) {
-          setLocation((current) =>
-            normalized.includes(current)
-              ? current
-              : normalized[0]
-          );
-        } else {
-          setLocation("");
-        }
+        // Pre-fill only a real city ("City, State"); a whole country
+        // like "United States" is a market, not a place to search around.
+        const firstCity = normalized.find((item) => item.includes(","));
+        setLocation((current) => current || firstCity || "");
       }
     }
 
@@ -1973,11 +1986,7 @@ export default function NewSearchPage() {
     }
 
     if (!location.trim()) {
-      setSearchMessage(
-        targetLocations.length
-          ? "Please select a Target Location."
-          : "Add at least one Target Location in Settings → Company before searching."
-      );
+      setSearchMessage("Type the city you want to search, e.g. Miami, FL.");
 
       return;
     }
@@ -2658,17 +2667,22 @@ export default function NewSearchPage() {
                   </div>
 
                   <div className="mt-6 grid gap-5 lg:grid-cols-2">
-                    <SelectBox
-                      label="Target Location"
-                      value={location}
-                      options={targetLocationOptions}
-                      icon={<MapPin size={17} />}
-                      onChange={setLocation}
-                      disabled={
-                        targetLocationsLoading ||
-                        targetLocations.length === 0
-                      }
-                    />
+                    <div>
+                      <InputBox
+                        icon={<MapPin size={17} />}
+                        label="Target Location"
+                        placeholder="Any city in the USA or Mexico, e.g. Miami, FL"
+                        value={location}
+                        onChange={setLocation}
+                        accent="blue"
+                        list="bl-city-suggestions"
+                      />
+                      <datalist id="bl-city-suggestions">
+                        {Array.from(new Set([...targetLocations, ...CITY_SUGGESTIONS])).map((city) => (
+                          <option key={city} value={city} />
+                        ))}
+                      </datalist>
+                    </div>
 
                     <SelectBox
                       label="Search radius"
