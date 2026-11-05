@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePlan } from "@/components/plans/PlanProvider";
 import { useEffect, useMemo, useState, type ReactNode, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -500,6 +502,28 @@ const CITY_SUGGESTIONS = [
   "Hermosillo, Sonora", "Toluca, Estado de México", "Puerto Vallarta, Jalisco", "Playa del Carmen, Quintana Roo",
 ];
 
+/* Recommended services are a Pro/Scale feature: say so instead of "pending". */
+function RecommendationsEmpty({ compact = false }: { compact?: boolean }) {
+  const { can } = usePlan();
+
+  if (can("ai_recommendations")) {
+    return (
+      <p className={compact ? "mt-2 text-sm text-gray-600" : "mt-3 text-sm text-gray-600"}>
+        No AI recommendation for this lead yet.
+      </p>
+    );
+  }
+
+  return (
+    <p className={compact ? "mt-2 text-sm text-gray-500" : "mt-3 text-sm text-gray-500"}>
+      Recommended services are included in Pro and Scale.{" "}
+      <Link href="/settings?section=billing" className="font-medium text-[#3B82F6] hover:underline">
+        View plans
+      </Link>
+    </p>
+  );
+}
+
 function InputBox({
   icon,
   label,
@@ -877,9 +901,7 @@ function SearchLeadCard({
               ))}
             </div>
           ) : (
-            <div className="mt-2 text-sm text-gray-700">
-              AI recommendations pending
-            </div>
+            <RecommendationsEmpty compact />
           )}
 
           {estimatedValue && (
@@ -1126,9 +1148,7 @@ function LeadDetailPanel({
               ))}
             </div>
           ) : (
-            <p className="mt-3 text-sm text-gray-600">
-              AI recommendations are not available yet.
-            </p>
+            <RecommendationsEmpty />
           )}
 
           <p className="mt-4 text-sm leading-6 text-gray-500">
