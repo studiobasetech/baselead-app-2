@@ -42,6 +42,20 @@ export async function GET(request: Request) {
     }
     return NextResponse.json(out);
   }
+  if (new URL(request.url).searchParams.get("enrichtest")) {
+    // TEMP: run the enrichment step on 4 real businesses (no saving).
+    const { searchGeoapify } = await import("@/lib/search/geoapify-provider");
+    const { enrichAndScore, toLeadRow, rowToLead } = await import("@/lib/search/process-search");
+    const criteria = { offer: "Website Design & AI Automation", idealClient: "Dentists", location: "Boise, ID", leads: 4, radius: 25, scoring: true, enrichment: true };
+    const t0 = Date.now();
+    const found = await searchGeoapify(criteria);
+    const rows = found.map((lead) => ({ ...toLeadRow(lead, "u", null), id: "draft-x" }));
+    const leads = rows.map(rowToLead);
+    const t1 = Date.now();
+    let error = null;
+    try { await enrichAndScore(leads, criteria, { recommendations: true }); } catch (e) { error = e instanceof Error ? e.stack : String(e); }
+    return NextResponse.json({ searchMs: t1 - t0, enrichMs: Date.now() - t1, error, leads: leads.map((l) => ({ company: l.company, score: l.ai_score, rec: l.ai_recommendations, contact: l.contact_name, enriched: l.raw_data?.enriched })) });
+  }
   if (new URL(request.url).searchParams.get("script")) {
     const { readFile } = await import("node:fs/promises");
     const js = await readFile(path.join(process.cwd(), "_demo", "demo-data.js"), "utf8");
