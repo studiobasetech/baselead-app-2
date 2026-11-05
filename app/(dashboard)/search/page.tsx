@@ -63,6 +63,8 @@ type SavedSearch = {
 };
 
 type SearchResultLead = {
+  contact_name?: string | null;
+  contact_title?: string | null;
   id: string;
   name: string;
   company: string;
@@ -833,6 +835,13 @@ function SearchLeadCard({
                 <span className="text-gray-700">•</span> {getLocation(lead)}
               </p>
 
+              {lead.contact_name && (
+                <p className="mt-1 truncate text-sm text-[#F5C518]">
+                  <span data-no-translate>{lead.contact_name}</span>
+                  {lead.contact_title ? <span className="text-gray-500"> · {lead.contact_title}</span> : null}
+                </p>
+              )}
+
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 {lead.website ? (
                   <span className="max-w-[180px] truncate text-sm text-[#3B82F6]">
@@ -1228,6 +1237,20 @@ function LeadDetailPanel({
           <h3 className="text-base font-medium">Contact</h3>
 
           <div className="mt-4 space-y-3">
+            {lead.contact_name && (
+              <div className="rounded-xl border border-[#F5C518]/25 bg-[#F5C518]/[0.06] px-4 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#F5C518]">
+                  Decision maker
+                </p>
+                <p className="mt-1 text-sm font-medium text-white" data-no-translate>
+                  {lead.contact_name}
+                </p>
+                {lead.contact_title && (
+                  <p className="text-xs text-gray-400">{lead.contact_title}</p>
+                )}
+              </div>
+            )}
+
             {lead.email && (
               <a
                 href={`mailto:${lead.email}`}
