@@ -5,7 +5,28 @@ import {
   domainFromWebsite,
   findContactsForDomain,
   isGenericEmail,
+  isHunterConfigured,
+  type FoundContact,
 } from "@/lib/contacts/hunter";
+import { collectPeopleText, extractDecisionMakers } from "@/lib/contacts/website-people";
+
+/** Free: decision makers named on the business's own website. */
+async function findOnWebsite(website: string | null, company: string): Promise<FoundContact[]> {
+  const text = await collectPeopleText(website);
+  const [people] = await extractDecisionMakers([{ company, text }]);
+  return (people ?? []).map((person) => ({
+    full_name: person.name,
+    first_name: person.name.replace(/^dr\.?\s+/i, "").split(/\s+/)[0] ?? null,
+    last_name: person.name.split(/\s+/).slice(1).join(" ") || null,
+    title: person.title,
+    seniority: null,
+    department: null,
+    email: person.email as string,
+    email_confidence: null,
+    phone: person.phone,
+    linkedin_url: null,
+  }));
+}
 
 export async function lookupsUsedThisMonth(supabase: SupabaseClient, companyId: string) {
   const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
@@ -40,7 +61,10 @@ export async function findDecisionMakers(
   const domain = domainFromWebsite(lead.website);
   if (!domain) throw new Error("This lead has no company website to search.");
 
-  const found = await findContactsForDomain(domain);
+  const found = isHunterConfigured()
+    ? await findContactsForDomain(domain)
+    : await findOnWebsite(lead.website, lead.company || lead.name || domain);
+  const source = isHunterConfigured() ? "hunter" : "website";
 
   // Count the lookup (even with 0 results, it used a credit).
   await logActivity(supabase, {
@@ -59,16 +83,31 @@ export async function findDecisionMakers(
     ...contact,
     company_id: access.company.id,
     lead_id: leadId,
-    source: "hunter",
+    source,
     is_primary: index === 0,
   }));
 
   await supabase.from("lead_contacts").update({ is_primary: false }).eq("lead_id", leadId);
 
-  const { data: saved, error } = await supabase
-    .from("lead_contacts")
-    .upsert(rows, { onConflict: "lead_id,email" })
-    .select("*");
+  // Website people may have no email: insert those, upsert the rest.
+  const withEmail = rows.filter((row) => row.email);
+  const withoutEmail = rows.filter((row) => !row.email);
+  const saved: Record<string, unknown>[] = [];
+  let error: { message: string } | null = null;
+  if (withEmail.length) {
+    const result = await supabase
+      .from("lead_contacts")
+      .upsert(withEmail, { onConflict: "lead_id,email" })
+      .select("*");
+    error = result.error;
+    saved.push(...(result.data ?? []));
+  }
+  if (withoutEmail.length) {
+    await supabase.from("lead_contacts").delete().eq("lead_id", leadId).is("email", null).eq("source", source);
+    const result = await supabase.from("lead_contacts").insert(withoutEmail).select("*");
+    error = error ?? result.error;
+    saved.push(...(result.data ?? []));
+  }
 
   if (error) throw new Error(error.message);
 
@@ -81,7 +120,7 @@ export async function findDecisionMakers(
       contact_title: best.title,
       linkedin_contact_url: best.linkedin_url,
       // Replace generic inboxes (info@…) with the decision maker.
-      ...(isGenericEmail(lead.email) ? { email: best.email } : {}),
+      ...(best.email && isGenericEmail(lead.email) ? { email: best.email } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq("id", leadId);

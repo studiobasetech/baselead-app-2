@@ -16,7 +16,12 @@ export type FoundContact = {
   linkedin_url: string | null;
 };
 
+/** Hunter (optional) or the free website + AI finder. */
 export function isContactsConfigured() {
+  return Boolean(process.env.HUNTER_API_KEY) || Boolean(process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY);
+}
+
+export function isHunterConfigured() {
   return Boolean(process.env.HUNTER_API_KEY);
 }
 
