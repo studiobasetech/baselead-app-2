@@ -64,6 +64,8 @@ type SavedSearch = {
 };
 
 type SearchResultLead = {
+  saved?: boolean;
+  source_id?: string | null;
   address?: string | null;
   contact_name?: string | null;
   contact_title?: string | null;
@@ -1366,7 +1368,13 @@ function SearchResultsView({
   searchSummary,
   onAddToPipeline,
   onGenerateOutreach,
+  onSave,
+  saving,
+  notice,
 }: {
+  onSave: (leads: SearchResultLead[]) => Promise<unknown>;
+  saving: boolean;
+  notice: string;
   results: SearchResultLead[];
   total: number;
   selectedLeadId: string | null;
@@ -1384,6 +1392,18 @@ function SearchResultsView({
   const [showFilters, setShowFilters] = useState(false);
   const [industryFilter, setIndustryFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
+  const [checked, setChecked] = useState<Set<string>>(new Set());
+  const unsaved = results.filter((lead) => !lead.saved && lead.id.startsWith("draft-"));
+  const checkedUnsaved = unsaved.filter((lead) => checked.has(lead.id));
+
+  function toggleChecked(id: string) {
+    setChecked((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   const selectedLead = useMemo(
     () =>
@@ -1792,6 +1812,8 @@ export default function NewSearchPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchComplete, setSearchComplete] = useState(false);
   const [searchMessage, setSearchMessage] = useState("");
+  const [searchId, setSearchId] = useState<string | null>(null);
+  const [savingLeads, setSavingLeads] = useState(false);
   const [searchResults, setSearchResults] = useState<
     SearchResultLead[]
   >([]);
@@ -2165,6 +2187,7 @@ export default function NewSearchPage() {
 
       setSearchResults(returnedLeads);
       setSearchTotal(total);
+      setSearchId(data.search?.id ?? null);
       setSearchComplete(true);
 
       // Lets the browser's Back button return to the form.
@@ -2248,13 +2271,75 @@ export default function NewSearchPage() {
     setPrompt(generated);
   }
 
-  function handleGenerateOutreach(lead: SearchResultLead) {
+  /** Saves draft leads (all or selected). Returns the saved leads by draft id. */
+  async function saveLeads(toSave: SearchResultLead[]) {
+    const drafts = toSave.filter((lead) => !lead.saved && lead.id.startsWith("draft-"));
+    if (!drafts.length) return new Map<string, SearchResultLead>();
+
+    setSavingLeads(true);
+    try {
+      const response = await fetch("/api/search/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ searchId, leads: drafts }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setSearchMessage(data.error || "The leads could not be saved.");
+        return new Map<string, SearchResultLead>();
+      }
+
+      const byDraft = new Map<string, SearchResultLead>();
+      for (const item of data.saved ?? []) {
+        if (item.lead) byDraft.set(item.draftId, { ...item.lead, saved: true });
+      }
+      for (const item of data.already ?? []) {
+        const draft = drafts.find((lead) => lead.id === item.draftId);
+        if (draft && item.leadId) byDraft.set(item.draftId, { ...draft, id: item.leadId, saved: true });
+      }
+
+      setSearchResults((current) => {
+        const next = current.map((lead) => byDraft.get(lead.id) ?? lead);
+        try {
+          const stored = JSON.parse(window.sessionStorage.getItem(LAST_SEARCH_KEY) || "null");
+          if (stored) window.sessionStorage.setItem(LAST_SEARCH_KEY, JSON.stringify({ ...stored, results: next }));
+        } catch {
+          // ignore storage errors
+        }
+        return next;
+      });
+      if (selectedLeadId && byDraft.has(selectedLeadId)) setSelectedLeadId(byDraft.get(selectedLeadId)?.id ?? null);
+
+      const savedCount = byDraft.size;
+      setSearchMessage(
+        data.overLimit
+          ? `${savedCount} lead${savedCount === 1 ? "" : "s"} saved. ${data.overLimit} could not be saved because your plan's lead limit was reached.`
+          : `${savedCount} lead${savedCount === 1 ? "" : "s"} saved to your Leads.`
+      );
+      return byDraft;
+    } finally {
+      setSavingLeads(false);
+    }
+  }
+
+  /** Actions that need a real lead save it first. */
+  async function ensureSaved(lead: SearchResultLead) {
+    if (lead.saved || !lead.id.startsWith("draft-")) return lead;
+    const saved = await saveLeads([lead]);
+    return saved.get(lead.id) ?? null;
+  }
+
+  async function handleGenerateOutreach(draft: SearchResultLead) {
+    const lead = await ensureSaved(draft);
+    if (!lead) return;
     router.push(
       `/outreach?lead=${encodeURIComponent(lead.id)}`
     );
   }
 
-  async function handleAddToPipeline(lead: SearchResultLead) {
+  async function handleAddToPipeline(draft: SearchResultLead) {
+    const lead = await ensureSaved(draft);
+    if (!lead) return;
     try {
       const response = await fetch(`/api/leads/${lead.id}`, {
         method: "PATCH",
@@ -2348,6 +2433,9 @@ export default function NewSearchPage() {
           .join(" ")}
         onAddToPipeline={handleAddToPipeline}
         onGenerateOutreach={handleGenerateOutreach}
+        onSave={saveLeads}
+        saving={savingLeads}
+        notice={searchMessage}
       />
     );
   }
