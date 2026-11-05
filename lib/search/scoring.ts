@@ -6,8 +6,10 @@ import type { PotentialLead, SearchCriteria } from "./types";
  */
 export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
   const reasons: string[] = [];
-  let score = 50;
+  let score = 55;
 
+  // Free data sources don't include reviews: only score them when we have them.
+  const hasReviewData = lead.review_count !== null && lead.review_count !== undefined;
   const reviews = lead.review_count ?? 0;
   const rating = lead.rating ?? 0;
   const hasWebsite = Boolean(lead.website);
@@ -20,7 +22,9 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
   ].filter(Boolean).length;
 
   // Established, active business = can afford services.
-  if (reviews >= 200) {
+  if (!hasReviewData) {
+    // No review data from this source: no bonus, no penalty.
+  } else if (reviews >= 200) {
     score += 14;
     reasons.push(`Established business with ${reviews} public reviews.`);
   } else if (reviews >= 50) {
@@ -56,11 +60,11 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
   // Missing tools a business normally needs = a reason to talk now.
   if (hasWebsite && lead.raw_data?.website_reachable !== false) {
     if (lead.raw_data?.has_booking === false) {
-      score += 4;
+      score += 6;
       reasons.push("No online booking on the website — customers have to call or email.");
     }
     if (lead.raw_data?.has_chat === false) {
-      score += 3;
+      score += 5;
       reasons.push("No chat or assistant to answer visitors after hours.");
     }
   }
@@ -73,8 +77,15 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
     reasons.push("Invests in social media presence.");
   }
 
-  if (lead.email || lead.phone) {
-    score += 4;
+  // Easy to reach = more likely to turn into a conversation.
+  if (lead.contact_name) {
+    score += 6;
+    reasons.push(`Decision maker identified: ${lead.contact_name}${lead.contact_title ? ` (${lead.contact_title})` : ""}.`);
+  }
+  if (lead.email && lead.phone) {
+    score += 6;
+  } else if (lead.email || lead.phone) {
+    score += 3;
   } else {
     score -= 6;
     reasons.push("No direct contact found yet.");

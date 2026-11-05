@@ -460,6 +460,17 @@ function getOpportunityReasons(lead: SearchResultLead) {
   return reasons.slice(0, 6);
 }
 
+const EMPTY_TAB_TEXT: Record<string, { title: string; detail: string }> = {
+  all: { title: "No leads match this view", detail: "Try another tab or remove some filters." },
+  highIntent: {
+    title: "No high-intent leads in this search yet",
+    detail: "High-intent means a score of 80 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.",
+  },
+  contacted: { title: "You haven't contacted these leads yet", detail: "Send an email or add them to a sequence and they'll show up here." },
+  responded: { title: "No replies yet", detail: "Leads that answer your emails will show up here automatically." },
+  client: { title: "No clients yet", detail: "When a lead from this search becomes a client, it shows up here." },
+};
+
 function isHighIntent(lead: SearchResultLead) {
   const score = getScore(lead);
 
@@ -1679,12 +1690,24 @@ function SearchResultsView({
             </div>
 
             <h2 className="mt-5 text-lg font-medium">
-              No leads match this view
+              {EMPTY_TAB_TEXT[activeResultTab]?.title ?? "No leads match this view"}
             </h2>
 
             <p className="mt-2 text-sm text-gray-600">
-              Try another tab or remove some filters.
+              {query || industryFilter || locationFilter
+                ? "No leads match your filters. Clear them to see all results."
+                : EMPTY_TAB_TEXT[activeResultTab]?.detail ?? "Try another tab or remove some filters."}
             </p>
+
+            {activeResultTab !== "all" && (
+              <button
+                type="button"
+                onClick={() => setActiveResultTab("all")}
+                className="mt-5 rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-600"
+              >
+                See all {results.length} leads
+              </button>
+            )}
           </div>
         ) : (
           <div
