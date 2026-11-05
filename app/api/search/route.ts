@@ -388,6 +388,7 @@ export async function POST(request: Request) {
         leads: result.leads,
         totalFound: result.totalFound,
         demo: result.demo,
+        notice: "notice" in result ? result.notice : null,
         criteria,
       });
     } catch (processingError) {

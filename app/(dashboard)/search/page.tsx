@@ -2154,6 +2154,15 @@ export default function NewSearchPage() {
           ? data.totalFound
           : returnedLeads.length;
 
+      // Nothing new found: explain why on the form instead of an empty results page.
+      if (returnedLeads.length === 0) {
+        setSearchMessage(
+          data.notice ||
+            "No businesses were found for this search. Try a bigger radius, a nearby city or a broader client type."
+        );
+        return;
+      }
+
       setSearchResults(returnedLeads);
       setSearchTotal(total);
       setSearchComplete(true);

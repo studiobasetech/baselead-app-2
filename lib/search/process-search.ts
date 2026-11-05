@@ -68,6 +68,7 @@ export async function processSearch(
       leads: [],
       totalFound: 0,
       demo,
+      notice: `No businesses like "${criteria.idealClient}" were found within ${criteria.radius ?? 25} miles of ${criteria.location}. Try a bigger radius, a nearby city, or a broader client type (for example "Restaurants" instead of a very specific niche).`,
     };
   }
 
@@ -171,6 +172,7 @@ export async function processSearch(
       leads: [],
       totalFound: 0,
       demo,
+      notice: `All ${potentialLeads.length} businesses found near ${criteria.location} are already in your Leads. Try a bigger radius or a nearby city to find new ones, or turn off "Exclude Existing Leads".`,
     };
   }
 
