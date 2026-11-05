@@ -14,9 +14,12 @@ export type Enrichment = {
   pinterest_url: string | null;
   has_ssl: boolean;
   reachable: boolean;
+  /** Plain text of the About/Team pages, used to find decision makers. */
+  peopleText: string;
 };
 
 const EMPTY: Enrichment = {
+  peopleText: "",
   emails: [],
   phones: [],
   instagram_url: null,
@@ -49,7 +52,7 @@ const HEADERS = {
   "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
 };
 
-async function getPage(url: string) {
+export async function getPage(url: string) {
   try {
     const response = await fetch(url, {
       headers: HEADERS,
@@ -104,11 +107,24 @@ function extract(html: string, emails: Set<string>, phones: Set<string>) {
 }
 
 // Finds the site's contact/about pages to look for more details.
-function contactLinks(html: string, base: string) {
+/** Visible text of a page (no menus' code, scripts or styles), trimmed. */
+export function pageText(html: string, max = 5000) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<noscript[\s\S]*?<\/noscript>|<svg[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;|&rsquo;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, max);
+}
+
+export function contactLinks(html: string, base: string, limit = 2) {
   const links = new Set<string>();
   for (const match of html.matchAll(/href=["']([^"'#]+)["']/gi)) {
     const href = match[1];
-    if (!/contact|contacto|contactanos|about|nosotros|acerca|location|ubicacion|team|equipo/i.test(href)) continue;
+    if (!/contact|contacto|contactanos|about|nosotros|acerca|location|ubicacion|team|equipo|staff|leadership|doctor|dentist|meet|our-story|founder|owner|quienes/i.test(href)) continue;
     if (/\.(pdf|jpg|png|zip)$/i.test(href) || /^(mailto|tel|javascript):/i.test(href)) continue;
     try {
       const url = new URL(href, base);
@@ -118,7 +134,7 @@ function contactLinks(html: string, base: string) {
     }
   }
   // Contact pages first.
-  return [...links].sort((a, b) => Number(/contact/i.test(b)) - Number(/contact/i.test(a))).slice(0, 2);
+  return [...links].slice(0, 12);
 }
 
 export async function enrichWebsite(url: string | null): Promise<Enrichment> {
@@ -138,15 +154,22 @@ export async function enrichWebsite(url: string | null): Promise<Enrichment> {
   extract(home.html, emails, phones);
   let combined = home.html;
 
-  // Not enough on the home page: check the contact / about pages too.
-  if (emails.size === 0 || phones.size === 0) {
-    const pages = await Promise.all(contactLinks(home.html, home.finalUrl).map(getPage));
-    for (const page of pages) {
-      if (!page) continue;
-      extract(page.html, emails, phones);
-      combined += page.html;
-    }
-  }
+  // Check one Contact page and one About/Team page (who runs the business).
+  const links = contactLinks(home.html, home.finalUrl);
+  const contactPage = links.find((link) => /contact|contacto/i.test(link));
+  const peoplePage =
+    links.find((link) => /team|staff|leadership|doctor|dentist|meet|founder|owner|equipo|quienes/i.test(link)) ||
+    links.find((link) => /about|nosotros|acerca|our-story/i.test(link));
+  const extra = [...new Set([emails.size === 0 || phones.size === 0 ? contactPage : null, peoplePage].filter(Boolean) as string[])];
+  const pages = await Promise.all(extra.map(getPage));
+  pages.forEach((page, index) => {
+    if (!page) return;
+    extract(page.html, emails, phones);
+    combined += page.html;
+    if (extra[index] === peoplePage) result.peopleText = pageText(page.html);
+  });
+  // Small sites put the owner on the home page.
+  if (!result.peopleText) result.peopleText = pageText(home.html);
 
   const siteHost = new URL(home.finalUrl).hostname.replace(/^www\./, "");
   result.emails = [...emails]

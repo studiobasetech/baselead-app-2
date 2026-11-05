@@ -12,6 +12,7 @@ import { isGeoapifyConfigured, searchGeoapify } from "./geoapify-provider";
 import { enrichWebsite, mapLimit } from "./enrich";
 import { scoreLead } from "./scoring";
 import { askAiJson, isAiConfigured } from "@/lib/ai";
+import { extractDecisionMakers, type WebsitePerson } from "@/lib/contacts/website-people";
 
 export type ProcessSearchOptions = {
   /** Pro+: AI recommendations (service, value, reasons). */
@@ -179,6 +180,8 @@ export async function processSearch(
   // ---------------------------------------------------------
 
   if (!demo) {
+    const peopleText = new Map<PotentialLead, string>();
+
     if (criteria.enrichment !== false) {
       await mapLimit(selectedLeads, 6, async (lead) => {
         const found = await enrichWebsite(lead.website);
@@ -196,12 +199,35 @@ export async function processSearch(
         lead.x_url = lead.x_url ?? found.x_url;
         lead.tiktok_url = lead.tiktok_url ?? found.tiktok_url;
         lead.pinterest_url = lead.pinterest_url ?? found.pinterest_url;
+        peopleText.set(lead, found.peopleText);
         lead.raw_data = {
           ...(lead.raw_data ?? {}),
           website_reachable: lead.website ? found.reachable : null,
           website_ssl: lead.website ? found.has_ssl : null,
           enriched: true,
         };
+      });
+    }
+
+    // Decision makers named on each website (free: website + AI).
+    if (peopleText.size && isAiConfigured()) {
+      const withText = selectedLeads.filter((lead) => (peopleText.get(lead) ?? "").length > 80);
+      const people = await extractDecisionMakers(
+        withText.map((lead) => ({ company: lead.company, text: peopleText.get(lead) ?? "" }))
+      );
+      withText.forEach((lead, index) => {
+        const found: WebsitePerson[] = people[index] ?? [];
+        if (!found.length) return;
+        const best = found[0];
+        lead.contact_name = best.name;
+        lead.contact_title = best.title;
+        // A personal email beats a generic info@ inbox.
+        const personal = found.find((person) => person.email)?.email;
+        if (personal) {
+          lead.email = personal;
+          lead.email_addresses = [...new Set([personal, ...(lead.email_addresses ?? [])])];
+        }
+        lead.raw_data = { ...(lead.raw_data ?? {}), decision_makers: found };
       });
     }
 
@@ -291,6 +317,12 @@ ${top
 
         phone:
           lead.phone || null,
+
+        contact_name:
+          lead.contact_name || null,
+
+        contact_title:
+          lead.contact_title || null,
 
         phone_numbers:
           Array.isArray(
@@ -478,6 +510,26 @@ ${top
     throw new Error(
       `Could not link the leads to the search: ${linkError.message}`
     );
+  }
+
+  // Save the decision makers as lead contacts (shown on the lead).
+  const contactRows = insertedLeads.flatMap((row: { id: string; raw_data?: { decision_makers?: WebsitePerson[] } }) =>
+    (row.raw_data?.decision_makers ?? []).map((person, index) => ({
+      company_id: options.companyId || null,
+      lead_id: row.id,
+      full_name: person.name,
+      first_name: person.name.replace(/^dr\.?\s+/i, "").split(/\s+/)[0] ?? null,
+      last_name: person.name.split(/\s+/).slice(1).join(" ") || null,
+      title: person.title,
+      email: person.email,
+      phone: person.phone,
+      source: "website",
+      is_primary: index === 0,
+    }))
+  );
+  if (contactRows.length) {
+    const { error: contactsError } = await supabase.from("lead_contacts").insert(contactRows);
+    if (contactsError) console.warn("Decision makers not saved:", contactsError.message);
   }
 
   // ---------------------------------------------------------

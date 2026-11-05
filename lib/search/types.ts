@@ -46,6 +46,10 @@ export type PotentialLead = {
   pinterest_url?: string | null;
   google_maps_url?: string | null;
 
+  /** Decision maker found on the business's website. */
+  contact_name?: string | null;
+  contact_title?: string | null;
+
   source: string;
   source_id?: string | null;
 
