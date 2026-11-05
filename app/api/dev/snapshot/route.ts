@@ -48,7 +48,8 @@ export async function GET(request: Request) {
     const { enrichAndScore, toLeadRow, rowToLead } = await import("@/lib/search/process-search");
     const criteria = { offer: "Website Design & AI Automation", idealClient: "Dentists", location: "Boise, ID", leads: 4, radius: 25, scoring: true, enrichment: true };
     const t0 = Date.now();
-    const found = await searchGeoapify(criteria);
+    let found;
+    try { found = await searchGeoapify(criteria); } catch (e) { return NextResponse.json({ step: "search", error: e instanceof Error ? e.stack : String(e) }); }
     const rows = found.map((lead) => ({ ...toLeadRow(lead, "u", null), id: "draft-x" }));
     const leads = rows.map(rowToLead);
     const t1 = Date.now();

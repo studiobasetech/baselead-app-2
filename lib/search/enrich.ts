@@ -80,7 +80,13 @@ export async function getPage(url: string) {
     if (!response.ok) return null;
     const type = response.headers.get("content-type") ?? "";
     if (type && !type.includes("html")) return null;
-    return { html: (await response.text()).slice(0, 600000), finalUrl: response.url };
+    // Remove embedded images/fonts and giant code tokens: they make text
+    // searches extremely slow and never contain contact details.
+    const html = (await response.text())
+      .slice(0, 600000)
+      .replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/gi, "")
+      .replace(/[A-Za-z0-9+/=_-]{300,}/g, " ");
+    return { html, finalUrl: response.url };
   } catch {
     return null;
   }
@@ -110,7 +116,7 @@ function extract(html: string, emails: Set<string>, phones: Set<string>) {
   for (const match of html.matchAll(/\/cdn-cgi\/l\/email-protection#([0-9a-f]+)/gi)) emails.add(decodeCfEmail(match[1]).toLowerCase());
   // Visible text only (skip scripts/styles) for plain emails.
   const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ");
-  for (const match of text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)) emails.add(match[0].toLowerCase());
+  for (const match of text.matchAll(/[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,120}\.[A-Za-z]{2,24}/g)) emails.add(match[0].toLowerCase());
 
   for (const match of html.matchAll(/href=["']tel:([^"']+)["']/gi)) {
     const phone = cleanPhone(match[1]);
