@@ -1,4 +1,5 @@
 import type { PotentialLead, SearchCriteria } from "./types";
+import { askAiJson, isAiConfigured } from "@/lib/ai";
 
 /*
  * Lead source: Geoapify Places (free plan, no card, commercial use allowed).
@@ -97,14 +98,63 @@ export async function geocodeGeoapify(location: string) {
   return { lat: Number(hit.lat), lon: Number(hit.lon), label: String(hit.formatted ?? location) };
 }
 
-function categoriesFor(criteria: SearchCriteria) {
+// Every Geoapify category BaseLead can search (checked against the live API).
+const ALL_CATEGORIES = [...new Set(CATEGORIES.flatMap(([, cats]) => cats))];
+
+// Broad mix of local businesses, used when the client type is generic.
+const BROAD = [
+  "office",
+  "service",
+  "commercial",
+  "healthcare",
+  "catering.restaurant",
+  "sport.fitness",
+  "service.beauty",
+  "office.lawyer",
+  "office.estate_agent",
+  "pet",
+  "education",
+  "accommodation",
+];
+
+// "Small businesses", "local companies", "anyone"... = no specific type.
+const GENERIC =
+  /^(any|all|every|small|local|b2b|smb|medium|mid-?size|growing|new|small and medium)?\s*(business(es)?|compan(y|ies)|firms?|brands?|organi[sz]ations?|business owners?|owners?|negocios?|empresas?|pymes?|clients?|customers?|anyone|everyone|todos?)(\s+(that|who|which|with|needing|in|near|que|con|sin|de)\b.*)?$/i;
+
+type Plan = { categories: string[]; keyword: RegExp | null };
+
+async function categoriesFor(criteria: SearchCriteria): Promise<Plan> {
   const text = `${criteria.industry || ""} ${criteria.idealClient || ""}`.trim();
   const matched = CATEGORIES.filter(([pattern]) => pattern.test(text)).flatMap(([, cats]) => cats);
-  if (matched.length && !NAME_ONLY.some((pattern) => pattern.test(text))) {
-    return { categories: [...new Set(matched)], keyword: null as RegExp | null };
+  const trade = NAME_ONLY.some((pattern) => pattern.test(text));
+
+  // Generic ("small businesses", "companies that need a website"): all business types.
+  if (GENERIC.test((criteria.idealClient || "").trim())) {
+    return { categories: BROAD, keyword: null };
   }
 
-  // Unknown type or a trade: look at all businesses and match words in the name.
+  if (matched.length && !trade) return { categories: [...new Set(matched)], keyword: null };
+
+  // Anything else: let AI pick the closest business types from our list.
+  if (!trade && isAiConfigured()) {
+    try {
+      const picked = await askAiJson<string[]>(
+        `A salesperson wants to find "${criteria.idealClient}"${criteria.offer ? ` to sell them "${criteria.offer}"` : ""}.
+Pick 1 to 5 business categories from this list that best match the businesses to find. If the request is generic, pick broad ones.
+List: ${ALL_CATEGORIES.join(", ")}, office, service, commercial, healthcare, catering, education, sport, pet, accommodation
+JSON array only, e.g. ["office.lawyer"]`,
+        { maxTokens: 200 }
+      );
+      const valid = (Array.isArray(picked) ? picked : []).filter(
+        (cat) => typeof cat === "string" && (ALL_CATEGORIES.includes(cat) || BROAD.includes(cat) || /^(catering|education|sport|pet|accommodation)$/.test(cat))
+      );
+      if (valid.length) return { categories: [...new Set(valid)], keyword: null };
+    } catch {
+      // fall through to name matching
+    }
+  }
+
+  // A trade or unknown type: look at all businesses and match words in the name.
   const words = (criteria.idealClient || criteria.industry || "")
     .replace(/[^\p{L}\p{N} ]/gu, " ")
     .split(/\s+/)
@@ -122,7 +172,7 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
   const center = await geocodeGeoapify(criteria.location);
   const miles = Math.min(Math.max(criteria.radius ?? 15, 1), 50);
   const meters = Math.round(miles * 1609);
-  const { categories, keyword } = categoriesFor(criteria);
+  const { categories, keyword } = await categoriesFor(criteria);
 
   // Ask for extra so we can keep the ones with the best contact info.
   const limit = keyword ? 300 : Math.min(wanted * 3, 200);
@@ -133,10 +183,10 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
     limit: String(limit),
   });
 
-  const features = ((json?.features ?? []) as Feature[]).filter((feature) => {
-    const name = feature.properties.name;
-    return Boolean(name) && (!keyword || keyword.test(name as string));
-  });
+  const named = ((json?.features ?? []) as Feature[]).filter((feature) => Boolean(feature.properties.name));
+  let features = keyword ? named.filter((feature) => keyword.test(feature.properties.name as string)) : named;
+  // Name matching found nothing: show the businesses in those categories instead of an empty list.
+  if (keyword && features.length === 0) features = named;
 
   const leads = features.map((feature) => {
     const p = feature.properties;
