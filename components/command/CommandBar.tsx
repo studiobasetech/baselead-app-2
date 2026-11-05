@@ -88,6 +88,8 @@ export default function CommandBar() {
   useEffect(() => {
     let pendingG = 0;
     const onKey = (event: KeyboardEvent) => {
+      // Browser autofill fires keydown events with no key: ignore them.
+      if (typeof event.key !== "string") return;
       const key = event.key.toLowerCase();
       if ((event.metaKey || event.ctrlKey) && key === "k") {
         event.preventDefault();
