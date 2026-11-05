@@ -2158,5 +2158,19 @@
 "Save all ({0})": "Guardar todos ({0})",
 "Saving...": "Guardando...",
 "{0} saved · {1} not saved": "{0} guardados · {1} sin guardar",
-"Saved in your Leads": "Guardado en tus Leads"
+"Saved in your Leads": "Guardado en tus Leads",
+"Main": "Principal",
+"Add company": "Agregar empresa",
+"Add a company": "Agregar una empresa",
+"Each company gets its own leads, pipeline, team and settings. It uses your Scale plan.": "Cada empresa tiene sus propios leads, pipeline, equipo y configuración. Usa tu plan Scale.",
+"Company name": "Nombre de la empresa",
+"You've reached the {0}-company limit.": "Llegaste al límite de {0} empresas.",
+"Up to 5 companies": "Hasta 5 empresas",
+"Could not switch company.": "No se pudo cambiar de empresa.",
+"Could not add the company.": "No se pudo agregar la empresa.",
+"Enter the company name.": "Escribe el nombre de la empresa.",
+"Multiple companies are available on the Scale plan.": "Varias empresas están disponibles en el plan Scale.",
+"Finish setting up your main company first.": "Primero termina de configurar tu empresa principal.",
+"Company not found.": "Empresa no encontrada.",
+"Run supabase/UPDATE_11_RUN_THIS.sql in Supabase first.": "Primero ejecuta supabase/UPDATE_11_RUN_THIS.sql en Supabase."
 }

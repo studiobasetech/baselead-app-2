@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient } from "@/lib/active-company";
 
 import CompanyLogo from "@/components/ui/CompanyLogo";
 import Link from "next/link";
@@ -2041,7 +2042,7 @@ export default function NewSearchPage() {
       } = await supabase
         .from("company_profiles")
         .select("id")
-        .eq("user_id", user.id)
+        .eq(...companyFilterClient(user.id))
         .maybeSingle();
 
       if (ownerError) {

@@ -1,4 +1,4 @@
-import { activeCompanyIdServer } from "@/lib/active-company";
+import { activeCompanyIdServer } from "@/lib/active-company-server";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import {
   effectivePlan,

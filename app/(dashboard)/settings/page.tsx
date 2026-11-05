@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient, ownerFilterClient } from "@/lib/active-company";
 
 import { getTeamLimit } from "@/lib/plans";
 import TwoFactorCard from "@/components/security/TwoFactorCard";
@@ -275,6 +276,7 @@ const PLANS = [
       "Unlimited campaigns",
       "Advanced automation",
       "Team permissions",
+      "Up to 5 companies",
       "Custom reports & analytics",
       "API access",
       "Priority support",
@@ -1061,7 +1063,7 @@ function removeLocation(
             updated_at:
               new Date().toISOString(),
           })
-          .eq("user_id", user.id);
+          .eq(...companyFilterClient(user.id));
 
       if (profileError) {
         console.error(
@@ -2319,7 +2321,7 @@ function TeamTab({
         await supabase
           .from("company_profiles")
           .select("id, company_name, user_id")
-          .eq("user_id", user.id)
+          .eq(...companyFilterClient(user.id))
           .maybeSingle();
 
       if (ownedCompanyError) {
@@ -2840,10 +2842,7 @@ function TeamTab({
             "id",
             companyId
           )
-          .eq(
-            "user_id",
-            user.id
-          )
+          .or(ownerFilterClient(user.id))
           .maybeSingle();
 
       if (
@@ -6506,10 +6505,7 @@ export default function SettingsPage() {
         await supabase
           .from("company_profiles")
           .select("*")
-          .eq(
-            "user_id",
-            user.id
-          )
+          .eq(...companyFilterClient(user.id))
           .maybeSingle();
 
       if (ownedCompanyError) {
@@ -6823,10 +6819,7 @@ phone:
             "id",
             companyId
           )
-          .eq(
-            "user_id",
-            user.id
-          )
+          .or(ownerFilterClient(user.id))
           .maybeSingle();
 
       if (
@@ -7020,10 +7013,7 @@ phone:
             "id",
             companyId
           )
-          .eq(
-            "user_id",
-            user.id
-          )
+          .or(ownerFilterClient(user.id))
           .select("*")
           .single();
 

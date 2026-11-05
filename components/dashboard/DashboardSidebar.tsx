@@ -1,4 +1,5 @@
 "use client";
+import { clearActiveCompanyClient, companyFilterClient } from "@/lib/active-company";
 
 import {
   LayoutDashboard,
@@ -33,6 +34,7 @@ import { useCallback, useEffect, useState, type MouseEvent, type CSSProperties }
 
 import { supabase } from "@/components/lib/supabase";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
+import CompanySwitcher from "@/components/dashboard/CompanySwitcher";
 
 const GOLD = "#F5C518";
 const BRAND = "#3B82F6";
@@ -247,7 +249,7 @@ export default function DashboardSidebar() {
       const { data: companyRows, error: companyError } = await supabase
         .from("company_profiles")
         .select("company_name, logo_url")
-        .eq("user_id", user.id)
+        .eq(...companyFilterClient(user.id))
         .limit(1);
       const company = companyRows?.[0] ?? null;
 
@@ -398,6 +400,7 @@ export default function DashboardSidebar() {
         return;
       }
 
+      clearActiveCompanyClient();
       window.location.href = "/login";
     } catch (error) {
       console.error("Unexpected logout error:", error);
@@ -636,6 +639,8 @@ export default function DashboardSidebar() {
               </span>
             </div>
           </button>
+
+          <CompanySwitcher />
 
           <Link
             href="/settings"

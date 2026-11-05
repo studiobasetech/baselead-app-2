@@ -6,7 +6,7 @@
 
 export const ACTIVE_COMPANY_COOKIE = "bl_company";
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Browser: the selected company id, or null for the main company. */
 export function activeCompanyIdClient(): string | null {
@@ -14,17 +14,6 @@ export function activeCompanyIdClient(): string | null {
   const match = document.cookie.match(new RegExp(`(?:^|; )${ACTIVE_COMPANY_COOKIE}=([^;]+)`));
   const value = match ? decodeURIComponent(match[1]) : "";
   return UUID.test(value) ? value : null;
-}
-
-/** Server: the selected company id from the request cookies. */
-export async function activeCompanyIdServer(): Promise<string | null> {
-  try {
-    const { cookies } = await import("next/headers");
-    const value = (await cookies()).get(ACTIVE_COMPANY_COOKIE)?.value ?? "";
-    return UUID.test(value) ? value : null;
-  } catch {
-    return null;
-  }
 }
 
 type Filterable<T> = { eq: (column: string, value: string) => T };
@@ -35,4 +24,26 @@ type Filterable<T> = { eq: (column: string, value: string) => T };
  */
 export function scopeToActiveCompany<T>(query: Filterable<T>, userId: string, activeId: string | null): T {
   return activeId ? query.eq("id", activeId) : query.eq("user_id", userId);
+}
+
+/** Browser: [column, value] for .eq() on company_profiles — the active company. */
+export function companyFilterClient(userId: string): [string, string] {
+  const active = activeCompanyIdClient();
+  return active ? ["id", active] : ["user_id", userId];
+}
+
+/** Forget the selected company (log out, or it was removed). */
+export function clearActiveCompanyClient() {
+  if (typeof document === "undefined") return;
+  document.cookie = `${ACTIVE_COMPANY_COOKIE}=; path=/; max-age=0; samesite=lax`;
+}
+
+/**
+ * Browser: PostgREST .or() filter that matches companies the user owns —
+ * their main company, plus (after switching) the extra companies they created.
+ */
+export function ownerFilterClient(userId: string): string {
+  return activeCompanyIdClient()
+    ? `user_id.eq.${userId},owner_user_id.eq.${userId}`
+    : `user_id.eq.${userId}`;
 }

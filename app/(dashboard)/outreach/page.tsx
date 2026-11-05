@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient } from "@/lib/active-company";
 
 import CompanyLogo from "@/components/ui/CompanyLogo";
 import {
@@ -2685,10 +2686,7 @@ function OutreachPageContent() {
         } = await supabase
           .from("company_profiles")
           .select("id")
-          .eq(
-            "user_id",
-            userId
-          )
+          .eq(...companyFilterClient(userId))
           .maybeSingle();
 
         if (ownerError) {

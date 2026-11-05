@@ -1,3 +1,4 @@
+import { companyFilterServer } from "@/lib/active-company-server";
 export const maxDuration = 60;
 
 import { NextResponse } from "next/server";
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
       .select(
         "id, plan, billing_status, trial_started_at, trial_ends_at, trial_lead_limit"
       )
-      .eq("user_id", user.id)
+      .eq(...(await companyFilterServer(user.id)))
       .maybeSingle();
 
     let company = ownedCompany ?? null;

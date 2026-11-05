@@ -17,6 +17,16 @@ alter table public.company_profiles alter column user_id drop not null;
 create index if not exists company_profiles_parent_idx on public.company_profiles (parent_company_id);
 create index if not exists company_profiles_owner_idx on public.company_profiles (owner_user_id);
 
+-- The owner can open and edit the extra companies they created
+-- (team members already reach them through team_members).
+drop policy if exists "Owners read extra companies" on public.company_profiles;
+create policy "Owners read extra companies" on public.company_profiles
+  for select using (owner_user_id = auth.uid() or public.is_company_member(id));
+
+drop policy if exists "Owners update extra companies" on public.company_profiles;
+create policy "Owners update extra companies" on public.company_profiles
+  for update using (owner_user_id = auth.uid()) with check (owner_user_id = auth.uid());
+
 notify pgrst, 'reload schema';
 
 select 'UPDATE 11 done' as result;

@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient } from "@/lib/active-company";
 
 import {
   LineChart,
@@ -993,10 +994,7 @@ export default function DashboardPage() {
             "company_profiles",
           )
           .select("*")
-          .eq(
-            "user_id",
-            user.id,
-          )
+          .eq(...companyFilterClient(user.id))
           .maybeSingle();
 
       if (companyError) {

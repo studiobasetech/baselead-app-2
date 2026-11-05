@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient } from "@/lib/active-company";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -3057,7 +3058,7 @@ function EventModal({
         } = await supabase
           .from("company_profiles")
           .select("id")
-          .eq("user_id", user.id)
+          .eq(...companyFilterClient(user.id))
           .maybeSingle();
 
         if (ownerError) {
@@ -4308,7 +4309,7 @@ export default function CalendarPage() {
         } = await supabase
           .from("company_profiles")
           .select("id")
-          .eq("user_id", user.id)
+          .eq(...companyFilterClient(user.id))
           .maybeSingle();
 
         if (ownerError) throw ownerError;

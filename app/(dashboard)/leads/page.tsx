@@ -1,4 +1,5 @@
 "use client";
+import { companyFilterClient } from "@/lib/active-company";
 
 import {
   useEffect,
@@ -3144,7 +3145,7 @@ export default function LeadsPage() {
     } = await supabase
       .from("company_profiles")
       .select("id")
-      .eq("user_id", userId)
+      .eq(...companyFilterClient(userId))
       .maybeSingle();
 
     if (ownerError) {

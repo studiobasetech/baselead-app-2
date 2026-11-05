@@ -1,3 +1,4 @@
+import { companyFilterServer } from "@/lib/active-company-server";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -26,7 +27,7 @@ async function getCompanyId(
   const { data: ownedCompany } = await supabase
     .from("company_profiles")
     .select("id")
-    .eq("user_id", userId)
+    .eq(...(await companyFilterServer(userId)))
     .maybeSingle();
 
   if (ownedCompany?.id) {
