@@ -2149,5 +2149,14 @@
 "When a lead from this search becomes a client, it shows up here.": "Cuando un lead de esta búsqueda se vuelva cliente, aparecerá aquí.",
 "No leads match your filters. Clear them to see all results.": "Ningún lead coincide con tus filtros. Quítalos para ver todos los resultados.",
 "See all {0} leads": "Ver los {0} leads",
-"High-intent means a score of 75 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.": "Alta intención significa un puntaje de 75 o más: necesidades claras para tu oferta y una forma de contactar a quien decide. Abre Todos los leads para ver a todos."
+"High-intent means a score of 75 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.": "Alta intención significa un puntaje de 75 o más: necesidades claras para tu oferta y una forma de contactar a quien decide. Abre Todos los leads para ver a todos.",
+"Checking website for contacts…": "Revisando el sitio web para encontrar contactos…",
+"Finding contacts and decision makers… {0}/{1}": "Buscando contactos y personas que deciden… {0}/{1}",
+"Not saved yet. Choose the leads you want and save them to your Leads.": "Aún no se guardan. Elige los leads que quieras y guárdalos en tus Leads.",
+"All leads from this search are saved in your Leads.": "Todos los leads de esta búsqueda están guardados en tus Leads.",
+"Save selected ({0})": "Guardar seleccionados ({0})",
+"Save all ({0})": "Guardar todos ({0})",
+"Saving...": "Guardando...",
+"{0} saved · {1} not saved": "{0} guardados · {1} sin guardar",
+"Saved in your Leads": "Guardado en tus Leads"
 }

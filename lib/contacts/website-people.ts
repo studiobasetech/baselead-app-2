@@ -50,9 +50,11 @@ export async function extractDecisionMakers(
 
   const usable = items.map((item, index) => ({ ...item, index })).filter((item) => item.text.length > 80);
 
-  // Small batches keep each AI request fast and within free limits.
-  for (let start = 0; start < usable.length; start += 6) {
-    const batch = usable.slice(start, start + 6);
+  // Small batches, run at the same time, keep each AI request fast.
+  const batches: (typeof usable)[] = [];
+  for (let start = 0; start < usable.length; start += 5) batches.push(usable.slice(start, start + 5));
+
+  await Promise.all(batches.map(async (batch) => {
     try {
       const answer = await askAiJson<{ index: number; people: WebsitePerson[] }[]>(
         `For each business below, list the decision makers named in its website text: owners, founders, partners, CEOs, presidents, directors, managers, or the lead doctor/dentist. Use ONLY names written in the text. Do not invent anyone. Include their email or direct phone only if the text shows it next to that person. Max 3 people per business. If none are named, return an empty list.
@@ -81,7 +83,7 @@ ${batch.map((item) => `### ${item.index}. ${item.company}\n${item.text}`).join("
     } catch (error) {
       console.warn("Decision-maker extraction skipped:", error);
     }
-  }
+  }));
 
   return results;
 }

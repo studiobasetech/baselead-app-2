@@ -377,7 +377,7 @@ export async function enrichAndScore(
     const peopleText = new Map<PotentialLead, string>();
 
     if (criteria.enrichment !== false) {
-      await mapLimit(selectedLeads, 6, async (lead) => {
+      await mapLimit(selectedLeads, 10, async (lead) => {
         const found = await enrichWebsite(lead.website);
 
         // Keep what the listing already had; add what the website shows.

@@ -70,7 +70,7 @@ export async function getPage(url: string) {
     const response = await fetch(url, {
       headers: HEADERS,
       redirect: "follow",
-      signal: AbortSignal.timeout(7000),
+      signal: AbortSignal.timeout(6000),
     });
     // Bot protection (Cloudflare etc.): the site works, it just won't show us the page.
     if ([401, 403, 406, 429, 503].includes(response.status)) {

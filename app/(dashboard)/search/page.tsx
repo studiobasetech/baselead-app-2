@@ -811,7 +811,9 @@ function SearchLeadCard({
   onGenerateOutreach,
   checked,
   onToggleChecked,
+  enriching = false,
 }: {
+  enriching?: boolean;
   checked: boolean;
   onToggleChecked: () => void;
   lead: SearchResultLead;
@@ -880,6 +882,13 @@ function SearchLeadCard({
               {lead.address && (
                 <p className="mt-0.5 truncate text-xs text-gray-600" data-no-translate>
                   {lead.address}
+                </p>
+              )}
+
+              {enriching && (
+                <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-[#3B82F6]">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3B82F6]" />
+                  Checking website for contacts…
                 </p>
               )}
 
@@ -1392,7 +1401,9 @@ function SearchResultsView({
   onSave,
   saving,
   notice,
+  enrichingIds,
 }: {
+  enrichingIds: Set<string>;
   onSave: (leads: SearchResultLead[]) => Promise<unknown>;
   saving: boolean;
   notice: string;
@@ -1743,7 +1754,14 @@ function SearchResultsView({
                 </label>
               )}
               <span className="text-gray-500">
-                {results.length - unsaved.length} saved · {unsaved.length} not saved
+                {enrichingIds.size > 0 ? (
+                  <span className="inline-flex items-center gap-2 text-[#3B82F6]">
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-[#3B82F6]" />
+                    Finding contacts and decision makers… {results.length - enrichingIds.size}/{results.length}
+                  </span>
+                ) : (
+                  `${results.length - unsaved.length} saved · ${unsaved.length} not saved`
+                )}
               </span>
             </div>
 
@@ -1751,7 +1769,7 @@ function SearchResultsView({
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  disabled={saving || checkedUnsaved.length === 0}
+                  disabled={saving || enrichingIds.size > 0 || checkedUnsaved.length === 0}
                   onClick={async () => {
                     await onSave(checkedUnsaved);
                     setChecked(new Set());
@@ -1762,7 +1780,7 @@ function SearchResultsView({
                 </button>
                 <button
                   type="button"
-                  disabled={saving}
+                  disabled={saving || enrichingIds.size > 0}
                   onClick={async () => {
                     await onSave(unsaved);
                     setChecked(new Set());
@@ -1825,6 +1843,7 @@ function SearchResultsView({
                   onGenerateOutreach={onGenerateOutreach}
                   checked={checked.has(lead.id)}
                   onToggleChecked={() => toggleChecked(lead.id)}
+                  enriching={enrichingIds.has(lead.id)}
                 />
               ))}
 
@@ -1892,6 +1911,8 @@ export default function NewSearchPage() {
   const [searchMessage, setSearchMessage] = useState("");
   const [searchId, setSearchId] = useState<string | null>(null);
   const [savingLeads, setSavingLeads] = useState(false);
+  // Leads whose website is still being checked (contacts, decision maker...).
+  const [enrichingIds, setEnrichingIds] = useState<Set<string>>(new Set());
   const [searchResults, setSearchResults] = useState<
     SearchResultLead[]
   >([]);
@@ -2267,6 +2288,7 @@ export default function NewSearchPage() {
       setSearchTotal(total);
       setSearchId(data.search?.id ?? null);
       setSearchComplete(true);
+      void enrichResults(returnedLeads);
 
       // Lets the browser's Back button return to the form.
       window.history.pushState(
@@ -2347,6 +2369,54 @@ export default function NewSearchPage() {
       .join(" ");
 
     setPrompt(generated);
+  }
+
+  /** Step 2: check each website in small batches; cards update as they finish. */
+  async function enrichResults(leadsToEnrich: SearchResultLead[]) {
+    const pending = leadsToEnrich.filter(
+      (lead) => lead.id.startsWith("draft-") && (lead.raw_data as { enriched?: boolean } | null)?.enriched === false
+    );
+    if (!pending.length) return;
+    setEnrichingIds(new Set(pending.map((lead) => lead.id)));
+
+    const batches: SearchResultLead[][] = [];
+    for (let i = 0; i < pending.length; i += 4) batches.push(pending.slice(i, i + 4));
+
+    const worker = async () => {
+      for (let batch = batches.shift(); batch; batch = batches.shift()) {
+        try {
+          const response = await fetch("/api/search/enrich", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ leads: batch, offer, idealClient, location }),
+          });
+          const data = await response.json().catch(() => ({}));
+          const updated = new Map<string, SearchResultLead>(
+            (data.leads ?? []).map((lead: SearchResultLead) => [lead.id, lead])
+          );
+          setSearchResults((current) => {
+            const next = current.map((lead) => (!lead.saved && updated.has(lead.id) ? (updated.get(lead.id) as SearchResultLead) : lead));
+            try {
+              const stored = JSON.parse(window.sessionStorage.getItem(LAST_SEARCH_KEY) || "null");
+              if (stored) window.sessionStorage.setItem(LAST_SEARCH_KEY, JSON.stringify({ ...stored, results: next }));
+            } catch {
+              // ignore storage errors
+            }
+            return next;
+          });
+        } catch {
+          // Keep the basic version of these leads.
+        } finally {
+          setEnrichingIds((current) => {
+            const next = new Set(current);
+            batch.forEach((lead) => next.delete(lead.id));
+            return next;
+          });
+        }
+      }
+    };
+
+    await Promise.all([worker(), worker(), worker()]);
   }
 
   /** Saves draft leads (all or selected). Returns the saved leads by draft id. */
@@ -2513,6 +2583,7 @@ export default function NewSearchPage() {
         onGenerateOutreach={handleGenerateOutreach}
         onSave={saveLeads}
         saving={savingLeads}
+        enrichingIds={enrichingIds}
         notice={searchMessage}
       />
     );
