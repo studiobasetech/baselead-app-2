@@ -253,7 +253,8 @@ export async function POST(request: Request) {
       leadLimit - leadsUsed
     );
 
-    if (requestedLeads > remainingLeads) {
+    // Searching is free; the limit applies when leads are saved.
+    if (remainingLeads <= 0) {
       return NextResponse.json(
         {
           success: false,
@@ -335,21 +336,11 @@ export async function POST(request: Request) {
         search.id,
         user.id,
         criteria,
-        { recommendations: canRecommend, companyId: company.id }
+        { recommendations: canRecommend, companyId: company.id, save: false }
       );
 
       // Notify the user's "lead.created" webhooks (Pro/Scale).
-      if (
-        effective.features.includes("integrations_webhooks") &&
-        result.leads.length > 0
-      ) {
-        void dispatchWebhooks(
-          supabase,
-          user.id,
-          "lead.created",
-          result.leads
-        ).catch(() => undefined);
-      }
+      // Webhooks fire when leads are saved (see /api/search/save).
 
       const {
         data: completedSearch,
@@ -387,6 +378,7 @@ export async function POST(request: Request) {
         search: completedSearch,
         leads: result.leads,
         totalFound: result.totalFound,
+        remaining: remainingLeads,
         demo: result.demo,
         notice: "notice" in result ? result.notice : null,
         criteria,
