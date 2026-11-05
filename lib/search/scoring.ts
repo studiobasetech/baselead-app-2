@@ -91,6 +91,11 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
     reasons.push("No direct contact found yet.");
   }
 
+  if (lead.raw_data?.brand) {
+    score -= 15;
+    reasons.push("Part of a national chain or franchise — decisions are usually made at headquarters.");
+  }
+
   if (lead.raw_data?.business_status && lead.raw_data.business_status !== "OPERATIONAL") {
     score -= 30;
     reasons.push("Business may be closed.");

@@ -170,7 +170,7 @@ JSON array only, e.g. ["office.lawyer"]`,
 export async function searchGeoapify(criteria: SearchCriteria): Promise<PotentialLead[]> {
   const wanted = Math.min(Math.max(criteria.leads ?? 20, 1), 60);
   const center = await geocodeGeoapify(criteria.location);
-  const miles = Math.min(Math.max(criteria.radius ?? 15, 1), 50);
+  const miles = Math.min(Math.max(criteria.radius ?? 15, 1), 100);
   const meters = Math.round(miles * 1609);
   const { categories, keyword } = await categoriesFor(criteria);
 
@@ -236,6 +236,7 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
       raw_data: {
         provider: "geoapify",
         categories: p.categories ?? [],
+        brand: raw.brand || raw["brand:wikidata"] ? raw.brand || "chain" : null,
         opening_hours: raw.opening_hours ?? null,
         search_offer: criteria.offer,
         search_ideal_client: criteria.idealClient,
@@ -245,9 +246,14 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
     } satisfies PotentialLead;
   });
 
-  // Best contacts first: website + phone + email.
+  // Best contacts first: website + phone + email. National chains and
+  // franchises (Pizza Hut, Best Western...) go last: decisions are made at HQ.
   const quality = (lead: PotentialLead) =>
-    (lead.website ? 2 : 0) + (lead.phone ? 2 : 0) + (lead.email ? 1 : 0) + (lead.address ? 1 : 0);
+    (lead.website ? 2 : 0) +
+    (lead.phone ? 2 : 0) +
+    (lead.email ? 1 : 0) +
+    (lead.address ? 1 : 0) -
+    (lead.raw_data?.brand ? 10 : 0);
 
   const unique = new Map<string, PotentialLead>();
   for (const lead of leads.sort((a, b) => quality(b) - quality(a))) {
