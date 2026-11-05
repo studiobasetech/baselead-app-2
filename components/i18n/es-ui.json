@@ -2141,7 +2141,6 @@
 "No chat or assistant to answer visitors after hours.": "No tiene chat ni asistente para atender visitas fuera de horario.",
 "Connect your email": "Conecta tu correo",
 "No high-intent leads in this search yet": "Todavía no hay leads de alta intención en esta búsqueda",
-"High-intent means a score of 80 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.": "Alta intención significa un puntaje de 80 o más: necesidades claras para tu oferta y una forma de contactar a quien decide. Abre Todos los leads para ver a todos.",
 "You haven't contacted these leads yet": "Todavía no has contactado a estos leads",
 "Send an email or add them to a sequence and they'll show up here.": "Envíales un correo o agrégalos a una secuencia y aparecerán aquí.",
 "No replies yet": "Todavía no hay respuestas",
@@ -2149,5 +2148,6 @@
 "No clients yet": "Todavía no hay clientes",
 "When a lead from this search becomes a client, it shows up here.": "Cuando un lead de esta búsqueda se vuelva cliente, aparecerá aquí.",
 "No leads match your filters. Clear them to see all results.": "Ningún lead coincide con tus filtros. Quítalos para ver todos los resultados.",
-"See all {0} leads": "Ver los {0} leads"
+"See all {0} leads": "Ver los {0} leads",
+"High-intent means a score of 75 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.": "Alta intención significa un puntaje de 75 o más: necesidades claras para tu oferta y una forma de contactar a quien decide. Abre Todos los leads para ver a todos."
 }

@@ -101,12 +101,12 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
   const opportunity =
     finalScore >= 85
       ? "Excellent Opportunity"
-      : finalScore >= 70
+      : finalScore >= 75
         ? "Good Opportunity"
         : "Potential Opportunity";
 
   const buyingIntent =
-    finalScore >= 80 ? "High" : finalScore >= 65 ? "Medium" : "Low";
+    finalScore >= 75 ? "High" : finalScore >= 65 ? "Medium" : "Low";
 
   const estimatedValue =
     finalScore >= 85

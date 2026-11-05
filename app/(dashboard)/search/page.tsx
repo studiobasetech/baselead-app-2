@@ -464,7 +464,7 @@ const EMPTY_TAB_TEXT: Record<string, { title: string; detail: string }> = {
   all: { title: "No leads match this view", detail: "Try another tab or remove some filters." },
   highIntent: {
     title: "No high-intent leads in this search yet",
-    detail: "High-intent means a score of 80 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.",
+    detail: "High-intent means a score of 75 or more: clear gaps for your offer plus a way to reach the decision maker. Open All Leads to see everyone.",
   },
   contacted: { title: "You haven't contacted these leads yet", detail: "Send an email or add them to a sequence and they'll show up here." },
   responded: { title: "No replies yet", detail: "Leads that answer your emails will show up here automatically." },
@@ -475,7 +475,7 @@ function isHighIntent(lead: SearchResultLead) {
   const score = getScore(lead);
 
   return (
-    (score !== null && score >= 80) ||
+    (score !== null && score >= 75) ||
     lead.ai_opportunity?.toLowerCase().includes("high") ||
     false
   );
