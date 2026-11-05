@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   SearchCriteria,
@@ -19,6 +20,8 @@ export type ProcessSearchOptions = {
   recommendations: boolean;
   /** Workspace the leads belong to (shared with the team). */
   companyId?: string | null;
+  /** false = return draft leads only; the user saves them later. */
+  save?: boolean;
 };
 
 export async function processSearch(
@@ -439,6 +442,50 @@ ${top
       })
     );
 
+  // Drafts: nothing is stored until the user presses Save.
+  if (options.save === false) {
+    return {
+      leads: leadsToInsert.map((row) => ({ ...row, id: `draft-${randomUUID()}`, saved: false })),
+      totalFound: leadsToInsert.length,
+      demo,
+    };
+  }
+
+  return saveLeadRows(supabase, searchId, leadsToInsert, options.companyId ?? null, demo);
+}
+
+/* =========================================================
+   SAVE (all leads, or the ones the user selected)
+========================================================= */
+
+// Columns a draft lead may set when it is saved.
+const LEAD_COLUMNS = [
+  "user_id", "company_id", "assigned_to", "name", "company", "email", "phone", "phone_numbers",
+  "email_addresses", "contact_name", "contact_title", "website", "industry", "category", "location",
+  "address", "city", "state", "country", "rating", "review_count", "latitude", "longitude", "source",
+  "source_id", "status", "notes", "instagram_url", "facebook_url", "linkedin_url", "x_url", "tiktok_url",
+  "pinterest_url", "google_maps_url", "ai_score", "ai_opportunity", "ai_reason", "ai_recommendations",
+  "ai_analyzed_at", "raw_data",
+] as const;
+
+export function cleanLeadRow(row: Record<string, unknown>, userId: string, companyId: string | null) {
+  const clean: Record<string, unknown> = {};
+  for (const column of LEAD_COLUMNS) if (column in row) clean[column] = row[column];
+  // Always the signed-in user's workspace, never what the browser says.
+  clean.user_id = userId;
+  clean.company_id = companyId;
+  clean.assigned_to = userId;
+  clean.status = "new";
+  return clean;
+}
+
+export async function saveLeadRows(
+  supabase: SupabaseClient,
+  searchId: string | null,
+  leadsToInsert: Record<string, unknown>[],
+  companyId: string | null,
+  demo = false
+) {
   // ---------------------------------------------------------
   // 5. Save the leads.
   // ---------------------------------------------------------
@@ -457,7 +504,7 @@ ${top
       .from("leads")
       .insert(
         leadsToInsert.map(
-          ({ assigned_to: _ignored, ...rest }) => rest
+          ({ assigned_to: _ignored, ...rest }: Record<string, unknown>) => rest
         )
       )
       .select();
@@ -492,7 +539,7 @@ ${top
   // 6. Connect every lead to the current search.
   // ---------------------------------------------------------
 
-  const searchLeadLinks =
+  const searchLeadLinks = !searchId ? [] :
     insertedLeads.map(
       (lead, index) => ({
         search_id: searchId,
@@ -503,9 +550,9 @@ ${top
 
   const {
     error: linkError,
-  } = await supabase
-    .from("search_leads")
-    .insert(searchLeadLinks);
+  } = searchLeadLinks.length
+    ? await supabase.from("search_leads").insert(searchLeadLinks)
+    : { error: null };
 
   if (linkError) {
     console.error(
@@ -521,7 +568,7 @@ ${top
   // Save the decision makers as lead contacts (shown on the lead).
   const contactRows = insertedLeads.flatMap((row: { id: string; raw_data?: { decision_makers?: WebsitePerson[] } }) =>
     (row.raw_data?.decision_makers ?? []).map((person, index) => ({
-      company_id: options.companyId || null,
+      company_id: companyId,
       lead_id: row.id,
       full_name: person.name,
       first_name: person.name.replace(/^dr\.?\s+/i, "").split(/\s+/)[0] ?? null,
