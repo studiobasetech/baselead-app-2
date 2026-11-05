@@ -195,7 +195,14 @@ export async function processSearch(
         lead.ai_score = result.score;
         lead.ai_opportunity = result.opportunity;
         lead.ai_reason = result.reason;
-        lead.ai_recommendations = { reasons: result.reasons, buying_intent: result.buyingIntent };
+        lead.ai_recommendations = options.recommendations
+          ? {
+              recommended_service: criteria.offer,
+              estimated_project_value: result.estimatedValue,
+              reasons: result.reasons,
+              buying_intent: result.buyingIntent,
+            }
+          : { reasons: result.reasons, buying_intent: result.buyingIntent };
         lead.raw_data = { ...(lead.raw_data ?? {}), enriched: false };
       }
     } else {

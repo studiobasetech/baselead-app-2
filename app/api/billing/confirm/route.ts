@@ -28,7 +28,7 @@ export async function GET(request: Request) {
       status: string;
     }>("GET", `checkout/sessions/${sessionId}`);
 
-    if (session.client_reference_id !== access.company.id) {
+    if (session.client_reference_id !== access.billingCompanyId) {
       return fail("wrong_workspace");
     }
 
@@ -36,7 +36,7 @@ export async function GET(request: Request) {
       return fail("not_paid");
     }
 
-    await applySubscription(session.subscription, access.company.id);
+    await applySubscription(session.subscription, access.billingCompanyId);
 
     return NextResponse.redirect(
       `${base}/settings?section=billing&checkout=success`

@@ -1,5 +1,6 @@
 "use client";
 
+import { activeCompanyIdClient } from "@/lib/active-company";
 import {
   createContext,
   useCallback,
@@ -67,6 +68,17 @@ function normalizeBillingStatus(
 async function resolveCompanyId(
   userId: string
 ): Promise<string | null> {
+  // The company the user switched to (Scale: several companies).
+  const activeId = activeCompanyIdClient();
+  if (activeId) {
+    const { data: selected } = await supabase
+      .from("company_profiles")
+      .select("id")
+      .eq("id", activeId)
+      .maybeSingle();
+    if (selected?.id) return String(selected.id);
+  }
+
   const { data: ownedCompany } = await supabase
     .from("company_profiles")
     .select("id")
@@ -148,13 +160,21 @@ export function PlanProvider({
         return;
       }
 
-      const { data, error } = await supabase
+      let { data, error } = await supabase
         .from("company_profiles")
-        .select(
-          "plan, billing_status, trial_ends_at, trial_lead_limit"
-        )
+        .select("*")
         .eq("id", resolvedCompanyId)
         .maybeSingle();
+
+      // Extra companies use the plan of their main company.
+      if (!error && data?.parent_company_id) {
+        const parent = await supabase
+          .from("company_profiles")
+          .select("*")
+          .eq("id", data.parent_company_id)
+          .maybeSingle();
+        if (parent.data) ({ data, error } = parent);
+      }
 
       if (error) {
         console.error(

@@ -184,14 +184,14 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
   });
 
   const named = ((json?.features ?? []) as Feature[]).filter((feature) => Boolean(feature.properties.name));
-  let features = keyword ? named.filter((feature) => keyword.test(feature.properties.name as string)) : named;
+  let features = keyword ? named.filter((feature) => keyword.test(String(feature.properties.name))) : named;
   // Name matching found nothing: show the businesses in those categories instead of an empty list.
   if (keyword && features.length === 0) features = named;
 
   const leads = features.map((feature) => {
     const p = feature.properties;
     const raw = (p.datasource?.raw ?? {}) as Record<string, string>;
-    const name = p.name as string;
+    const name = String(p.name ?? "").trim();
     const phone = p.contact?.phone || raw.phone || raw["contact:phone"] || null;
     const email = p.contact?.email || raw.email || raw["contact:email"] || null;
     let website = p.website || raw.website || raw["contact:website"] || null;
@@ -257,7 +257,7 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
 
   const unique = new Map<string, PotentialLead>();
   for (const lead of leads.sort((a, b) => quality(b) - quality(a))) {
-    const key = lead.company.toLowerCase();
+    const key = String(lead.company).toLowerCase();
     if (!unique.has(key)) unique.set(key, lead);
   }
 

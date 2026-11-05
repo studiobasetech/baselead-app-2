@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   const { data: company } = await supabase
     .from("company_profiles")
     .select("stripe_customer_id")
-    .eq("id", access.company.id)
+    .eq("id", access.billingCompanyId)
     .maybeSingle();
 
   if (!company?.stripe_customer_id) {

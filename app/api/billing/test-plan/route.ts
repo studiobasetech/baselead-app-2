@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   const { error } = await createAdminClient()
     .from("company_profiles")
     .update(update)
-    .eq("id", access.company.id);
+    .eq("id", access.billingCompanyId);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

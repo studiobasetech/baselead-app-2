@@ -27,7 +27,8 @@ export type PlanFeature =
   | "advanced_automation"
   | "team_permissions"
   | "custom_reports"
-  | "api_access";
+  | "api_access"
+  | "multi_company";
 
 export type PlanDefinition = {
   name: PlanName;
@@ -41,6 +42,8 @@ export type PlanDefinition = {
   campaignLimit: number | null;
   /** Decision-maker lookups per month. */
   contactLookupLimit: number;
+  /** Companies (workspaces) one account can run. */
+  companyLimit: number;
   features: readonly PlanFeature[];
 };
 
@@ -58,6 +61,7 @@ export const PLAN_DEFINITIONS: Record<
     apiRequestLimit: 0,
     campaignLimit: 3,
     contactLookupLimit: 50,
+    companyLimit: 1,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -78,6 +82,7 @@ export const PLAN_DEFINITIONS: Record<
     apiRequestLimit: 0,
     campaignLimit: 25,
     contactLookupLimit: 500,
+    companyLimit: 1,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -105,6 +110,7 @@ export const PLAN_DEFINITIONS: Record<
     apiRequestLimit: 100000,
     campaignLimit: null,
     contactLookupLimit: 2000,
+    companyLimit: 5,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -124,6 +130,7 @@ export const PLAN_DEFINITIONS: Record<
       "team_permissions",
       "custom_reports",
       "api_access",
+      "multi_company",
     ],
   },
 };

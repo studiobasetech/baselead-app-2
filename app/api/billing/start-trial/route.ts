@@ -23,7 +23,7 @@ export async function POST() {
   const { data: company } = await admin
     .from("company_profiles")
     .select("id, billing_status, trial_started_at")
-    .eq("id", access.company.id)
+    .eq("id", access.billingCompanyId)
     .maybeSingle();
 
   if (!company) return NextResponse.json({ error: "Workspace not found." }, { status: 404 });

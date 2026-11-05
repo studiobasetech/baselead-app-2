@@ -71,7 +71,7 @@ export async function POST(request: Request) {
   const { data: company } = await supabase
     .from("company_profiles")
     .select("stripe_customer_id, stripe_subscription_id")
-    .eq("id", access.company.id)
+    .eq("id", access.billingCompanyId)
     .maybeSingle();
 
   const base = appUrl(request);
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
       "checkout/sessions",
       {
         mode: "subscription",
-        client_reference_id: access.company.id,
+        client_reference_id: access.billingCompanyId,
         customer: company?.stripe_customer_id || undefined,
         customer_email: company?.stripe_customer_id
           ? undefined
@@ -115,9 +115,9 @@ export async function POST(request: Request) {
         ...(promotion
           ? { discounts: { 0: { promotion_code: promotion.id } } }
           : { allow_promotion_codes: "true" }),
-        metadata: { company_id: access.company.id, plan },
+        metadata: { company_id: access.billingCompanyId, plan },
         subscription_data: {
-          metadata: { company_id: access.company.id, plan },
+          metadata: { company_id: access.billingCompanyId, plan },
         },
         success_url: `${base}/api/billing/confirm?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${base}/settings?section=billing&checkout=cancelled`,

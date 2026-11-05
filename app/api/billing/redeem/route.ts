@@ -71,14 +71,14 @@ export async function POST(request: Request) {
     let { error } = await admin
       .from("company_profiles")
       .update(update)
-      .eq("id", access.company.id);
+      .eq("id", access.billingCompanyId);
 
     // Older database without promo_code / billing_cycle columns.
     if (error && /promo_code|billing_cycle|cancel_at_period_end/.test(error.message)) {
       ({ error } = await admin
         .from("company_profiles")
         .update({ plan: body.plan, billing_status: "active" })
-        .eq("id", access.company.id));
+        .eq("id", access.billingCompanyId));
     }
 
     if (error) {

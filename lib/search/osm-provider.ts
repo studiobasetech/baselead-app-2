@@ -188,7 +188,7 @@ export async function searchOpenStreetMap(criteria: SearchCriteria): Promise<Pot
 
   const unique = new Map<string, PotentialLead>();
   for (const lead of leads.sort((a, b) => quality(b) - quality(a))) {
-    const key = lead.company.toLowerCase();
+    const key = String(lead.company).toLowerCase();
     if (!unique.has(key)) unique.set(key, lead);
   }
 
