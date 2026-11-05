@@ -22,6 +22,8 @@ export type Enrichment = {
   has_chat: boolean;
   /** The business's own logo/icon from its website. */
   logo_url: string | null;
+  /** The site blocked our visit (bot protection), so we know nothing about it. */
+  blocked?: boolean;
 };
 
 const EMPTY: Enrichment = {
@@ -61,6 +63,8 @@ const HEADERS = {
   "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
 };
 
+const blockedUrls = new Set<string>();
+
 export async function getPage(url: string) {
   try {
     const response = await fetch(url, {
@@ -68,6 +72,11 @@ export async function getPage(url: string) {
       redirect: "follow",
       signal: AbortSignal.timeout(7000),
     });
+    // Bot protection (Cloudflare etc.): the site works, it just won't show us the page.
+    if ([401, 403, 406, 429, 503].includes(response.status)) {
+      blockedUrls.add(url);
+      return null;
+    }
     if (!response.ok) return null;
     const type = response.headers.get("content-type") ?? "";
     if (type && !type.includes("html")) return null;
@@ -189,7 +198,14 @@ export async function enrichWebsite(url: string | null): Promise<Enrichment> {
   if (!url) return EMPTY;
 
   const home = await getPage(url);
-  if (!home) return { ...EMPTY, has_ssl: url.startsWith("https") };
+  if (!home) {
+    // Blocked by bot protection ≠ broken website: don't report it as "not loading".
+    if (blockedUrls.has(url)) {
+      blockedUrls.delete(url);
+      return { ...EMPTY, reachable: true, has_ssl: url.startsWith("https"), blocked: true };
+    }
+    return { ...EMPTY, has_ssl: url.startsWith("https") };
+  }
 
   const result: Enrichment = {
     ...EMPTY,
