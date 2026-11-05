@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   const [{ data: lead }, { data: company }] = await Promise.all([
     supabase
       .from("leads")
-      .select("name, company, category, industry, location, website, rating, review_count, ai_reason, ai_recommendations")
+      .select("name, company, category, industry, location, website, rating, review_count, ai_reason, ai_recommendations, contact_name, contact_title, instagram_url, facebook_url, linkedin_url, raw_data")
       .eq("id", leadId ?? "")
       .maybeSingle(),
     supabase
@@ -51,15 +51,37 @@ export async function POST(request: Request) {
   const sender = (company as Record<string, unknown> | null) ?? {};
 
   try {
+    // Real facts about this business = the "why now" for the email.
+    const raw = (lead.raw_data ?? {}) as Record<string, unknown>;
+    const signals = [
+      !lead.website && "they have no website",
+      raw.website_reachable === false && "their website did not load when we checked",
+      raw.website_ssl === false && raw.website_reachable !== false && "their website is not secure (no HTTPS)",
+      raw.has_booking === false && "visitors can't book online on their website",
+      raw.has_chat === false && "there is no chat or assistant on their website to answer visitors",
+      ![lead.instagram_url, lead.facebook_url, lead.linkedin_url].some(Boolean) && "we found no social media profiles",
+      typeof lead.rating === "number" && lead.rating < 4 && `their rating is ${lead.rating} stars`,
+    ].filter(Boolean) as string[];
+    const recommended = (lead.ai_recommendations as { recommended_service?: string } | null)?.recommended_service;
+    const greeting = lead.contact_name
+      ? `Address ${lead.contact_name}${lead.contact_title ? ` (${lead.contact_title})` : ""} by name (use "Dr." if it is part of the name).`
+      : "Use a friendly greeting without a name.";
+
     const result = await askAiJson<{ subject: string; message: string }>(
-      `Write a short, personal cold email (90-140 words) from ${
+      `Write a short, personal cold email (80-130 words) from ${
         sender.company_name || "our company"
-      }${sender.services ? `, which offers ${JSON.stringify(sender.services)}` : ""}, to ${
-        lead.company || lead.name
-      } (${lead.category || lead.industry || "business"} in ${lead.location || "their area"}).
+      }${sender.services ? `, which offers ${JSON.stringify(sender.services)}` : ""}${
+        sender.description ? ` (about us: ${String(sender.description).slice(0, 300)})` : ""
+      }, to ${lead.company || lead.name} (${lead.category || lead.industry || "business"} in ${lead.location || "their area"}).
+${greeting}
 Campaign: ${campaign || "General outreach"}. Tone: ${tone || "friendly and professional"}.
-Facts you may use: website ${lead.website ? "yes" : "none"}, rating ${lead.rating ?? "n/a"} with ${lead.review_count ?? 0} reviews. Insight: ${lead.ai_reason || "none"}.
-No made-up facts, no placeholders in brackets, end with a simple question and sign with "${sender.company_name || ""}".
+${recommended ? `Best service to offer them: ${recommended}.` : "Pick the ONE most relevant service for them."}
+What we noticed about them (open with the most relevant ONE as the reason for writing; never sound critical or rude): ${
+        signals.length ? signals.join("; ") : "nothing specific — compliment their business and ask a question about their goals"
+      }.
+Other facts: rating ${lead.rating ?? "n/a"} with ${lead.review_count ?? 0} reviews. Insight: ${lead.ai_reason || "none"}.
+Rules: write in the language of their location (Spanish for Mexico, English for the USA); no made-up facts or numbers; no placeholders in brackets; one clear benefit; end with a simple yes/no question (for example a 15-minute call); sign with "${sender.company_name || ""}".
+Subject: under 7 words, specific to them, no clickbait.
 Reply with JSON only: {"subject":"","message":""}`,
       { maxTokens: 800 }
     );

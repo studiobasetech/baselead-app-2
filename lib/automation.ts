@@ -1,3 +1,7 @@
+import { sendLeadEmail } from "@/lib/email/send";
+import { getEmailAccount, imapSettings } from "@/lib/email/accounts";
+import { fetchInboxSince } from "@/lib/email/imap";
+import { askAiJson, isAiConfigured } from "@/lib/ai";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { notifyUser } from "@/lib/notify";
 import {
@@ -11,7 +15,6 @@ import {
 import {
   findReplyInThread,
   getGoogleAccessToken,
-  sendGmail,
 } from "@/lib/integrations/google-api";
 import { dispatchWebhooks } from "@/lib/webhooks";
 
@@ -184,6 +187,47 @@ async function templateValues(
    REPLY DETECTION (Gmail)
 ========================================================= */
 
+const AUTO_REPLY =
+  /(out of (the )?office|automatic reply|auto-?reply|autoreply|on vacation|away from (the )?office|respuesta autom[aá]tica|fuera de la oficina|de vacaciones|ausente)/i;
+
+export function isAutoReply(text: string) {
+  return AUTO_REPLY.test(text.slice(0, 400));
+}
+
+export const REPLY_LABELS: Record<string, string> = {
+  interested: "🔥 Interested",
+  question: "❓ Question",
+  not_now: "⏳ Not now",
+  wrong_person: "👤 Wrong person",
+  not_interested: "🚫 Not interested",
+  other: "💬 Reply",
+};
+
+/** AI sorts the reply and drafts a short answer (rules when AI is off). */
+async function labelReply(snippet: string, subject?: string | null) {
+  const text = snippet.slice(0, 600);
+  if (isOptOutReply(text)) return { label: "not_interested", suggestion: "" };
+  if (!isAiConfigured()) {
+    if (/\?/.test(text)) return { label: "question", suggestion: "" };
+    if (/interest|sounds good|let'?s talk|call me|me interesa|hablemos|ll[aá]mame/i.test(text)) return { label: "interested", suggestion: "" };
+    return { label: "other", suggestion: "" };
+  }
+  try {
+    const answer = await askAiJson<{ label: string; suggestion: string }>(
+      `A sales prospect replied to a cold email${subject ? ` about "${subject}"` : ""}.
+Reply: """${text}"""
+Classify it as one of: interested, question, not_now, wrong_person, not_interested, other.
+Then write a short, friendly answer the salesperson could send (max 70 words, same language as the reply; for not_interested write a polite one-line goodbye).
+JSON only: {"label":"","suggestion":""}`,
+      { maxTokens: 400 }
+    );
+    const label = answer?.label in REPLY_LABELS ? answer.label : "other";
+    return { label, suggestion: (answer?.suggestion ?? "").trim() };
+  } catch {
+    return { label: "other", suggestion: "" };
+  }
+}
+
 /** Everything that happens when a lead replies (Gmail scan, reply address, or manual). */
 export async function handleLeadReply(
   supabase: SupabaseClient,
@@ -197,12 +241,28 @@ export async function handleLeadReply(
     from: string;
     snippet: string;
     receivedAt?: string;
-    source: "gmail" | "reply-address" | "manual";
+    source: "gmail" | "reply-address" | "manual" | "imap";
   }
 ) {
   const now = new Date().toISOString();
+
+  // Out-of-office / automatic replies are not real replies: keep following up.
+  if (reply.source !== "manual" && isAutoReply(`${reply.subject ?? ""} ${reply.snippet}`)) {
+    await logActivity(supabase, {
+      leadId: reply.leadId,
+      companyId: reply.companyId,
+      userId: reply.userId,
+      type: "auto_reply",
+      title: "Automatic reply (out of office) — follow-ups continue",
+      body: reply.snippet,
+    });
+    return;
+  }
+
+  const label = reply.source === "manual" ? null : await labelReply(reply.snippet, reply.subject);
   const update = {
     status: "replied",
+    ...(label ? { reply_label: label.label } : {}),
     replied_at: reply.receivedAt || now,
     next_step: "Reply to the lead",
     next_step_at: now,
@@ -264,9 +324,9 @@ export async function handleLeadReply(
     company_id: reply.companyId,
     user_id: reply.userId,
     lead_id: reply.leadId,
-    title: `Answer the reply from ${name}`,
+    title: label ? `${REPLY_LABELS[label.label] ?? "Reply"}: answer ${name}` : `Answer the reply from ${name}`,
     type: "email",
-    notes: reply.snippet,
+    notes: [reply.snippet, label?.suggestion ? `\nSuggested answer:\n${label.suggestion}` : ""].join(""),
     due_at: now,
     source: "automation",
   });
@@ -300,7 +360,10 @@ export async function canReadInbox(supabase: SupabaseClient, userId: string) {
 
 /** Optional inbox scan (only when the Gmail connection has read access). */
 export async function detectReplies(supabase: SupabaseClient, userId: string) {
-  if (!(await canReadInbox(supabase, userId))) return { checked: 0, replies: 0 };
+  // Email accounts connected by IMAP: read the inbox directly.
+  const imapResult = await detectImapReplies(supabase, userId).catch(() => ({ checked: 0, replies: 0 }));
+
+  if (!(await canReadInbox(supabase, userId))) return imapResult;
 
   let token: string | null = null;
 
@@ -346,7 +409,84 @@ export async function detectReplies(supabase: SupabaseClient, userId: string) {
     });
   }
 
-  return { checked: seenThreads.size, replies };
+  return { checked: seenThreads.size + imapResult.checked, replies: replies + imapResult.replies };
+}
+
+/** Reads the IMAP inbox for replies (and bounces) to BaseLead emails. */
+async function detectImapReplies(supabase: SupabaseClient, userId: string) {
+  const account = await getEmailAccount(userId);
+  const imap = account ? imapSettings(account) : null;
+  if (!account || !imap) return { checked: 0, replies: 0 };
+
+  const { data: open } = await supabase
+    .from("outreach")
+    .select("id, lead_id, subject, gmail_message_id, gmail_thread_id, company_id, sent_at")
+    .eq("user_id", userId)
+    .eq("sent_from", account.email)
+    .is("replied_at", null)
+    .gte("sent_at", new Date(Date.now() - 30 * 86400000).toISOString())
+    .order("sent_at", { ascending: true })
+    .limit(300);
+
+  if (!open?.length) return { checked: 0, replies: 0 };
+
+  const { data: leads } = await supabase
+    .from("leads")
+    .select("id, email")
+    .in("id", [...new Set(open.map((item) => item.lead_id))]);
+  const leadByEmail = new Map((leads ?? []).filter((l) => l.email).map((l) => [String(l.email).toLowerCase(), l.id]));
+
+  const since = new Date(open[0].sent_at as string);
+  const inbox = await fetchInboxSince(imap, since);
+
+  let replies = 0;
+  const handled = new Set<string>();
+
+  for (const message of inbox) {
+    const refs = `${message.inReplyTo ?? ""} ${message.references ?? ""}`;
+    const fromAddress = (message.from.match(/<([^>]+)>/)?.[1] ?? message.from).trim().toLowerCase();
+    const byThread = open.find((item) => item.gmail_message_id && refs.includes(item.gmail_message_id));
+
+    // Bounce: the address doesn't exist → stop emailing it.
+    if (/mailer-daemon|postmaster/i.test(fromAddress)) {
+      const bounced = byThread ?? open.find((item) => item.gmail_message_id && message.snippet.includes(item.gmail_message_id));
+      if (bounced && !handled.has(`b:${bounced.lead_id}`)) {
+        handled.add(`b:${bounced.lead_id}`);
+        await supabase.from("outreach").update({ status: "bounced", send_error: "Email bounced: the address doesn't exist." }).eq("id", bounced.id);
+        await markDoNotContact(supabase, bounced.lead_id, "Email bounced");
+        await logActivity(supabase, {
+          leadId: bounced.lead_id,
+          companyId: bounced.company_id,
+          userId,
+          type: "bounce",
+          title: "Email bounced — BaseLead stopped emailing this address",
+        });
+      }
+      continue;
+    }
+
+    const leadId = byThread?.lead_id ?? leadByEmail.get(fromAddress);
+    if (!leadId || handled.has(leadId)) continue;
+    const item = byThread ?? open.find((row) => row.lead_id === leadId);
+    if (!item) continue;
+    handled.add(leadId);
+    replies++;
+
+    await handleLeadReply(supabase, {
+      userId,
+      leadId,
+      companyId: item.company_id,
+      outreachId: item.id,
+      threadId: item.gmail_thread_id,
+      subject: item.subject,
+      from: message.from,
+      snippet: message.snippet,
+      receivedAt: message.date && !Number.isNaN(Date.parse(message.date)) ? new Date(message.date).toISOString() : undefined,
+      source: "imap",
+    });
+  }
+
+  return { checked: inbox.length, replies };
 }
 
 /* =========================================================
@@ -368,7 +508,6 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
   let sent = 0;
   let tasks = 0;
   const errors: string[] = [];
-  const tokens = new Map<string, string | null>();
 
   for (const enrollment of due ?? []) {
     const nextOrder = enrollment.current_step + 1;
@@ -427,20 +566,10 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
           continue;
         }
 
-        if (!tokens.has(enrollment.user_id)) {
-          tokens.set(
-            enrollment.user_id,
-            await getGoogleAccessToken(supabase, enrollment.user_id, "gmail").catch(() => null)
-          );
-        }
-
-        const token = tokens.get(enrollment.user_id);
-        if (!token) throw new Error("Connect Gmail in Integrations.");
-
         const subject = fillTemplate(step.subject || "Quick question", values);
         const body = fillTemplate(step.body || "", values);
 
-        const message = await sendGmail(token, {
+        const message = await sendLeadEmail(supabase, enrollment.user_id, {
           to: lead.email,
           subject: threadId && !/^re:/i.test(subject) ? `Re: ${subject}` : subject,
           body: await withComplianceFooter(supabase, body, lead.id, enrollment.company_id),
@@ -463,6 +592,7 @@ export async function runSequences(supabase: SupabaseClient, userId?: string) {
           sent_at: now,
           gmail_message_id: message.id,
           gmail_thread_id: message.threadId,
+          sent_from: message.sentFrom,
           enrollment_id: enrollment.id,
           step_order: nextOrder,
         });

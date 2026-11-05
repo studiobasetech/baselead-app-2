@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { sendLeadEmail } from "@/lib/email/send";
 import { createClient } from "@/lib/supabase/server";
 import { getWorkspaceAccess } from "@/lib/workspace";
-import { getGoogleAccessToken, sendGmail } from "@/lib/integrations/google-api";
 import { advanceLead, logActivity } from "@/lib/automation";
 import { formatMoney } from "@/lib/proposals";
 import { appUrl } from "@/lib/stripe";
@@ -38,22 +38,14 @@ export async function POST(
       return NextResponse.json({ error: "Add the client's email first." }, { status: 400 });
     }
 
-    const token = await getGoogleAccessToken(supabase, access.user.id, "gmail").catch(() => null);
-
-    if (!token) {
-      return NextResponse.json(
-        { error: "Connect Gmail in Integrations to send by email, or copy the link instead." },
-        { status: 400 }
-      );
-    }
-
     const { data: company } = await supabase
       .from("company_profiles")
       .select("company_name")
       .eq("id", access.company.id)
       .maybeSingle();
 
-    await sendGmail(token, {
+    try {
+    await sendLeadEmail(supabase, access.user.id, {
       to: proposal.client_email,
       subject: `${proposal.title} — ${company?.company_name || "Proposal"}`,
       body:
@@ -66,6 +58,12 @@ export async function POST(
           company?.company_name || ""
         }`,
     });
+    } catch (error) {
+      return NextResponse.json(
+        { error: error instanceof Error ? error.message : "Could not send the email. Copy the link instead." },
+        { status: 400 }
+      );
+    }
 
     emailed = true;
   }

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getGoogleAccessToken, sendGmail } from "@/lib/integrations/google-api";
+import { sendLeadEmail } from "@/lib/email/send";
 import { advanceLead, logActivity } from "@/lib/automation";
 import { checkCanEmail, replyToHeaders, unsubscribeHeaders, withComplianceFooter } from "@/lib/compliance";
 
@@ -33,14 +33,8 @@ export async function sendOutreachEmail(
   const allowed = await checkCanEmail(supabase, item.user_id, lead);
   if (!allowed.ok) throw new Error(allowed.reason);
 
-  const token = await getGoogleAccessToken(supabase, item.user_id, "gmail");
-
-  if (!token) {
-    throw new Error("Connect Gmail in Integrations to send emails.");
-  }
-
   try {
-    const message = await sendGmail(token, {
+    const message = await sendLeadEmail(supabase, item.user_id, {
       to: lead.email,
       subject: item.subject || `Hello ${lead.company || lead.name || ""}`.trim(),
       body: await withComplianceFooter(supabase, item.message || "", lead.id, lead.company_id),
@@ -58,6 +52,7 @@ export async function sendOutreachEmail(
         next_step_at: new Date(Date.now() + 3 * 86400000).toISOString(),
         gmail_message_id: message.id,
         gmail_thread_id: message.threadId,
+        sent_from: message.sentFrom,
         send_error: null,
         updated_at: now,
       })

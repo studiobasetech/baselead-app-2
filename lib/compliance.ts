@@ -11,7 +11,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const DAILY_SEND_LIMIT = Math.max(
   1,
-  Number(process.env.DAILY_SEND_LIMIT) || 150
+  Number(process.env.DAILY_SEND_LIMIT) || 50
 );
 
 function secret() {

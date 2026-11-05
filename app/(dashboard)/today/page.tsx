@@ -219,7 +219,7 @@ export default function TodayPage() {
       }
 
       if (!result.gmailConnected) {
-        showToast("Connect Gmail in Integrations first. BaseLead checks replies and sends follow-ups from your Gmail.");
+        showToast("Connect your email in Integrations first (Gmail or any other email account). BaseLead sends follow-ups and checks replies from it.");
         return;
       }
 

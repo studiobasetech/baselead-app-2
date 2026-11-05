@@ -16,10 +16,16 @@ export type Enrichment = {
   reachable: boolean;
   /** Plain text of the About/Team pages, used to find decision makers. */
   peopleText: string;
+  /** Online booking / scheduling on the site (Calendly, Vagaro, "Book now"...). */
+  has_booking: boolean;
+  /** Live chat or chatbot on the site. */
+  has_chat: boolean;
 };
 
 const EMPTY: Enrichment = {
   peopleText: "",
+  has_booking: false,
+  has_chat: false,
   emails: [],
   phones: [],
   instagram_url: null,
@@ -178,6 +184,13 @@ export async function enrichWebsite(url: string | null): Promise<Enrichment> {
     .sort((a, b) => Number(b.endsWith(siteHost)) - Number(a.endsWith(siteHost)))
     .slice(0, 5);
   result.phones = [...phones].slice(0, 3);
+
+  result.has_booking =
+    /calendly\.com|acuityscheduling|vagaro\.com|booksy\.com|squareup\.com\/appointments|schedulicity|mindbodyonline|zocdoc|setmore|simplybook|fresha\.com|glossgenius|book online|book now|book an appointment|schedule (an |your )?appointment|request an appointment|agenda tu cita|agendar cita|reserva(r)? (tu )?cita/i.test(
+      combined
+    );
+  result.has_chat =
+    /intercom|tawk\.to|drift\.com|livechatinc|zendesk|crisp\.chat|tidio|hubspot.*(conversations|messages)|podium|birdeye|chatbot|wa\.me\/|whatsapp/i.test(combined);
 
   for (const [field, pattern] of SOCIAL_PATTERNS) {
     const match = combined.match(pattern);

@@ -1,5 +1,6 @@
 "use client";
 
+import EmailAccounts from "@/components/integrations/EmailAccounts";
 import TwilioConnectCard from "@/components/integrations/TwilioConnectCard";
 
 import {
@@ -1829,6 +1830,8 @@ export default function IntegrationsPage() {
             </div>
           </div>
         </div>
+
+        <EmailAccounts />
 
         {connectionError && (
           <div

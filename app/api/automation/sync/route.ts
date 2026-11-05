@@ -36,8 +36,16 @@ export async function POST() {
     .eq("user_id", access.user.id)
     .eq("provider", "gmail")
     .maybeSingle();
-  result.gmailConnected = Boolean(gmail);
-  result.inboxAccess = result.gmailConnected && (await canReadInbox(supabase, access.user.id));
+  const { data: otherEmail } = await supabase
+    .from("email_accounts")
+    .select("id, imap_host")
+    .eq("user_id", access.user.id)
+    .limit(1)
+    .maybeSingle();
+  // Any connected email counts (Gmail or an IMAP/SMTP account).
+  result.gmailConnected = Boolean(gmail) || Boolean(otherEmail);
+  result.inboxAccess =
+    Boolean(otherEmail?.imap_host) || (Boolean(gmail) && (await canReadInbox(supabase, access.user.id)));
 
   try {
     const replies = await detectReplies(supabase, access.user.id);

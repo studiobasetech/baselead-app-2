@@ -14,7 +14,7 @@ export async function GET() {
   const companyId = access.company.id;
   const userId = access.user.id;
 
-  const [creds, profile, leads, sent, sequences] = await Promise.all([
+  const [creds, profile, leads, sent, sequences, emailAccounts] = await Promise.all([
     supabase.from("integration_credentials").select("provider").eq("user_id", userId),
     supabase
       .from("company_profiles")
@@ -24,6 +24,7 @@ export async function GET() {
     supabase.from("leads").select("id", { head: true, count: "exact" }).eq("company_id", companyId),
     supabase.from("outreach").select("id", { head: true, count: "exact" }).eq("user_id", userId).not("sent_at", "is", null),
     supabase.from("sequences").select("id", { head: true, count: "exact" }).eq("company_id", companyId),
+    supabase.from("email_accounts").select("id").eq("user_id", userId).limit(1),
   ]);
 
   const filled = (value: unknown) =>
@@ -40,10 +41,10 @@ export async function GET() {
     },
     {
       id: "gmail",
-      title: "Connect Gmail",
-      detail: "Send from your own inbox and catch replies automatically.",
+      title: "Connect your email",
+      detail: "Gmail or any business email. Send from your own inbox and catch replies automatically.",
       href: "/integrations",
-      done: (creds.data ?? []).some((row) => row.provider === "gmail"),
+      done: (creds.data ?? []).some((row) => row.provider === "gmail") || (emailAccounts.data ?? []).length > 0,
     },
     {
       id: "leads",

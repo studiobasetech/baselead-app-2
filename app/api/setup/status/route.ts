@@ -127,15 +127,19 @@ export async function GET() {
     .select("provider")
     .eq("user_id", access.user.id);
   const providers = new Set((creds ?? []).map((row) => row.provider as string));
+  const { data: emailAccount } = await supabase.from("email_accounts").select("email").eq("user_id", access.user.id).limit(1).maybeSingle();
+  if (emailAccount) providers.add("email-account");
 
   checks.push({
     id: "gmail",
     group: "Required",
-    title: "Your Gmail connected",
-    ok: providers.has("gmail"),
-    detail: providers.has("gmail")
-      ? "Emails go out from your Gmail and replies are detected automatically."
-      : "Connect Gmail so you can email leads, detect replies and get notifications.",
+    title: "Your email connected",
+    ok: providers.has("gmail") || providers.has("email-account"),
+    detail: providers.has("email-account")
+      ? `Emails go out from ${emailAccount?.email} and replies are detected automatically.`
+      : providers.has("gmail")
+        ? "Emails go out from your Gmail and replies are detected automatically."
+        : "Connect Gmail or any other email account (IMAP/SMTP) so you can email leads and detect replies.",
     action: { label: "Go to Integrations", href: "/integrations" },
   });
 

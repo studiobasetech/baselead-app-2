@@ -53,6 +53,18 @@ export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
     reasons.push("Website is not secure (no HTTPS).");
   }
 
+  // Missing tools a business normally needs = a reason to talk now.
+  if (hasWebsite && lead.raw_data?.website_reachable !== false) {
+    if (lead.raw_data?.has_booking === false) {
+      score += 4;
+      reasons.push("No online booking on the website — customers have to call or email.");
+    }
+    if (lead.raw_data?.has_chat === false) {
+      score += 3;
+      reasons.push("No chat or assistant to answer visitors after hours.");
+    }
+  }
+
   if (socials === 0) {
     score += 6;
     reasons.push("No social media profiles found.");
