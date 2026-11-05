@@ -183,14 +183,19 @@ export async function processSearch(
       await mapLimit(selectedLeads, 6, async (lead) => {
         const found = await enrichWebsite(lead.website);
 
-        lead.email = found.emails[0] ?? lead.email;
-        lead.email_addresses = found.emails;
-        lead.instagram_url = found.instagram_url;
-        lead.facebook_url = found.facebook_url;
-        lead.linkedin_url = found.linkedin_url;
-        lead.x_url = found.x_url;
-        lead.tiktok_url = found.tiktok_url;
-        lead.pinterest_url = found.pinterest_url;
+        // Keep what the listing already had; add what the website shows.
+        const emails = [...new Set([...(lead.email_addresses ?? []), ...(lead.email ? [lead.email] : []), ...found.emails])];
+        const phones = [...new Set([...(lead.phone_numbers ?? []), ...(lead.phone ? [lead.phone] : []), ...found.phones])];
+        lead.email = lead.email ?? emails[0] ?? null;
+        lead.email_addresses = emails;
+        lead.phone = lead.phone ?? phones[0] ?? null;
+        lead.phone_numbers = phones;
+        lead.instagram_url = lead.instagram_url ?? found.instagram_url;
+        lead.facebook_url = lead.facebook_url ?? found.facebook_url;
+        lead.linkedin_url = lead.linkedin_url ?? found.linkedin_url;
+        lead.x_url = lead.x_url ?? found.x_url;
+        lead.tiktok_url = lead.tiktok_url ?? found.tiktok_url;
+        lead.pinterest_url = lead.pinterest_url ?? found.pinterest_url;
         lead.raw_data = {
           ...(lead.raw_data ?? {}),
           website_reachable: lead.website ? found.reachable : null,
