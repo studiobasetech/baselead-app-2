@@ -134,13 +134,26 @@ function findLogo(html: string, base: string) {
   const candidates: string[] = [];
   const ld = html.match(/"logo"\s*:\s*(?:\{[^}]*?"url"\s*:\s*)?"([^"]+\.(?:png|jpe?g|svg|webp)[^"]*)"/i);
   if (ld) candidates.push(ld[1]);
+  // The logo image in the site's header (class, id, alt or file name says "logo").
+  for (const match of html.slice(0, 120000).matchAll(/<img[^>]+>/gi)) {
+    const tag = match[0];
+    if (!/logo/i.test(tag)) continue;
+    const src =
+      tag.match(/\ssrc=["']([^"']+)["']/i)?.[1] ||
+      tag.match(/data-(?:lazy-)?src=["']([^"']+)["']/i)?.[1] ||
+      tag.match(/srcset=["']([^"'\s,]+)/i)?.[1];
+    if (src && !src.startsWith("data:") && !/sprite|placeholder|loading/i.test(src)) {
+      candidates.push(src);
+      break;
+    }
+  }
   for (const match of html.matchAll(/<link[^>]+>/gi)) {
     const tag = match[0];
     if (!/rel=["'][^"']*(apple-touch-icon|icon)[^"']*["']/i.test(tag)) continue;
     const href = tag.match(/href=["']([^"']+)["']/i)?.[1];
     if (!href) continue;
     const size = Number(tag.match(/sizes=["'](\d+)x/i)?.[1] ?? 0);
-    if (/apple-touch-icon/i.test(tag) || size >= 96) candidates.push(href);
+    if (/apple-touch-icon/i.test(tag) || size >= 96 || (!size && /\.(png|svg)(\?|$)/i.test(href))) candidates.push(href);
   }
   const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1];
   if (og && /logo/i.test(og)) candidates.push(og);
