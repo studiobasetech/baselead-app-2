@@ -8,6 +8,7 @@ import {
   searchGooglePlaces,
 } from "./google-places-provider";
 import { searchOpenStreetMap } from "./osm-provider";
+import { isGeoapifyConfigured, searchGeoapify } from "./geoapify-provider";
 import { enrichWebsite, mapLimit } from "./enrich";
 import { scoreLead } from "./scoring";
 import { askAiJson, isAiConfigured } from "@/lib/ai";
@@ -45,9 +46,21 @@ export async function processSearch(
       : criteria.leads,
   };
 
-  const potentialLeads = isPlacesConfigured()
-    ? await searchGooglePlaces(providerCriteria)
-    : await searchOpenStreetMap(providerCriteria);
+  // Order: Google Places (if a key is set) → Geoapify (free, reliable)
+  // → public OpenStreetMap servers as a last resort.
+  let potentialLeads: PotentialLead[];
+  if (isPlacesConfigured()) {
+    potentialLeads = await searchGooglePlaces(providerCriteria);
+  } else if (isGeoapifyConfigured()) {
+    try {
+      potentialLeads = await searchGeoapify(providerCriteria);
+    } catch (error) {
+      console.warn("Geoapify search failed, trying OpenStreetMap:", error);
+      potentialLeads = await searchOpenStreetMap(providerCriteria);
+    }
+  } else {
+    potentialLeads = await searchOpenStreetMap(providerCriteria);
+  }
 
   if (potentialLeads.length === 0) {
     return {

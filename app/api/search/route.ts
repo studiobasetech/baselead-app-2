@@ -287,7 +287,8 @@ export async function POST(request: Request) {
       companySize: canAdvanced ? companySize : undefined,
       revenue: canAdvanced ? revenue : undefined,
       location,
-      radius,
+      // The form sends "25 miles"; providers need a number.
+      radius: Number.parseFloat(String(radius ?? "")) || 25,
       buyingIntent: canAdvanced ? buyingIntent : undefined,
       tags,
       scoring,
