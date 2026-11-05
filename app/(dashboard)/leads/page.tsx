@@ -222,7 +222,7 @@ function formatProjectValue(
 function getScoreClass(
   score: number,
 ) {
-  if (score >= 80) {
+  if (score >= 75) {
     return "text-[#3B82F6] font-semibold";
   }
 
@@ -232,7 +232,7 @@ function getScoreClass(
 function getOpportunity(
   score: number,
 ) {
-  return score >= 80
+  return score >= 75
     ? "High Opportunity"
     : "Medium Opportunity";
 }
@@ -3595,7 +3595,7 @@ export default function LeadsPage() {
 
   const highIntentCount =
     leads.filter(
-      (lead) => lead.score >= 80,
+      (lead) => lead.score >= 75,
     ).length;
 
   const contactedCount =
@@ -3753,7 +3753,7 @@ export default function LeadsPage() {
     ) {
       result = result.filter(
         (lead) =>
-          lead.score >= 80,
+          lead.score >= 75,
       );
     }
 
