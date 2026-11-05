@@ -809,7 +809,11 @@ function SearchLeadCard({
   onSelect,
   onAddToPipeline,
   onGenerateOutreach,
+  checked,
+  onToggleChecked,
 }: {
+  checked: boolean;
+  onToggleChecked: () => void;
   lead: SearchResultLead;
   index: number;
   selected: boolean;
@@ -836,6 +840,23 @@ function SearchLeadCard({
       <div className="grid gap-5 xl:grid-cols-[minmax(250px,1.15fr)_150px_minmax(220px,1fr)_92px] xl:items-center">
         <div className="min-w-0">
           <div className="flex items-start gap-4">
+            {lead.saved || !lead.id.startsWith("draft-") ? (
+              <span
+                title="Saved in your Leads"
+                className="mt-4 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[#84CC16]/15 text-[#84CC16]"
+              >
+                <Check size={13} />
+              </span>
+            ) : (
+              <input
+                type="checkbox"
+                aria-label={`Select ${lead.company || lead.name}`}
+                checked={checked}
+                onClick={(event) => event.stopPropagation()}
+                onChange={onToggleChecked}
+                className="mt-4 h-5 w-5 shrink-0 cursor-pointer accent-[#3B82F6]"
+              />
+            )}
             <CompanyLogo
               name={lead.company || lead.name || "Lead"}
               website={lead.website}
@@ -1594,7 +1615,9 @@ function SearchResultsView({
             </div>
 
             <p className="mt-2 text-sm text-gray-500">
-              AI-discovered businesses matching your search criteria.
+              {unsaved.length
+                ? "Not saved yet. Choose the leads you want and save them to your Leads."
+                : "All leads from this search are saved in your Leads."}
             </p>
           </div>
 
@@ -1703,6 +1726,59 @@ function SearchResultsView({
       </div>
 
       <div className="px-5 pb-20 lg:px-9">
+        {results.length > 0 && (
+          <div className="sticky top-14 z-20 mb-4 flex flex-col gap-3 rounded-2xl border border-[#3B82F6]/25 bg-[#060A12]/95 p-4 backdrop-blur lg:top-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3 text-sm">
+              {unsaved.length > 0 && (
+                <label className="flex cursor-pointer items-center gap-2 text-gray-300">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-[#3B82F6]"
+                    checked={checkedUnsaved.length > 0 && checkedUnsaved.length === unsaved.length}
+                    onChange={(event) =>
+                      setChecked(event.target.checked ? new Set(unsaved.map((lead) => lead.id)) : new Set())
+                    }
+                  />
+                  Select all
+                </label>
+              )}
+              <span className="text-gray-500">
+                {results.length - unsaved.length} saved · {unsaved.length} not saved
+              </span>
+            </div>
+
+            {unsaved.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  disabled={saving || checkedUnsaved.length === 0}
+                  onClick={async () => {
+                    await onSave(checkedUnsaved);
+                    setChecked(new Set());
+                  }}
+                  className="rounded-xl border border-[#3B82F6]/40 px-4 py-2.5 text-sm font-semibold text-[#3B82F6] hover:bg-[#3B82F6]/10 disabled:opacity-40"
+                >
+                  Save selected ({checkedUnsaved.length})
+                </button>
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={async () => {
+                    await onSave(unsaved);
+                    setChecked(new Set());
+                  }}
+                  className="rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-600 disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : `Save all (${unsaved.length})`}
+                </button>
+              </div>
+            )}
+            {notice && /saved|limit|could not/i.test(notice) && (
+              <p className="text-xs text-gray-400 sm:basis-full">{notice}</p>
+            )}
+          </div>
+        )}
+
         {filteredResults.length === 0 ? (
           <div className="rounded-3xl border border-white/10 bg-[#090909] px-6 py-20 text-center">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#A78BFA]/10 text-[#A78BFA]">
@@ -1747,6 +1823,8 @@ function SearchResultsView({
                   onSelect={() => setSelectedLeadId(lead.id)}
                   onAddToPipeline={onAddToPipeline}
                   onGenerateOutreach={onGenerateOutreach}
+                  checked={checked.has(lead.id)}
+                  onToggleChecked={() => toggleChecked(lead.id)}
                 />
               ))}
 
