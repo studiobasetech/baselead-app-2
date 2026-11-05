@@ -265,12 +265,13 @@ export async function processSearch(
         >(
           `You help a business that sells "${criteria.offer}" to "${criteria.idealClient}".
 For each prospect below, write a one-sentence reason it is a good fit, the most relevant service to pitch, an estimated project value range in USD, and up to 3 short evidence-based reasons. Only use the facts given.
+Reasons must be specific observations a salesperson can use (e.g. "No online booking on their website", "No chat to answer visitors after hours", "No social media found", "Owner Dr. Smith identified"). Never mention the score, and never list neutral facts like "Has a website".
 Reply with JSON only: [{"index":0,"reason":"","service":"","value":"","reasons":[""]}]
 
 ${top
   .map(
     (lead, index) =>
-      `${index}. ${lead.company} | ${lead.category ?? ""} | ${lead.location} | rating ${lead.rating ?? "n/a"} (${lead.review_count ?? 0} reviews) | website: ${lead.website ? "yes" : "no"} | socials: ${[lead.instagram_url, lead.facebook_url, lead.linkedin_url].filter(Boolean).length} | score ${lead.ai_score}`
+      `${index}. ${lead.company} | ${lead.category ?? ""} | ${lead.location} | rating ${lead.rating ?? "n/a"} (${lead.review_count ?? "unknown"} reviews) | website: ${lead.website ? (lead.raw_data?.website_reachable === false ? "does not load" : lead.raw_data?.website_ssl === false ? "yes, not secure" : "yes") : "no"} | online booking: ${lead.raw_data?.has_booking === undefined || lead.raw_data?.has_booking === null ? "unknown" : lead.raw_data?.has_booking ? "yes" : "no"} | chat on site: ${lead.raw_data?.has_chat === undefined || lead.raw_data?.has_chat === null ? "unknown" : lead.raw_data?.has_chat ? "yes" : "no"} | socials: ${[lead.instagram_url, lead.facebook_url, lead.linkedin_url].filter(Boolean).length} | decision maker: ${lead.contact_name ? `${lead.contact_name}${lead.contact_title ? ` (${lead.contact_title})` : ""}` : "unknown"} | email: ${lead.email ? "yes" : "no"} | phone: ${lead.phone ? "yes" : "no"}`
   )
   .join("\n")}`,
           { maxTokens: 2500 }

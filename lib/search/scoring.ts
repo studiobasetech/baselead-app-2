@@ -6,7 +6,7 @@ import type { PotentialLead, SearchCriteria } from "./types";
  */
 export function scoreLead(lead: PotentialLead, criteria: SearchCriteria) {
   const reasons: string[] = [];
-  let score = 55;
+  let score = 60;
 
   // Free data sources don't include reviews: only score them when we have them.
   const hasReviewData = lead.review_count !== null && lead.review_count !== undefined;
