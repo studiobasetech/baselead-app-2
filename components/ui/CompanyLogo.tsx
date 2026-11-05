@@ -39,20 +39,48 @@ export default function CompanyLogo({
   name,
   website,
   initials,
+  logoUrl,
   size = 48,
   className = "",
 }: {
   name: string;
   website?: string | null;
   initials?: string;
+  /** The business's own logo (found on its website). Tried first. */
+  logoUrl?: string | null;
   size?: number;
   className?: string;
 }) {
   const domain = domainFrom(website);
   const [failed, setFailed] = useState(false);
+  const [ownFailed, setOwnFailed] = useState(false);
   const hash = Array.from(name || "?").reduce((sum, char) => sum + char.charCodeAt(0), 0);
   const accent = PALETTE[hash % PALETTE.length];
   const box: CSSProperties = { width: size, height: size };
+
+  if (logoUrl && !ownFailed) {
+    return (
+      <span
+        className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white ${className}`}
+        style={box}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logoUrl}
+          alt={name}
+          width={Math.round(size * 0.78)}
+          height={Math.round(size * 0.78)}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="max-h-[78%] max-w-[78%] object-contain"
+          onLoad={(event) => {
+            if (event.currentTarget.naturalWidth < 24) setOwnFailed(true);
+          }}
+          onError={() => setOwnFailed(true)}
+        />
+      </span>
+    );
+  }
 
   if (domain && !failed) {
     return (

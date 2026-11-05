@@ -20,12 +20,15 @@ export type Enrichment = {
   has_booking: boolean;
   /** Live chat or chatbot on the site. */
   has_chat: boolean;
+  /** The business's own logo/icon from its website. */
+  logo_url: string | null;
 };
 
 const EMPTY: Enrichment = {
   peopleText: "",
   has_booking: false,
   has_chat: false,
+  logo_url: null,
   emails: [],
   phones: [],
   instagram_url: null,
@@ -126,6 +129,32 @@ export function pageText(html: string, max = 5000) {
     .slice(0, max);
 }
 
+/** Best logo the site publishes: JSON-LD logo, Apple icon, big icon, or an og:image named "logo". */
+function findLogo(html: string, base: string) {
+  const candidates: string[] = [];
+  const ld = html.match(/"logo"\s*:\s*(?:\{[^}]*?"url"\s*:\s*)?"([^"]+\.(?:png|jpe?g|svg|webp)[^"]*)"/i);
+  if (ld) candidates.push(ld[1]);
+  for (const match of html.matchAll(/<link[^>]+>/gi)) {
+    const tag = match[0];
+    if (!/rel=["'][^"']*(apple-touch-icon|icon)[^"']*["']/i.test(tag)) continue;
+    const href = tag.match(/href=["']([^"']+)["']/i)?.[1];
+    if (!href) continue;
+    const size = Number(tag.match(/sizes=["'](\d+)x/i)?.[1] ?? 0);
+    if (/apple-touch-icon/i.test(tag) || size >= 96) candidates.push(href);
+  }
+  const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1];
+  if (og && /logo/i.test(og)) candidates.push(og);
+  for (const candidate of candidates) {
+    try {
+      const url = new URL(candidate.replace(/\\\//g, "/"), base);
+      if (url.protocol === "https:" || url.protocol === "http:") return url.toString();
+    } catch {
+      // skip bad URLs
+    }
+  }
+  return null;
+}
+
 export function contactLinks(html: string, base: string, limit = 2) {
   const links = new Set<string>();
   for (const match of html.matchAll(/href=["']([^"'#]+)["']/gi)) {
@@ -176,6 +205,8 @@ export async function enrichWebsite(url: string | null): Promise<Enrichment> {
   });
   // Small sites put the owner on the home page.
   if (!result.peopleText) result.peopleText = pageText(home.html);
+
+  result.logo_url = findLogo(home.html, home.finalUrl);
 
   const siteHost = new URL(home.finalUrl).hostname.replace(/^www\./, "");
   result.emails = [...emails]

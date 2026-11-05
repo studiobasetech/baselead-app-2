@@ -1,5 +1,6 @@
 "use client";
 
+import CompanyLogo from "@/components/ui/CompanyLogo";
 import Link from "next/link";
 import { usePlan } from "@/components/plans/PlanProvider";
 import { useEffect, useMemo, useState, type ReactNode, type CSSProperties } from "react";
@@ -63,6 +64,7 @@ type SavedSearch = {
 };
 
 type SearchResultLead = {
+  address?: string | null;
   contact_name?: string | null;
   contact_title?: string | null;
   id: string;
@@ -272,6 +274,11 @@ function getLocation(lead: SearchResultLead) {
     [lead.city, lead.state, lead.country].filter(Boolean).join(", ") ||
     "Location unavailable"
   );
+}
+
+function logoUrlOf(lead: SearchResultLead) {
+  const raw = lead.raw_data as { logo_url?: string } | null | undefined;
+  return raw && typeof raw.logo_url === "string" ? raw.logo_url : null;
 }
 
 function getInitials(value: string) {
@@ -816,11 +823,12 @@ function SearchLeadCard({
       <div className="grid gap-5 xl:grid-cols-[minmax(250px,1.15fr)_150px_minmax(220px,1fr)_92px] xl:items-center">
         <div className="min-w-0">
           <div className="flex items-start gap-4">
-            <div
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-xs font-semibold ${getAvatarClass(index)}`}
-            >
-              {getInitials(lead.company || lead.name || "Lead")}
-            </div>
+            <CompanyLogo
+              name={lead.company || lead.name || "Lead"}
+              website={lead.website}
+              logoUrl={logoUrlOf(lead)}
+              size={56}
+            />
 
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -834,6 +842,12 @@ function SearchLeadCard({
                 {lead.industry || lead.category || "Business"}{" "}
                 <span className="text-gray-700">•</span> {getLocation(lead)}
               </p>
+
+              {lead.address && (
+                <p className="mt-0.5 truncate text-xs text-gray-600" data-no-translate>
+                  {lead.address}
+                </p>
+              )}
 
               {lead.contact_name && (
                 <p className="mt-1 truncate text-sm text-[#F5C518]">
@@ -999,9 +1013,12 @@ function LeadDetailPanel({
 
         <div className="relative flex items-start justify-between gap-4">
           <div className="flex min-w-0 gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#252525] to-[#111827] text-xs font-semibold text-white">
-              {getInitials(lead.company || lead.name || "Lead")}
-            </div>
+            <CompanyLogo
+              name={lead.company || lead.name || "Lead"}
+              website={lead.website}
+              logoUrl={logoUrlOf(lead)}
+              size={56}
+            />
 
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -1249,6 +1266,19 @@ function LeadDetailPanel({
                   <p className="text-xs text-gray-400">{lead.contact_title}</p>
                 )}
               </div>
+            )}
+
+            {lead.address && (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lead.company || lead.name || ""} ${lead.address}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sm text-gray-300 hover:text-white"
+                data-no-translate
+              >
+                <MapPin size={15} className="mt-0.5 shrink-0 text-gray-500" />
+                {lead.address}
+              </a>
             )}
 
             {lead.email && (

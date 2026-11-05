@@ -77,6 +77,7 @@ type Lead = {
   country?: string;
   website: string;
   logo: string;
+  logoUrl?: string | null;
   score: number;
   opportunity:
     | "High Opportunity"
@@ -995,6 +996,9 @@ function databaseLeadToLead(
     address:
       row.address || "",
 
+    logoUrl:
+      typeof raw.logo_url === "string" ? raw.logo_url : null,
+
     latitude:
       typeof row.latitude === "number"
         ? row.latitude
@@ -1175,8 +1179,8 @@ function LeadLogo({
 }) {
   return (
     <>
-      <CompanyLogo name={lead.company || lead.name} website={lead.website} initials={lead.logo} size={48} className="lg:hidden" />
-      <CompanyLogo name={lead.company || lead.name} website={lead.website} initials={lead.logo} size={56} className="hidden lg:flex" />
+      <CompanyLogo name={lead.company || lead.name} website={lead.website} logoUrl={lead.logoUrl} initials={lead.logo} size={48} className="lg:hidden" />
+      <CompanyLogo name={lead.company || lead.name} website={lead.website} logoUrl={lead.logoUrl} initials={lead.logo} size={56} className="hidden lg:flex" />
     </>
   );
 }
@@ -1362,6 +1366,12 @@ function LeadCard({
 
               {lead.location}
             </p>
+
+            {lead.address && (
+              <p className="mt-0.5 truncate text-xs text-gray-600" data-no-translate>
+                {lead.address}
+              </p>
+            )}
 
             <div className="mt-2 flex min-w-0 items-center gap-2">
               {lead.website ? (
@@ -1670,6 +1680,12 @@ function LeadDetailPanel({
 
               {lead.location}
             </p>
+
+            {lead.address && (
+              <p className="mt-0.5 truncate text-xs text-gray-600" data-no-translate>
+                {lead.address}
+              </p>
+            )}
 
             {lead.website && (
               <a

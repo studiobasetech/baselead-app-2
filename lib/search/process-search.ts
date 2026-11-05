@@ -205,6 +205,7 @@ export async function processSearch(
           website_reachable: lead.website ? found.reachable : null,
           has_booking: lead.website && found.reachable ? found.has_booking : null,
           has_chat: lead.website && found.reachable ? found.has_chat : null,
+          logo_url: found.logo_url,
           website_ssl: lead.website ? found.has_ssl : null,
           enriched: true,
         };

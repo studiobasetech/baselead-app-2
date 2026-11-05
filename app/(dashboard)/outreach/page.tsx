@@ -1,5 +1,6 @@
 "use client";
 
+import CompanyLogo from "@/components/ui/CompanyLogo";
 import {
   useCallback,
   useEffect,
@@ -772,6 +773,17 @@ function LeadAvatar({
   outreach: Outreach;
   large?: boolean;
 }) {
+  if (outreach.website) {
+    return (
+      <CompanyLogo
+        name={outreach.lead}
+        website={outreach.website}
+        initials={outreach.initials}
+        size={large ? 48 : 36}
+      />
+    );
+  }
+
   const dark =
     outreach.avatarClass ===
       "bg-black" ||
