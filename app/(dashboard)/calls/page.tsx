@@ -4,7 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState, type CSSProperties
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  AlertTriangle, BarChart3, Clock3, Flag, Gauge, Hash, Lock, Phone, PhoneCall, PhoneIncoming, PhoneMissed, PhoneOutgoing,
+  AlertTriangle, BarChart3, Clock3, Flag, Gauge, Lock, Phone, PhoneCall, PhoneIncoming, PhoneMissed, PhoneOutgoing,
   Play, ShieldCheck, SlidersHorizontal, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 
@@ -103,7 +103,7 @@ function CallsContent() {
           </p>
         </div>
         <div className="flex gap-1 rounded-xl border border-[#202020] bg-[#0D0D0D] p-1">
-          {([["history", "History"], ...(isManager ? [["alerts", "Alerts"], ["setup", "Phone setup"]] : [])] as [typeof tab, string][]).map(([value, label]) => (
+          {([["history", "Dial pad / History"], ...(isManager ? [["alerts", "Alerts"], ["setup", "Phone setup"]] : [])] as [typeof tab, string][]).map(([value, label]) => (
             <button key={value} type="button" onClick={() => setTab(value)} className={`rounded-lg px-4 py-2 text-xs font-medium transition ${tab === value ? "bg-[#3B82F6] text-white" : "text-gray-400 hover:text-white"}`}>
               {label}
             </button>
@@ -203,11 +203,11 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
     <div className={alertsOnly ? "" : "mt-6 grid gap-5 xl:grid-cols-[380px_minmax(0,1fr)]"}>
       {!alertsOnly && (
         <aside id="bl-dialpad" className="scroll-mt-20 lg:scroll-mt-6">
-          <div className="bl-card relative overflow-hidden rounded-[28px] border border-[#202020] bg-[radial-gradient(120%_70%_at_50%_0%,rgba(34,197,94,0.10),#0D0D0D_60%)] p-5 xl:sticky xl:top-6">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22C55E]/60 to-transparent" />
-            <div className="mb-4 flex items-center gap-3 xl:mb-5">
-              <Tile color={GREEN}><Hash size={16} strokeWidth={2.2} /></Tile>
-              <h2 className="text-sm font-semibold">Dial pad</h2>
+          <div className="bl-card relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(59,130,246,0.16),rgba(11,11,13,0.98)_55%)] p-5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.03)] xl:sticky xl:top-6">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
+            <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ backgroundColor: `${GREEN}22`, color: GREEN }}><Phone size={14} fill="currentColor" /></span>
+              Dial pad
             </div>
             <div className="mx-auto max-w-[340px]"><PhoneScreen /></div>
           </div>

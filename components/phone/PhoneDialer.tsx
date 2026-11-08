@@ -306,23 +306,15 @@ export default function PhoneDialer() {
   const { setOpen, call, incoming } = phone;
   const open = phone.open && !onCallsPage;
 
-  function goToPad() {
-    const pad = document.getElementById("bl-dialpad");
-    if (!pad) return;
-    pad.scrollIntoView({ behavior: "smooth", block: "start" });
-    pad.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
-    pad.classList.add("bl-dialpad-flash");
-    window.setTimeout(() => pad.classList.remove("bl-dialpad-flash"), 900);
-  }
   const seconds = call?.answeredAt ? Math.max(0, Math.round((now - call.answeredAt) / 1000)) : 0;
   const live = call?.stage === "active";
 
   return (
     <>
-      {!open && (
+      {!open && !onCallsPage && (
         <button
           type="button"
-          onClick={() => (onCallsPage ? goToPad() : setOpen(true))}
+          onClick={() => setOpen(true)}
           className="fixed bottom-20 left-4 z-[60] flex h-12 items-center gap-2 rounded-full border border-white/15 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_-10px_rgba(34,197,94,0.75),inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:-translate-y-0.5 lg:bottom-6 lg:left-[264px]"
           style={{ background: call ? (live ? "linear-gradient(145deg,#34D399,#16A34A)" : `linear-gradient(145deg,${GOLD},#F59E0B)`) : "linear-gradient(145deg,#34D399,#16A34A)", color: call && !live ? "#111" : "#fff" }}
           aria-label={t("Phone")}
