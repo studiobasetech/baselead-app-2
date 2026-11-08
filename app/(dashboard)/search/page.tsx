@@ -1,4 +1,5 @@
 "use client";
+import CallButton from "@/components/phone/CallButton";
 import { companyFilterClient } from "@/lib/active-company";
 
 import CompanyLogo from "@/components/ui/CompanyLogo";
@@ -1336,13 +1337,15 @@ function LeadDetailPanel({
             )}
 
             {lead.phone && (
-              <a
-                href={`tel:${lead.phone}`}
+              <CallButton
+                number={lead.phone}
+                leadId={lead.id.startsWith("draft-") ? null : lead.id}
+                leadName={String(lead.company || lead.name || "")}
                 className="flex items-center gap-3 text-sm text-gray-400 hover:text-white"
               >
                 <span className="text-gray-500">☎</span>
                 {lead.phone}
-              </a>
+              </CallButton>
             )}
 
             {!lead.email && !lead.phone && (

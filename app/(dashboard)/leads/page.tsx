@@ -43,6 +43,7 @@ import { recommendedServices } from "@/lib/recommendations";
 import OpportunityMap from "@/components/maps/OpportunityMap";
 import { SkeletonRows } from "@/components/ui/Skeleton";
 import CompanyLogo from "@/components/ui/CompanyLogo";
+import CallButton from "@/components/phone/CallButton";
 import EmptyState from "@/components/ui/EmptyState";
 
 /* =========================================================
@@ -1748,16 +1749,18 @@ function LeadDetailPanel({
                 <div className="mt-1 space-y-1">
                   {lead.phoneNumbers.map(
                     (phone) => (
-                      <a
+                      <CallButton
                         key={phone}
-                        href={`tel:${phone}`}
+                        number={phone}
+                        leadId={lead.id}
+                        leadName={lead.company || lead.name}
                         className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
                       >
                         <Phone
                           size={13}
                         />
                         {phone}
-                      </a>
+                      </CallButton>
                     ),
                   )}
                 </div>
@@ -1949,13 +1952,15 @@ function LeadDetailPanel({
 
         {lead.phoneNumbers.length >
           0 && (
-          <a
-            href={`tel:${lead.phoneNumbers[0]}`}
+          <CallButton
+            number={lead.phoneNumbers[0]}
+            leadId={lead.id}
+            leadName={lead.company || lead.name}
             className="flex items-center justify-center gap-2 rounded-lg border border-white/10 py-3 text-sm text-gray-300 transition hover:bg-white/5 hover:text-white"
           >
             <Phone size={16} />
             Call
-          </a>
+          </CallButton>
         )}
       </div>
 

@@ -26,6 +26,7 @@ import {
   Trophy,
   ListChecks,
   BookOpen,
+  PhoneCall,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -48,6 +49,7 @@ const NAV = [
   { icon: Users, label: "Leads", href: "/leads", color: "#2DD4BF" },
   { icon: GitBranch, label: "Pipeline", href: "/pipeline", color: "#2DD4BF" },
   { icon: Send, label: "Outreach", href: "/outreach", color: "#F97316" },
+  { icon: PhoneCall, label: "Calls", href: "/calls", color: "#22C55E" },
   { icon: Workflow, label: "Sequences", href: "/sequences", color: "#F472B6" },
   { icon: BookOpen, label: "Sales Toolkit", href: "/resources", color: "#F5C518" },
   { icon: CalendarIcon, label: "Calendar", href: "/calendar", color: "#3B82F6" },

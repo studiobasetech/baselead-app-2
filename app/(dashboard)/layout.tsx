@@ -5,6 +5,8 @@ import AssistantPanel from "@/components/assistant/AssistantPanel";
 import LiveUpdates from "@/components/live/LiveUpdates";
 import NumberMotion from "@/components/motion/NumberMotion";
 import CommandBar from "@/components/command/CommandBar";
+import { PhoneProvider } from "@/components/phone/PhoneProvider";
+import PhoneDialer from "@/components/phone/PhoneDialer";
 
 export default function DashboardLayout({
   children,
@@ -12,6 +14,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
+    <PhoneProvider>
     <div className="flex min-h-screen bg-[#0A0A0A]">
       <DashboardSidebar />
 
@@ -26,6 +29,8 @@ export default function DashboardLayout({
       <LiveUpdates />
       <NumberMotion />
       <CommandBar />
+      <PhoneDialer />
     </div>
+    </PhoneProvider>
   );
 }
