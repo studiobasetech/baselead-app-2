@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { Delete, Grid3x3, Lock, Mic, MicOff, Phone, PhoneIncoming, PhoneOff, ShieldCheck, X } from "lucide-react";
 
@@ -124,7 +125,7 @@ export function DialPad({ compact = false, onNavigate }: { compact?: boolean; on
           placeholder={t("Enter a number")}
           inputMode="tel"
           aria-label={t("Phone number")}
-          className="mt-3 w-full bg-transparent text-center text-[28px] font-light tracking-wide text-white tabular-nums outline-none placeholder:text-[18px] placeholder:text-gray-600"
+          className="mt-3 w-full bg-transparent text-center text-[28px] font-light tracking-wide text-white tabular-nums outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus:shadow-none placeholder:text-[18px] placeholder:text-gray-600"
         />
       </div>
 
@@ -287,6 +288,9 @@ export function PhoneScreen({ compact = false, onNavigate }: { compact?: boolean
 export default function PhoneDialer() {
   const phone = usePhone();
   const { t } = useLanguage();
+  const pathname = usePathname();
+  // The Calls page has its own pad: never show a second one there.
+  const onCallsPage = pathname === "/calls" || pathname.startsWith("/calls/");
   const [now, setNow] = useState(() => Date.now());
   const [mounted, setMounted] = useState(false);
 
@@ -299,7 +303,17 @@ export default function PhoneDialer() {
   }, [phone?.call]);
 
   if (!phone || !mounted || phone.state === "loading") return null;
-  const { open, setOpen, call, incoming } = phone;
+  const { setOpen, call, incoming } = phone;
+  const open = phone.open && !onCallsPage;
+
+  function goToPad() {
+    const pad = document.getElementById("bl-dialpad");
+    if (!pad) return;
+    pad.scrollIntoView({ behavior: "smooth", block: "start" });
+    pad.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    pad.classList.add("bl-dialpad-flash");
+    window.setTimeout(() => pad.classList.remove("bl-dialpad-flash"), 900);
+  }
   const seconds = call?.answeredAt ? Math.max(0, Math.round((now - call.answeredAt) / 1000)) : 0;
   const live = call?.stage === "active";
 
@@ -308,7 +322,7 @@ export default function PhoneDialer() {
       {!open && (
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => (onCallsPage ? goToPad() : setOpen(true))}
           className="fixed bottom-20 left-4 z-[60] flex h-12 items-center gap-2 rounded-full border border-white/15 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_-10px_rgba(34,197,94,0.75),inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:-translate-y-0.5 lg:bottom-6 lg:left-[264px]"
           style={{ background: call ? (live ? "linear-gradient(145deg,#34D399,#16A34A)" : `linear-gradient(145deg,${GOLD},#F59E0B)`) : "linear-gradient(145deg,#34D399,#16A34A)", color: call && !live ? "#111" : "#fff" }}
           aria-label={t("Phone")}

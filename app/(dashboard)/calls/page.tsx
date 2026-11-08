@@ -200,9 +200,9 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
   }, [calls]);
 
   return (
-    <div className={alertsOnly ? "" : "mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]"}>
+    <div className={alertsOnly ? "" : "mt-6 grid gap-5 xl:grid-cols-[380px_minmax(0,1fr)]"}>
       {!alertsOnly && (
-        <aside className="order-first xl:order-last">
+        <aside id="bl-dialpad" className="scroll-mt-20 lg:scroll-mt-6">
           <div className="bl-card relative overflow-hidden rounded-[28px] border border-[#202020] bg-[radial-gradient(120%_70%_at_50%_0%,rgba(34,197,94,0.10),#0D0D0D_60%)] p-5 xl:sticky xl:top-6">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22C55E]/60 to-transparent" />
             <div className="mb-4 flex items-center gap-3 xl:mb-5">
