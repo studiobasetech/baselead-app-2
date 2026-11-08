@@ -315,13 +315,12 @@ export default function PhoneDialer() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-20 left-4 z-[60] flex h-12 items-center gap-2 rounded-full border border-white/15 px-4 text-sm font-semibold text-white shadow-[0_14px_34px_-10px_rgba(34,197,94,0.75),inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:-translate-y-0.5 lg:bottom-6 lg:left-[264px]"
+          className={`fixed bottom-20 left-4 z-[60] flex h-12 items-center justify-center gap-2 rounded-full border border-white/15 ${call ? "px-4" : "w-12"} text-sm font-semibold text-white shadow-[0_14px_34px_-10px_rgba(34,197,94,0.75),inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:-translate-y-0.5 lg:bottom-6 lg:left-[264px]`}
           style={{ background: call ? (live ? "linear-gradient(145deg,#34D399,#16A34A)" : `linear-gradient(145deg,${GOLD},#F59E0B)`) : "linear-gradient(145deg,#34D399,#16A34A)", color: call && !live ? "#111" : "#fff" }}
           aria-label={t("Phone")}
         >
-          <Phone size={17} fill="currentColor" />
-          {call ? (live ? <span className="tabular-nums">{formatDuration(seconds)}</span> : t("Calling…")) : t("Phone")}
-          {phone.state === "locked" && <Lock size={13} />}
+          <Phone size={19} fill="currentColor" />
+          {call && (live ? <span className="tabular-nums">{formatDuration(seconds)}</span> : t("Calling…"))}
         </button>
       )}
 
