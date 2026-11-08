@@ -28,7 +28,9 @@ export type PlanFeature =
   | "team_permissions"
   | "custom_reports"
   | "api_access"
-  | "multi_company";
+  | "multi_company"
+  | "phone_calling"
+  | "phone_scorecards";
 
 export type PlanDefinition = {
   name: PlanName;
@@ -44,6 +46,10 @@ export type PlanDefinition = {
   contactLookupLimit: number;
   /** Companies (workspaces) one account can run. */
   companyLimit: number;
+  /** Built-in calling: reps whose own US number is included (0 = no calling). */
+  phoneRepsIncluded: number;
+  /** Calling minutes per rep with a number, shared by the whole team each month. */
+  phoneMinutesPerRep: number;
   features: readonly PlanFeature[];
 };
 
@@ -62,6 +68,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: 3,
     contactLookupLimit: 50,
     companyLimit: 1,
+    phoneRepsIncluded: 0,
+    phoneMinutesPerRep: 0,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -83,6 +91,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: 25,
     contactLookupLimit: 500,
     companyLimit: 1,
+    phoneRepsIncluded: 5,
+    phoneMinutesPerRep: 400,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -97,6 +107,7 @@ export const PLAN_DEFINITIONS: Record<
       "advanced_reports",
       "integrations_webhooks",
       "priority_support",
+      "phone_calling",
     ],
   },
 
@@ -111,6 +122,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: null,
     contactLookupLimit: 2000,
     companyLimit: 5,
+    phoneRepsIncluded: 10,
+    phoneMinutesPerRep: 800,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -131,6 +144,8 @@ export const PLAN_DEFINITIONS: Record<
       "custom_reports",
       "api_access",
       "multi_company",
+      "phone_calling",
+      "phone_scorecards",
     ],
   },
 };
@@ -235,3 +250,7 @@ export function minimumPlanFor(feature: PlanFeature): PlanName {
 export function getCampaignLimit(plan: PlanName | unknown): number | null {
   return getPlan(plan).campaignLimit;
 }
+
+/* Built-in calling (Telnyx): prices we charge for extras. */
+export const PHONE_EXTRA_REP_PRICE = 25; // per month, Scale, each rep after the included ones
+export const PHONE_MINUTES_PACK = { minutes: 1000, price: 20 };
