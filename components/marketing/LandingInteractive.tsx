@@ -143,8 +143,8 @@ export function TourVideo() {
 
 const PLAN_COPY: Record<PlanName, { tagline: string; bullets: (p: (typeof PLAN_DEFINITIONS)[PlanName]) => string[] }> = {
   Starter: { tagline: "For solo sellers", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "AI scoring & email drafts", "Pipeline & calendar"] },
-  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
-  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
+  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Built-in calling: own US number per rep", "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
+  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Built-in calling: 800 min per rep", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
 };
 
 export function PricingPlans() {
