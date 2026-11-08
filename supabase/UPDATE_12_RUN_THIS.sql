@@ -133,6 +133,11 @@ create policy "Own policy acceptance" on public.phone_policy_acceptances
 
 -- phone_credentials: no policies = only the server can read it.
 
+grant select on public.phone_numbers, public.calls, public.phone_settings,
+  public.phone_minute_packs, public.phone_policy_acceptances to authenticated;
+grant all on public.phone_numbers, public.phone_credentials, public.calls, public.phone_settings,
+  public.phone_minute_packs, public.phone_policy_acceptances to service_role;
+
 notify pgrst, 'reload schema';
 
 select 'UPDATE 12 done' as result;

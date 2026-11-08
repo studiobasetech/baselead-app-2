@@ -1,21 +1,29 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  AlertTriangle, Clock3, Flag, Lock, Phone, PhoneIncoming, PhoneMissed, PhoneOutgoing, Play, Sparkles, Star,
+  AlertTriangle, BarChart3, Clock3, Flag, Gauge, Hash, Lock, Phone, PhoneCall, PhoneIncoming, PhoneMissed, PhoneOutgoing,
+  Play, ShieldCheck, SlidersHorizontal, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 
 import { usePlan } from "@/components/plans/PlanProvider";
 import { usePhone } from "@/components/phone/PhoneProvider";
-import { OUTCOMES, formatDuration, formatPhone } from "@/components/phone/PhoneDialer";
+import { OUTCOMES, PhoneScreen, formatDuration, formatPhone } from "@/components/phone/PhoneDialer";
 import { PHONE_MINUTES_PACK } from "@/lib/plans";
 
 const BRAND = "#3B82F6";
 const GOLD = "#F5C518";
 const GREEN = "#22C55E";
 const RED = "#F22F46";
+const PURPLE = "#A78BFA";
+const TEAL = "#2DD4BF";
+
+/** Icon on a tinted square of its own color; the card's hover glow uses the same color. */
+function Tile({ color, children }: { color: string; children: React.ReactNode }) {
+  return <span className="bl-icon-tile" style={{ "--tab": color } as CSSProperties}>{children}</span>;
+}
 
 type CallRow = {
   id: string;
@@ -103,7 +111,7 @@ function CallsContent() {
         </div>
       </div>
 
-      {phone?.state === "not_configured" && (
+      {phone?.state === "not_configured" && tab === "setup" && (
         <p className="mt-5 rounded-2xl border border-[#F5C518]/25 bg-[#F5C518]/[0.06] p-4 text-sm text-[#F5C518]">
           Calling is being set up. Call history and phone setup will work as soon as the phone service is connected.
         </p>
@@ -192,8 +200,21 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
   }, [calls]);
 
   return (
-    <>
-      <div className="mt-6 flex flex-wrap items-center gap-2">
+    <div className={alertsOnly ? "" : "mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]"}>
+      {!alertsOnly && (
+        <aside className="order-first xl:order-last">
+          <div className="bl-card relative overflow-hidden rounded-[28px] border border-[#202020] bg-[radial-gradient(120%_70%_at_50%_0%,rgba(34,197,94,0.10),#0D0D0D_60%)] p-5 xl:sticky xl:top-6">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22C55E]/60 to-transparent" />
+            <div className="mb-4 flex items-center gap-3 xl:mb-5">
+              <Tile color={GREEN}><Hash size={16} strokeWidth={2.2} /></Tile>
+              <h2 className="text-sm font-semibold">Dial pad</h2>
+            </div>
+            <div className="mx-auto max-w-[340px]"><PhoneScreen /></div>
+          </div>
+        </aside>
+      )}
+      <div className="min-w-0">
+      <div className="mt-6 flex flex-wrap items-center gap-2 xl:mt-0">
         <select value={days} onChange={(e) => setDays(Number(e.target.value))} className="rounded-xl border border-[#202020] bg-[#0D0D0D] px-3 py-2 text-sm">
           {[1, 7, 30, 90, 365].map((d) => <option key={d} value={d}>{d === 1 ? "Today" : `Last ${d} days`}</option>)}
         </select>
@@ -218,21 +239,28 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
 
       <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
         {[
-          { label: "Calls", value: totals.calls, color: BRAND },
-          { label: "Connected", value: totals.connected, color: GREEN },
-          { label: "Talk time (min)", value: totals.minutes, color: "#A78BFA" },
-          { label: "Meetings booked", value: totals.meetings, color: GOLD },
-          { label: "Missed calls", value: totals.missed, color: RED },
-        ].map((card) => (
-          <div key={card.label} className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4">
-            <p className="text-xs text-gray-500">{card.label}</p>
-            <p className="mt-1 text-2xl font-semibold" style={{ color: card.color }}>{card.value.toLocaleString()}</p>
+          { label: "Calls", value: totals.calls, color: BRAND, icon: PhoneCall },
+          { label: "Connected", value: totals.connected, color: GREEN, icon: Phone },
+          { label: "Talk time (min)", value: totals.minutes, color: PURPLE, icon: Timer },
+          { label: "Meetings booked", value: totals.meetings, color: GOLD, icon: Video },
+          { label: "Missed calls", value: totals.missed, color: RED, icon: PhoneMissed },
+        ].map(({ label, value, color, icon: Icon }, index) => (
+          <div key={label} className={`bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 ${index === 4 ? "col-span-2 lg:col-span-1" : ""}`}>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] uppercase tracking-wider text-gray-500">{label}</span>
+              <Tile color={color}><Icon size={16} strokeWidth={2.2} /></Tile>
+            </div>
+            <p className="mt-2 text-2xl font-semibold tabular-nums" style={{ color }}>{loading ? "–" : value.toLocaleString()}</p>
           </div>
         ))}
       </div>
 
       {isManager && !alertsOnly && perRep.length > 1 && (
-        <div className="mt-5 overflow-x-auto rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+        <div className="bl-card mt-5 overflow-x-auto rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+          <div className="flex items-center gap-3 px-4 pt-4">
+            <Tile color={TEAL}><Users size={16} strokeWidth={2.2} /></Tile>
+            <h2 className="text-sm font-semibold">By rep</h2>
+          </div>
           <table className="w-full min-w-[560px] text-sm">
             <thead className="text-left text-xs text-gray-500">
               <tr>{["Rep", "Calls", "Connected", "Talk time", "Meetings", "Avg. score"].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
@@ -267,9 +295,9 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
           const other = call.direction === "outbound" ? call.to_number : call.from_number;
           const Icon = call.status === "missed" ? PhoneMissed : call.direction === "inbound" ? PhoneIncoming : PhoneOutgoing;
           return (
-            <div key={call.id} className="rounded-2xl border border-[#202020] bg-[#0D0D0D]">
+            <div key={call.id} className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D]">
               <button type="button" onClick={() => setOpenId(open ? null : call.id)} className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left">
-                <Icon size={18} style={{ color: call.status === "missed" ? RED : call.direction === "inbound" ? GREEN : BRAND }} />
+                <Tile color={call.status === "missed" ? RED : call.direction === "inbound" ? GREEN : BRAND}><Icon size={16} strokeWidth={2.2} /></Tile>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-white" data-no-translate>{call.lead?.company || call.lead?.name || formatPhone(other)}</p>
                   <p className="text-xs text-gray-500">
@@ -355,7 +383,8 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
           );
         })}
       </div>
-    </>
+      </div>
+    </div>
   );
 }
 
@@ -459,9 +488,9 @@ function PhoneSetup() {
       <div className="space-y-5">
         {message && <p className="rounded-2xl border border-[#3B82F6]/30 bg-[#3B82F6]/10 p-4 text-sm text-[#93C5FD]">{message}</p>}
 
-        <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+        <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Phone numbers</h2>
+            <div className="flex items-center gap-3"><Tile color={GREEN}><Phone size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Phone numbers</h2></div>
             <span className="text-xs text-gray-500">{numbers.length} / {included} included</span>
           </div>
           <p className="mt-1 text-sm text-gray-500">Each rep gets their own US or Canadian number. Numbers belong to the company — reassign them when someone leaves.</p>
@@ -536,8 +565,8 @@ function PhoneSetup() {
         </section>
 
         {settings && (
-          <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-            <h2 className="font-semibold">Rules</h2>
+          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+            <div className="flex items-center gap-3"><Tile color={BRAND}><SlidersHorizontal size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Rules</h2></div>
 
             <p className="mt-4 text-sm text-white">Calls to numbers that aren&apos;t leads</p>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -583,14 +612,14 @@ function PhoneSetup() {
 
       <div className="space-y-5">
         {usage && (
-          <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-            <h2 className="font-semibold">Minutes this month</h2>
-            <p className="mt-3 text-3xl font-semibold">{usage.used.toLocaleString()} <span className="text-base text-gray-500">/ {usage.allowance.toLocaleString()}</span></p>
+          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+            <div className="flex items-center gap-3"><Tile color={BRAND}><BarChart3 size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Minutes this month</h2></div>
+            <p className="mt-3 text-3xl font-semibold tabular-nums" style={{ color: BRAND }}>{usage.used.toLocaleString()} <span className="text-base text-gray-500">/ {usage.allowance.toLocaleString()}</span></p>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/[0.06]">
               <div className="h-full rounded-full" style={{ width: `${Math.min(100, (usage.used / Math.max(1, usage.allowance)) * 100)}%`, backgroundColor: usage.used / Math.max(1, usage.allowance) >= 0.8 ? GOLD : BRAND }} />
             </div>
             <p className="mt-3 text-xs leading-5 text-gray-500">
-              {usage.minutesPerRep} minutes × {Math.max(1, usage.repsWithNumbers)} rep{usage.repsWithNumbers === 1 ? "" : "s"} with a number{usage.packMinutes ? ` + ${usage.packMinutes.toLocaleString()} extra` : ""}. Shared by the whole team. Calls to the USA and Canada only.
+              {usage.minutesPerRep} minutes × {Math.max(1, usage.repsWithNumbers)} {Math.max(1, usage.repsWithNumbers) === 1 ? "rep" : "reps"} with a number{usage.packMinutes ? ` + ${usage.packMinutes.toLocaleString()} extra` : ""}. Shared by the whole team. Calls to the USA and Canada only.
             </p>
             {usage.used / Math.max(1, usage.allowance) >= 0.8 && (
               <p className="mt-3 flex items-center gap-2 text-xs text-[#F5C518]"><AlertTriangle size={13} /> {usage.remaining <= 0 ? "Minutes used up — calling is paused until next month." : "Over 80% used."}</p>
@@ -602,8 +631,8 @@ function PhoneSetup() {
         )}
 
         {settings && (
-          <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
-            <h2 className="font-semibold">Monthly limit per rep</h2>
+          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
+            <div className="flex items-center gap-3"><Tile color={PURPLE}><Gauge size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Monthly limit per rep</h2></div>
             {scorecards ? (
               <>
                 <p className="mt-1 text-xs text-gray-500">Optional. Empty = no personal limit (only the team total).</p>
@@ -635,8 +664,8 @@ function PhoneSetup() {
           </section>
         )}
 
-        <section className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-xs leading-5 text-gray-500">
-          <p className="font-semibold text-white">How recordings work</p>
+        <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5 text-xs leading-5 text-gray-500">
+          <div className="flex items-center gap-3"><Tile color={RED}><ShieldCheck size={16} strokeWidth={2.2} /></Tile><p className="text-sm font-semibold text-white">How recordings work</p></div>
           <p className="mt-2">Every call is recorded automatically and kept for 1 year. Flagged calls are kept as backup. Reps can&apos;t turn recording off or delete recordings. The AI summarizes each call and points out what to improve.</p>
         </section>
       </div>
