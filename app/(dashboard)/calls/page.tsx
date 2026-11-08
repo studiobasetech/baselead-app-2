@@ -237,7 +237,7 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
         <p className="mt-4 text-sm text-gray-500">Calls to numbers that aren&apos;t leads, after-hours or weekend calls, unusually long calls, unknown callers and calls the AI thinks are personal.</p>
       )}
 
-      <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-5">
         {[
           { label: "Calls", value: totals.calls, color: BRAND, icon: PhoneCall },
           { label: "Connected", value: totals.connected, color: GREEN, icon: Phone },
@@ -245,9 +245,9 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
           { label: "Meetings booked", value: totals.meetings, color: GOLD, icon: Video },
           { label: "Missed calls", value: totals.missed, color: RED, icon: PhoneMissed },
         ].map(({ label, value, color, icon: Icon }, index) => (
-          <div key={label} className={`bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 ${index === 4 ? "col-span-2 lg:col-span-1" : ""}`}>
+          <div key={label} className={`bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4 ${index === 4 ? "col-span-2 md:col-span-1" : ""}`}>
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] uppercase tracking-wider text-gray-500">{label}</span>
+              <span className="text-[11px] uppercase leading-4 tracking-wider text-gray-500">{label}</span>
               <Tile color={color}><Icon size={16} strokeWidth={2.2} /></Tile>
             </div>
             <p className="mt-2 text-2xl font-semibold tabular-nums" style={{ color }}>{loading ? "–" : value.toLocaleString()}</p>
