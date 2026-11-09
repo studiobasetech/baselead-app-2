@@ -142,7 +142,7 @@ export default function CompanySwitcher() {
                 disabled={current || busy || locked}
                 onClick={() => switchTo(company.id)}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-white/[0.04] disabled:cursor-default disabled:hover:bg-transparent"
-                style={{ color: current ? "#FFFFFF" : MUTED }}
+                style={{ color: current ? BRAND : MUTED }}
               >
                 <span className="min-w-0 flex-1 truncate">{company.name}</span>
                 {company.main && (
@@ -205,7 +205,7 @@ export default function CompanySwitcher() {
             onClick={() => !busy && setAdding(false)}
           >
             <div
-              className="w-full max-w-md rounded-2xl border p-6"
+              className="bl-phone-modal w-full max-w-md rounded-2xl border p-6"
               style={{ borderColor: BORDER, backgroundColor: "#0B0B0D" }}
               onClick={(event) => event.stopPropagation()}
               role="dialog"

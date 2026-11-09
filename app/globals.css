@@ -2439,3 +2439,60 @@ html:not(.baselead-light) .baselead-mobile-bottombar {
   box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.25), 0 0 40px -10px rgba(34, 197, 94, 0.7) !important;
   transition: box-shadow 300ms ease, border-color 300ms ease;
 }
+
+/* =========================================================
+   PHONE (dial pad, pop-up, call screens) — light mode
+========================================================= */
+html.baselead-light .bl-phone-surface {
+  background: radial-gradient(120% 80% at 50% 0%, rgba(59, 130, 246, 0.09), #ffffff 55%) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 24px 60px -28px rgba(15, 23, 42, 0.28) !important;
+}
+html.baselead-light .bl-dial-display {
+  background: #f4f5f7 !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+}
+html.baselead-light .bl-dial-display input { color: #0b0b0d !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+html.baselead-light .bl-dial-display input::placeholder { color: #a1a1aa !important; }
+html.baselead-light .bl-dial-display > span {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #6b7280 !important;
+}
+html.baselead-light .bl-dial-key {
+  background: linear-gradient(160deg, #ffffff, #f0f1f4) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #111114 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 6px 14px -8px rgba(15, 23, 42, 0.3) !important;
+}
+html.baselead-light .bl-dial-key span { color: #111114 !important; }
+html.baselead-light .bl-dial-key span + span { color: #8a8f98 !important; }
+html.baselead-light .bl-dial-key:hover {
+  border-color: rgba(34, 197, 94, 0.55) !important;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.15), 0 0 18px -6px rgba(34, 197, 94, 0.6) !important;
+}
+html.baselead-light .bl-dial-key:hover span + span { color: #16a34a !important; }
+html.baselead-light .bl-phone-ctrl {
+  background-color: #f1f2f5 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #111114 !important;
+}
+html.baselead-light .bl-phone-modal {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 24px 60px -24px rgba(15, 23, 42, 0.3) !important;
+}
+html.baselead-light .bl-phone-modal textarea,
+html.baselead-light .bl-phone-modal input {
+  background-color: #f6f7f9 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #111114 !important;
+}
+html.baselead-light .bl-outcome { color: #3a3a3c !important; }
+html.baselead-light .bl-outcome[style*="rgba(59, 130, 246"] { color: #2563eb !important; }
+html.baselead-light .bl-phone-notice {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+  color: #92400e !important;
+}
+html.baselead-light .bl-phone-notice a { color: #92400e !important; }

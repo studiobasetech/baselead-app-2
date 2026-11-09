@@ -12,6 +12,21 @@ import { usePlan } from "@/components/plans/PlanProvider";
 import { usePhone } from "@/components/phone/PhoneProvider";
 import { OUTCOMES, PhoneScreen, formatDuration, formatPhone } from "@/components/phone/PhoneDialer";
 import { PHONE_MINUTES_PACK } from "@/lib/plans";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+
+/** Confirm dialogs aren't on the page, so translate them here. */
+async function confirmIn(language: string, text: string) {
+  let message = text;
+  if (language === "es") {
+    try {
+      const dictionary = (await import("@/components/i18n/es-ui.json")).default as Record<string, string>;
+      message = dictionary[text] || text;
+    } catch {
+      // Keep English.
+    }
+  }
+  return window.confirm(message);
+}
 
 const BRAND = "#3B82F6";
 const GOLD = "#F5C518";
@@ -203,7 +218,7 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
     <div className={alertsOnly ? "" : "mt-6 grid gap-5 xl:grid-cols-[380px_minmax(0,1fr)]"}>
       {!alertsOnly && (
         <aside id="bl-dialpad" className="scroll-mt-20 lg:scroll-mt-6">
-          <div className="bl-card relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(59,130,246,0.16),rgba(11,11,13,0.98)_55%)] p-5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.03)] xl:sticky xl:top-6">
+          <div className="bl-card bl-phone-surface relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(59,130,246,0.16),rgba(11,11,13,0.98)_55%)] p-5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.03)] xl:sticky xl:top-6">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
             <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ backgroundColor: `${GREEN}22`, color: GREEN }}><Phone size={14} fill="currentColor" /></span>
@@ -361,7 +376,7 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
                           <p className="mt-1 text-xs text-gray-500">Call scores are included in Scale.</p>
                         )}
                         <textarea defaultValue={call.manager_note ?? ""} placeholder="Feedback for the rep" onBlur={(e) => e.target.value !== (call.manager_note ?? "") && patch(call.id, { manager_note: e.target.value })} rows={2} className="mt-2 w-full rounded-xl border border-[#202020] bg-[#0A0A0A] px-3 py-2 text-sm" />
-                        <button type="button" onClick={() => patch(call.id, { flagged: !call.flagged })} className="mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs" style={{ borderColor: call.flagged ? RED : "#202020", color: call.flagged ? RED : "#C4C4C4" }}>
+                        <button type="button" onClick={() => patch(call.id, { flagged: !call.flagged })} className={`mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs ${call.flagged ? "" : "border-[#202020] text-gray-300"}`} style={call.flagged ? { borderColor: RED, color: RED, backgroundColor: "rgba(242,47,70,0.08)" } : undefined}>
                           <Flag size={13} /> {call.flagged ? "Flagged — kept as backup" : "Flag this call (keep recording)"}
                         </button>
                       </div>
@@ -397,6 +412,7 @@ type NumberRow = { id: string; user_id: string | null; phone_number: string };
 
 function PhoneSetup() {
   const phone = usePhone();
+  const { language } = useLanguage();
   const params = useSearchParams();
   const [team, setTeam] = useState<TeamRow[]>([]);
   const [numbers, setNumbers] = useState<NumberRow[]>([]);
@@ -491,7 +507,7 @@ function PhoneSetup() {
         <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3"><Tile color={GREEN}><Phone size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Phone numbers</h2></div>
-            <span className="text-xs text-gray-500">{numbers.length} / {included} included</span>
+            <span className="text-xs text-gray-500">{`${numbers.length} / ${included} included`}</span>
           </div>
           <p className="mt-1 text-sm text-gray-500">Each rep gets their own US or Canadian number. Numbers belong to the company — reassign them when someone leaves.</p>
 
@@ -554,7 +570,7 @@ function PhoneSetup() {
               {unassigned.map((n) => (
                 <span key={n.id} className="mr-3 inline-flex items-center gap-2">
                   {formatPhone(n.phone_number)}
-                  <button type="button" onClick={() => window.confirm("Release this number? It can't be recovered.") && changeNumber(n.id, { release: true })} className="text-[#F22F46]">Release</button>
+                  <button type="button" onClick={async () => (await confirmIn(language, "Release this number? It can't be recovered.")) && changeNumber(n.id, { release: true })} className="text-[#F22F46]">Release</button>
                 </span>
               ))}
             </div>
@@ -571,14 +587,17 @@ function PhoneSetup() {
             <p className="mt-4 text-sm text-white">Calls to numbers that aren&apos;t leads</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {[["flag", "Allow, but flag them for review"], ["block", "Block — only leads in BaseLead"]].map(([value, label]) => (
-                <button key={value} type="button" onClick={() => saveSettings({ non_lead_policy: value })} className="rounded-xl border px-3 py-2 text-sm" style={{ borderColor: settings.non_lead_policy === value ? BRAND : "#202020", color: settings.non_lead_policy === value ? "#fff" : "#A3A3A3" }}>
+                <button key={value} type="button" onClick={() => saveSettings({ non_lead_policy: value })} className={`rounded-xl border px-3 py-2 text-sm transition ${settings.non_lead_policy === value ? "" : "border-[#202020] text-gray-400 hover:text-gray-200"}`} style={settings.non_lead_policy === value ? { borderColor: BRAND, backgroundColor: "rgba(59,130,246,0.12)", color: BRAND } : undefined}>
                   {label}
                 </button>
               ))}
             </div>
 
             <label className="mt-5 flex items-start gap-3 text-sm">
-              <input type="checkbox" checked={Boolean(settings.announcement)} onChange={(e) => (e.target.checked || window.confirm("Some states and Canada require telling people the call is recorded. Turn off the announcement anyway?")) && saveSettings({ announcement: e.target.checked })} className="mt-1" />
+              <input type="checkbox" checked={Boolean(settings.announcement)} onChange={async (e) => {
+                const checked = e.target.checked;
+                if (checked || (await confirmIn(language, "Some states and Canada require telling people the call is recorded. Turn off the announcement anyway?"))) saveSettings({ announcement: checked });
+              }} className="mt-1" />
               <span>
                 <span className="text-white">Recording announcement</span>
                 <span className="block text-xs text-gray-500">Callers hear: “This call may be recorded for quality and training.” Recommended — required in several states.</span>
@@ -598,7 +617,7 @@ function PhoneSetup() {
               </label>
               <label className="text-xs text-gray-500">Time zone
                 <select value={String(settings.timezone)} onChange={(e) => saveSettings({ timezone: e.target.value })} className="mt-1 w-full rounded-xl border border-[#202020] bg-[#0A0A0A] px-3 py-2 text-sm text-white">
-                  {["America/New_York", "America/Chicago", "America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "America/Toronto", "America/Vancouver", "America/Mexico_City"].map((z) => <option key={z} value={z}>{z.replace("America/", "").replace("_", " ")}</option>)}
+                  {["America/New_York", "America/Chicago", "America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "America/Toronto", "America/Vancouver", "America/Mexico_City"].map((z) => <option key={z} value={z}>{z.split("/")[1].replace("_", " ")}</option>)}
                 </select>
               </label>
             </div>
@@ -619,13 +638,15 @@ function PhoneSetup() {
               <div className="h-full rounded-full" style={{ width: `${Math.min(100, (usage.used / Math.max(1, usage.allowance)) * 100)}%`, backgroundColor: usage.used / Math.max(1, usage.allowance) >= 0.8 ? GOLD : BRAND }} />
             </div>
             <p className="mt-3 text-xs leading-5 text-gray-500">
-              {usage.minutesPerRep} minutes × {Math.max(1, usage.repsWithNumbers)} {Math.max(1, usage.repsWithNumbers) === 1 ? "rep" : "reps"} with a number{usage.packMinutes ? ` + ${usage.packMinutes.toLocaleString()} extra` : ""}. Shared by the whole team. Calls to the USA and Canada only.
+              <span className="block">{Math.max(1, usage.repsWithNumbers) === 1 ? `${usage.minutesPerRep} minutes × 1 rep with a number` : `${usage.minutesPerRep} minutes × ${usage.repsWithNumbers} reps with a number`}</span>
+              {usage.packMinutes > 0 && <span className="block">{`+ ${usage.packMinutes.toLocaleString()} extra minutes`}</span>}
+              <span className="block">Shared by the whole team. Calls to the USA and Canada only.</span>
             </p>
             {usage.used / Math.max(1, usage.allowance) >= 0.8 && (
               <p className="mt-3 flex items-center gap-2 text-xs text-[#F5C518]"><AlertTriangle size={13} /> {usage.remaining <= 0 ? "Minutes used up — calling is paused until next month." : "Over 80% used."}</p>
             )}
             <button type="button" onClick={buyMinutes} className="mt-4 w-full rounded-xl border border-[#3B82F6]/40 py-2.5 text-sm font-semibold text-[#93C5FD] hover:bg-[#3B82F6]/10">
-              Add {PHONE_MINUTES_PACK.minutes.toLocaleString()} minutes — ${PHONE_MINUTES_PACK.price}
+              {`Add ${PHONE_MINUTES_PACK.minutes.toLocaleString("en-US")} minutes — $${PHONE_MINUTES_PACK.price}`}
             </button>
           </section>
         )}

@@ -116,7 +116,7 @@ export function DialPad({ compact = false, onNavigate }: { compact?: boolean; on
       </div>
 
       {/* Display */}
-      <div className={`relative ${compact ? "mt-4" : "mt-6"} rounded-2xl border border-white/[0.06] bg-black/40 px-4 py-4 text-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.6)]`}>
+      <div className={`relative ${compact ? "mt-4" : "mt-6"} bl-dial-display rounded-2xl border border-white/[0.06] bg-black/40 px-4 py-4 text-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.6)]`}>
         <span className="absolute left-3 top-3 rounded-md border border-white/10 px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-gray-400">+1 US · CA</span>
         <input
           value={liveFormat(number)}
@@ -154,7 +154,7 @@ export function DialPad({ compact = false, onNavigate }: { compact?: boolean; on
       </div>
 
       {notice && (
-        <p className="mt-4 rounded-xl border px-3 py-2 text-center text-xs leading-5" style={{ borderColor: `${GOLD}33`, backgroundColor: `${GOLD}0D`, color: "#E8C547" }}>
+        <p className="bl-phone-notice mt-4 rounded-xl border px-3 py-2 text-center text-xs leading-5" style={{ borderColor: `${GOLD}33`, backgroundColor: `${GOLD}0D`, color: "#E8C547" }}>
           {notice}{" "}
           {state === "no_number" && status?.isManager && (
             <Link href="/calls?tab=setup" onClick={onNavigate} className="font-semibold underline">{t("Phone setup")}</Link>
@@ -221,7 +221,7 @@ function InCall() {
 
       <div className="mt-6 flex items-center justify-center gap-5">
         {live && (
-          <button type="button" onClick={phone.toggleMute} className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 text-white transition hover:bg-white/[0.08]" style={{ backgroundColor: call.muted ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.03)" }} aria-label={call.muted ? t("Unmute") : t("Mute")}>
+          <button type="button" onClick={phone.toggleMute} className="bl-phone-ctrl flex h-14 w-14 items-center justify-center rounded-full border border-white/10 text-white transition hover:bg-white/[0.08]" style={{ backgroundColor: call.muted ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.03)" }} aria-label={call.muted ? t("Unmute") : t("Mute")}>
             {call.muted ? <MicOff size={21} /> : <Mic size={21} />}
           </button>
         )}
@@ -229,7 +229,7 @@ function InCall() {
           <PhoneOff size={24} />
         </button>
         {live && (
-          <button type="button" onClick={() => setShowKeys(!showKeys)} className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 text-white transition hover:bg-white/[0.08]" style={{ backgroundColor: showKeys ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.03)" }} aria-label={t("Keypad")}>
+          <button type="button" onClick={() => setShowKeys(!showKeys)} className="bl-phone-ctrl flex h-14 w-14 items-center justify-center rounded-full border border-white/10 text-white transition hover:bg-white/[0.08]" style={{ backgroundColor: showKeys ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.03)" }} aria-label={t("Keypad")}>
             <Grid3x3 size={21} />
           </button>
         )}
@@ -325,7 +325,7 @@ export default function PhoneDialer() {
       )}
 
       {open && (
-        <div className="fixed bottom-20 left-4 z-[97] w-[min(360px,calc(100vw-32px))] overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(59,130,246,0.16),rgba(11,11,13,0.98)_55%)] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur-2xl lg:bottom-6 lg:left-[264px]">
+        <div className="bl-phone-surface fixed bottom-20 left-4 z-[97] w-[min(360px,calc(100vw-32px))] overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(59,130,246,0.16),rgba(11,11,13,0.98)_55%)] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur-2xl lg:bottom-6 lg:left-[264px]">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
           <div className="flex items-center justify-between px-5 pb-1 pt-4">
             <span className="flex items-center gap-2 text-sm font-semibold text-white">
@@ -350,7 +350,7 @@ export default function PhoneDialer() {
       {incoming &&
         createPortal(
           <div className="fixed inset-x-0 top-4 z-[130] flex justify-center px-4">
-            <div className="flex w-full max-w-md items-center gap-3 rounded-2xl border border-white/10 bg-[#0B0B0D]/95 p-4 shadow-[0_20px_60px_-15px_rgba(34,197,94,0.5)] backdrop-blur-xl">
+            <div className="bl-phone-modal flex w-full max-w-md items-center gap-3 rounded-2xl border border-white/10 bg-[#0B0B0D]/95 p-4 shadow-[0_20px_60px_-15px_rgba(34,197,94,0.5)] backdrop-blur-xl">
               <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${GREEN}22`, color: GREEN }}>
                 <span className="absolute inset-0 animate-ping rounded-full opacity-30" style={{ backgroundColor: GREEN }} />
                 <PhoneIncoming size={20} />
@@ -422,7 +422,7 @@ function OutcomeModal() {
 
   return createPortal(
     <div className="fixed inset-0 z-[125] flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-md rounded-2xl border p-6" style={{ borderColor: BORDER, backgroundColor: "#0B0B0D" }} role="dialog" aria-modal="true">
+      <div className="bl-phone-modal w-full max-w-md rounded-2xl border p-6" style={{ borderColor: BORDER, backgroundColor: "#0B0B0D" }} role="dialog" aria-modal="true">
         <h2 className="text-lg font-bold text-white">{t("How did the call go?")}</h2>
         <p className="mt-1 text-sm" style={{ color: MUTED }}>
           {ended.leadName || formatPhone(ended.number)} · {formatDuration(ended.seconds)}
@@ -434,8 +434,8 @@ function OutcomeModal() {
               key={item.value}
               type="button"
               onClick={() => setOutcome(item.value)}
-              className="rounded-xl border px-3 py-2.5 text-left text-sm transition"
-              style={{ borderColor: outcome === item.value ? BRAND : BORDER, backgroundColor: outcome === item.value ? "rgba(59,130,246,0.12)" : "transparent", color: outcome === item.value ? "#fff" : "#C4C4C4" }}
+              className="bl-outcome rounded-xl border px-3 py-2.5 text-left text-sm transition"
+              style={{ borderColor: outcome === item.value ? BRAND : BORDER, backgroundColor: outcome === item.value ? "rgba(59,130,246,0.12)" : "transparent", color: outcome === item.value ? BRAND : "#C4C4C4" }}
             >
               {t(item.label)}
             </button>
