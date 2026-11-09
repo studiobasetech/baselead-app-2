@@ -32,7 +32,7 @@ const HIGHLIGHTS = [
     color: "#F5C518",
     title: "Know exactly who to call first",
     text: "Every lead gets a 0–100 opportunity score, the reasons behind it, the service to offer and the estimated deal value.",
-    images: ["/landing/phone-lead.webp", "/landing/phone-radar.webp"],
+    images: ["/landing/phone-leads.webp", "/landing/phone-lead.webp"],
   },
   {
     tag: "Sequences",
