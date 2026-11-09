@@ -16,7 +16,7 @@ const STEPS = [
     title: "Real businesses and the person who decides",
     text: "Describe your offer and your ideal client. BaseLead finds real businesses anywhere in the USA and Mexico in seconds. Save all of them or only the ones you pick.",
     points: ["Search any city, industry and service", "Decision maker, phone, email, address and logo", "Save all or only the leads you choose"],
-    image: "/landing/desk-leads.webp",
+    image: "/landing/desk-leads.webp?v=3",
   },
   {
     key: "score",
@@ -25,7 +25,7 @@ const STEPS = [
     title: "Know exactly who to call first",
     text: "Every lead gets an AI opportunity score from 0 to 100, the reasons behind it and the estimated deal value.",
     points: ["AI score and buying intent", "The service to offer each lead", "Live dashboard of your best opportunities"],
-    image: "/landing/desk-dashboard.webp",
+    image: "/landing/desk-dashboard.webp?v=3",
   },
   {
     key: "reach",
@@ -34,7 +34,7 @@ const STEPS = [
     title: "Call and email from one app",
     text: "AI writes a personal email for each lead and sends it from your own email. Or call them with one click from your own business number. Every call is recorded and logged.",
     points: ["Emails from Gmail, Outlook or any work email", "Built-in calling to the USA and Canada", "Automatic follow-ups that stop when they reply"],
-    image: "/landing/desk-calls.webp",
+    image: "/landing/desk-calls.webp?v=3",
   },
   {
     key: "close",
@@ -43,7 +43,7 @@ const STEPS = [
     title: "A pipeline that moves on its own",
     text: "Leads move from New to Won as they reply, book meetings and sign. Send proposals and get paid in one place.",
     points: ["Pipeline by stage with deal values", "Proposals with e-signature", "Card deposits through Stripe"],
-    image: "/landing/desk-pipeline.webp",
+    image: "/landing/desk-pipeline.webp?v=3",
   },
 ];
 
@@ -108,8 +108,8 @@ export function TourVideo() {
       <video
         key={language}
         ref={ref}
-        src={es ? "/landing/tour-es.mp4" : "/landing/tour.mp4"}
-        poster={es ? "/landing/tour-poster-es.jpg" : "/landing/tour-poster.jpg"}
+        src={es ? "/landing/tour-es.mp4?v=3" : "/landing/tour.mp4?v=3"}
+        poster={es ? "/landing/tour-poster-es.jpg?v=3" : "/landing/tour-poster.jpg?v=3"}
         className="block aspect-[9/16] w-full object-cover"
         playsInline
         muted

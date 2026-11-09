@@ -25,28 +25,28 @@ const HIGHLIGHTS = [
     color: "#22C55E",
     title: "Every rep gets their own business number",
     text: "Call leads in the USA and Canada right from BaseLead. Every call is recorded, summarized by AI and saved on the lead, so you can coach your team and keep a backup of every conversation.",
-    images: ["/landing/phone-dialpad.webp", "/landing/phone-call.webp"],
+    images: ["/landing/phone-dialpad.webp?v=3", "/landing/phone-call.webp?v=3"],
   },
   {
     tag: "AI lead score",
     color: "#F5C518",
     title: "Know exactly who to call first",
     text: "Every lead gets a 0–100 opportunity score, the reasons behind it, the service to offer and the estimated deal value.",
-    images: ["/landing/phone-leads.webp", "/landing/phone-lead.webp"],
+    images: ["/landing/phone-leads.webp?v=3", "/landing/phone-lead.webp?v=3"],
   },
   {
     tag: "Sequences",
     color: "#F472B6",
     title: "Follow-ups that stop when they reply",
     text: "Write your steps once. BaseLead sends each email on schedule from your own email (Gmail, Outlook or any work email) and takes a lead out the moment they answer.",
-    images: ["/landing/phone-sequences.webp", "/landing/phone-outreach.webp"],
+    images: ["/landing/phone-sequences.webp?v=3", "/landing/phone-outreach.webp?v=3"],
   },
   {
     tag: "Pipeline & proposals",
     color: "#84CC16",
     title: "Proposals that get signed and paid",
     text: "Leads move from New to Won on their own. Send a proposal, get an e-signature and take the deposit by card.",
-    images: ["/landing/phone-pipeline.webp", "/landing/phone-proposals.webp"],
+    images: ["/landing/phone-pipeline.webp?v=3", "/landing/phone-proposals.webp?v=3"],
   },
 ];
 
@@ -139,9 +139,9 @@ export default function Landing() {
           <div className="relative mx-auto h-[420px] w-full max-w-[640px] sm:h-[520px]">
             <div className="absolute right-0 top-4 w-[88%] rounded-2xl border border-white/10 bg-gradient-to-b from-[#1b1f29] to-[#11141b] p-2 pb-0 shadow-[0_50px_120px_-30px_rgba(59,130,246,0.45),0_30px_80px_rgba(0,0,0,0.6)] sm:p-2.5 sm:pb-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/landing/desk-today.webp" alt="BaseLead Today screen" className="block w-full rounded-t-[10px]" width={1600} height={1000} />
+              <img src="/landing/desk-today.webp?v=3" alt="BaseLead Today screen" className="block w-full rounded-t-[10px]" width={1600} height={1000} />
             </div>
-            <Phone src="/landing/phone-leads.webp" className="absolute -left-2 top-28 w-[34%] sm:top-36" />
+            <Phone src="/landing/phone-leads.webp?v=3" className="absolute -left-2 top-28 w-[34%] sm:top-36" />
 
             <div className="bl-land-float absolute -right-2 -top-3 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur sm:flex">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2DD4BF]/15 text-[#2DD4BF]"><MessageSquareReply className="h-4 w-4" /></span>
