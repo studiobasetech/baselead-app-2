@@ -13,9 +13,9 @@ const STEPS = [
     key: "find",
     label: "Find",
     color: "#3B82F6",
-    title: "Real businesses that need what you sell",
-    text: "Describe your offer and your ideal client. BaseLead searches real local businesses and organizes them for you.",
-    points: ["Search by city, industry and service", "Contact details and social profiles", "Opportunity Radar map of your market"],
+    title: "Real businesses and the person who decides",
+    text: "Describe your offer and your ideal client. BaseLead finds real businesses anywhere in the USA and Mexico in seconds. Save all of them or only the ones you pick.",
+    points: ["Search any city, industry and service", "Decision maker, phone, email, address and logo", "Save all or only the leads you choose"],
     image: "/landing/desk-leads.webp",
   },
   {
@@ -31,10 +31,10 @@ const STEPS = [
     key: "reach",
     label: "Reach out",
     color: "#2DD4BF",
-    title: "Personal emails, written and tracked",
-    text: "AI drafts a personal email for each lead and sends it from your own Gmail. See who opened and who replied.",
-    points: ["Emails written for each business", "Opens and replies in real time", "Automatic follow-ups that stop when they reply"],
-    image: "/landing/desk-outreach.webp",
+    title: "Call and email from one app",
+    text: "AI writes a personal email for each lead and sends it from your own email. Or call them with one click from your own business number. Every call is recorded and logged.",
+    points: ["Emails from Gmail, Outlook or any work email", "Built-in calling to the USA and Canada", "Automatic follow-ups that stop when they reply"],
+    image: "/landing/desk-calls.webp",
   },
   {
     key: "close",
@@ -142,9 +142,9 @@ export function TourVideo() {
 /* ---------------- Pricing with monthly / yearly ---------------- */
 
 const PLAN_COPY: Record<PlanName, { tagline: string; bullets: (p: (typeof PLAN_DEFINITIONS)[PlanName]) => string[] }> = {
-  Starter: { tagline: "For solo sellers", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "AI scoring & email drafts", "Pipeline & calendar"] },
-  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Built-in calling: own US number per rep", "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
-  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Built-in calling: 800 min per rep", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
+  Starter: { tagline: "For solo sellers", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "AI scoring & email drafts", "Email from Gmail, Outlook or IMAP", "Pipeline & calendar"] },
+  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Built-in calling: own US number per rep", "400 call minutes per rep · recordings", "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
+  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Built-in calling: 800 min per rep", "Call scorecards & per-rep limits", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
 };
 
 export function PricingPlans() {
@@ -199,11 +199,13 @@ export function PricingPlans() {
 
 const FAQ = [
   ["Do I need a credit card for the free trial?", "No. Create a free account and start your 7-day trial whenever you’re ready. Pick a plan only if you want to keep going."],
-  ["Does it send emails from my own Gmail?", "Yes. You connect your Gmail and every email goes out from your own address, so replies come straight to your inbox."],
+  ["Does it send emails from my own email?", "Yes. Connect Gmail, Outlook or any work email (IMAP/SMTP) and every email goes out from your own address, so replies come straight to your inbox."],
+  ["Can my team call leads from BaseLead?", "Yes, on Pro and Scale. Each rep gets their own US phone number and calls leads in the USA and Canada from the app. Calls are recorded (callers hear a short notice), summarized by AI and saved on the lead."],
+  ["Can I manage more than one company?", "Yes. On Scale you can run up to 5 companies or brands from one account, each with its own leads, pipeline, team and settings."],
   ["Can I cancel anytime?", "Yes. Change or cancel your plan anytime in Settings. Your leads and pipeline stay in your account."],
   ["Is my data safe?", "Your data is encrypted in transit, connection tokens are stored encrypted, and each company can only see its own workspace. Two-factor sign-in is available."],
   ["Can my whole team use it?", "Yes. Invite your reps, set monthly goals and see everyone’s results on the Team Performance page."],
-  ["Where do the leads come from?", "BaseLead searches public business listings such as Google Maps and OpenStreetMap, then adds website and social details and scores each business with AI."],
+  ["Where do the leads come from?", "BaseLead searches public business listings and maps, visits each business's website to find the decision maker and contact details, and scores every business with AI."],
 ];
 
 export function Faq() {

@@ -259,16 +259,33 @@ export function PhoneProvider({ children }: { children: ReactNode }) {
       if (!data.configured) return setState("not_configured");
       if (!data.myNumber) return setState("no_number");
       if (!data.policyAccepted) return setState("policy");
+      // Dev-only demo (marketing screenshots): show the phone as connected without dialing out.
+      const demo = (window as unknown as { __blDemoPhone?: { call?: Partial<ActiveCall> & { secondsIn?: number } } }).__blDemoPhone;
+      if (demo && process.env.NODE_ENV !== "production") {
+        setState("ready");
+        if (demo.call) {
+          const secondsIn = demo.call.secondsIn ?? 0;
+          updateCall({
+            callId: null, direction: "outbound", number: "", leadId: null, leadName: null, muted: false,
+            ...demo.call, stage: demo.call.stage ?? "active",
+            startedAt: Date.now() - secondsIn * 1000 - 9000, answeredAt: Date.now() - secondsIn * 1000,
+          });
+        }
+        return;
+      }
       if (!clientRef.current) await connect();
     } catch {
       setState("error");
     }
-  }, [connect]);
+  }, [connect, updateCall]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
+    const onRefresh = () => refresh();
+    window.addEventListener("baselead-phone-refresh", onRefresh);
     return () => {
+      window.removeEventListener("baselead-phone-refresh", onRefresh);
       clientRef.current?.disconnect();
       clientRef.current = null;
     };

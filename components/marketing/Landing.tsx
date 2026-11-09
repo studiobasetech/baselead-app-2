@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, Check, MessageSquareReply, Sparkles, Target, X } from "lucide-react";
+import { ArrowRight, Check, MessageSquareReply, PhoneCall, Sparkles, Target, X } from "lucide-react";
 import { LEGAL } from "@/components/legal/LegalPage";
 import LanguageToggle from "@/components/i18n/LanguageToggle";
 import { Faq, HowItWorksTabs, PricingPlans, TourVideo } from "@/components/marketing/LandingInteractive";
@@ -12,14 +12,21 @@ import { Faq, HowItWorksTabs, PricingPlans, TourVideo } from "@/components/marke
 
 const WHO = [
   ["Marketing agencies", "#3B82F6"],
-  ["Web designers", "#F5C518"],
+  ["Software & IT", "#F5C518"],
   ["Contractors", "#2DD4BF"],
-  ["Med spas", "#F472B6"],
+  ["Insurance & finance", "#F472B6"],
   ["Real estate", "#84CC16"],
   ["Consultants", "#A78BFA"],
 ] as const;
 
 const HIGHLIGHTS = [
+  {
+    tag: "Built-in calling",
+    color: "#22C55E",
+    title: "Every rep gets their own business number",
+    text: "Call leads in the USA and Canada right from BaseLead. Every call is recorded, summarized by AI and saved on the lead, so you can coach your team and keep a backup of every conversation.",
+    images: ["/landing/phone-dialpad.webp", "/landing/phone-call.webp"],
+  },
   {
     tag: "AI lead score",
     color: "#F5C518",
@@ -31,7 +38,7 @@ const HIGHLIGHTS = [
     tag: "Sequences",
     color: "#F472B6",
     title: "Follow-ups that stop when they reply",
-    text: "Write your steps once. BaseLead sends each email on schedule from your Gmail, and takes a lead out the moment they answer.",
+    text: "Write your steps once. BaseLead sends each email on schedule from your own email (Gmail, Outlook or any work email) and takes a lead out the moment they answer.",
     images: ["/landing/phone-sequences.webp", "/landing/phone-outreach.webp"],
   },
   {
@@ -109,8 +116,8 @@ export default function Landing() {
               <span className="bg-gradient-to-r from-[#60A5FA] to-[#3B82F6] bg-clip-text text-transparent">Close.</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-gray-400 lg:mx-0">
-              BaseLead finds local businesses that need what you sell, scores them with AI, writes the emails and follows up
-              for you, so your team spends its time closing deals.
+              BaseLead finds businesses that need what you sell and the person who decides, scores them with AI, and lets your
+              team call and email from one app. Every call is recorded and every follow-up is automatic.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white shadow-[0_14px_34px_-12px_rgba(59,130,246,0.9)] hover:bg-[#2F74E8]">
@@ -122,9 +129,9 @@ export default function Landing() {
             </div>
             <p className="mt-3 text-xs text-gray-500">Create a free account, then start your 7-day trial whenever you’re ready. No credit card needed.</p>
             <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400 lg:justify-start">
-              <span>⚡ <b className="text-white">Real</b> local businesses</span>
-              <span>🎯 <b className="text-white">AI</b> lead scores</span>
-              <span>📬 Sends from <b className="text-white">your Gmail</b></span>
+              <span>⚡ <b className="text-white">Real</b> businesses & decision makers</span>
+              <span>📞 <b className="text-white">Built-in</b> calling</span>
+              <span>📬 Sends from <b className="text-white">your own email</b></span>
             </div>
           </div>
 
@@ -142,11 +149,11 @@ export default function Landing() {
             </div>
             <div className="bl-land-float absolute -left-6 top-14 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur [animation-delay:1.2s] sm:flex">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3B82F6]/15 text-[#3B82F6]"><Target className="h-4 w-4" /></span>
-              <span>New lead · score <b className="text-[#60A5FA]">92</b><small className="block text-[11px] text-gray-500">Maison Floral Design</small></span>
+              <span>New lead · score <b className="text-[#60A5FA]">92</b><small className="block text-[11px] text-gray-500">Maison Floral Design · Mia Robinson, Owner</small></span>
             </div>
             <div className="bl-land-float absolute bottom-2 right-6 hidden items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0F1117]/95 px-3.5 py-2.5 text-[13px] shadow-[0_18px_40px_rgba(0,0,0,0.5)] backdrop-blur [animation-delay:2.4s] sm:flex">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F472B6]/15 text-[#F472B6]"><CalendarCheck className="h-4 w-4" /></span>
-              <span>Meeting booked · 10:00 AM<small className="block text-[11px] text-gray-500">Pure Glow Med Spa · $7,200</small></span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#22C55E]/15 text-[#22C55E]"><PhoneCall className="h-4 w-4" /></span>
+              <span>Call · 6:52 · Meeting booked<small className="block text-[11px] text-gray-500">Recorded · AI summary ready</small></span>
             </div>
           </div>
         </div>
@@ -155,7 +162,7 @@ export default function Landing() {
       {/* ---------- Who it's for ---------- */}
       <section className="border-y border-white/[0.08] py-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-2.5 px-5 text-sm text-gray-400">
-          <span className="w-full text-center md:w-auto">Built for businesses that sell to local businesses:</span>
+          <span className="w-full text-center md:w-auto">Built for any team that sells to businesses:</span>
           {WHO.map(([name, color]) => (
             <span key={name} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-2 text-[13px] text-gray-200">
               <i className="inline-block h-2 w-2 rounded-full" style={{ background: color }} />
@@ -181,7 +188,7 @@ export default function Landing() {
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#3B82F6]">See it in action</p>
           <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-[44px]">See BaseLead in 30 seconds</h2>
           <p className="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-gray-400 lg:mx-0">
-            Watch BaseLead find real clients, score them with AI, write your emails, follow up for you and get deals signed. All from your phone.
+            Watch BaseLead find real clients and decision makers, score them with AI, call and email them, follow up for you and get deals signed. All from your phone.
           </p>
           <Link href="/signup" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white hover:bg-[#2F74E8]">
             Try it free for 7 days <ArrowRight className="h-4 w-4" />
@@ -218,7 +225,7 @@ export default function Landing() {
           <div className="rounded-3xl border border-white/10 bg-[#0D0E12] p-7">
             <h3 className="text-lg font-semibold text-[#F87171]">Without BaseLead</h3>
             <ul className="mt-5 space-y-3.5 text-[15px] text-gray-300">
-              {["Hours searching Google Maps and copying into spreadsheets", "Guessing which leads are worth your time", "Writing every email from scratch", "Follow-ups forgotten, deals going cold"].map((t) => (
+              {["Hours searching Google Maps and copying into spreadsheets", "No idea who the decision maker is", "Writing every email from scratch", "Reps calling from personal phones with no record", "Follow-ups forgotten, deals going cold"].map((t) => (
                 <li key={t} className="flex gap-3"><X className="mt-0.5 h-4 w-4 shrink-0 text-[#F22F46]" strokeWidth={3} />{t}</li>
               ))}
             </ul>
@@ -226,7 +233,7 @@ export default function Landing() {
           <div className="rounded-3xl border border-[#3B82F6]/45 bg-[linear-gradient(180deg,rgba(59,130,246,0.10),transparent)] bg-[#0D0E12] p-7">
             <h3 className="text-lg font-semibold text-[#60A5FA]">With BaseLead</h3>
             <ul className="mt-5 space-y-3.5 text-[15px] text-gray-300">
-              {["Real businesses found and organized in seconds", "AI scores tell you who to call first", "Personal emails written for you", "Automatic follow-ups and a pipeline that moves on its own"].map((t) => (
+              {["Real businesses found and organized in seconds", "The decision maker, phone, email and address on every lead", "Personal emails written for you", "Built-in calling: every call recorded, summarized and logged", "Automatic follow-ups and a pipeline that moves on its own"].map((t) => (
                 <li key={t} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#3B82F6]" strokeWidth={3} />{t}</li>
               ))}
             </ul>
