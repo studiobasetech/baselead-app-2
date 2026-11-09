@@ -117,7 +117,7 @@ export default function Landing() {
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-gray-400 lg:mx-0">
               BaseLead finds businesses that need what you sell and the person who decides, scores them with AI, and lets your
-              team call and email from one app. Every call is recorded and every follow-up is automatic.
+              team call and email from one app.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-[#3B82F6] px-6 py-3.5 font-semibold text-white shadow-[0_14px_34px_-12px_rgba(59,130,246,0.9)] hover:bg-[#2F74E8]">

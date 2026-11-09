@@ -14,7 +14,7 @@ const STEPS = [
     label: "Find",
     color: "#3B82F6",
     title: "Real businesses and the person who decides",
-    text: "Describe your offer and your ideal client. BaseLead finds real businesses anywhere in the USA and Mexico in seconds. Save all of them or only the ones you pick.",
+    text: "Describe your offer and your ideal client. BaseLead finds real businesses in seconds. Save all of them or only the ones you pick.",
     points: ["Search any city, industry and service", "Decision maker, phone, email, address and logo", "Save all or only the leads you choose"],
     image: "/landing/desk-leads.webp?v=3",
   },
