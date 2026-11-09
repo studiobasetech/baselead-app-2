@@ -63,6 +63,13 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("baselead-theme");var d=t!=="light";var r=document.documentElement;r.classList.add(d?"baselead-dark":"baselead-light");r.dataset.baseleadTheme=d?"dark":"light";r.dataset.baseleadDarkMode=d?"true":"false";r.style.colorScheme=d?"dark":"light";r.style.backgroundColor=d?"#000000":"#f5f5f7";setTimeout(function(){r.classList.add("bl-ready")},1500);}catch(e){}})();`,
           }}
         />
+        {process.env.NODE_ENV !== "production" && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `if(document.cookie.indexOf("bl_demo=1")>-1){window.__blNoAuth=true;window.__blSupabaseRef=${JSON.stringify((process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").replace(/^https:\/\//, "").split(".")[0])};window.__blUserId="d0d0d0d0-0000-4000-8000-000000000001";window.__blCompanyId="d0d0d0d0-0000-4000-8000-0000000000c0";window.__blDemoPhone=window.__blDemoPhone||{};document.write('<script src="/api/dev/snapshot?script=1&noauth=1"><\\/script>')}`,
+            }}
+          />
+        )}
       </head>
       <body className="bg-[#050505] text-white antialiased" suppressHydrationWarning>
         <LanguageProvider>

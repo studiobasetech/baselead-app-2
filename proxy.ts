@@ -56,6 +56,11 @@ export async function proxy(request: NextRequest) {
     }
   );
 
+  // DEV ONLY: marketing screenshots with sample data (cookie set by hand, never in production).
+  if (process.env.NODE_ENV !== "production" && request.cookies.get("bl_demo")?.value === "1") {
+    return response;
+  }
+
   const { data } = await supabase.auth.getClaims();
   const isLoggedIn = Boolean(data?.claims?.sub);
 

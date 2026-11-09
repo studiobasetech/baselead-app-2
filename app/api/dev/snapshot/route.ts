@@ -44,7 +44,11 @@ export async function GET(request: Request) {
   }
   if (new URL(request.url).searchParams.get("script")) {
     const { readFile } = await import("node:fs/promises");
-    const js = await readFile(path.join(process.cwd(), "_demo", "demo-data.js"), "utf8");
+    let js = await readFile(path.join(process.cwd(), "_demo", "demo-data.js"), "utf8");
+    if (new URL(request.url).searchParams.get("noauth")) {
+      const ref = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").replace(/^https:\/\//, "").split(".")[0];
+      js = `window.__blNoAuth=true;window.__blSupabaseRef=${JSON.stringify(ref)};window.__blUserId="d0d0d0d0-0000-4000-8000-000000000001";window.__blCompanyId="d0d0d0d0-0000-4000-8000-0000000000c0";window.__blDemoPhone=window.__blDemoPhone||{};\n` + js;
+    }
     return new NextResponse(js, { headers: { "content-type": "text/javascript", "cache-control": "no-store" } });
   }
   const url = new URL(request.url).searchParams.get("img") ?? "";
