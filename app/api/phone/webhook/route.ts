@@ -3,10 +3,10 @@ export const maxDuration = 60;
 import { after, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { callAction, lastTen, telnyx, verifyTelnyxSignature } from "@/lib/phone/telnyx";
-import { DEFAULT_PHONE_SETTINGS, isAfterHours, loadPhoneSettings, type PhoneSettings } from "@/lib/phone/access";
+import { DEFAULT_PHONE_SETTINGS, companyPhoneAccess, isAfterHours, loadPhoneSettings, type PhoneSettings } from "@/lib/phone/access";
+import { finalizeCallUsage } from "@/lib/phone/billing";
 import { findLeadByPhone } from "@/lib/phone/leads";
 import { summarizeRecording } from "@/lib/phone/summary";
-import { effectivePlan, getPlan } from "@/lib/plans";
 import { notifyUser } from "@/lib/notify";
 import { sendPush } from "@/lib/push";
 import { DEFAULT_RINGTONE, isRingtone, ringtoneChannel, ringtoneNativeFile } from "@/lib/ringtones";
@@ -109,17 +109,8 @@ function decodeState(value: string | null | undefined): Record<string, string> {
 }
 
 async function companyCanCall(companyId: string) {
-  const admin = createAdminClient();
-  const { data: company } = await admin.from("company_profiles").select("*").eq("id", companyId).maybeSingle();
-  if (!company) return false;
-  let billing = company;
-  if (company.parent_company_id) {
-    const { data: parent } = await admin.from("company_profiles").select("*").eq("id", company.parent_company_id).maybeSingle();
-    if (parent) billing = parent;
-  }
-  const status = billing.billing_status;
-  if (status !== "active") return false; // no calling during the free trial
-  return getPlan(effectivePlan(billing.plan, status)).features.includes("phone_calling");
+  // Paid plan with calling, or Starter + Phone add-on. Never during the free trial.
+  return (await companyPhoneAccess(companyId)).allowed;
 }
 
 /* ---------------- events ---------------- */
@@ -272,6 +263,9 @@ async function onHangup(payload: Payload, at: string) {
       flags: Array.from(flags),
     })
     .eq("id", row.id);
+
+  // Overage minutes (if turned on) and 80% / 100% alerts for managers.
+  if (answeredAt) await finalizeCallUsage(row.company_id, row.id, Math.ceil(duration / 60));
 
   // Missed incoming call → push to the rep's phone.
   if (!answeredAt && row.direction === "inbound" && row.user_id) {

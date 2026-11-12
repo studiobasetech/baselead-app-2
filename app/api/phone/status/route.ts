@@ -11,13 +11,21 @@ export async function GET() {
 
   const configured = isTelnyxConfigured();
   if (!phone.allowed) {
-    return NextResponse.json({ allowed: false, configured, isManager: phone.isManager });
+    return NextResponse.json({
+      allowed: false,
+      configured,
+      isManager: phone.isManager,
+      plan: phone.access.plan,
+      // Starter owners/managers with a paid plan can add Phone for $29/month.
+      canAddStarterPhone: phone.access.plan === "Starter" && phone.paidAndActive,
+      isTrial: phone.access.isTrial,
+    });
   }
 
   const admin = createAdminClient();
   const settings = await loadPhoneSettings(phone.companyId);
   const [usage, { data: number }, { data: policy }] = await Promise.all([
-    phoneUsage(phone.companyId, phone.userId, phone.minutesPerRep, phone.repsIncluded, settings),
+    phoneUsage(phone.companyId, phone.userId, phone.allowance, settings),
     admin.from("phone_numbers").select("phone_number").eq("company_id", phone.companyId).eq("user_id", phone.userId).eq("status", "active").maybeSingle(),
     admin.from("phone_policy_acceptances").select("accepted_at").eq("company_id", phone.companyId).eq("user_id", phone.userId).maybeSingle(),
   ]);
@@ -26,6 +34,7 @@ export async function GET() {
     allowed: true,
     configured,
     isManager: phone.isManager,
+    plan: phone.access.plan,
     scorecards: phone.scorecards,
     myNumber: number?.phone_number ?? null,
     policyAccepted: Boolean(policy),
@@ -38,6 +47,8 @@ export async function GET() {
       timezone: settings.timezone,
       long_call_minutes: settings.long_call_minutes,
       rep_minute_limits: phone.isManager ? settings.rep_minute_limits : {},
+      overage_enabled: settings.overage_enabled,
+      overage_cap: settings.overage_cap,
     },
   });
 }

@@ -29,9 +29,17 @@ export async function POST(request: Request) {
   if (!number) return NextResponse.json({ code: "NO_NUMBER", error: "You don't have a phone number yet." }, { status: 400 });
 
   const settings = await loadPhoneSettings(phone.companyId);
-  const usage = await phoneUsage(phone.companyId, phone.userId, phone.minutesPerRep, phone.repsIncluded, settings);
-  if (usage.remaining <= 0) {
-    return NextResponse.json({ code: "NO_MINUTES", error: "Your team has used all its calling minutes this month." }, { status: 403 });
+  const usage = await phoneUsage(phone.companyId, phone.userId, phone.allowance, settings);
+  if (usage.remaining <= 0 && !usage.overageAvailable) {
+    return NextResponse.json(
+      {
+        code: "NO_MINUTES",
+        error: usage.overageEnabled
+          ? "Your team reached its monthly overage spending cap. A manager can raise it in Phone setup."
+          : "Your team has used all its calling minutes this month.",
+      },
+      { status: 403 }
+    );
   }
   if (usage.myLimit !== null && usage.myUsed >= usage.myLimit) {
     return NextResponse.json({ code: "REP_LIMIT", error: "You reached your monthly calling limit." }, { status: 403 });

@@ -18,7 +18,7 @@ export async function phoneRoute() {
 
 export function planRequired() {
   return NextResponse.json(
-    { code: "PLAN_REQUIRED", requiredPlan: "Pro", error: "Built-in calling is available on the Pro and Scale plans." },
+    { code: "PLAN_REQUIRED", requiredPlan: "Pro", error: "Built-in calling is included in Pro and Scale, or add Phone to Starter for $29/month." },
     { status: 403 }
   );
 }

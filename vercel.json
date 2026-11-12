@@ -1,5 +1,12 @@
 {
   "crons": [
-    { "path": "/api/automation/run", "schedule": "0 13 * * *" }
+    {
+      "path": "/api/automation/run",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/phone/overage/run",
+      "schedule": "20 15 * * *"
+    }
   ]
 }

@@ -4,14 +4,14 @@ import { Suspense, useCallback, useEffect, useMemo, useState, type CSSProperties
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  AlertTriangle, BarChart3, Clock3, Flag, Gauge, Lock, Phone, PhoneCall, PhoneIncoming, PhoneMissed, PhoneOutgoing,
+  AlertTriangle, BarChart3, CreditCard, Layers, Zap, Clock3, Flag, Gauge, Lock, Phone, PhoneCall, PhoneIncoming, PhoneMissed, PhoneOutgoing,
   Play, ShieldCheck, SlidersHorizontal, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 
 import { usePlan } from "@/components/plans/PlanProvider";
 import { usePhone } from "@/components/phone/PhoneProvider";
 import { OUTCOMES, PhoneScreen, formatDuration, formatPhone } from "@/components/phone/PhoneDialer";
-import { PHONE_MINUTES_PACK } from "@/lib/plans";
+import { PHONE_ADDONS, PHONE_MINUTES_PACK, PHONE_OVERAGE_PER_MINUTE, type PhoneAddon } from "@/lib/plans";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 /** Confirm dialogs aren't on the page, so translate them here. */
@@ -86,9 +86,10 @@ function CallsContent() {
   const isManager = Boolean(phone?.status?.isManager);
   const [tab, setTab] = useState<"history" | "alerts" | "setup">(params.get("tab") === "setup" ? "setup" : "history");
 
-  if (loading) return <main className="min-h-screen bg-[#050505] p-8" />;
+  const allowed = can("phone_calling") || Boolean(phone?.status?.allowed);
+  if (loading || (!allowed && phone?.state === "loading")) return <main className="min-h-screen bg-[#050505] p-8" />;
 
-  if (!can("phone_calling")) {
+  if (!allowed) {
     return (
       <main className="min-h-screen bg-[#050505] px-4 pb-28 pt-6 text-white sm:px-6 lg:px-8">
         <h1 className="text-2xl font-semibold tracking-tight lg:text-[28px]">Calls</h1>
@@ -101,8 +102,14 @@ function CallsContent() {
             <li>Every call is recorded, logged in the CRM and summarized by AI</li>
             <li>Managers listen to calls and see each rep&apos;s activity</li>
           </ul>
-          <p className="mt-3 text-sm text-gray-400">Pro: 400 minutes per rep · Scale: 800 minutes per rep, 10 reps included</p>
-          <Link href="/settings?section=billing" className="mt-5 inline-flex rounded-xl bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold">Upgrade</Link>
+          <p className="mt-3 text-sm text-gray-400">Pro: 3 lines + 3,000 team minutes a month · Scale: 10 lines + 8,000 team minutes a month</p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <Link href="/settings?section=billing" className="inline-flex rounded-xl bg-[#3B82F6] px-5 py-2.5 text-sm font-semibold">Upgrade</Link>
+            {phone?.status?.canAddStarterPhone && isManager && <StarterPhoneButton />}
+          </div>
+          {phone?.status?.isTrial && (
+            <p className="mt-4 text-xs text-gray-500">Calling turns on when your subscription starts. It isn&apos;t included in the free trial.</p>
+          )}
         </div>
       </main>
     );
@@ -410,6 +417,35 @@ function CallHistory({ alertsOnly }: { alertsOnly: boolean }) {
 type TeamRow = { userId: string; name: string; role?: string };
 type NumberRow = { id: string; user_id: string | null; phone_number: string };
 
+/** Starter: add Phone (1 line + 1,000 minutes) for $29/month. */
+function StarterPhoneButton() {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const addon = PHONE_ADDONS.starter_phone;
+  async function buy() {
+    setBusy(true);
+    setError("");
+    const response = await fetch("/api/phone/addons", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: addon.kind }) });
+    const data = await response.json().catch(() => ({}));
+    if (data.url) window.location.href = data.url;
+    else {
+      setError(data.error || "Could not open checkout.");
+      setBusy(false);
+    }
+  }
+  return (
+    <>
+      <button type="button" onClick={buy} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border border-[#22C55E]/40 px-5 py-2.5 text-sm font-semibold text-[#22C55E] hover:bg-[#22C55E]/10 disabled:opacity-50">
+        <Phone size={15} /> {`Add Phone to Starter — $${addon.price}/month`}
+      </button>
+      <span className="w-full text-xs text-gray-500">{addon.description}</span>
+      {error && <span className="w-full text-xs text-[#F22F46]">{error}</span>}
+    </>
+  );
+}
+
+const ADDON_COLORS: Record<string, string> = { starter_phone: GREEN, extra_line: TEAL, power_line: GOLD };
+
 function PhoneSetup() {
   const phone = usePhone();
   const { language } = useLanguage();
@@ -418,7 +454,14 @@ function PhoneSetup() {
   const [numbers, setNumbers] = useState<NumberRow[]>([]);
   const [included, setIncluded] = useState(0);
   const [configured, setConfigured] = useState(false);
-  const [message, setMessage] = useState(params.get("minutes") === "added" ? "Minutes added to this month." : params.get("minutes") === "failed" ? "The payment was not completed." : "");
+  const [message, setMessage] = useState(
+    params.get("minutes") === "added" ? "Minutes added to this month."
+      : params.get("addon") === "added" ? "Add-on is active. Your new lines and minutes are ready."
+      : params.get("minutes") === "failed" || params.get("addon") === "failed" ? "The payment was not completed."
+      : ""
+  );
+  const [addonOptions, setAddonOptions] = useState<PhoneAddon[]>([]);
+  const [capDraft, setCapDraft] = useState("");
   const [picking, setPicking] = useState<string | null>(null);
   const [areaCode, setAreaCode] = useState("");
   const [country, setCountry] = useState<"US" | "CA">("US");
@@ -429,7 +472,13 @@ function PhoneSetup() {
   const scorecards = Boolean(phone?.status?.scorecards);
 
   const load = useCallback(async () => {
-    const [numbersResponse, settingsResponse] = await Promise.all([fetch("/api/phone/numbers", { cache: "no-store" }), fetch("/api/phone/settings", { cache: "no-store" })]);
+    const [numbersResponse, settingsResponse, addonsResponse] = await Promise.all([
+      fetch("/api/phone/numbers", { cache: "no-store" }),
+      fetch("/api/phone/settings", { cache: "no-store" }),
+      fetch("/api/phone/addons", { cache: "no-store" }),
+    ]);
+    const addonsData = await addonsResponse.json().catch(() => ({}));
+    if (addonsResponse.ok) setAddonOptions(addonsData.available ?? []);
     const data = await numbersResponse.json().catch(() => ({}));
     if (numbersResponse.ok) {
       setTeam(data.team ?? []);
@@ -490,6 +539,21 @@ function PhoneSetup() {
     } else setMessage(data.error || "Could not save.");
   }
 
+  async function buyAddon(kind: string) {
+    setMessage("");
+    const response = await fetch("/api/phone/addons", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind }) });
+    const data = await response.json().catch(() => ({}));
+    if (data.url) window.location.href = data.url;
+    else setMessage(data.error || "Could not open checkout.");
+  }
+
+  async function manageAddons() {
+    const response = await fetch("/api/phone/addons/manage", { method: "POST" });
+    const data = await response.json().catch(() => ({}));
+    if (data.url) window.location.href = data.url;
+    else setMessage(data.error || "Could not open billing.");
+  }
+
   async function buyMinutes() {
     const response = await fetch("/api/phone/minutes-pack", { method: "POST" });
     const data = await response.json().catch(() => ({}));
@@ -507,7 +571,7 @@ function PhoneSetup() {
         <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3"><Tile color={GREEN}><Phone size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Phone numbers</h2></div>
-            <span className="text-xs text-gray-500">{`${numbers.length} / ${included} included`}</span>
+            <span className="text-xs text-gray-500">{`${numbers.length} / ${included} lines`}</span>
           </div>
           <p className="mt-1 text-sm text-gray-500">Each rep gets their own US or Canadian number. Numbers belong to the company — reassign them when someone leaves.</p>
 
@@ -576,7 +640,7 @@ function PhoneSetup() {
             </div>
           )}
           {numbers.length >= included && included > 0 && (
-            <p className="mt-3 text-xs text-gray-500">All included numbers are in use. Extra reps ($25/month each, Scale) are coming soon.</p>
+            <p className="mt-3 text-xs text-gray-500">{`All ${included} lines are in use. Add an extra line ($${PHONE_ADDONS.extra_line.price}/month) in Add-ons to give another rep a number.`}</p>
           )}
         </section>
 
@@ -638,16 +702,101 @@ function PhoneSetup() {
               <div className="h-full rounded-full" style={{ width: `${Math.min(100, (usage.used / Math.max(1, usage.allowance)) * 100)}%`, backgroundColor: usage.used / Math.max(1, usage.allowance) >= 0.8 ? GOLD : BRAND }} />
             </div>
             <p className="mt-3 text-xs leading-5 text-gray-500">
-              <span className="block">{Math.max(1, usage.repsWithNumbers) === 1 ? `${usage.minutesPerRep} minutes × 1 rep with a number` : `${usage.minutesPerRep} minutes × ${usage.repsWithNumbers} reps with a number`}</span>
+              {usage.planMinutes > 0 && <span className="block">{`${usage.planMinutes.toLocaleString()} minutes included in your plan`}</span>}
+              {usage.addonMinutes > 0 && <span className="block">{`+ ${usage.addonMinutes.toLocaleString()} minutes from add-ons`}</span>}
               {usage.packMinutes > 0 && <span className="block">{`+ ${usage.packMinutes.toLocaleString()} extra minutes`}</span>}
+              {usage.overageMinutes > 0 && <span className="block">{`+ ${usage.overageMinutes.toLocaleString()} overage minutes ($${usage.overageCost.toFixed(2)})`}</span>}
+              <span className="block">Resets on the 1st of each month. Unused minutes don&apos;t roll over.</span>
               <span className="block">Shared by the whole team. Calls to the USA and Canada only.</span>
             </p>
             {usage.used / Math.max(1, usage.allowance) >= 0.8 && (
-              <p className="mt-3 flex items-center gap-2 text-xs text-[#F5C518]"><AlertTriangle size={13} /> {usage.remaining <= 0 ? "Minutes used up — calling is paused until next month." : "Over 80% used."}</p>
+              <p className="mt-3 flex items-center gap-2 text-xs text-[#F5C518]"><AlertTriangle size={13} /> {usage.remaining <= 0
+                  ? usage.overageAvailable
+                    ? `Pool used up — overage is on ($${PHONE_OVERAGE_PER_MINUTE}/min).`
+                    : usage.overageEnabled
+                      ? "Overage cap reached — calling is paused. Raise the cap or add minutes."
+                      : "Minutes used up — calling is paused until next month."
+                  : "Over 80% used."}</p>
             )}
             <button type="button" onClick={buyMinutes} className="mt-4 w-full rounded-xl border border-[#3B82F6]/40 py-2.5 text-sm font-semibold text-[#93C5FD] hover:bg-[#3B82F6]/10">
               {`Add ${PHONE_MINUTES_PACK.minutes.toLocaleString("en-US")} minutes — $${PHONE_MINUTES_PACK.price}`}
             </button>
+          </section>
+        )}
+
+        {usage && (
+          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5" style={{ "--tab": TEAL } as CSSProperties}>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3"><Tile color={TEAL}><Layers size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Add-ons</h2></div>
+              {usage.addons.length > 0 && (
+                <button type="button" onClick={manageAddons} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white"><CreditCard size={13} /> Manage or cancel</button>
+              )}
+            </div>
+
+            {usage.addons.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {usage.addons.map((addon, index) => (
+                  <div key={`${addon.kind}-${index}`} className="flex items-center justify-between gap-3 rounded-xl border border-[#1A1A1A] px-3 py-2 text-sm">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full" style={{ backgroundColor: ADDON_COLORS[addon.kind] }} />
+                      <span className="text-white">{`${PHONE_ADDONS[addon.kind].name} × ${addon.quantity}`}</span>
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {!addon.applies ? "Not used on your plan" : addon.cancelAtPeriodEnd ? "Ends this period" : addon.status === "past_due" ? "Payment due" : `$${PHONE_ADDONS[addon.kind].price * addon.quantity}/month`}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-3 space-y-2">
+              {addonOptions.filter((option) => option.kind !== "starter_phone").map((option) => (
+                <div key={option.kind} className="rounded-xl border border-[#202020] bg-[#0A0A0A] p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="flex items-center gap-2 text-sm font-semibold text-white">
+                        {option.kind === "power_line" ? <Zap size={14} style={{ color: GOLD }} /> : <Phone size={14} style={{ color: TEAL }} />}
+                        {option.name}
+                      </p>
+                      <p className="mt-0.5 text-xs text-gray-500">{option.description}</p>
+                    </div>
+                    <p className="shrink-0 text-sm font-semibold tabular-nums" style={{ color: ADDON_COLORS[option.kind] }}>{`$${option.price}/mo`}</p>
+                  </div>
+                  <button type="button" onClick={() => buyAddon(option.kind)} className="mt-3 w-full rounded-lg border py-2 text-xs font-semibold transition hover:bg-white/[0.04]" style={{ borderColor: `${ADDON_COLORS[option.kind]}66`, color: ADDON_COLORS[option.kind] }}>
+                    {`Add ${option.name.toLowerCase()}`}
+                  </button>
+                </div>
+              ))}
+              {addonOptions.every((option) => option.kind === "starter_phone") && (
+                <p className="text-xs leading-5 text-gray-500">Need more lines or minutes? Upgrade to Pro for 3 lines and 3,000 team minutes a month.</p>
+              )}
+            </div>
+          </section>
+        )}
+
+        {settings && usage && (
+          <section className="bl-card rounded-2xl border border-[#202020] bg-[#0D0D0D] p-5" style={{ "--tab": GOLD } as CSSProperties}>
+            <div className="flex items-center gap-3"><Tile color={GOLD}><Zap size={16} strokeWidth={2.2} /></Tile><h2 className="font-semibold">Automatic overage</h2></div>
+            <p className="mt-1 text-xs leading-5 text-gray-500">{`Keep calling when the pool runs out, at $${PHONE_OVERAGE_PER_MINUTE}/min. Billed on your next invoice, never more than your cap.`}</p>
+            <label className="mt-4 flex items-center gap-3 text-sm">
+              <input type="checkbox" checked={Boolean(settings.overage_enabled)} onChange={(e) => saveSettings({ overage_enabled: e.target.checked })} />
+              <span className="text-white">Turn on automatic overage</span>
+            </label>
+            <label className="mt-3 block text-xs text-gray-500">Monthly spending cap (USD)
+              <span className="mt-1 flex items-center gap-2">
+                <span className="text-sm text-gray-400">$</span>
+                <input
+                  type="number"
+                  min={10}
+                  max={5000}
+                  value={capDraft || String(settings.overage_cap ?? 50)}
+                  onChange={(e) => setCapDraft(e.target.value)}
+                  onBlur={() => { if (capDraft) saveSettings({ overage_cap: Number(capDraft) }).then(() => setCapDraft("")); }}
+                  className="w-28 rounded-xl border border-[#202020] bg-[#0A0A0A] px-3 py-1.5 text-sm text-white"
+                />
+              </span>
+            </label>
+            <p className="mt-3 text-xs text-gray-500">{`This month: ${usage.overageMinutes.toLocaleString()} overage minutes · $${usage.overageCost.toFixed(2)} of $${usage.overageCap}`}</p>
           </section>
         )}
 

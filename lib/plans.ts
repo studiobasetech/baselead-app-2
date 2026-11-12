@@ -46,10 +46,10 @@ export type PlanDefinition = {
   contactLookupLimit: number;
   /** Companies (workspaces) one account can run. */
   companyLimit: number;
-  /** Built-in calling: reps whose own US number is included (0 = no calling). */
-  phoneRepsIncluded: number;
-  /** Calling minutes per rep with a number, shared by the whole team each month. */
-  phoneMinutesPerRep: number;
+  /** Built-in calling: phone lines (one number each) included (0 = no calling). */
+  phoneLinesIncluded: number;
+  /** Calling minutes per month, one pool shared by the whole team. */
+  phoneMinutesPool: number;
   features: readonly PlanFeature[];
 };
 
@@ -68,8 +68,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: 3,
     contactLookupLimit: 50,
     companyLimit: 1,
-    phoneRepsIncluded: 0,
-    phoneMinutesPerRep: 0,
+    phoneLinesIncluded: 0,
+    phoneMinutesPool: 0,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -91,8 +91,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: 25,
     contactLookupLimit: 500,
     companyLimit: 1,
-    phoneRepsIncluded: 5,
-    phoneMinutesPerRep: 400,
+    phoneLinesIncluded: 3,
+    phoneMinutesPool: 3000,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -122,8 +122,8 @@ export const PLAN_DEFINITIONS: Record<
     campaignLimit: null,
     contactLookupLimit: 2000,
     companyLimit: 5,
-    phoneRepsIncluded: 10,
-    phoneMinutesPerRep: 800,
+    phoneLinesIncluded: 10,
+    phoneMinutesPool: 8000,
     features: [
       "ai_lead_discovery",
       "ai_lead_scoring",
@@ -251,6 +251,65 @@ export function getCampaignLimit(plan: PlanName | unknown): number | null {
   return getPlan(plan).campaignLimit;
 }
 
-/* Built-in calling (Telnyx): prices we charge for extras. */
-export const PHONE_EXTRA_REP_PRICE = 25; // per month, Scale, each rep after the included ones
+/* ---------------------------------------------------------
+   Built-in calling (Telnyx): add-ons and extras we sell.
+   Our cost: $1.15 per number/month + ~$0.014 per minute (with AI summary).
+--------------------------------------------------------- */
+
+export type PhoneAddonKind = "starter_phone" | "extra_line" | "power_line";
+
+export type PhoneAddon = {
+  kind: PhoneAddonKind;
+  name: string;
+  /** Monthly price in USD. */
+  price: number;
+  /** Lines (numbers) it adds. */
+  lines: number;
+  /** Minutes it adds to the team pool each month. */
+  minutes: number;
+  /** Plans that can buy it. */
+  plans: PlanName[];
+  description: string;
+};
+
+export const PHONE_ADDONS: Record<PhoneAddonKind, PhoneAddon> = {
+  starter_phone: {
+    kind: "starter_phone",
+    name: "Phone for Starter",
+    price: 29,
+    lines: 1,
+    minutes: 1000,
+    plans: ["Starter"],
+    description: "1 phone line + 1,000 minutes a month",
+  },
+  extra_line: {
+    kind: "extra_line",
+    name: "Extra line",
+    price: 15,
+    lines: 1,
+    minutes: 500,
+    plans: ["Pro", "Scale"],
+    description: "1 more number + 500 minutes to the team pool",
+  },
+  power_line: {
+    kind: "power_line",
+    name: "Power line",
+    price: 59,
+    lines: 1,
+    minutes: 2500,
+    plans: ["Pro", "Scale"],
+    description: "1 more number + 2,500 minutes (~170 calls a day) for heavy callers",
+  },
+};
+
+export function isPhoneAddonKind(value: unknown): value is PhoneAddonKind {
+  return value === "starter_phone" || value === "extra_line" || value === "power_line";
+}
+
+/** One-time pack added to this month's pool. */
 export const PHONE_MINUTES_PACK = { minutes: 1000, price: 20 };
+/** Automatic overage (opt-in, with a spending cap). */
+export const PHONE_OVERAGE_PER_MINUTE = 0.02;
+export const PHONE_OVERAGE_DEFAULT_CAP = 50;
+/** Managers are alerted when the pool reaches these percentages. */
+export const PHONE_USAGE_ALERTS = [80, 100] as const;

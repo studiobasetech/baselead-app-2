@@ -41,7 +41,9 @@ export async function GET(request: Request) {
     numbers: numbers ?? [],
     available,
     searchError,
-    included: phone.repsIncluded,
+    included: phone.allowance.lines,
+    planLines: phone.allowance.planLines,
+    addonLines: phone.allowance.addonLines,
   });
 }
 
@@ -67,9 +69,9 @@ export async function POST(request: Request) {
 
   if (!member) return NextResponse.json({ error: "This person is not an active member of your team." }, { status: 400 });
   if (existing) return NextResponse.json({ error: "This rep already has a number." }, { status: 400 });
-  if ((count ?? 0) >= phone.repsIncluded) {
+  if ((count ?? 0) >= phone.allowance.lines) {
     return NextResponse.json(
-      { code: "NUMBER_LIMIT", error: `Your plan includes numbers for ${phone.repsIncluded} reps. Extra reps ($25/month) are coming soon — contact support.` },
+      { code: "NUMBER_LIMIT", error: `All ${phone.allowance.lines} phone lines are in use. Add an extra line in Phone setup, or release a number you don't use.` },
       { status: 403 }
     );
   }

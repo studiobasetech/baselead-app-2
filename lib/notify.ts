@@ -24,6 +24,7 @@ export type NotificationKind =
   | "new_lead"
   | "weekly_report"
   | "missed_call"
+  | "phone_usage"
   | "test";
 
 type Prefs = {
@@ -53,6 +54,7 @@ const PREF_FOR: Partial<Record<NotificationKind, keyof Prefs>> = {
   new_lead: "new_lead_alerts",
   weekly_report: "weekly_report",
   missed_call: "call_alerts",
+  phone_usage: "call_alerts",
 };
 
 export type NotificationContent = {

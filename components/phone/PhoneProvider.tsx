@@ -9,21 +9,34 @@ import { startRinging, stopRinging } from "@/lib/ringtones";
  */
 
 export type PhoneUsage = {
-  repsWithNumbers: number;
-  repsIncluded: number;
-  minutesPerRep: number;
+  lines: number;
+  planLines: number;
+  addonLines: number;
+  numbersInUse: number;
+  planMinutes: number;
+  addonMinutes: number;
   packMinutes: number;
   allowance: number;
   used: number;
   remaining: number;
+  overageEnabled: boolean;
+  overageCap: number;
+  overageMinutes: number;
+  overageCost: number;
+  overageAvailable: boolean;
   myUsed: number;
   myLimit: number | null;
+  addons: { kind: "starter_phone" | "extra_line" | "power_line"; quantity: number; status: string; cancelAtPeriodEnd: boolean; applies: boolean }[];
 };
 
 export type PhoneStatus = {
   allowed: boolean;
   configured: boolean;
   isManager: boolean;
+  plan?: string;
+  /** Starter on a paid plan: can add Phone for $29/month. */
+  canAddStarterPhone?: boolean;
+  isTrial?: boolean;
   scorecards?: boolean;
   myNumber?: string | null;
   policyAccepted?: boolean;

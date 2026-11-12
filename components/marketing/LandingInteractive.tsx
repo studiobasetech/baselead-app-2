@@ -142,9 +142,9 @@ export function TourVideo() {
 /* ---------------- Pricing with monthly / yearly ---------------- */
 
 const PLAN_COPY: Record<PlanName, { tagline: string; bullets: (p: (typeof PLAN_DEFINITIONS)[PlanName]) => string[] }> = {
-  Starter: { tagline: "For solo sellers", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "AI scoring & email drafts", "Email from Gmail, Outlook or IMAP", "Pipeline & calendar"] },
-  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Built-in calling: own US number per rep", "400 call minutes per rep · recordings", "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
-  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Built-in calling: 800 min per rep", "Call scorecards & per-rep limits", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
+  Starter: { tagline: "For solo sellers", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "AI scoring & email drafts", "Email from Gmail, Outlook or IMAP", "Pipeline & calendar", "Optional calling: +$29/mo"] },
+  Pro: { tagline: "Automation for growing teams", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, `Up to ${p.teamLimit} team members`, "Built-in calling: 3 lines included", "3,000 team minutes/mo · recordings", "Automatic follow-ups & sequences", "Advanced reports & integrations"] },
+  Scale: { tagline: "Teams & API", bullets: (p) => [`${p.leadLimit.toLocaleString("en-US")} leads`, "Unlimited team members", "Built-in calling: 10 lines included", "8,000 team minutes/mo", "Call scorecards & per-rep limits", "Up to 5 companies", "API access & custom reports", "Team permissions"] },
 };
 
 export function PricingPlans() {
@@ -200,7 +200,7 @@ export function PricingPlans() {
 const FAQ = [
   ["Do I need a credit card for the free trial?", "No. Create a free account and start your 7-day trial whenever you’re ready. Pick a plan only if you want to keep going."],
   ["Does it send emails from my own email?", "Yes. Connect Gmail, Outlook or any work email (IMAP/SMTP) and every email goes out from your own address, so replies come straight to your inbox."],
-  ["Can my team call leads from BaseLead?", "Yes, on Pro and Scale. Each rep gets their own US phone number and calls leads in the USA and Canada from the app. Calls are recorded (callers hear a short notice), summarized by AI and saved on the lead."],
+  ["Can my team call leads from BaseLead?", "Yes. Pro includes 3 phone lines and 3,000 team minutes a month; Scale includes 10 lines and 8,000 minutes. Starter can add Phone for $29/month. Each rep gets their own number and calls leads in the USA and Canada from the app. Calls are recorded (callers hear a short notice), summarized by AI and saved on the lead. Need more? Add a line ($15), a Power line ($59) or 1,000 minutes ($20)."],
   ["Can I manage more than one company?", "Yes. On Scale you can run up to 5 companies or brands from one account, each with its own leads, pipeline, team and settings."],
   ["Can I cancel anytime?", "Yes. Change or cancel your plan anytime in Settings. Your leads and pipeline stay in your account."],
   ["Is my data safe?", "Your data is encrypted in transit, connection tokens are stored encrypted, and each company can only see its own workspace. Two-factor sign-in is available."],

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { loadPhoneSettings } from "@/lib/phone/access";
+import { companyPhoneAccess, loadPhoneSettings } from "@/lib/phone/access";
 import { phoneRoute, planRequired } from "../_shared";
 
 export async function GET() {
@@ -33,6 +33,20 @@ export async function PUT(request: Request) {
     }
   }
 
+  // Automatic overage: opt-in, with a monthly spending cap. Needs a paid Stripe subscription to bill.
+  const overage: Record<string, unknown> = {};
+  if (typeof body.overage_enabled === "boolean") {
+    if (body.overage_enabled && !(await companyPhoneAccess(phone.companyId)).customerId) {
+      return NextResponse.json({ error: "Automatic overage needs a paid subscription billed through Stripe." }, { status: 400 });
+    }
+    overage.overage_enabled = body.overage_enabled;
+  }
+  if (body.overage_cap !== undefined) {
+    const cap = Math.round(Number(body.overage_cap));
+    if (!Number.isFinite(cap) || cap < 10 || cap > 5000) return NextResponse.json({ error: "Choose a cap between $10 and $5,000." }, { status: 400 });
+    overage.overage_cap = cap;
+  }
+
   const next = {
     company_id: phone.companyId,
     non_lead_policy: body.non_lead_policy === "block" ? "block" : body.non_lead_policy === "flag" ? "flag" : current.non_lead_policy,
@@ -42,10 +56,11 @@ export async function PUT(request: Request) {
     timezone: typeof body.timezone === "string" && body.timezone.length < 60 ? body.timezone : current.timezone,
     long_call_minutes: Math.min(240, Math.max(5, Math.round(Number(body.long_call_minutes ?? current.long_call_minutes)) || 45)),
     rep_minute_limits: limits,
+    ...overage,
     updated_at: new Date().toISOString(),
   };
 
   const { error: saveError } = await createAdminClient().from("phone_settings").upsert(next);
   if (saveError) return NextResponse.json({ error: saveError.message }, { status: 500 });
-  return NextResponse.json({ success: true, settings: next });
+  return NextResponse.json({ success: true, settings: { ...current, ...next } });
 }
