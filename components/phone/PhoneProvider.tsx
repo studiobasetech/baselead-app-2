@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { startRinging, stopRinging } from "@/lib/ringtones";
 
 /*
  * In-app phone (Telnyx WebRTC). Calls run in the browser — reps use a headset.
@@ -145,6 +146,7 @@ export function PhoneProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const finishCall = useCallback(() => {
+    stopRinging();
     const current = callRef.current;
     telnyxCallRef.current = null;
     setIncoming(null);
@@ -172,6 +174,7 @@ export function PhoneProvider({ children }: { children: ReactNode }) {
         }
         setIncoming({ number, leadName });
         setOpen(true);
+        startRinging();
         updateCall({ callId: null, direction: "inbound", number, leadId: null, leadName, stage: "ringing", startedAt: Date.now(), answeredAt: null, muted: false });
         return;
       }
@@ -181,6 +184,7 @@ export function PhoneProvider({ children }: { children: ReactNode }) {
 
       if (s === "ringing" || s === "early") updateCall({ ...current, stage: "ringing" });
       if (s === "active" && current.stage !== "active") {
+        stopRinging();
         setIncoming(null);
         updateCall({ ...current, stage: "active", answeredAt: Date.now() });
       }
@@ -360,11 +364,13 @@ export function PhoneProvider({ children }: { children: ReactNode }) {
   );
 
   const answer = useCallback(() => {
+    stopRinging();
     telnyxCallRef.current?.answer();
     setIncoming(null);
   }, []);
 
   const decline = useCallback(() => {
+    stopRinging();
     telnyxCallRef.current?.hangup();
     setIncoming(null);
     updateCall(null);

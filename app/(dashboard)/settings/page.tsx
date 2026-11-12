@@ -1,4 +1,5 @@
 "use client";
+import { RINGTONES, RINGTONE_STORAGE_KEY, currentRingtone, isRingtone, previewRingtone, type RingtoneId } from "@/lib/ringtones";
 import { companyFilterClient, ownerFilterClient } from "@/lib/active-company";
 
 import { getTeamLimit } from "@/lib/plans";
@@ -39,6 +40,8 @@ import {
   Palette,
   Bell,
   Webhook,
+  Play,
+  Square,
 } from "lucide-react";
 
 import {
@@ -133,6 +136,7 @@ type NotificationSettings = {
   weekly_report: boolean;
   push_notifications: boolean;
   call_alerts: boolean;
+  ringtone: string;
 };
 
 type TeamRole = "Admin" | "Manager" | "Member";
@@ -219,6 +223,7 @@ const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   weekly_report: false,
   push_notifications: true,
   call_alerts: true,
+  ringtone: "breeze",
 };
 
 /* =========================================================
@@ -5076,7 +5081,13 @@ function NotificationsTab({
           call_alerts:
             data.call_alerts ??
             true,
+
+          ringtone:
+            isRingtone(data.ringtone) ? data.ringtone : currentRingtone(),
         });
+        if (isRingtone(data.ringtone)) {
+          try { localStorage.setItem(RINGTONE_STORAGE_KEY, data.ringtone); } catch {}
+        }
       }
 
       setLoading(false);
@@ -5223,6 +5234,14 @@ function NotificationsTab({
                 }
               />
             </PreferenceRow>
+
+            <RingtonePicker
+              value={settings.ringtone}
+              onChange={(value) => {
+                setSettings((current) => ({ ...current, ringtone: value }));
+                try { localStorage.setItem(RINGTONE_STORAGE_KEY, value); } catch {}
+              }}
+            />
 
             <PreferenceRow
               title={t(
@@ -5383,6 +5402,64 @@ function NotificationsTab({
         </>
       )}
     </Card>
+  );
+}
+
+/* =========================================================
+   RINGTONE PICKER (incoming calls)
+========================================================= */
+
+function RingtonePicker({ value, onChange }: { value: string; onChange: (value: RingtoneId) => void }) {
+  const { t } = useLanguage();
+  const [playing, setPlaying] = useState<RingtoneId | null>(null);
+  const stopRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => () => stopRef.current?.(), []);
+
+  function toggle(id: RingtoneId) {
+    stopRef.current?.();
+    stopRef.current = null;
+    if (playing === id) {
+      setPlaying(null);
+      return;
+    }
+    setPlaying(id);
+    stopRef.current = previewRingtone(id, () => setPlaying((current) => (current === id ? null : current)));
+  }
+
+  return (
+    <div className="rounded-2xl border border-[#202020] bg-[#0D0D0D] p-4">
+      <p className="text-sm font-medium text-white">{t("Ringtone for incoming calls")}</p>
+      <p className="mt-1 text-[13px] text-gray-500">{t("Soft sounds made for BaseLead. Plays in the app and on your phone.")}</p>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        {RINGTONES.map((tone) => {
+          const selected = value === tone.id;
+          const isPlaying = playing === tone.id;
+          return (
+            <div
+              key={tone.id}
+              className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 transition ${selected ? "border-[#3B82F6]/70 bg-[#3B82F6]/[0.08]" : "border-[#222] hover:border-[#333]"}`}
+            >
+              <button
+                type="button"
+                onClick={() => toggle(tone.id)}
+                aria-label={isPlaying ? t("Stop") : t("Play")}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#3B82F6]/15 text-[#60A5FA] transition hover:bg-[#3B82F6]/25"
+              >
+                {isPlaying ? <Square size={13} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+              </button>
+              <button type="button" onClick={() => onChange(tone.id)} className="min-w-0 flex-1 text-left">
+                <span className="flex items-center gap-2 text-sm font-medium text-white">
+                  {t(tone.name)}
+                  {selected && <Check size={14} className="text-[#3B82F6]" />}
+                </span>
+                <span className="block truncate text-xs text-gray-500">{t(tone.description)}</span>
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

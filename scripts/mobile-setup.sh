@@ -32,7 +32,13 @@ npx capacitor-assets generate --iconBackgroundColor '#050505' --iconBackgroundCo
 echo "→ Deep links and permissions"
 node scripts/mobile-patch.cjs "$HOST"
 
+echo "→ Ringtones for incoming calls"
+mkdir -p android/app/src/main/res/raw
+cp mobile/sounds/baselead_ring_*.wav android/app/src/main/res/raw/
+cp mobile/sounds/baselead_ring_*.wav ios/App/App/
+
 npx cap sync
 echo
 echo "Done. Open the projects with:  npx cap open ios   /   npx cap open android"
 echo "In Xcode: Signing & Capabilities → add 'Push Notifications' and 'Background Modes → Remote notifications'."
+echo "In Xcode: drag the 5 baselead_ring_*.wav files (ios/App/App) into the App folder, tick 'Copy items if needed' and target App."

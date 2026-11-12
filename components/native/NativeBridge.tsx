@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { isNativeApp, nativePlatform, nativePlugin, NATIVE_SCHEME, openInSystemBrowser } from "@/lib/native";
+import { RINGTONES, ringtoneChannel, ringtoneNativeFile } from "@/lib/ringtones";
 
 /*
  * Runs only inside the iPhone/Android app:
@@ -82,6 +83,20 @@ export default function NativeBridge() {
 
     // Push notifications
     const push = nativePlugin("PushNotifications");
+    if (push && platform === "android") {
+      // One channel per ringtone (Android fixes a channel's sound when it is created).
+      for (const tone of RINGTONES) {
+        push.createChannel?.({
+          id: ringtoneChannel(tone.id),
+          name: `Incoming calls (${tone.name})`,
+          description: "Rings when someone calls your BaseLead number",
+          importance: 5,
+          visibility: 1,
+          vibration: true,
+          sound: ringtoneNativeFile(tone.id),
+        }).catch?.(() => {});
+      }
+    }
     if (push) {
       push.addListener("registration", async ({ value }: { value: string }) => {
         try { localStorage.setItem(PUSH_TOKEN_KEY, value); localStorage.removeItem(PUSH_SAVED_KEY); } catch {}

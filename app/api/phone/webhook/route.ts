@@ -8,6 +8,8 @@ import { findLeadByPhone } from "@/lib/phone/leads";
 import { summarizeRecording } from "@/lib/phone/summary";
 import { effectivePlan, getPlan } from "@/lib/plans";
 import { notifyUser } from "@/lib/notify";
+import { sendPush } from "@/lib/push";
+import { DEFAULT_RINGTONE, isRingtone, ringtoneChannel, ringtoneNativeFile } from "@/lib/ringtones";
 import { formatCallerForPush } from "@/lib/phone/format";
 
 /*
@@ -174,6 +176,23 @@ async function onInitiated(payload: Payload, at: string) {
       from: payload.from,
       timeout_secs: 30,
     });
+
+    // Ring the rep's phone app too (their chosen ringtone), so they can pick up from anywhere.
+    if (number.user_id) {
+      const { data: prefs } = await admin.from("user_settings").select("*").eq("user_id", number.user_id).maybeSingle();
+      if ((prefs?.push_notifications ?? true) && (prefs?.call_alerts ?? true)) {
+        const tone = isRingtone(prefs?.ringtone) ? prefs.ringtone : DEFAULT_RINGTONE;
+        const who = lead?.company || lead?.name || formatCallerForPush(payload.from);
+        await sendPush(admin, number.user_id, {
+          title: "Incoming call",
+          body: `${who} is calling your BaseLead number. Tap to answer.`,
+          url: "/calls",
+          sound: ringtoneNativeFile(tone),
+          channelId: ringtoneChannel(tone),
+          urgent: true,
+        }).catch(() => 0);
+      }
+    }
     return;
   }
 

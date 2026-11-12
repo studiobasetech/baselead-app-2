@@ -1,7 +1,17 @@
 # Built-in calling — setup (Telnyx)
 
 Calling is built into BaseLead (Pro and Scale). It turns on when these steps are done.
-Do them after buying the domain (Telnyx must reach https://YOUR-DOMAIN/api/phone/webhook).
+Telnyx must reach https://YOUR-DOMAIN/api/phone/webhook. Before buying the domain you can test
+with a free temporary address (step 0); after the domain, change the two webhook URLs to it.
+
+## 0. Temporary public address for testing (no domain yet)
+In a second Terminal window, in the project folder, while `npm run dev` is running:
+```
+npx cloudflared tunnel --url http://localhost:3000
+```
+It prints an address like `https://something-random.trycloudflare.com`. Use
+`https://something-random.trycloudflare.com/api/phone/webhook` as the webhook URL in step 3.
+The address changes every time you start it: update the two webhook URLs in Telnyx if it does.
 
 ## 1. Run the database update
 Supabase → SQL Editor → paste `supabase/UPDATE_12_RUN_THIS.sql` → Run.

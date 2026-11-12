@@ -13,7 +13,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Public web address (set NEXT_PUBLIC_APP_URL once the domain is live) so Google and link previews get full URLs.
+const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "https://baselead.ai").replace(/\/$/, "");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "BaseLead",
     template: "%s · BaseLead",
@@ -28,13 +32,33 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  // Square icons only (Google shows the site icon from these; it needs a square, 48px or larger).
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icons/favicon-96.png", sizes: "96x96", type: "image/png" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     shortcut: "/icons/favicon-32.png",
     apple: "/icons/apple-touch-icon.png",
+  },
+  // Square image for link previews (Google, iMessage, WhatsApp, LinkedIn…).
+  openGraph: {
+    type: "website",
+    siteName: "BaseLead",
+    title: "BaseLead — AI-Powered Client Finder",
+    description: "Find B2B clients and the person who decides, call and email them from one app, and close more deals.",
+    url: "/",
+    images: [{ url: "/og-square.jpg", width: 1200, height: 1200, alt: "BaseLead" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "BaseLead — AI-Powered Client Finder",
+    description: "Find B2B clients and the person who decides, call and email them from one app, and close more deals.",
+    images: ["/og-square.jpg"],
   },
 };
 

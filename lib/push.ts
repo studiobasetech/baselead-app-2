@@ -53,7 +53,19 @@ function apnsToken(cfg: NonNullable<ReturnType<typeof apnsConfig>>) {
   return apnsJwt.value;
 }
 
-function sendApns(cfg: NonNullable<ReturnType<typeof apnsConfig>>, token: string, message: { title: string; body: string; url?: string }) {
+export type PushMessage = {
+  title: string;
+  body: string;
+  url?: string;
+  /** Sound file bundled in the app (e.g. baselead_ring_breeze.wav). Default: the system sound. */
+  sound?: string;
+  /** Android notification channel (each ringtone has its own). */
+  channelId?: string;
+  /** Incoming calls: break through Focus / show immediately. */
+  urgent?: boolean;
+};
+
+function sendApns(cfg: NonNullable<ReturnType<typeof apnsConfig>>, token: string, message: PushMessage) {
   return new Promise<number>((resolve) => {
     const client = connect(cfg.host);
     client.on("error", () => resolve(0));
@@ -70,7 +82,14 @@ function sendApns(cfg: NonNullable<ReturnType<typeof apnsConfig>>, token: string
       client.close();
     });
     req.on("error", () => { resolve(0); client.close(); });
-    req.end(JSON.stringify({ aps: { alert: { title: message.title, body: message.body }, sound: "default" }, url: message.url }));
+    req.end(JSON.stringify({
+      aps: {
+        alert: { title: message.title, body: message.body },
+        sound: message.sound || "default",
+        ...(message.urgent ? { "interruption-level": "time-sensitive" } : {}),
+      },
+      url: message.url,
+    }));
   });
 }
 
@@ -105,7 +124,7 @@ async function accessToken(sa: ServiceAccount) {
 export async function sendPush(
   admin: SupabaseClient,
   userId: string,
-  message: { title: string; body: string; url?: string }
+  message: PushMessage
 ): Promise<number> {
   const sa = serviceAccount();
   const apns = apnsConfig();
@@ -131,6 +150,13 @@ export async function sendPush(
               token,
               notification: { title: message.title, body: message.body },
               data: message.url ? { url: message.url } : {},
+              android: {
+                priority: message.urgent ? "high" : "normal",
+                notification: {
+                  ...(message.channelId ? { channel_id: message.channelId } : {}),
+                  ...(message.sound ? { sound: message.sound.replace(/\.[a-z0-9]+$/i, "") } : {}),
+                },
+              },
             },
           }),
         });

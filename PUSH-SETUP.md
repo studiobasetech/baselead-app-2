@@ -31,3 +31,12 @@ Supabase → SQL Editor → paste `supabase/UPDATE_13_RUN_THIS.sql` → Run.
 ## 4. Test
 Install the app on your phone → sign in → allow notifications →
 Settings → Notifications → "Send test notification".
+
+## 5. Ringtones for incoming calls
+- 5 soft ringtones: Breeze (default), Glass, Halo, Pulse, Classic Soft. Each user picks one in
+  Settings → Notifications → "Ringtone for incoming calls" (needs `supabase/UPDATE_14_RUN_THIS.sql`).
+- In the app/website the ringtone loops while a call rings. On the phone app it rings through
+  a notification (up to 25 seconds) with the chosen sound.
+- Files: `public/sounds/ring-*.mp3` (app) and `mobile/sounds/baselead_ring_*.wav` (phone apps).
+  `scripts/mobile-setup.sh` copies them into the iPhone and Android projects; in Xcode drag the
+  5 .wav files into the App folder once (tick "Copy items if needed").
