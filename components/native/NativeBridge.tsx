@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { isNativeApp, nativePlatform, nativePlugin, NATIVE_SCHEME, openInSystemBrowser } from "@/lib/native";
 
 /*
@@ -12,8 +12,38 @@ import { isNativeApp, nativePlatform, nativePlugin, NATIVE_SCHEME, openInSystemB
  * - registers for push notifications and sends the device token to the server
  * - opens external sites (and Google consent screens) in the system browser
  */
+const PUSH_TOKEN_KEY = "bl_push_token";
+const PUSH_SAVED_KEY = "bl_push_saved";
+
+/** Sends this phone's push token to the server. Retried after sign-in if the user wasn't signed in yet. */
+async function savePushToken(platform: string) {
+  let token: string | null = null;
+  try {
+    token = localStorage.getItem(PUSH_TOKEN_KEY);
+    if (!token || localStorage.getItem(PUSH_SAVED_KEY) === token) return;
+  } catch {
+    return;
+  }
+  const response = await fetch("/api/push/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, platform }),
+  }).catch(() => null);
+  if (response?.ok) {
+    try { localStorage.setItem(PUSH_SAVED_KEY, token); } catch {}
+  }
+}
+
 export default function NativeBridge() {
   const router = useRouter();
+  const pathname = usePathname();
+
+  // After signing in (any page change), make sure this phone's token reached the server.
+  useEffect(() => {
+    if (!isNativeApp()) return;
+    if (pathname?.startsWith("/login") || pathname?.startsWith("/signup")) return;
+    void savePushToken(nativePlatform());
+  }, [pathname]);
 
   useEffect(() => {
     if (!isNativeApp()) return;
@@ -54,11 +84,8 @@ export default function NativeBridge() {
     const push = nativePlugin("PushNotifications");
     if (push) {
       push.addListener("registration", async ({ value }: { value: string }) => {
-        await fetch("/api/push/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: value, platform }),
-        }).catch(() => {});
+        try { localStorage.setItem(PUSH_TOKEN_KEY, value); localStorage.removeItem(PUSH_SAVED_KEY); } catch {}
+        await savePushToken(platform);
       }).then?.((h: { remove: () => void }) => cleanups.push(() => h.remove()));
       push.addListener("pushNotificationActionPerformed", ({ notification }: { notification: { data?: { url?: string } } }) => {
         const url = notification?.data?.url;
@@ -70,6 +97,11 @@ export default function NativeBridge() {
         if (receive === "granted") await push.register();
       }).catch?.(() => {});
     }
+
+    // Foreground: a notification that arrives while the app is open shows as an in-app toast.
+    push?.addListener?.("pushNotificationReceived", (notification: { title?: string; body?: string }) => {
+      window.dispatchEvent(new CustomEvent("baselead-push", { detail: notification }));
+    }).then?.((h: { remove: () => void }) => cleanups.push(() => h.remove()));
 
     // External links and Google consent screens open in the system browser.
     const onClick = (event: MouseEvent) => {

@@ -2400,5 +2400,17 @@
 "BaseLead searches public business listings and maps, visits each business's website to find the decision maker and contact details, and scores every business with AI.": "BaseLead busca en directorios y mapas públicos de negocios, visita el sitio web de cada negocio para encontrar a la persona que decide y sus datos de contacto, y califica cada negocio con IA.",
 "Real": "Negocios",
 "BaseLead finds businesses that need what you sell and the person who decides, scores them with AI, and lets your team call and email from one app.": "BaseLead encuentra negocios que necesitan lo que vendes y a la persona que decide, los califica con IA y permite que tu equipo llame y envíe correos desde una sola app.",
-"Describe your offer and your ideal client. BaseLead finds real businesses in seconds. Save all of them or only the ones you pick.": "Describe tu oferta y tu cliente ideal. BaseLead encuentra negocios reales en segundos. Guárdalos todos o solo los que elijas."
+"Describe your offer and your ideal client. BaseLead finds real businesses in seconds. Save all of them or only the ones you pick.": "Describe tu oferta y tu cliente ideal. BaseLead encuentra negocios reales en segundos. Guárdalos todos o solo los que elijas.",
+"Push notifications": "Notificaciones push",
+"On the BaseLead app on your phone. {0} phone(s) connected.": "En la app de BaseLead de tu teléfono. {0} teléfono(s) conectado(s).",
+"On the BaseLead app for iPhone and Android. Open the app and allow notifications to connect your phone.": "En la app de BaseLead para iPhone y Android. Abre la app y permite las notificaciones para conectar tu teléfono.",
+"Notify me on my phone when I miss a call on my BaseLead number.": "Avísame en mi teléfono cuando pierda una llamada en mi número de BaseLead.",
+"Send test notification": "Enviar notificación de prueba",
+"Test notification sent to your phone.": "Notificación de prueba enviada a tu teléfono.",
+"Could not send the test notification.": "No se pudo enviar la notificación de prueba.",
+"Push notifications are not set up yet.": "Las notificaciones push aún no están configuradas.",
+"No phone received it. Open the BaseLead app and allow notifications.": "Ningún teléfono la recibió. Abre la app de BaseLead y permite las notificaciones.",
+"Missed call": "Llamada perdida",
+"Missed call from {0}. Tap to call back.": "Llamada perdida de {0}. Toca para devolver la llamada.",
+"Notifications are working. You'll hear about replies, bookings and missed calls here.": "Las notificaciones funcionan. Aquí te avisaremos de respuestas, reservas y llamadas perdidas."
 }

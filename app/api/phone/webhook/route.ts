@@ -7,6 +7,8 @@ import { DEFAULT_PHONE_SETTINGS, isAfterHours, loadPhoneSettings, type PhoneSett
 import { findLeadByPhone } from "@/lib/phone/leads";
 import { summarizeRecording } from "@/lib/phone/summary";
 import { effectivePlan, getPlan } from "@/lib/plans";
+import { notifyUser } from "@/lib/notify";
+import { formatCallerForPush } from "@/lib/phone/format";
 
 /*
  * Telnyx call events → BaseLead call log.
@@ -251,6 +253,19 @@ async function onHangup(payload: Payload, at: string) {
       flags: Array.from(flags),
     })
     .eq("id", row.id);
+
+  // Missed incoming call → push to the rep's phone.
+  if (!answeredAt && row.direction === "inbound" && row.user_id) {
+    const { data: call } = await admin.from("calls").select("from_number, lead:leads(name, company)").eq("id", row.id).maybeSingle();
+    const lead = (call?.lead ?? null) as { name?: string | null; company?: string | null } | null;
+    const who = lead?.company || lead?.name || formatCallerForPush(call?.from_number);
+    await notifyUser(admin, row.user_id, "missed_call", {
+      subject: "Missed call",
+      heading: `Missed call from ${who}`,
+      lines: [`Missed call from ${who}. Tap to call back.`],
+      ctaPath: "/calls",
+    }).catch(() => undefined);
+  }
 }
 
 async function onRecordingSaved(payload: Payload) {

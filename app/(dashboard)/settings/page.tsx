@@ -131,6 +131,8 @@ type NotificationSettings = {
   outreach_replies: boolean;
   meeting_reminders: boolean;
   weekly_report: boolean;
+  push_notifications: boolean;
+  call_alerts: boolean;
 };
 
 type TeamRole = "Admin" | "Manager" | "Member";
@@ -215,6 +217,8 @@ const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   outreach_replies: true,
   meeting_reminders: true,
   weekly_report: false,
+  push_notifications: true,
+  call_alerts: true,
 };
 
 /* =========================================================
@@ -5023,9 +5027,7 @@ function NotificationsTab({
       const { data, error } =
         await supabase
           .from("user_settings")
-          .select(
-            "email_notifications, new_lead_alerts, outreach_replies, meeting_reminders, weekly_report"
-          )
+          .select("*")
           .eq("user_id", user.id)
           .maybeSingle();
 
@@ -5066,6 +5068,14 @@ function NotificationsTab({
           weekly_report:
             data.weekly_report ??
             false,
+
+          push_notifications:
+            data.push_notifications ??
+            true,
+
+          call_alerts:
+            data.call_alerts ??
+            true,
         });
       }
 
@@ -5077,6 +5087,28 @@ function NotificationsTab({
 
   const [testing, setTesting] =
     useState(false);
+
+  // Phones with the BaseLead app that can receive push notifications.
+  const [push, setPush] = useState<{ configured: boolean; devices: number } | null>(null);
+  const [testingPush, setTestingPush] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/push/register")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((json) => json && setPush({ configured: Boolean(json.configured), devices: Number(json.devices) || 0 }))
+      .catch(() => undefined);
+  }, []);
+
+  async function sendTestPush() {
+    setTestingPush(true);
+    try {
+      const response = await fetch("/api/push/test", { method: "POST" });
+      const json = await response.json().catch(() => ({}));
+      onToast(response.ok ? t("Test notification sent to your phone.") : t(json.error || "Could not send the test notification."));
+    } finally {
+      setTestingPush(false);
+    }
+  }
 
   async function sendTestNotification() {
     setTesting(true);
@@ -5164,6 +5196,34 @@ function NotificationsTab({
       ) : (
         <>
           <div className="mt-6 space-y-5">
+            <PreferenceRow
+              title={t("Push notifications")}
+              description={
+                push && push.devices > 0
+                  ? t("On the BaseLead app on your phone. {0} phone(s) connected.").replace("{0}", String(push.devices))
+                  : t("On the BaseLead app for iPhone and Android. Open the app and allow notifications to connect your phone.")
+              }
+            >
+              <Toggle
+                enabled={settings.push_notifications}
+                onChange={(value) =>
+                  setSettings((current) => ({ ...current, push_notifications: value }))
+                }
+              />
+            </PreferenceRow>
+
+            <PreferenceRow
+              title={t("Missed calls")}
+              description={t("Notify me on my phone when I miss a call on my BaseLead number.")}
+            >
+              <Toggle
+                enabled={settings.call_alerts}
+                onChange={(value) =>
+                  setSettings((current) => ({ ...current, call_alerts: value }))
+                }
+              />
+            </PreferenceRow>
+
             <PreferenceRow
               title={t(
                 "Email notifications"
@@ -5301,6 +5361,18 @@ function NotificationsTab({
                 ? t("Sending...")
                 : t("Send test email")}
             </button>
+
+            {push && push.devices > 0 && (
+              <button
+                type="button"
+                onClick={sendTestPush}
+                disabled={testingPush}
+                className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs font-semibold text-gray-200 transition hover:border-[#3B82F6]/60 hover:text-white disabled:opacity-50"
+              >
+                <Bell size={13} />
+                {testingPush ? t("Sending...") : t("Send test notification")}
+              </button>
+            )}
           </div>
 
           <p className="mt-3 text-xs leading-relaxed text-gray-500">

@@ -5,7 +5,7 @@ export const LEGAL = {
   product: "BaseLead",
   company: process.env.NEXT_PUBLIC_LEGAL_ENTITY || "Studio Base LLC",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@studiobase.tech",
-  updated: "October 19, 2026",
+  updated: "November 2026",
   state: process.env.NEXT_PUBLIC_LEGAL_STATE || "Texas",
 };
 

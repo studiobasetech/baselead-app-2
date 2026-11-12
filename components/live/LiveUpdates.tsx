@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { MailOpen, MessageSquareReply, Sparkles, UserPlus, X } from "lucide-react";
+import { Bell, MailOpen, MessageSquareReply, Sparkles, UserPlus, X } from "lucide-react";
 
 import { supabase } from "@/components/lib/supabase";
 import { usePlan } from "@/components/plans/PlanProvider";
@@ -16,7 +16,7 @@ import { usePlan } from "@/components/plans/PlanProvider";
 
 type Notice = {
   id: string;
-  kind: "reply" | "open" | "leads";
+  kind: "reply" | "open" | "leads" | "alert";
   title: string;
   body: string;
   href?: string;
@@ -26,6 +26,7 @@ const KIND: Record<Notice["kind"], { icon: typeof MailOpen; color: string }> = {
   reply: { icon: MessageSquareReply, color: "#2DD4BF" },
   open: { icon: MailOpen, color: "#A78BFA" },
   leads: { icon: UserPlus, color: "#3B82F6" },
+  alert: { icon: Bell, color: "#F97316" },
 };
 
 type Row = Record<string, unknown>;
@@ -40,6 +41,24 @@ export default function LiveUpdates() {
   const seen = useRef(new Set<string>());
   const changeTimer = useRef<number | null>(null);
   const newLeads = useRef<{ count: number; timer: number | null }>({ count: 0, timer: null });
+
+  // Phone app: a push notification that arrives while the app is open shows here.
+  useEffect(() => {
+    function onPush(event: Event) {
+      const detail = (event as CustomEvent<{ title?: string; body?: string; data?: { url?: string } }>).detail ?? {};
+      const notice: Notice = {
+        id: `push-${Date.now()}`,
+        kind: "alert",
+        title: detail.title || "BaseLead",
+        body: detail.body || "",
+        href: detail.data?.url && detail.data.url.startsWith("/") ? detail.data.url : undefined,
+      };
+      setNotices((current) => [notice, ...current].slice(0, 3));
+      window.setTimeout(() => setNotices((current) => current.filter((n) => n.id !== notice.id)), 8000);
+    }
+    window.addEventListener("baselead-push", onPush);
+    return () => window.removeEventListener("baselead-push", onPush);
+  }, []);
 
   useEffect(() => {
     if (!companyId) return;

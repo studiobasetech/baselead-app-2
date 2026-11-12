@@ -23,6 +23,7 @@ export type NotificationKind =
   | "proposal_declined"
   | "new_lead"
   | "weekly_report"
+  | "missed_call"
   | "test";
 
 type Prefs = {
@@ -31,6 +32,8 @@ type Prefs = {
   outreach_replies: boolean;
   meeting_reminders: boolean;
   weekly_report: boolean;
+  push_notifications: boolean;
+  call_alerts: boolean;
 };
 
 const DEFAULT_PREFS: Prefs = {
@@ -39,6 +42,8 @@ const DEFAULT_PREFS: Prefs = {
   outreach_replies: true,
   meeting_reminders: true,
   weekly_report: false,
+  push_notifications: true,
+  call_alerts: true,
 };
 
 const PREF_FOR: Partial<Record<NotificationKind, keyof Prefs>> = {
@@ -47,6 +52,7 @@ const PREF_FOR: Partial<Record<NotificationKind, keyof Prefs>> = {
   meeting_reminder: "meeting_reminders",
   new_lead: "new_lead_alerts",
   weekly_report: "weekly_report",
+  missed_call: "call_alerts",
 };
 
 export type NotificationContent = {
@@ -60,7 +66,7 @@ export type NotificationContent = {
 async function loadPrefs(admin: SupabaseClient, userId: string): Promise<Prefs> {
   const { data, error } = await admin
     .from("user_settings")
-    .select("email_notifications, new_lead_alerts, outreach_replies, meeting_reminders, weekly_report")
+    .select("*")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -72,6 +78,8 @@ async function loadPrefs(admin: SupabaseClient, userId: string): Promise<Prefs> 
     outreach_replies: data.outreach_replies ?? true,
     meeting_reminders: data.meeting_reminders ?? true,
     weekly_report: data.weekly_report ?? false,
+    push_notifications: data.push_notifications ?? true,
+    call_alerts: data.call_alerts ?? true,
   };
 }
 
@@ -175,14 +183,16 @@ export async function notifyUser(
   try {
     if (kind !== "test") {
       const prefs = await loadPrefs(admin, userId);
-      if (!prefs.email_notifications) return { sent: false, reason: "email notifications are off" };
       const specific = PREF_FOR[kind];
       if (specific && !prefs[specific]) return { sent: false, reason: `${specific} is off` };
-    }
 
-    // Phone notification (iPhone/Android app), alongside the email.
-    if (kind !== "test") {
-      void sendPush(admin, userId, { title: content.subject, body: content.lines[0] ?? content.heading, url: content.ctaPath });
+      // Phone notification (iPhone/Android app). Its own switch, independent of email.
+      if (prefs.push_notifications) {
+        await sendPush(admin, userId, { title: content.subject, body: content.lines[0] ?? content.heading, url: content.ctaPath });
+      }
+      if (!prefs.email_notifications) return { sent: false, reason: "email notifications are off" };
+      // Missed calls are phone-only: no email for each one.
+      if (kind === "missed_call") return { sent: false, reason: "push only" };
     }
 
     const to = await userEmail(admin, userId);
