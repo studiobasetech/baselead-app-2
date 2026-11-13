@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState, type ReactNode, type CSSProperties } from
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import PlanGate from "@/components/plans/PlanGate";
+import { describeIntent, quickIntent, type ClientIntent, type WebsiteFilter } from "@/lib/search/intent";
 import {
   recommendationReasons,
   recommendationValue,
@@ -50,6 +51,9 @@ import {
   MessageCircle,
   Handshake,
   Wand2,
+  Gem,
+  Store,
+  Info,
 } from "lucide-react";
 
 type SearchMode = "simple" | "advanced";
@@ -592,6 +596,73 @@ function InputBox({
           list={list}
         />
       </div>
+    </div>
+  );
+}
+
+/** Shows how BaseLead read the ideal client, and lets the person correct it. */
+function UnderstoodPanel({
+  intent,
+  thinking,
+  onWebsite,
+  onPremium,
+}: {
+  intent: ClientIntent;
+  thinking: boolean;
+  onWebsite: (value: WebsiteFilter) => void;
+  onPremium: (value: boolean) => void;
+}) {
+  const options: [WebsiteFilter, string][] = [["any", "Any"], ["has", "Has a website"], ["none", "No website"]];
+  return (
+    <div className="mt-4 rounded-2xl border border-[#A78BFA]/20 bg-[#A78BFA]/[0.04] p-4">
+      <div className="flex items-center justify-between gap-3">
+        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#A78BFA]">
+          <Brain size={14} /> BaseLead understood
+        </p>
+        {thinking && <span className="text-[11px] text-gray-500">Checking…</span>}
+      </div>
+
+      <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <div className="flex min-w-0 items-center gap-2 text-sm">
+          <Store size={15} className="shrink-0 text-[#A78BFA]" />
+          <span className="text-gray-500">Looking for</span>
+          <span className="truncate font-medium text-white" data-no-translate>{intent.businessType || "—"}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => onPremium(!intent.premium)}
+          className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition ${intent.premium ? "border-[#F5C518]/50 bg-[#F5C518]/10 text-[#F5C518]" : "border-white/10 text-gray-500 hover:text-gray-300"}`}
+        >
+          <Gem size={13} /> {intent.premium ? "High-end only" : "Any price level"}
+        </button>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className="flex items-center gap-1.5 text-xs text-gray-500"><Globe2 size={13} /> Website</span>
+        <div className="flex rounded-xl border border-white/10 bg-[#070707] p-1">
+          {options.map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => onWebsite(value)}
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${intent.website === value ? "bg-[#A78BFA] text-white" : "text-gray-500 hover:text-gray-300"}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <p className="mt-3 flex gap-1.5 text-[11px] leading-4 text-gray-500">
+        <Info size={12} className="mt-0.5 shrink-0" />
+        <span>
+          {intent.website === "none"
+            ? "Only businesses with no website listed on the map. A few may still have one we can't see."
+            : intent.premium
+              ? "High-end: independent practices and specialists first, no chains or franchises."
+              : "Tip: add details like \"with no website\" or \"high-end\" and BaseLead will filter for them."}
+        </span>
+      </p>
     </div>
   );
 }
@@ -1895,9 +1966,46 @@ export default function NewSearchPage() {
   const [leads, setLeads] = useState("50");
   const [offer, setOffer] = useState("");
   const [idealClient, setIdealClient] = useState("");
+  // What BaseLead understood from the ideal client, and the person's corrections.
+  const [websiteChoice, setWebsiteChoice] = useState<WebsiteFilter | null>(null);
+  const [premiumChoice, setPremiumChoice] = useState<boolean | null>(null);
+  const [aiIntent, setAiIntent] = useState<{ text: string; intent: ClientIntent } | null>(null);
+  const [understanding, setUnderstanding] = useState(false);
   const [companySize, setCompanySize] = useState("");
   const [revenue, setRevenue] = useState("");
   const [location, setLocation] = useState("");
+
+  const quickUnderstood = useMemo(() => quickIntent(idealClient), [idealClient]);
+  const baseIntent = aiIntent && aiIntent.text === idealClient.trim() ? aiIntent.intent : quickUnderstood;
+  const understood: ClientIntent = {
+    ...baseIntent,
+    website: websiteChoice ?? baseIntent.website,
+    premium: premiumChoice ?? baseIntent.premium,
+  };
+
+  // Ask AI to read the ideal client (typos, Spanish, odd phrasing) shortly after typing stops.
+  useEffect(() => {
+    const text = idealClient.trim();
+    if (text.length < 3) return;
+    const timer = window.setTimeout(async () => {
+      setUnderstanding(true);
+      try {
+        const response = await fetch("/api/search/understand", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idealClient: text, offer }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.intent) setAiIntent({ text, intent: data.intent });
+      } catch {
+        // Keep the instant understanding.
+      } finally {
+        setUnderstanding(false);
+      }
+    }, 800);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idealClient]);
   const [radius, setRadius] = useState("25 miles");
   const [buyingIntent, setBuyingIntent] = useState("");
 
@@ -2245,6 +2353,8 @@ export default function NewSearchPage() {
           intent: toggles.intent,
           enrichment: toggles.enrichment,
           excludeExisting: toggles.excludeExisting,
+          websiteFilter: understood.website,
+          premium: understood.premium,
         }),
       });
 
@@ -2324,10 +2434,13 @@ export default function NewSearchPage() {
         // Storage full or unavailable: ignore.
       }
 
+      const readAs: ClientIntent | null = data.understood ?? null;
       setSearchMessage(
         data.demo
           ? `Demo mode: showing ${total} sample businesses. Add a Google Places API key to search real businesses.`
-          : `Search completed successfully with ${total} matching businesses.`
+          : readAs && (readAs.website !== "any" || readAs.premium || readAs.independentOnly)
+            ? `${describeIntent(readAs)} — ${total} businesses found.${total < requestedLeads ? ` Only ${total} businesses nearby match everything you asked for; try a bigger radius for more.` : ""}`
+            : `Search completed successfully with ${total} matching businesses.`
       );
 
       if (returnedLeads.length) {
@@ -2551,6 +2664,8 @@ export default function NewSearchPage() {
     setSearchTotal(0);
     setOffer("");
     setIdealClient("");
+    setWebsiteChoice(null);
+    setPremiumChoice(null);
     setCompanySize("");
     setRevenue("");
     setBuyingIntent("");
@@ -2931,12 +3046,21 @@ export default function NewSearchPage() {
                     <InputBox
                       icon={<Users size={17} />}
                       label="Who is your ideal client?"
-                      placeholder="e.g. Med Spas, Dental Clinics, Real Estate Agents"
+                      placeholder="e.g. High-end dentists with no website, Med Spas, Roofers"
                       value={idealClient}
                       onChange={setIdealClient}
                       accent="purple"
                     />
                   </div>
+
+                  {idealClient.trim().length >= 3 && (
+                    <UnderstoodPanel
+                      intent={understood}
+                      thinking={understanding}
+                      onWebsite={setWebsiteChoice}
+                      onPremium={setPremiumChoice}
+                    />
+                  )}
 
                   {mode === "advanced" && (
   <PlanGate
@@ -3324,7 +3448,7 @@ export default function NewSearchPage() {
 
                     <PreviewItem color="purple">
                       {idealClient
-                        ? `Targeting ${idealClient}`
+                        ? `Targeting ${describeIntent(understood)}`
                         : "Defining your ideal client"}
                     </PreviewItem>
 

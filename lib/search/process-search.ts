@@ -44,12 +44,17 @@ export async function processSearch(
 
   // Google Places when the owner has a key; otherwise the free
   // OpenStreetMap source, so lead discovery always works.
+  const filtering = (criteria.websiteFilter && criteria.websiteFilter !== "any") || criteria.premium || criteria.independentOnly;
   const providerCriteria = {
     ...criteria,
-    // Fetch extra so duplicates can be skipped.
-    leads: criteria.excludeExisting
-      ? Math.min(60, (criteria.leads ?? 20) * 2)
-      : criteria.leads,
+    // Providers search by the kind of business only ("doctors"), not the whole sentence.
+    idealClient: criteria.clientType || criteria.idealClient,
+    // Fetch extra so duplicates and filtered-out businesses can be skipped.
+    leads: filtering
+      ? 60
+      : criteria.excludeExisting
+        ? Math.min(60, (criteria.leads ?? 20) * 2)
+        : criteria.leads,
   };
 
   // Order: Google Places (if a key is set) → Geoapify (free, reliable)
@@ -66,6 +71,25 @@ export async function processSearch(
     }
   } else {
     potentialLeads = await searchOpenStreetMap(providerCriteria);
+  }
+
+  // What the person asked for: no website / has a website / no chains.
+  const foundBeforeFilters = potentialLeads.length;
+  potentialLeads = applyClientFilters(potentialLeads, criteria);
+
+  if (potentialLeads.length === 0 && foundBeforeFilters > 0) {
+    const what = criteria.clientType || criteria.idealClient;
+    return {
+      leads: [],
+      totalFound: 0,
+      demo,
+      notice:
+        criteria.websiteFilter === "none"
+          ? `We found ${foundBeforeFilters} ${what} near ${criteria.location}, but all of them list a website. Try a bigger radius or a nearby city, or set Website to "Any".`
+          : criteria.websiteFilter === "has"
+            ? `We found ${foundBeforeFilters} ${what} near ${criteria.location}, but none of them list a website. Try a bigger radius, or set Website to "Any".`
+            : `We found ${foundBeforeFilters} ${what} near ${criteria.location}, but they are all chains or franchises. Try a bigger radius or a nearby city.`,
+    };
   }
 
   if (potentialLeads.length === 0) {
@@ -638,3 +662,29 @@ export function toLeadRow(lead: PotentialLead, userId: string, companyId: string
 export function rowToLead(row: Record<string, unknown>): PotentialLead {
   return { ...(row as unknown as PotentialLead), raw_data: (row.raw_data as Record<string, unknown>) ?? {} };
 }
+
+/* =========================================================
+   FILTERS FROM THE IDEAL CLIENT ("with no website", "expensive")
+========================================================= */
+
+// Words that usually mean a specialist or high-end practice.
+const PREMIUM_WORDS = /aesthetic|cosmetic|plastic|concierge|boutique|luxury|premier|elite|specialist|institute|surgery|surgical|dermatolog|ortho|wellness|vein|fertility|signature|executive|private/i;
+
+export function applyClientFilters(leads: PotentialLead[], criteria: SearchCriteria) {
+  let list = leads;
+  if (criteria.websiteFilter === "none") list = list.filter((lead) => !lead.website);
+  if (criteria.websiteFilter === "has") list = list.filter((lead) => Boolean(lead.website));
+  if (criteria.premium || criteria.independentOnly) {
+    // National chains and franchises are never "high-end independent" clients.
+    list = list.filter((lead) => !(lead.raw_data as { brand?: unknown } | null)?.brand);
+  }
+  if (criteria.premium) {
+    const rank = (lead: PotentialLead) =>
+      (PREMIUM_WORDS.test(`${lead.company} ${lead.category ?? ""}`) ? 3 : 0) +
+      (typeof lead.rating === "number" && lead.rating >= 4.5 ? 2 : 0) +
+      (lead.phone ? 1 : 0);
+    list = [...list].sort((a, b) => rank(b) - rank(a));
+  }
+  return list;
+}
+

@@ -12,6 +12,8 @@ import {
 } from "@/lib/plans";
 import type { SearchCriteria } from "@/lib/search/types";
 import { dispatchWebhooks } from "@/lib/webhooks";
+import { understandIdealClient } from "@/lib/search/understand";
+import { isWebsiteFilter } from "@/lib/search/intent";
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +34,8 @@ export async function POST(request: Request) {
       intent,
       enrichment,
       excludeExisting,
+      websiteFilter,
+      premium,
     } = body;
 
     if (!offer || !idealClient || !location) {
@@ -280,6 +284,12 @@ export async function POST(request: Request) {
       "ai_recommendations"
     );
 
+    // "expensive doctors with no websites" → doctors · no website · high-end.
+    // The page sends what the person confirmed; AI fills in the rest.
+    const understood = await understandIdealClient(String(idealClient), String(offer));
+    if (isWebsiteFilter(websiteFilter)) understood.website = websiteFilter;
+    if (typeof premium === "boolean") understood.premium = premium;
+
     const criteria: SearchCriteria = {
       offer,
       idealClient,
@@ -297,6 +307,10 @@ export async function POST(request: Request) {
       intent: canAdvanced ? intent : false,
       enrichment,
       excludeExisting,
+      clientType: understood.businessType,
+      websiteFilter: understood.website,
+      premium: understood.premium,
+      independentOnly: understood.independentOnly,
     };
 
     const searchQuery = `${idealClient} - ${offer}`;
@@ -382,6 +396,7 @@ export async function POST(request: Request) {
         remaining: remainingLeads,
         demo: result.demo,
         notice: "notice" in result ? result.notice : null,
+        understood,
         criteria,
       });
     } catch (processingError) {

@@ -175,7 +175,8 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
   const { categories, keyword } = await categoriesFor(criteria);
 
   // Ask for extra so we can keep the ones with the best contact info.
-  const limit = keyword ? 300 : Math.min(wanted * 3, 200);
+  const filtering = (criteria.websiteFilter && criteria.websiteFilter !== "any") || criteria.premium || criteria.independentOnly;
+  const limit = keyword || filtering ? 300 : Math.min(wanted * 3, 200);
   const json = await geoapify("/v2/places", {
     categories: categories.join(","),
     filter: `circle:${center.lon},${center.lat},${meters}`,
@@ -248,8 +249,11 @@ export async function searchGeoapify(criteria: SearchCriteria): Promise<Potentia
 
   // Best contacts first: website + phone + email. National chains and
   // franchises (Pizza Hut, Best Western...) go last: decisions are made at HQ.
+  // Looking for businesses WITHOUT a website: those come first instead of last.
+  const websitePoints = (lead: PotentialLead) =>
+    criteria.websiteFilter === "none" ? (lead.website ? -20 : 2) : criteria.websiteFilter === "has" ? (lead.website ? 2 : -20) : lead.website ? 2 : 0;
   const quality = (lead: PotentialLead) =>
-    (lead.website ? 2 : 0) +
+    websitePoints(lead) +
     (lead.phone ? 2 : 0) +
     (lead.email ? 1 : 0) +
     (lead.address ? 1 : 0) -

@@ -13,6 +13,14 @@ export type SearchCriteria = {
   intent?: boolean;
   enrichment?: boolean;
   excludeExisting?: boolean;
+  /** Just the kind of business ("doctors"), understood from idealClient. */
+  clientType?: string;
+  /** "none" = only businesses with no website listed; "has" = only with one. */
+  websiteFilter?: "any" | "none" | "has";
+  /** Expensive / high-end: independent practices and specialists first. */
+  premium?: boolean;
+  /** No national chains or franchises. */
+  independentOnly?: boolean;
 };
 
 export type PotentialLead = {
