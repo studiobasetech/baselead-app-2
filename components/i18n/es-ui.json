@@ -2477,5 +2477,19 @@
 "Calling add-ons are available once your subscription is active (not during the free trial).": "Los complementos de llamadas están disponibles cuando tu suscripción esté activa (no en la prueba gratis).",
 "Phone is already on. Upgrade to Pro for more lines and minutes.": "El teléfono ya está activo. Sube a Pro para más líneas y minutos.",
 "Only managers can buy add-ons.": "Solo los gerentes pueden comprar complementos.",
-"Could not open billing.": "No se pudo abrir la facturación."
+"Could not open billing.": "No se pudo abrir la facturación.",
+"BaseLead understood": "BaseLead entendió",
+"Checking…": "Revisando…",
+"Looking for": "Buscando",
+"High-end only": "Solo alta gama",
+"Any price level": "Cualquier nivel de precio",
+"Has a website": "Tiene sitio web",
+"Only businesses with no website listed on the map. A few may still have one we can't see.": "Solo negocios sin sitio web en el mapa. Algunos podrían tener uno que no vemos.",
+"High-end: independent practices and specialists first, no chains or franchises.": "Alta gama: primero consultorios independientes y especialistas, sin cadenas ni franquicias.",
+"Tip: add details like \"with no website\" or \"high-end\" and BaseLead will filter for them.": "Consejo: agrega detalles como \"sin sitio web\" o \"alta gama\" y BaseLead los filtrará.",
+"e.g. High-end dentists with no website, Med Spas, Roofers": "ej. Dentistas de alta gama sin sitio web, Med Spas, Techadores",
+"{0} — {1} businesses found.": "{0} — {1} negocios encontrados.",
+"No website listed": "Sin sitio web",
+"High-end first": "Alta gama primero",
+"No chains": "Sin cadenas"
 }

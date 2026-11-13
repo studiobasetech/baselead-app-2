@@ -622,11 +622,11 @@ function UnderstoodPanel({
         {thinking && <span className="text-[11px] text-gray-500">Checking…</span>}
       </div>
 
-      <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
-        <div className="flex min-w-0 items-center gap-2 text-sm">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <Store size={15} className="shrink-0 text-[#A78BFA]" />
           <span className="text-gray-500">Looking for</span>
-          <span className="truncate font-medium text-white" data-no-translate>{intent.businessType || "—"}</span>
+          <span className="rounded-lg bg-white/[0.06] px-2 py-0.5 font-medium text-white" data-no-translate>{intent.businessType || "—"}</span>
         </div>
         <button
           type="button"
